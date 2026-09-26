@@ -150,8 +150,8 @@ Things that govern or touch this use case. Tier 1 is load-bearing for the protot
 
 **Research still open**
 - [ ] Extension interaction with the 7-day clock (above)
-- [ ] Whether Humana has published PA metrics under the 2026 reporting requirement
-- [ ] Public benchmark for appeal overturn rates in MA
+- [x] Whether Humana has published PA metrics under the 2026 reporting requirement
+- [x] Public benchmark for appeal overturn rates in MA
 - [ ] Whether gold carding applies to MA or is state-commercial only
 
 ---
@@ -185,7 +185,7 @@ that causes the pend. Ours is the third and the first that is clinical.
       midnights."
 - [ ] Typical inpatient level-of-care criteria, enough to make the checklist credible.
 - [ ] What "gold carding" is, and whether it belongs on the roadmap.
-- [ ] Humana's own published PA stats, if any exist post the 2026 reporting requirement.
+- [x] Humana's own published PA stats, if any exist post the 2026 reporting requirement.
 - [ ] Appeals and overturn rates as an ROI lever. Is there a public benchmark?
 
 ### D-006 — Phase 1 is recommend-only, not auto-approve
@@ -377,3 +377,112 @@ Final swimlane flow diagram image dropped into the Current State slide, replacin
 the placeholder frame. Sized to the placeholder's height (3.85"), width derived
 from the image's native aspect ratio (1916x1044) to avoid distortion, centered
 horizontally. Validated, single-slide visual QA passed, no overlap.
+
+## D-008 — North Star is first-pass correct determination rate (2026-09-26)
+
+**Slide language (use as written on the KPI slide):**
+- Complete packet, criteria met: approved.
+- Genuinely missing something: pended, and the follow-up asks for exactly that.
+- Denied by the medical director: the evidence in the file really supports the denial.
+
+**Why this and not approval share or the CMS clock**
+- Approval share depends on packet quality, which the payer does not control. What the payer
+  controls is whether its first-pass decision was correct.
+- The CMS clock is a guardrail, not a goal. Humana CY2025 (own CMS-0057-F reports): MA standard
+  TAT mean 1 day, median 0; expedited mean 4-11 hours vs the 72h limit. Already met.
+- Humana publishes no first-pass, pend, RFI or missing-document metrics. These are pilot-measured
+  baselines, shown as placeholders in the ROI model.
+
+**Metric structure**
+- North Star: first-pass correct determination rate. Checked by sampled audit (senior nurse/MD).
+  An overturn only counts against it if the info was already in the original packet.
+- KPIs (inputs): avoidable pend rate, RFI cycles per case, missing-document rate at intake,
+  pend-to-complete time, avoidable escalation rate (escalated only for missing info).
+- Monitored, not targeted: total escalation rate; track escalation appropriateness (MD agrees).
+- Guardrails: CMS clock, no wrong approvals, no AI denial (output enum {approve, escalate}).
+- Eval metrics (FR per D-007): completeness recall, criteria-met recall, policy-citation accuracy.
+- Public proxy (not a KPI): overturned denials per 1,000 standard requests, about 1.2 (MA).
+- Phase 2: reviewer minutes via gated auto-approve; a hypothesis, no baseline.
+
+**Humana CY2025 baselines (primary source, 32 MA contracts, 9 Medicaid states)**
+MA: 9.53M standard requests; denial 6.86% weighted / 7.35% median; 2.71% of denials appealed;
+64.7% of appeals overturned; extensions ~0%. Medicaid: 1.21M; denial 5.85% weighted / 10.86%
+median; 7.19% appealed; 12.7% overturned; extensions ~3.1%. H5216 is ~45% of MA volume, so quote
+the median too. Indiana Medicaid is the outlier (5.25% overturn, 47h mean expedited TAT).
+
+**AMA wording:** 93% and 26% are shares of physicians surveyed, not patients. Slide must say
+"physicians report". Re-check exact wording against the AMA page before presenting.
+
+**Scenario coverage**
+- KPIs: approve, pend, escalate. Evals: false "complete", wrong policy.
+- Guardrail: expedited, CMS clock. Reproducibility NFR covers reviewer variation.
+- Outside Phase 1: appeals (audit signal only). Deliberately out of scope: Medicaid/dual
+  (different rules), member waiting (member view is 2027, D-003), provider burden (a benefit,
+  not owned; levers are pend-to-complete time and RFI cycles).
+
+**To do on the deck:** put the three lines above on slide 8 (KPIs); rename North Star; add the
+OIG data date prominently (open feedback round 3, item 1).
+
+## D-009 — Sequencing: prototype and AI layer first, slides after (2026-09-26)
+
+She now understands the problem better and the slides and their order will change. Decision:
+build the prototype and the AI/extraction/decision side first, then rework the deck around what
+was built and measured. Do not restructure slides yet (this supersedes the paused round-3
+feedback; its three issues are folded into the rework, not fixed piecemeal now).
+
+Deck changes already known, to apply later:
+- KPI slide: three lines from D-008; North Star renamed to first-pass correct determination rate.
+- Burden slide: "physicians report" wording; explain what PA is before the stats.
+- Reckoning slide: OIG data date (June 2024, reported June 2026) made prominent.
+- Add a "why the clock is a guardrail" beat using the Humana CY2025 numbers below.
+- Reconsider slide order around: burden -> current state -> what Humana already does well
+  (clock) -> what is still broken (first-pass correctness) -> product -> metrics.
+
+Working principle: notes are working drafts made by both of us and change as better evidence
+arrives. Nothing here is gospel, including earlier decisions.
+
+## Evidence log, 2026-09-26 (Humana CY2025 PA metrics, primary source)
+
+Source: 41 PDFs in `humana metrics/` (26 H-contracts, 6 R-contracts, 9 state Medicaid), Reporting
+Period 2025, Humana's own CMS-0057-F disclosures. Parsed with pdftotext; H1036, R0110, KY checked
+by hand. Virginia uses a revised template (combined extension count, decimal TATs). Per-contract
+extremes: MA standard denial 3.36%-12.63%; Medicaid 2.56% (FL) to 15.06% (OH).
+
+| Metric | MA (32) | Medicaid (9) |
+|---|---|---|
+| Standard requests | 9,530,027 | 1,205,167 |
+| Standard denial, weighted / median | 6.86% / 7.35% | 5.85% / 10.86% |
+| Expedited denial | 7.83% | 19.82% |
+| Appeals / denials | 2.71% (17,690 / 653,593) | 7.19% (5,066 / 70,484) |
+| Appeal overturn | 64.72% | 12.65% |
+| Extension use | 13 cases (~0.0001%) | 3.12% |
+| Standard TAT | mean 1 day, median 0 | mean 0-4 days |
+| Expedited TAT | mean 4-11 h | 5-47 h |
+
+Reading notes:
+- Extension = the 42 CFR 422 pend-extension provision, not internal nurse-to-MD escalation.
+  Internal pend/escalation rate is not public. This answers the current-state doc's open question
+  on extension vs the 7-day clock: for MA it is essentially never used.
+- Humana's own note: an overturn "may be the result of additional information received."
+- Illustrative only: ~11,450 MA denials overturned on appeal (~1.2 per 1,000 standard requests).
+  97% of denials are not appealed, so do not extrapolate the 65% to all denials.
+- Medicaid contrast: appealed 2.6x as often, overturned far less. Indiana worst (12.65% denial,
+  5.25% overturn, 47 h mean expedited). Scope the "avoidable denial" story to MA.
+- Not in any public data: first-pass rate, pend rate, RFI cycles, missing-document rate, nurse
+  minutes or cost per case, inpatient/outpatient split, reviewer variability.
+- Humana's Use Case 1 brief (Prep docs) has no baseline numbers; it asks for placeholder numbers
+  with sound ROI logic, "think beyond admin savings", and names reviewer variability and member
+  waiting as pains. Provider-side burden (AMA) is physician-reported, not member-reported.
+- Cost/time per UM nurse case cannot be sourced; keep as a labeled assumption.
+
+## ROI framing implied by the above
+Drivers to name (placeholders, replaced by pilot measurement in the first 30 days): first-pass
+correct rate, avoidable pend rate, RFI cycles per case, avoidable escalation rate, reviewer
+minutes (Phase 2), overturn-on-info-in-packet rate. Value by stakeholder: member (fewer waits),
+provider (fewer resubmission loops), nurse/MD (fewer avoidable pends and escalations), plan
+(fewer avoidable denials and appeals, better decision consistency).
+
+## Next: prototype and AI side
+Tune extraction and the completeness gate for recall (D-007); build the eval set with expected
+outcomes per scenario (approve / pend / escalate / false-complete / wrong-policy); define the
+correctness audit and escalation appropriateness. Set up the GitHub remote.
