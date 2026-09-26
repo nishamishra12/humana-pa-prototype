@@ -1,0 +1,145 @@
+{
+  "version": "0.1.0",
+  "generated": "2026-09-26",
+  "hierarchy": ["REGULATION", "NCD", "LCD", "HUMANA_INTERNAL", "MCG"],
+  "hierarchy_note": "Higher entries win. CMS-4201-F: MA plans may not apply internal criteria or MCG more restrictively than Traditional Medicare NCD/LCD/regulation.",
+  "questions": [
+    {
+      "id": "Q1_LEVEL_OF_CARE",
+      "asks": "Is inpatient the right level of care (vs outpatient or observation)?"
+    },
+    {
+      "id": "Q2_MEDICAL_NECESSITY",
+      "asks": "Is the procedure itself covered and medically necessary for this patient?"
+    }
+  ],
+  "policies": [
+    {
+      "id": "CFR-42-412.3",
+      "level": "REGULATION",
+      "answers": "Q1_LEVEL_OF_CARE",
+      "title": "Admissions (two-midnight benchmark)",
+      "source": "42 CFR 412.3(d)",
+      "url": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-412/subpart-A/section-412.3",
+      "verified": true,
+      "verified_from": "eCFR API, text retrieved 2026-09-26 (policies/raw/CFR_42_412_3.txt)",
+      "applies_to": "all Medicare inpatient admissions",
+      "criteria": [
+        {
+          "id": "LOC-1",
+          "text": "Admitting physician expects the patient to need hospital care crossing at least 2 midnights.",
+          "cite": "412.3(d)(1)",
+          "required_fact": "expected_los_days",
+          "test": "expected_los_days >= 2",
+          "if_missing": "Ask: how many midnights does the surgeon expect the patient to need hospital care?"
+        },
+        {
+          "id": "LOC-2",
+          "text": "The factors behind that expectation are documented in the record (history and comorbidities, severity of signs and symptoms, current medical needs, risk of an adverse event).",
+          "cite": "412.3(d)(1)(i)",
+          "required_fact": "comorbidities",
+          "test": "non_empty",
+          "if_missing": "Ask: which comorbidities or risk factors support the expected stay?"
+        },
+        {
+          "id": "LOC-3",
+          "text": "Exception: a stay under 2 midnights can still be inpatient on the admitting physician's documented clinical judgment.",
+          "cite": "412.3(d)(3)",
+          "required_fact": null,
+          "test": "informational",
+          "if_missing": null
+        }
+      ]
+    },
+    {
+      "id": "LCD-L37848",
+      "level": "LCD",
+      "answers": "Q2_MEDICAL_NECESSITY",
+      "title": "Lumbar Spinal Fusion",
+      "source": "CMS Medicare Coverage Database, LCD L37848 v18, Palmetto GBA (MAC Part A and B), effective 09/12/2024",
+      "url": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=37848",
+      "verified": true,
+      "verified_from": "CMS Coverage API, text retrieved 2026-09-26 (policies/raw/LCD_L37848.json)",
+      "applies_to": "CPT 22612 and other lumbar fusion, within the Palmetto GBA jurisdiction. LCDs are jurisdiction-specific; the policy table must key by MAC jurisdiction.",
+      "criteria": [
+        {
+          "id": "LCD-IND",
+          "text": "Documentation shows the patient meets at least 1 indication: (1) radiographic or clinical evidence of instability (e.g. chronic degenerative conditions), (2) symptomatic spinal deformity meeting criteria, (3) revision for pseudarthrosis meeting criteria, (4) symptomatic neural compression needing disc excision.",
+          "cite": "LCD L37848, Indications",
+          "required_fact": "indication_evidence",
+          "test": "non_empty",
+          "if_missing": "Ask: what imaging or clinical findings document instability, deformity, pseudarthrosis or neural compression at each level to be fused?"
+        },
+        {
+          "id": "LCD-CONS",
+          "text": "The record reflects which conservative treatments were tried or why the patient is not a candidate (medical therapy, physical and exercise therapy, injections).",
+          "cite": "LCD L37848, Indications",
+          "required_fact": "conservative_treatment",
+          "test": "non_empty",
+          "if_missing": "Ask: which conservative treatments were tried, and for how long?"
+        },
+        {
+          "id": "LCD-SDM",
+          "text": "Where possible, shared decision making with the patient is documented, including risks and benefits.",
+          "cite": "LCD L37848, Requirements",
+          "required_fact": "shared_decision_making",
+          "test": "non_empty",
+          "severity": "soft",
+          "if_missing": "Ask: is shared decision making documented?"
+        },
+        {
+          "id": "LCD-LEVELS",
+          "text": "If more than 1 level is fused, the record shows each fused level is affected by a qualifying condition.",
+          "cite": "LCD L37848, Indication 1 and 4",
+          "required_fact": "levels_fused",
+          "test": "informational",
+          "if_missing": null
+        }
+      ]
+    },
+    {
+      "id": "HUM-IP-ILLUSTRATIVE",
+      "level": "HUMANA_INTERNAL",
+      "answers": "Q1_LEVEL_OF_CARE",
+      "title": "Inpatient level of care for elective spinal surgery (ILLUSTRATIVE)",
+      "source": "Humana Use Case 1 brief, sample medical policy. Made up for the exercise. Not a real Humana policy.",
+      "url": null,
+      "verified": false,
+      "applies_to": "prototype only",
+      "criteria": [
+        {
+          "id": "HUM-1",
+          "text": "Documented comorbidities that raise peri-operative risk (for example heart failure, COPD, uncontrolled diabetes).",
+          "cite": "Humana IP (illustrative)",
+          "required_fact": "comorbidities",
+          "test": "non_empty",
+          "if_missing": "Ask: which comorbidities raise peri-operative risk?"
+        },
+        {
+          "id": "HUM-2",
+          "text": "Post-operative monitoring or care needs that cannot be safely provided in an outpatient or observation setting.",
+          "cite": "Humana IP (illustrative)",
+          "required_fact": "post_op_needs",
+          "test": "non_empty",
+          "if_missing": "Ask: what post-operative monitoring or care needs cannot be met outside the hospital?"
+        }
+      ]
+    },
+    {
+      "id": "MCG-STUB",
+      "level": "MCG",
+      "answers": "Q1_LEVEL_OF_CARE",
+      "title": "MCG inpatient and surgical care guideline (NOT INCLUDED)",
+      "source": "MCG is licensed, proprietary content and is not publicly available. Not reproduced here.",
+      "url": null,
+      "verified": false,
+      "applies_to": "placeholder that marks where a licensed MCG feed would plug in",
+      "criteria": []
+    }
+  ],
+  "open_items": [
+    "Confirm whether CPT 22612 is on the CMS inpatient-only list (OPPS Addendum E). Not verified; the inpatient-only list is a payment-rule list, not an LCD.",
+    "Confirm which MAC jurisdictions cover the member's state and whether other MACs publish their own lumbar fusion LCD.",
+    "Check for an NCD that touches lumbar fusion beyond NCD 150.10 (artificial disc). Index search found none for fusion."
+  ]
+}

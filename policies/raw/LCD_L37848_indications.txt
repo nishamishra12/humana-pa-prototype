@@ -1,0 +1,35 @@
+Definitions and Scope 
+ This local coverage determination (LCD) discusses fusions of the lumbar spine. 
+ Background 
+ This LCD will discuss indications for surgical fusion of the lumbar spine. Total disc arthroplasty is not covered by this LCD. 
+ Requirements 
+ Lumbar fusion must be performed by a qualified surgeon in an operating room with the necessary equipment. For elective surgeries, providers should verify that the necessary equipment and hardware to perform the procedure on a patient is available prior to the induction of anesthesia. 
+ Documentation must demonstrate that the patient met at least 1 of the indications for the procedure as described below. Where possible, there must be documented shared decision making with the patient or the individual who is serving as the proxy decision maker for the patient with the appropriate discussion of anticipated risks and benefits of the procedure. 
+ Indications for lumbar fusion include any of the following. 
+ A patient must have at least 1 of the following: 
+ 1. Radiographic or clinical evidence of instability due to any 1 of the following: 
+ a. Congenital deformities, 
+ b. Trauma, 
+ c. Fractures, 
+ d. Chronic degenerative conditions, 
+ e. Tumor, 
+ f. Infection, 
+ g. Erosive conditions, 
+ h. Space-occupying lesions, or 
+ i. Iatrogenic causes, including expected instability as a consequence of another medically necessary spine procedure. 
+ If more than 1 level is fused under this indication, the record must reflect that each fused level is affected by 1 of the above conditions. 
+ 2. Symptomatic spinal deformity (in the absence of instability or neural compression) which meets the following criteria: 
+ Both of the first 2 criteria must be met: 
+ a. Functional limitation in daily activities due to back pain or discomfort and 
+ b. Nonresponse to at least 1 year of non-operative treatment 
+ Any 1 of these 3 criteria must be met: 
+ c. Sagittal or coronal imbalance by at least 5 cm as measured on radiographic imaging of the entire spine, or 
+ d. Progression of deformity by at least 10 degrees, or 
+ e. Scoliotic curvature of greater than 30 degrees 
+ 3. Revision surgery for pseudarthrosis following an initial spine surgery if the following conditions are all met. 
+ a. The patient had a period of reduced pain initially following surgery and 
+ b. The time since the prior surgery has been at least 1 year and 
+ c. There is clear radiographic evidence of pseudarthrosis and 
+ d. The patient has exhausted available conservative treatment measures 
+ The medical record must clearly reflect which conservative treatments the patient has tried or is not a candidate for and why, including medical therapies, physical and exercise therapies and injections. Outcomes for fusion in revision surgery, usually do not lead to pain relief and as such fusion is considered a last resort treatment option only when all other treatment options have failed. This information must be communicated to the patient prior to surgery to allow for appropriate shared decision making with a well-informed patient. The medical record must reflect that this counseling was done and that the patient wished to undergo surgery with the appropriately informed consent. 
+ 4. Symptomatic compression of neural elements for which disc excision is necessary for decompression. The record must reflect disc compression of neural elements for each level fused based on this indication.
