@@ -486,3 +486,38 @@ provider (fewer resubmission loops), nurse/MD (fewer avoidable pends and escalat
 Tune extraction and the completeness gate for recall (D-007); build the eval set with expected
 outcomes per scenario (approve / pend / escalate / false-complete / wrong-policy); define the
 correctness audit and escalation appropriateness. Set up the GitHub remote.
+
+## Build log, 2026-09-26: working prototype (PA Desk)
+
+**What exists now** (all runs locally, made-up data only)
+- Ingestion: Unstructured Transform API (key in `.env`, `UNSTRUCTURED_API_KEY`), page-tagged
+  elements, local pdftotext fallback. Upload path tested live.
+- Extraction: rule-based, every fact carries page + exact quote; a missing fact stays missing.
+  Unstructured's built-in schema extraction also works (returns values only, no page or
+  confidence), so citations are attached by our own code. LLM extractor plugs in later.
+- Policy library `policies/policy_library.json`: real LCD L37848 (lumbar fusion, Palmetto GBA),
+  42 CFR 412.3 (two-midnight), Humana illustrative internal policy (from the brief, labeled),
+  MCG stub (licensed, not reproducible). Full CMS corpus downloadable via `scripts/build_corpus.py`
+  and `scripts/build_ncds.py` (969 LCDs, 345 NCDs, ~2.2M tokens; 482 distinct LCD titles, 8 MACs).
+- Decision engine: deterministic, output approve | pend | escalate, no deny value. Nurse cannot
+  deny (server enforced 403). Approving against the recommendation needs a written reason.
+- App: inbox by queue, case review (facts, criteria, citations that jump to the packet page),
+  pend with drafted question, simulated provider reply that re-runs analysis, escalate with
+  @-tag and notification, medical director queue (approve, deny with rationale, return), audit
+  trail, evals page. Demo logins are on the sign-in screen (password demo1234).
+
+**Findings that change earlier assumptions**
+- LCD L38795, cited in the first prototype, is not in CMS's active final LCD list. Replaced.
+- Two separate questions per case: level of care (two-midnight, internal policy) and medical
+  necessity of the procedure (LCD). Humana's brief only tests the first; the LCD adds imaging
+  evidence of instability, conservative care, shared decision making as further pend triggers.
+- LCDs are regional. The policy table must key by service + MAC jurisdiction.
+- Evals pass 6/6 but packets and extractor were written together: plumbing proof, not accuracy.
+
+**Not done yet**
+- Anthropic key / LLM extraction and criteria drafting across the full corpus (deliberately last).
+- Messier eval packets (scans, inconsistent wording), extraction recall and precision reported
+  separately per D-007, correctness audit and escalation-appropriateness metrics (D-008).
+- Retrieval fallback over the full corpus; only lumbar fusion is curated.
+- Unverified: whether CPT 22612 is on the inpatient-only list; other MACs' fusion LCDs.
+- Deck rework (D-009) waits for the prototype.
