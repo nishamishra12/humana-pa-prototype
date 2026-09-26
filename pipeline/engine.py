@@ -53,7 +53,7 @@ def analyze(facts: dict) -> dict:
             )
             checklist.append(item)
             if status == "missing" and not soft:
-                q = questions.setdefault(key, dict(fact=key, question=c["if_missing"], affects=[], note=(f or {}).get("note")))
+                q = questions.setdefault(key, dict(fact=key, question=_provider_facing(c["if_missing"]), affects=[], note=(f or {}).get("note")))
                 q["affects"].append(c["id"])
 
     # LCD indication 2 (deformity): non-operative treatment for at least 12 months
@@ -86,6 +86,11 @@ def analyze(facts: dict) -> dict:
                 policies=[dict(id=p["id"], level=LEVEL_LABEL[p["level"]], title=p["title"], source=p["source"],
                                url=p["url"], verified=p["verified"]) for p in policies if p["criteria"]],
                 cannot_deny=True)
+
+
+def _provider_facing(text):
+    t = text[5:] if text.startswith("Ask: ") else text
+    return t[:1].upper() + t[1:]
 
 
 def _label(key):

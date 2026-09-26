@@ -40,9 +40,9 @@ def init():
     c.close()
 
 
-def audit(c, case_id, user_id, action, detail=""):
+def audit(c, case_id, user_id, action, detail="", at=None):
     c.execute("INSERT INTO audit(case_id,user_id,action,detail,created_at) VALUES(?,?,?,?,?)",
-              (case_id, user_id, action, detail, now()))
+              (case_id, user_id, action, detail, at or now()))
 
 
 def notify(c, user_id, case_id, body):
@@ -61,8 +61,8 @@ def create_case(c, elements, engine, facts, analysis, packet_file, priority="sta
         "new", None, None, priority, received, due, None, packet_file, engine, json.dumps(facts), json.dumps(analysis)))
     for e in elements:
         c.execute("INSERT INTO elements(case_id,page,type,text) VALUES(?,?,?,?)", (case_id, e.page, e.type, e.text))
-    audit(c, case_id, None, "received", f"Packet received ({len(elements)} elements, {engine} ingestion)")
-    audit(c, case_id, None, "analyzed", f"Recommendation: {analysis['action']}")
+    audit(c, case_id, None, "received", f"Packet received ({len(elements)} elements, {engine} ingestion)", received)
+    audit(c, case_id, None, "analyzed", f"Recommendation: {analysis['action']}", received)
     return case_id
 
 
@@ -92,19 +92,19 @@ def seed(c):
         els, eng, facts, res = process(os.path.join(ROOT, "packets", f), local=True)
         cid = create_case(c, els, eng, facts, res, f, pr, off)
         c.execute("UPDATE cases SET assignee_id=? WHERE id=?", (uid[who], cid))
-        audit(c, cid, None, "assigned", f"Assigned to {who}")
+        audit(c, cid, None, "assigned", f"Assigned to {who}", now(off))
         if status == "approved":
             c.execute("UPDATE cases SET status='approved', decided_at=? WHERE id=?", (now(off + 0.2), cid))
-            audit(c, cid, uid[who], "approved", "Approved. Matched the recommendation.")
+            audit(c, cid, uid[who], "approved", "Approved. Matched the recommendation.", now(off + 0.2))
         elif status == "pended":
             q = res["gate"]["questions"][0]["question"]
             c.execute("UPDATE cases SET status='pended' WHERE id=?", (cid,))
             c.execute("INSERT INTO comments(case_id,user_id,kind,body,created_at) VALUES(?,?,?,?,?)",
                       (cid, uid[who], "provider_request", q, now(off + 0.1)))
-            audit(c, cid, uid[who], "pended", "Sent one specific question to the provider")
+            audit(c, cid, uid[who], "pended", "Sent one specific question to the provider", now(off + 0.1))
         elif status == "escalated":
             c.execute("UPDATE cases SET status='escalated', md_id=? WHERE id=?", (uid["patel"], cid))
             c.execute("INSERT INTO comments(case_id,user_id,kind,body,created_at) VALUES(?,?,?,?,?)",
                       (cid, uid[who], "escalation", "@patel packet is complete but the stay is 1 midnight and there are no documented risk factors. Can you make the level-of-care call?", now(off + 0.2)))
             notify(c, uid["patel"], cid, "Maria Santos escalated this case and tagged you")
-            audit(c, cid, uid[who], "escalated", "Escalated to Dr. Priya Patel")
+            audit(c, cid, uid[who], "escalated", "Escalated to Dr. Priya Patel", now(off + 0.2))
