@@ -30,6 +30,7 @@ def _ingest_unstructured(path: str) -> list[Element]:
 def _ingest_local(path: str) -> list[Element]:
     out = subprocess.run(["pdftotext", "-layout", path, "-"], capture_output=True,
                          text=True, check=True).stdout
+    out = out.replace(chr(13) + chr(10), chr(10)).replace(chr(13), chr(10))
     elems = []
     for i, page in enumerate(out.split("\f"), start=1):
         for para in [p.strip() for p in page.split("\n\n") if p.strip()]:

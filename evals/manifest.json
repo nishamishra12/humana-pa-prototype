@@ -1,0 +1,63 @@
+[
+ {
+  "file": "p01_complete_degenerative.pdf",
+  "label": "Complete packet, criteria clearly met",
+  "expected": {
+   "action": "approve",
+   "gate_complete": true,
+   "missing": []
+  }
+ },
+ {
+  "file": "p02_john_doe_missing_los.pdf",
+  "label": "Hero case: length of stay not documented",
+  "expected": {
+   "action": "pend",
+   "gate_complete": false,
+   "missing": [
+    "expected_los_days"
+   ]
+  }
+ },
+ {
+  "file": "p03_missing_imaging.pdf",
+  "label": "Length of stay clear, instability not evidenced",
+  "expected": {
+   "action": "pend",
+   "gate_complete": false,
+   "missing": [
+    "indication_evidence"
+   ]
+  }
+ },
+ {
+  "file": "p04_short_stay_low_risk.pdf",
+  "label": "Complete but short stay, low risk: needs a physician",
+  "expected": {
+   "action": "escalate",
+   "gate_complete": true,
+   "missing": []
+  }
+ },
+ {
+  "file": "p05_missing_two_items.pdf",
+  "label": "Two items missing: stay and conservative care",
+  "expected": {
+   "action": "pend",
+   "gate_complete": false,
+   "missing": [
+    "expected_los_days",
+    "conservative_treatment"
+   ]
+  }
+ },
+ {
+  "file": "p06_deformity_meets.pdf",
+  "label": "Deformity indication, complete",
+  "expected": {
+   "action": "approve",
+   "gate_complete": true,
+   "missing": []
+  }
+ }
+]
