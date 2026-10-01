@@ -18,6 +18,16 @@ app = FastAPI(title="PA Decision Support")
 SESSIONS: dict[str, int] = {}
 
 
+@app.middleware("http")
+async def no_cache_static(request: Request, call_next):
+    """This is a prototype under active edit: never let the browser cache web/* so a
+    reload always shows the latest app.js/style.css instead of a stale cached copy."""
+    response = await call_next(request)
+    if not request.url.path.startswith("/api"):
+        response.headers["Cache-Control"] = "no-store"
+    return response
+
+
 def me(request: Request, c):
     sid = request.cookies.get("sid")
     uid = SESSIONS.get(sid or "")
@@ -82,7 +92,7 @@ def row_case(r, names):
         procedure=r["procedure_name"], cpt=r["cpt"], setting=r["setting"], status=r["status"], priority=r["priority"],
         assignee=names.get(r["assignee_id"]), assignee_id=r["assignee_id"], md=names.get(r["md_id"]), md_id=r["md_id"],
         received_at=r["received_at"], due_at=r["due_at"], decided_at=r["decided_at"], engine=r["engine"],
-        ai_action=a["action"], ai_missing=len(a["gate"]["questions"]))
+        ai_action=a["action"], ai_missing=len(a["gate"]["questions"]), sla=db.sla_status(r["due_at"], r["decided_at"], r["priority"]))
 
 
 def names_map(c):
@@ -93,20 +103,27 @@ def names_map(c):
 def list_cases(request: Request, view: str = "all", q: str = ""):
     c = db.conn()
     u = me(request, c)
+    db.raise_sla_alerts(c)
+    c.commit()
     names = names_map(c)
     rows = [row_case(r, names) for r in c.execute("SELECT * FROM cases ORDER BY received_at DESC")]
     open_ = ("new", "in_review", "pended", "escalated")
+    at_risk = ("soon", "breached")
     def keep(r):
         if view == "mine":
             return r["status"] in open_ and (r["assignee_id"] == u["id"] or r["md_id"] == u["id"])
         if view == "attention":
             return r["status"] in ("new", "in_review") and (r["assignee_id"] == u["id"])
+        if view == "at_risk":
+            return r["status"] in open_ and r["sla"] in at_risk
         if view in ("pended", "escalated"):
             return r["status"] == view
         if view == "done":
             return r["status"] in ("approved", "denied")
         return True
     rows = [r for r in rows if keep(r)]
+    if view == "at_risk":
+        rows.sort(key=lambda r: r["due_at"])
     if q:
         ql = q.lower()
         rows = [r for r in rows if ql in (r["member_name"] + r["id"] + r["procedure"] + r["member_id"]).lower()]
@@ -115,6 +132,7 @@ def list_cases(request: Request, view: str = "all", q: str = ""):
     counts["all"] = len(allrows)
     counts["mine"] = sum(1 for r in allrows if r["status"] in open_ and (r["assignee_id"] == u["id"] or r["md_id"] == u["id"]))
     counts["attention"] = sum(1 for r in allrows if r["status"] in ("new", "in_review") and r["assignee_id"] == u["id"])
+    counts["at_risk"] = sum(1 for r in allrows if r["status"] in open_ and r["sla"] in at_risk)
     counts["pended"] = sum(1 for r in allrows if r["status"] == "pended")
     counts["escalated"] = sum(1 for r in allrows if r["status"] == "escalated")
     counts["done"] = sum(1 for r in allrows if r["status"] in ("approved", "denied"))
@@ -143,6 +161,20 @@ def get_case(cid: str, request: Request):
     c = db.conn()
     me(request, c)
     return case_detail(c, cid)
+
+
+@app.get("/api/cases/{cid}/export")
+def export_case(cid: str, request: Request):
+    """The full case record: facts, criteria checklist, decision, and the complete append-only
+    audit trail. This is the system-of-record artifact described in ARCHITECTURE.md section 7."""
+    c = db.conn()
+    me(request, c)
+    d = case_detail(c, cid)
+    d["exported_at"] = db.now()
+    d["note"] = "Made-up prototype data. Not a real member record."
+    payload = json.dumps(d, indent=2, default=str)
+    return Response(content=payload, media_type="application/json",
+                     headers={"Content-Disposition": f'attachment; filename="{cid}_record.json"'})
 
 
 class Assign(BaseModel):

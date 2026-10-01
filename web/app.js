@@ -84,7 +84,7 @@ async function runEvals() { S.evals = await api("/evals"); }
 function render() {
   if (!S.user) return renderLogin();
   const isMD = S.user.role === "medical_director";
-  const views = [["attention", "Needs my review"], ["mine", "All mine"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"], ["all", "Everything"]];
+  const views = [["attention", "Needs my review"], ["at_risk", "At risk"], ["mine", "All mine"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"], ["all", "Everything"]];
   $app.innerHTML = `<div class="shell">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">PA</span> PA Desk</div>
@@ -104,7 +104,7 @@ function render() {
 }
 
 function listHtml() {
-  const title = { attention: "Needs my review", mine: "All mine", pended: "Pended", escalated: "Escalated", done: "Decided", all: "Everything" }[S.view];
+  const title = { attention: "Needs my review", at_risk: "At risk", mine: "All mine", pended: "Pended", escalated: "Escalated", done: "Decided", all: "Everything" }[S.view];
   return `<div class="list-head"><h3>${title}</h3><div class="faint" style="font-size:12.5px;margin-top:2px">${S.cases.length} case${S.cases.length === 1 ? "" : "s"}</div></div>` +
     (S.cases.length ? S.cases.map((c) => {
       const k = clock(c), ai = AI[c.ai_action];
@@ -113,6 +113,7 @@ function listHtml() {
         <div class="row-sub">${esc(c.id)} · CPT ${esc(c.cpt || "-")} · ${esc(c.procedure.replace("Elective inpatient admission, ", ""))}</div>
         <div class="row-meta"><span class="chip ${c.status}">${STATUS[c.status]}</span>
           ${["approved", "denied"].includes(c.status) ? "" : `<span class="chip ${ai[1]}">${ai[2]} ${ai[0]}${c.ai_action === "pend" ? " (" + c.ai_missing + ")" : ""}</span>`}
+          ${c.sla === "breached" ? `<span class="chip bad">Breached clock</span>` : c.sla === "soon" ? `<span class="chip warn">Due soon</span>` : ""}
           ${c.priority === "expedited" ? `<span class="chip bad">Expedited</span>` : ""}
           <span class="faint" style="font-size:12px">${c.assignee ? esc(c.assignee.name) : "Unassigned"}</span></div></button>`;
     }).join("") : `<div class="empty">Nothing here.</div>`);
@@ -155,6 +156,7 @@ function reviewHtml(d, a, ai, done) {
   const mk = { met: "✓", missing: "?", advisory: "!", not_met: "✕", info: "i" };
   const stLabel = { met: "Met", missing: "Missing", advisory: "Advisory", not_met: "Not met", info: "Info" };
   return `
+  ${d.sla === "breached" ? `<div class="banner">This case has passed its ${d.priority === "expedited" ? "72-hour expedited" : "7-day standard"} CMS decision clock. The clock is a guardrail, not a target: it should never be breached, so this needs attention now.</div>` : ""}
   <div class="reco ${a.action}"><div class="icon">${ai[2]}</div><div><h3>${a.action === "approve" ? "Recommendation: approve" : a.action === "pend" ? "Recommendation: pend and ask one specific question" : "Recommendation: escalate to a medical director"}</h3>
     <p>${esc(a.rationale)}</p><div class="note">The system can recommend approve, pend or escalate. It cannot deny. Only a medical director can.</div></div></div>
 
@@ -218,7 +220,10 @@ function activityHtml(d) {
   ].sort((x, y) => x.t.localeCompare(y.t));
   const label = { comment: "", escalation: "Escalation", provider_request: "Question to provider", provider_reply: "Provider reply" };
   const body = (s) => esc(s).replace(/@(\w+)/g, '<span class="mention">@$1</span>').replace(/\n/g, "<br>");
-  return `<div class="card"><div class="tl">${items.map((i) => i.kind === "c" ? `<div class="tl-item"><span class="avatar ${i.c.user && i.c.user.role === "medical_director" ? "md" : ""}">${i.c.user ? esc(initials(i.c.user.name)) : "PR"}</span>
+  return `<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div><h3>Case record</h3><div class="faint" style="font-size:12.5px;margin-top:2px">The facts, the criteria checklist, the decision, and this full audit trail, as one file.</div></div>
+    <a class="btn small" href="/api/cases/${d.id}/export" download="${d.id}_record.json">Export case record</a></div>
+  <div class="card"><div class="tl">${items.map((i) => i.kind === "c" ? `<div class="tl-item"><span class="avatar ${i.c.user && i.c.user.role === "medical_director" ? "md" : ""}">${i.c.user ? esc(initials(i.c.user.name)) : "PR"}</span>
       <div class="tl-body"><span class="tl-who">${i.c.user ? esc(i.c.user.name) : "Provider office"}</span><span class="tl-time">${ago(i.c.created_at)}</span>${label[i.c.kind] ? ` <span class="chip plain">${label[i.c.kind]}</span>` : ""}<div class="bubble ${i.c.kind}">${body(i.c.body)}</div></div></div>`
     : `<div class="tl-item"><span class="sys-dot"></span><div class="tl-body muted"><b>${esc(i.a.user ? i.a.user.name : "System")}</b> · ${esc(i.a.action.replace("_", " "))}<span class="tl-time">${ago(i.a.created_at)}</span><div class="faint" style="font-size:13px">${esc(i.a.detail)}</div></div></div>`).join("")}</div></div>
   <div class="card"><h3>Add a comment</h3><textarea id="cbody" placeholder="Write a note. Use @patel or @brooks to tag a medical director."></textarea>

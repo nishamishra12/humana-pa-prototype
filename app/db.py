@@ -49,6 +49,38 @@ def notify(c, user_id, case_id, body):
     c.execute("INSERT INTO notifications(user_id,case_id,body,created_at) VALUES(?,?,?,?)", (user_id, case_id, body, now()))
 
 
+def sla_status(due_at, decided_at, priority):
+    """ok | soon | breached while open; met | late_decided once decided."""
+    if decided_at:
+        return "met" if decided_at <= due_at else "late_decided"
+    remaining_hours = (datetime.fromisoformat(due_at) - datetime.now(timezone.utc)).total_seconds() / 3600
+    threshold = 24 if priority == "expedited" else 48
+    if remaining_hours < 0:
+        return "breached"
+    if remaining_hours < threshold:
+        return "soon"
+    return "ok"
+
+
+def raise_sla_alerts(c):
+    """Checked whenever the inbox is listed (no background scheduler in this prototype):
+    the first time a case is found soon-due or breached, log it once and notify the assignee."""
+    open_ = ("new", "in_review", "pended", "escalated")
+    for r in c.execute(f"SELECT * FROM cases WHERE status IN ({','.join('?' * len(open_))})", open_):
+        st = sla_status(r["due_at"], None, r["priority"])
+        if st not in ("soon", "breached"):
+            continue
+        marker = f"sla_{st}"
+        if c.execute("SELECT 1 FROM audit WHERE case_id=? AND action=?", (r["id"], marker)).fetchone():
+            continue
+        clock = "72-hour expedited" if r["priority"] == "expedited" else "7-day standard"
+        label = f"has passed its {clock} CMS decision clock" if st == "breached" else f"is within {24 if r['priority']=='expedited' else 48} hours of its {clock} CMS decision clock"
+        audit(c, r["id"], None, marker, f"SLA alert: case {label}.")
+        target = r["assignee_id"] or r["md_id"]
+        if target:
+            notify(c, target, r["id"], f"{r['id']} {'has breached' if st == 'breached' else 'is close to breaching'} the CMS decision clock")
+
+
 def create_case(c, elements, engine, facts, analysis, packet_file, priority="standard", received_offset=0.0, case_id=None):
     n = c.execute("SELECT COUNT(*) FROM cases").fetchone()[0]
     case_id = case_id or f"PA-{1001 + n}"
@@ -108,3 +140,11 @@ def seed(c):
                       (cid, uid[who], "escalation", "@patel packet is complete but the stay is 1 midnight and there are no documented risk factors. Can you make the level-of-care call?", now(off + 0.2)))
             notify(c, uid["patel"], cid, "Maria Santos escalated this case and tagged you")
             audit(c, cid, uid[who], "escalated", "Escalated to Dr. Priya Patel", now(off + 0.2))
+
+    # SLA alerting demo: left unactioned on purpose, so these show up at-risk / breached.
+    # -7.5d standard (due at 7d) => already past the clock. -2.6d expedited (due at 72h) => due soon.
+    for f, off, pr in (("s01_breached_demo.pdf", -7.5, "standard"), ("s02_soon_demo.pdf", -2.6, "expedited")):
+        els, eng, facts, res = process(os.path.join(ROOT, "packets", f), local=True)
+        cid = create_case(c, els, eng, facts, res, f, pr, off)
+        c.execute("UPDATE cases SET assignee_id=? WHERE id=?", (uid["maria"], cid))
+        audit(c, cid, None, "assigned", "Assigned to maria", now(off))
