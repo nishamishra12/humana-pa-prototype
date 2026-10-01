@@ -1,0 +1,56 @@
+[
+  {
+    "file": "holdout/h1_ambiguous_phrasing.pdf",
+    "label": "Ambiguous phrasing (real dictation, no regex keywords)",
+    "member": "Patricia Reyes",
+    "expected_action": "approve",
+    "note": "Every criterion is actually satisfied by the text. None of it uses extract.py's exact keywords, so it is expected to fail.",
+    "facts": {
+      "expected_los_days": {"truth": "present", "value": 3, "why": "'remain hospitalized for 3 nights' never matches the 'expected length of stay' lead-in the regex requires."},
+      "comorbidities": {"truth": "present", "why": "'significant cardiac history' names a real risk factor but matches none of the fixed comorbidity terms (heart failure, COPD, etc)."},
+      "indication_evidence": {"truth": "absent", "why": "Imaging was obtained but the read is pending -- correctly nothing to find yet."},
+      "conservative_treatment": {"truth": "present", "why": "'extensive trial of nonsurgical management... physiotherapy and anti-inflammatory medication' describes conservative care without the words physical therapy/NSAID/non-operative."},
+      "post_op_needs": {"truth": "present", "why": "'telemetry monitoring' is stated plainly and should be found correctly."}
+    }
+  },
+  {
+    "file": "holdout/h2_conflicting_values.pdf",
+    "label": "Conflicting length-of-stay values",
+    "member": "Marcus Webb",
+    "expected_action": "approve",
+    "note": "Two LOS statements exist; the later, more specific one (3 midnights, written after comorbidities were reviewed) is the clinically correct figure. The extractor takes the first match it finds and stops.",
+    "facts": {
+      "expected_los_days": {"truth": "present", "value": 3, "why": "The 1-midnight line is an earlier, superseded estimate; the addendum's 3-midnight figure is the real one. First-match-wins extraction will report 1, not 3."},
+      "comorbidities": {"truth": "present", "why": "'coronary artery disease' matches the CAD pattern and should be found correctly."},
+      "indication_evidence": {"truth": "present", "why": "Radiograph + instability keywords both present; should be found correctly."},
+      "conservative_treatment": {"truth": "present", "why": "Standard phrasing; should be found correctly."}
+    }
+  },
+  {
+    "file": "holdout/h3_negation.pdf",
+    "label": "Negation: one case already handled, one not",
+    "member": "Angela Petrov",
+    "expected_action": "escalate",
+    "note": "The packet is complete, but imaging explicitly rules out instability, so the medical-necessity criterion is not met -- a physician should decide, not an auto-approve. extract.py already detects 'no comorbidities' correctly; it has no equivalent handling for a negated imaging finding.",
+    "facts": {
+      "expected_los_days": {"truth": "present", "value": 2, "why": "Standard phrasing; should be found correctly."},
+      "comorbidities": {"truth": "negated", "why": "'No significant comorbidities' -- extract.py's NONE_COMORB pattern handles this correctly today."},
+      "indication_evidence": {"truth": "negated", "why": "'No evidence of segmental instability' -- imaging + 'instability' both appear in the sentence, but the sentence means the opposite. No negation handling exists for this fact; expect a false positive (reported as found/met instead of not_met).", "critical": "Confirmed by counterfactual: in an otherwise fully-clean packet (every other criterion genuinely met), this single hallucination alone flips the recommendation from escalate to approve, citing the negated sentence as supporting evidence. In this packet it happens to be masked because comorbidities also fail -- that's luck, not a safeguard."},
+      "conservative_treatment": {"truth": "present", "why": "Standard phrasing; should be found correctly."}
+    }
+  },
+  {
+    "file": "holdout/h4_degraded_scan.pdf",
+    "label": "Degraded scan, real OCR (no text layer at all)",
+    "member": "Walter Kim",
+    "expected_action": "approve",
+    "note": "Content is clean and complete, like a plumbing-set packet. The only variable is whether a rotated, noised, low-contrast scan survives real OCR through the live Unstructured API. This packet has zero embedded text -- pdftotext returns nothing -- so local fallback cannot pass this test at all; it depends on UNSTRUCTURED_API_KEY being set.",
+    "facts": {
+      "expected_los_days": {"truth": "present", "value": 3, "why": "Standard phrasing; failure here would be an OCR misread, not a regex gap."},
+      "comorbidities": {"truth": "present", "why": "Standard phrasing."},
+      "indication_evidence": {"truth": "present", "why": "Standard phrasing."},
+      "conservative_treatment": {"truth": "present", "why": "Standard phrasing."},
+      "post_op_needs": {"truth": "present", "why": "Standard phrasing."}
+    }
+  }
+]

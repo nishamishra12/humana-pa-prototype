@@ -359,4 +359,18 @@ def evals(request: Request):
                 caveat="These packets and the rule-based extractor were written together, so a pass shows the pipeline works, not that it is accurate. Accuracy needs messier packets and the model extractor.")
 
 
+@app.get("/api/evals/holdout")
+def evals_holdout(request: Request):
+    """M6: a held-out adversarial set, written without reference to extract.py's patterns.
+    Uses the live Unstructured API when UNSTRUCTURED_API_KEY is set (required for the OCR
+    packet, which has no text layer at all), local pdftotext fallback otherwise."""
+    c = db.conn()
+    me(request, c)
+    from pipeline.holdout_eval import run_holdout
+    out = run_holdout(local_only=not os.getenv("UNSTRUCTURED_API_KEY"))
+    out["caveat"] = ("This set was written to be hard, not representative. A failure here names a specific gap in "
+                      "extract.py; it is not a claim about how often that gap fires on real packets.")
+    return out
+
+
 app.mount("/", StaticFiles(directory=os.path.join(ROOT, "web"), html=True), name="web")

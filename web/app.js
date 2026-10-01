@@ -79,7 +79,11 @@ async function loadList() {
   S.cases = d.cases; S.counts = d.counts;
 }
 async function loadCase(id) { S.detail = await api("/cases/" + id); }
-async function runEvals() { S.evals = await api("/evals"); }
+async function runEvals() {
+  S.evals = await api("/evals");
+  render();
+  S.holdout = await api("/evals/holdout");
+}
 
 function render() {
   if (!S.user) return renderLogin();
@@ -234,12 +238,44 @@ function activityHtml(d) {
 function evalsHtml() {
   const e = S.evals;
   if (!e) return `<div class="evals"><div class="empty">Loading evals…</div></div>`;
-  return `<div class="evals"><div><h2>Evals</h2><p class="muted" style="margin:6px 0 0;line-height:1.5">Labeled packets with the outcome a careful reviewer would expect. Each run sends every packet through the full pipeline and compares.</p></div>
+  return `<div class="evals">
+    <div><h2>Evals</h2><p class="muted" style="margin:6px 0 0;line-height:1.5">Two separate sets. The first proves the pipeline runs end to end. The second tries to break it.</p></div>
+
+    <div><h3 style="margin-bottom:4px">M1-M5 sanity set</h3><p class="faint" style="font-size:12.5px;margin:0 0 10px">6 packets. Written alongside the extractor, so a pass proves plumbing, not accuracy.</p></div>
     <div class="stat"><div><b>${e.passed} / ${e.total}</b><span>packets match the expected outcome</span></div><div><b>${e.zero_denials ? "0" : "!"}</b><span>denials produced by the system (must be zero)</span></div></div>
     <div class="banner"><b>Read this before quoting the result.</b> ${esc(e.caveat)}</div>
     <div class="card" style="padding:0;overflow:auto"><table><thead><tr><th>Packet</th><th>Expected</th><th>Actual</th><th>Missing item(s)</th><th></th></tr></thead><tbody>
       ${e.results.map((r) => `<tr><td><b>${esc(r.label)}</b><div class="faint mono">${esc(r.file)}</div></td><td>${esc(r.expected_action)}</td><td>${esc(r.actual_action)}</td><td>${r.actual_missing.length ? esc(r.actual_missing.join(", ")) : "<span class='faint'>none</span>"}</td><td><span class="chip ${r.passed ? "ok" : "bad"}">${r.passed ? "Pass" : "Fail"}</span></td></tr>`).join("")}</tbody></table></div>
-    <div><button class="btn" id="rerun">Run again</button></div></div>`;
+
+    ${holdoutHtml()}
+    <div><button class="btn" id="rerun">Run both again</button></div></div>`;
+}
+
+function holdoutHtml() {
+  const h = S.holdout;
+  const head = `<div style="margin-top:8px"><h3 style="margin-bottom:4px">M6 held-out set</h3><p class="faint" style="font-size:12.5px;margin:0 0 10px">4 adversarial packets, written without looking at extract.py. Each targets one specific real-world failure mode. One needs the live OCR API and has no text layer at all.</p></div>`;
+  if (!h) return head + `<div class="card"><div class="empty">Running the held-out set — the OCR packet calls the live API, so this takes longer…</div></div>`;
+  const outcomeLabel = { correct: "Correct", false_negative: "Missed it", false_negative_implied: "Flagged uncertain, not found", false_positive_hallucination: "Hallucinated", wrong_value: "Found, but wrong value" };
+  return head + `
+    <div class="stat">
+      <div><b>${h.action_matches} / ${h.packets_total}</b><span>final recommendation matched expectation</span></div>
+      <div><b>${h.completeness_recall.pct}%</b><span>completeness recall — found it when it was really there (${h.completeness_recall.correct}/${h.completeness_recall.total})</span></div>
+      <div><b>${h.hallucination_rate.pct}%</b><span>hallucination rate — claimed found when absent or negated (${h.hallucination_rate.hallucinated}/${h.hallucination_rate.total})</span></div>
+    </div>
+    <div class="banner"><b>Read this before quoting the result.</b> ${esc(h.caveat)}</div>
+    ${h.hallucination_detail.filter((x) => x.critical).map((x) => `<div class="banner" style="background:var(--bad-soft);color:var(--bad)"><b>Critical finding — ${esc(x.member)}, ${esc(x.fact)}.</b> ${esc(x.critical)}</div>`).join("")}
+    <div style="display:grid;gap:10px">
+      ${h.results.map((r) => `<div class="card">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap">
+          <div><b>${esc(r.member)}</b> — ${esc(r.label)}<div class="faint mono" style="font-size:11.5px">${esc(r.file)} · ingested via ${esc(r.engine)}</div></div>
+          <div style="display:flex;gap:6px;align-items:center"><span class="faint" style="font-size:12.5px">expected ${esc(r.expected_action)}, got ${esc(r.actual_action)}</span><span class="chip ${r.action_matches ? "ok" : "bad"}">${r.action_matches ? "Pass" : "Fail"}</span></div>
+        </div>
+        <p class="faint" style="font-size:12.5px;margin:6px 0 0">${esc(r.note)}</p>
+        ${r.facts.filter((f) => f.outcome !== "correct").length ? `<table style="margin-top:10px"><thead><tr><th>Fact</th><th>Truth</th><th>Extractor said</th><th>Outcome</th></tr></thead><tbody>
+          ${r.facts.filter((f) => f.outcome !== "correct").map((f) => `<tr><td>${esc(f.fact)}</td><td>${esc(f.truth)}${f.expected_value != null ? " (" + esc(f.expected_value) + ")" : ""}</td><td>${esc(f.extractor_status)}${f.extracted_value != null ? ": " + esc(String(f.extracted_value)) : ""}</td><td><span class="chip ${f.outcome === "correct" ? "ok" : f.outcome === "false_positive_hallucination" || f.outcome === "wrong_value" ? "bad" : "warn"}">${outcomeLabel[f.outcome]}</span></td></tr>
+          <tr><td colspan="4" class="faint" style="font-size:12.5px;padding-top:0">${esc(f.why)}</td></tr>`).join("")}</tbody></table>` : `<div class="faint" style="font-size:12.5px;margin-top:8px">Every fact in this packet was read correctly.</div>`}
+      </div>`).join("")}
+    </div>`;
 }
 
 function notifPop() {

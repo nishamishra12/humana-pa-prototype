@@ -521,3 +521,49 @@ correctness audit and escalation appropriateness. Set up the GitHub remote.
 - Retrieval fallback over the full corpus; only lumbar fusion is curated.
 - Unverified: whether CPT 22612 is on the inpatient-only list; other MACs' fusion LCDs.
 - Deck rework (D-009) waits for the prototype.
+
+## M6 -- held-out eval set, built and run (2026-10-01)
+
+4 adversarial packets (`packets/holdout/`, `evals/holdout_manifest.json`), written without
+looking at extract.py's patterns, each targeting one named failure mode. Ground truth is
+annotated per fact (present/absent/negated), scored separately from the final action, per
+D-007's "two signals" framing. Exposed on the Evals page below the original M1-M5 sanity set,
+and via `GET /api/evals/holdout`. Live run (Unstructured API):
+
+- Action matched expectation: 2/4
+- Completeness recall (found it when it was really there): 11/15 (73.3%)
+- Hallucination rate (claimed found when absent/negated): 1/3 (33.3%)
+
+**Findings, each traced to a specific extract.py gap:**
+1. **Ambiguous phrasing (Patricia Reyes).** 3 of 4 facts present in the text were missed,
+   because real dictation ("remain hospitalized for 3 nights", "significant cardiac history",
+   "nonsurgical management... physiotherapy") never matches the fixed keyword list. This is the
+   clearest evidence for M7: a regex-based extractor has a hard ceiling on real-world phrasing.
+2. **Conflicting values (Marcus Webb).** Two LOS statements exist; the later, clinically
+   correct one (3 midnights) is superseded by an earlier draft (1 midnight). The extractor
+   takes the first match and stops, so it reports 1 -- found, confident, and wrong. Wrong
+   recommendation (escalate instead of approve). The eval harness originally missed this too
+   (it only checked "was something found", not "was the value right") until patched to compare
+   extracted vs. expected values -- recall dropped from a false 80% to the real 73.3% once fixed.
+3. **Negation, most severe finding (Angela Petrov).** "No evidence of segmental instability on
+   flexion-extension radiographs" contains both an imaging keyword and the finding keyword, so
+   it is read as positive evidence of instability -- the opposite of what it says. extract.py
+   already handles one negation correctly (comorbidities' "no significant comorbidities" ->
+   status "none"); it has no equivalent for indication_evidence. **Confirmed by counterfactual**
+   (isolated test, not in the eval set): in a packet where every other criterion is genuinely
+   met, this single hallucination alone flips the recommendation from escalate to approve,
+   citing the negated sentence as the supporting quote. In the actual holdout packet this is
+   masked because comorbidities also fail for an unrelated reason -- masked by luck, not caught
+   by design. This is the one finding that argues for a fix before relying on this extractor for
+   anything beyond a demo, not just a reason to prefer the LLM path.
+4. **Degraded scan, real OCR (Walter Kim).** Image-only PDF (rotated ~1.6 degrees, Gaussian
+   blur, noise blended in, contrast reduced) -- confirmed zero embedded text via pdftotext, so
+   local fallback cannot pass this one at all. The live Unstructured API read it correctly: all
+   5 facts found, correct action. Positive evidence for the ingestion layer under realistic
+   fax-like conditions, not just clean text.
+
+**What this does and doesn't say:** per the eval page's own caveat, this set was written to be
+hard, not representative -- a failure here names a real gap, not a claim about how often it
+fires on real packets. No regex patches were added in response to 1-3; patching each one as
+found is the whack-a-mole anti-pattern this exercise exists to argue against. The findings are
+the evidence for M7 (LLM extraction), not a punch list for extract.py.
