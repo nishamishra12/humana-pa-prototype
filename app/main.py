@@ -1,5 +1,5 @@
 import json, os, re, secrets, shutil
-from fastapi import FastAPI, HTTPException, Request, Response, UploadFile, File
+from fastapi import FastAPI, Form, HTTPException, Request, Response, UploadFile, File
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -118,6 +118,8 @@ def list_cases(request: Request, view: str = "all", q: str = ""):
             return r["status"] in ("new", "in_review") and (r["assignee_id"] == u["id"])
         if view == "at_risk":
             return r["status"] in open_ and r["sla"] in at_risk
+        if view == "unassigned":
+            return r["status"] in open_ and not r["assignee_id"]
         if view in ("pended", "escalated"):
             return r["status"] == view
         if view == "done":
@@ -126,6 +128,8 @@ def list_cases(request: Request, view: str = "all", q: str = ""):
     rows = [r for r in rows if keep(r)]
     if view == "at_risk":
         rows.sort(key=lambda r: r["due_at"])
+    if view == "unassigned":
+        rows.sort(key=lambda r: r["received_at"])
     if q:
         ql = q.lower()
         rows = [r for r in rows if ql in (r["member_name"] + r["id"] + r["procedure"] + r["member_id"]).lower()]
@@ -135,6 +139,7 @@ def list_cases(request: Request, view: str = "all", q: str = ""):
     counts["mine"] = sum(1 for r in allrows if r["status"] in open_ and (r["assignee_id"] == u["id"] or r["md_id"] == u["id"]))
     counts["attention"] = sum(1 for r in allrows if r["status"] in ("new", "in_review") and r["assignee_id"] == u["id"])
     counts["at_risk"] = sum(1 for r in allrows if r["status"] in open_ and r["sla"] in at_risk)
+    counts["unassigned"] = sum(1 for r in allrows if r["status"] in open_ and not r["assignee_id"])
     counts["pended"] = sum(1 for r in allrows if r["status"] == "pended")
     counts["escalated"] = sum(1 for r in allrows if r["status"] == "escalated")
     counts["done"] = sum(1 for r in allrows if r["status"] in ("approved", "denied"))
@@ -235,6 +240,8 @@ def act(cid: str, body: Act, request: Request):
     a, note = body.action, body.note.strip()
     if r["status"] in ("approved", "denied"):
         raise HTTPException(400, "This case already has a decision")
+    if a in ("approve", "pend", "escalate", "deny", "return") and u["role"] not in ("nurse", "medical_director"):
+        raise HTTPException(403, "Intake does not make clinical decisions. Assign this case to a nurse instead.")
     if a == "deny":
         if u["role"] != "medical_director":
             raise HTTPException(403, "Only a medical director can deny. Escalate this case instead.")
@@ -309,7 +316,7 @@ def addendum(cid: str, body: Addendum, request: Request):
 
 
 @app.post("/api/cases")
-async def upload(request: Request, file: UploadFile = File(...)):
+async def upload(request: Request, file: UploadFile = File(...), assignee_id: int | None = Form(None)):
     c = db.conn()
     u = me(request, c)
     if not (file.filename or "").lower().endswith(".pdf"):
@@ -319,8 +326,18 @@ async def upload(request: Request, file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, out)
     els, engine, facts, res = process(dest)
     cid = db.create_case(c, els, engine, facts, res, os.path.basename(dest))
-    c.execute("UPDATE cases SET assignee_id=? WHERE id=?", (u["id"], cid))
-    db.audit(c, cid, u["id"], "assigned", "Assigned to uploader")
+    if u["role"] == "admin":
+        if assignee_id:
+            nurse = c.execute("SELECT * FROM users WHERE id=? AND role='nurse'", (assignee_id,)).fetchone()
+            if not nurse:
+                raise HTTPException(400, "That user is not a nurse")
+            c.execute("UPDATE cases SET assignee_id=? WHERE id=?", (assignee_id, cid))
+            db.audit(c, cid, u["id"], "assigned", f"Received by intake, assigned to {nurse['name']}")
+        else:
+            db.audit(c, cid, u["id"], "assigned", "Received by intake, not yet assigned to a nurse")
+    else:
+        c.execute("UPDATE cases SET assignee_id=? WHERE id=?", (u["id"], cid))
+        db.audit(c, cid, u["id"], "assigned", "Assigned to uploader")
     c.commit()
     return case_detail(c, cid)
 

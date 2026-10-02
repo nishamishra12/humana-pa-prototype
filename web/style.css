@@ -62,6 +62,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible { outline: 2px s
 .userchip { display: flex; align-items: center; gap: 9px; padding: 4px 6px 4px 4px; border-radius: 20px; }
 .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: 12px; }
 .avatar.md { background: var(--esc-soft); color: var(--esc); }
+.avatar.admin { background: var(--hover); color: var(--ink2); }
 .main { display: grid; grid-template-columns: 210px 370px minmax(0, 1fr); min-height: 0; }
 .nav { background: var(--panel); border-right: 1px solid var(--line); padding: 12px 8px; overflow: auto; }
 .nav h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink3); padding: 10px 10px 6px; }

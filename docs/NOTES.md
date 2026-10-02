@@ -739,3 +739,46 @@ clock" or "North Star" outside slide 8, so no other slide needed a matching edit
 
 The pre-M8 version is preserved in git history (commit 679650c) if a side-by-side comparison
 is ever needed -- `git show 679650c:deck/Humana_PA_Deck.pptx > old_deck.pptx`.
+
+## Test setup: Admin persona + realistic demo packets (2026-10-02)
+
+Deck work paused (per her instruction) to set up for end-to-end testing. Three personas, not
+four -- confirmed directly: Admin (intake), UM Nurse, Medical Director. No separate "doctor"
+role; the medical director is the doctor.
+
+**Admin role added** (`app/db.py` seed: Carla Mendez, Intake Coordinator). Job is routing only,
+never a clinical call:
+- `POST /api/cases/{id}/action` now rejects approve/pend/escalate/deny/return for any role
+  other than nurse/medical_director -- server-enforced, not just hidden in the UI. Verified: a
+  403 with a clear message, tested directly against the API.
+- Upload (`POST /api/cases`) no longer auto-assigns to the uploader when the uploader is an
+  admin. Takes an optional `assignee_id` form field; without one the case lands unassigned.
+  Admin routes it afterward using the same `/assign` endpoint nurses and MDs already use (no
+  new endpoint needed there).
+- New `unassigned` queue view (open cases with no assignee), sorted oldest-first.
+- Frontend: admin's nav swaps the reviewer-centric views (Needs my review, At risk, All mine)
+  for `Needs assignment`; the case review tab replaces the approve/pend/escalate buttons with a
+  plain note pointing at the Assigned dropdown, for every role, including the `no_policy` case.
+- Verified end-to-end through the real API: admin uploads -> unassigned, correct analysis still
+  runs -> blocked from approving (403) -> assigns to a nurse -> unassigned count drops to 0 ->
+  that nurse immediately sees it in her own queue. A second upload with no assignee lands in
+  `unassigned` correctly.
+
+**Realistic demo packets** (`packets/demo/`, `scripts/make_realistic_packets.py`) -- not part
+of any eval set, for manual click-through only. Longer and more realistic than the eval
+fixtures: full demographics, insurance, referring provider (name, NPI, practice, phone/fax),
+and multi-section clinical narrative (HPI, PMH/PSH, meds, allergies, exam, a formatted imaging
+report, a conservative-care timeline). Three outcomes: `demo_alvarez_approve.pdf`,
+`demo_okonkwo_pend.pdf` (missing LOS, worded ambiguously on purpose), `demo_yun_escalate.pdf`
+(short stay, low risk, worded to need a physician's judgment). All verified against the live
+pipeline (real Unstructured ingestion + LLM extraction) to produce the intended action before
+handing off.
+
+One live finding while verifying demo_yun_escalate.pdf: one of five wrapper calls (self-
+consistency voting, n_votes=3) came back with all five facts flagged missing, when 3 direct
+reruns right after came back clean or with at most one fact flagged. Traced to the individual
+votes themselves (not a bug in the voting/aggregation code -- read it closely, it's correct);
+this matches the known, already-documented M7 behavior (the voting safety net occasionally
+flags a borderline fact for review rather than guessing), just a more visible instance of it.
+Noting here rather than treating it as a new bug: if this shows up again during her testing,
+it's expected behavior, not something broken.

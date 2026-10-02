@@ -38,6 +38,7 @@ function clock(c) {
 }
 const STATUS = { new: "New", in_review: "In review", pended: "Pended", escalated: "Escalated", approved: "Approved", denied: "Denied" };
 const AI = { approve: ["Recommends approve", "ok", "✓"], pend: ["Missing info", "warn", "?"], escalate: ["Needs physician", "escalated", "↑"], no_policy: ["No curated policy", "bad", "!"] };
+const ROLE_CHIP = { admin: ["Intake", "plain"], nurse: ["Nurse", "new"], medical_director: ["Medical director", "escalated"] };
 
 /* ---------- login ---------- */
 async function renderLogin() {
@@ -49,9 +50,9 @@ async function renderLogin() {
     <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required></div>
     <button class="btn primary" style="margin-top:16px;width:100%" type="submit">Sign in</button></form>
     <div class="demo-list"><div class="faint" style="font-size:12px">Demo accounts (password: demo1234)</div>
-    ${accts.map((a) => `<button class="demo-btn" data-email="${esc(a.email)}"><span><b>${esc(a.name)}</b><br><span class="faint" style="font-size:12px">${esc(a.title)}</span></span><span class="chip ${a.role === "medical_director" ? "escalated" : "new"}">${a.role === "medical_director" ? "Medical director" : "Nurse"}</span></button>`).join("")}</div>
+    ${accts.map((a) => `<button class="demo-btn" data-email="${esc(a.email)}"><span><b>${esc(a.name)}</b><br><span class="faint" style="font-size:12px">${esc(a.title)}</span></span><span class="chip ${ROLE_CHIP[a.role][1]}">${ROLE_CHIP[a.role][0]}</span></button>`).join("")}</div>
   </div></div>`;
-  const doLogin = guard(async (email, password) => { S.user = await api("/login", { method: "POST", body: { email, password } }); S.view = S.user.role === "medical_director" ? "mine" : "attention"; S.caseId = null; await boot(); });
+  const doLogin = guard(async (email, password) => { S.user = await api("/login", { method: "POST", body: { email, password } }); S.view = S.user.role === "medical_director" ? "mine" : S.user.role === "admin" ? "unassigned" : "attention"; S.caseId = null; await boot(); });
   document.getElementById("lf").onsubmit = (e) => { e.preventDefault(); doLogin(document.getElementById("em").value, document.getElementById("pw").value); };
   document.querySelectorAll(".demo-btn").forEach((b) => (b.onclick = () => doLogin(b.dataset.email, "demo1234")));
 }
@@ -88,7 +89,10 @@ async function runEvals() {
 function render() {
   if (!S.user) return renderLogin();
   const isMD = S.user.role === "medical_director";
-  const views = [["attention", "Needs my review"], ["at_risk", "At risk"], ["mine", "All mine"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"], ["all", "Everything"]];
+  const isAdmin = S.user.role === "admin";
+  const views = isAdmin
+    ? [["unassigned", "Needs assignment"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"], ["all", "Everything"]]
+    : [["attention", "Needs my review"], ["at_risk", "At risk"], ["mine", "All mine"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"], ["all", "Everything"]];
   $app.innerHTML = `<div class="shell">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">PA</span> PA Desk</div>
@@ -96,7 +100,7 @@ function render() {
       <div class="spacer"></div>
       <label class="btn small" style="cursor:pointer">Upload packet<input type="file" id="up" accept="application/pdf" class="sr"></label>
       <div class="bell" style="position:relative"><button class="btn ghost small" id="bell" aria-label="Notifications">🔔</button>${S.user.unread ? `<span class="badge-dot">${S.user.unread}</span>` : ""}${S.pop === "notif" ? notifPop() : ""}</div>
-      <div class="userchip"><span class="avatar ${isMD ? "md" : ""}">${esc(initials(S.user.name))}</span><div style="line-height:1.2"><b>${esc(S.user.name)}</b><br><span class="faint" style="font-size:12px">${esc(S.user.title)}</span></div><button class="btn ghost small" id="out">Sign out</button></div>
+      <div class="userchip"><span class="avatar ${isMD ? "md" : isAdmin ? "admin" : ""}">${esc(initials(S.user.name))}</span><div style="line-height:1.2"><b>${esc(S.user.name)}</b><br><span class="faint" style="font-size:12px">${esc(S.user.title)}</span></div><button class="btn ghost small" id="out">Sign out</button></div>
     </header>
     <div class="main">
       <nav class="nav" aria-label="Queues"><h4>Queues</h4>
@@ -108,7 +112,7 @@ function render() {
 }
 
 function listHtml() {
-  const title = { attention: "Needs my review", at_risk: "At risk", mine: "All mine", pended: "Pended", escalated: "Escalated", done: "Decided", all: "Everything" }[S.view];
+  const title = { attention: "Needs my review", at_risk: "At risk", mine: "All mine", unassigned: "Needs assignment", pended: "Pended", escalated: "Escalated", done: "Decided", all: "Everything" }[S.view];
   return `<div class="list-head"><h3>${title}</h3><div class="faint" style="font-size:12.5px;margin-top:2px">${S.cases.length} case${S.cases.length === 1 ? "" : "s"}</div></div>` +
     (S.cases.length ? S.cases.map((c) => {
       const k = clock(c), ai = AI[c.ai_action];
@@ -155,10 +159,12 @@ function detailHtml() {
 
 function reviewHtml(d, a, ai, done) {
   const isMD = S.user.role === "medical_director";
+  const isAdmin = S.user.role === "admin";
+  const adminNote = `<div class="card"><h3>Intake</h3><p class="muted" style="line-height:1.6">Intake routes cases, it doesn't make clinical calls. Use the <b>Assigned</b> dropdown above to send this to a nurse${!d.assignee ? " — it isn't assigned yet" : ""}.</p></div>`;
   if (a.action === "no_policy") {
     return `<div class="banner" style="background:var(--bad-soft);color:var(--bad)"><b>No curated policy covers this procedure.</b> ${esc(a.rationale)}</div>
       <div class="card"><h3>What happens next</h3><p class="muted" style="line-height:1.6">This isn't a clinical judgment call -- it's a gap in the curated policy table, which today only covers lumbar spinal fusion (CPT ${esc((a.covered_cpt_codes || []).join(", "))}). A reviewer needs to find the real policy for this procedure before anything can be checked. The retrieval fallback (<span class="mono">pipeline/policy_retrieval.py</span>) can search the full downloaded CMS corpus and draft a candidate checklist from it, but that draft is never trusted automatically -- it still needs a person to confirm it's the right policy.</p></div>
-      ${done ? "" : actionsHtml(d, a, isMD)}`;
+      ${done ? "" : isAdmin ? adminNote : actionsHtml(d, a, isMD)}`;
   }
   const groups = {};
   a.checklist.forEach((c) => (groups[c.policy_id] ||= { c, items: [] }).items.push(c));
@@ -181,7 +187,7 @@ function reviewHtml(d, a, ai, done) {
       ${items.map((i) => `<div class="crit"><span class="mk ${i.status}" title="${stLabel[i.status]}">${mk[i.status]}</span><div><div class="crit-text">${esc(i.text)}</div><div class="crit-cite">${esc(i.cite)}${i.note ? " · " + esc(i.note) : ""}</div>${i.evidence ? `<div class="quote">“${esc(i.evidence.quote)}”</div>` : ""}</div><div>${i.evidence ? citeBtn(i.evidence.page, i.evidence.quote) : `<span class="chip ${i.status === "not_met" ? "bad" : i.status === "info" ? "plain" : "warn"}">${stLabel[i.status]}</span>`}</div></div>`).join("")}</div>`; }).join("")}
     <div class="note">MCG and InterQual are licensed content and are not included. That is where a licensed feed would plug in.</div></div>
 
-  ${done ? `<div class="card"><h3>Decision recorded</h3><div class="muted">This case is ${STATUS[d.status].toLowerCase()}. See the Activity tab for who decided and why.</div></div>` : actionsHtml(d, a, isMD)}`;
+  ${done ? `<div class="card"><h3>Decision recorded</h3><div class="muted">This case is ${STATUS[d.status].toLowerCase()}. See the Activity tab for who decided and why.</div></div>` : isAdmin ? adminNote : actionsHtml(d, a, isMD)}`;
 }
 
 const SAMPLE_REPLY = {
@@ -300,7 +306,7 @@ function bind() {
   on("[data-tag]", (el) => { const t = document.getElementById("cbody"); t.value += (t.value && !t.value.endsWith(" ") ? " " : "") + "@" + el.dataset.tag + " "; t.focus(); });
   const out = document.getElementById("out"); if (out) out.onclick = guard(async () => { await api("/logout", { method: "POST" }); S.user = null; S.detail = null; S.caseId = null; renderLogin(); });
   const q = document.getElementById("q"); if (q) q.oninput = guard(debounce(async () => { S.q = q.value; await loadList(); render(); const nq = document.getElementById("q"); nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length); }, 250));
-  const up = document.getElementById("up"); if (up) up.onchange = guard(async () => { const fd = new FormData(); fd.append("file", up.files[0]); toast("Reading the packet…"); const d = await api("/cases", { method: "POST", body: fd }); S.caseId = d.id; S.view = "attention"; history.replaceState(null, "", "#/case/" + d.id); await loadList(); S.detail = d; toast("Packet analyzed: " + d.id); render(); });
+  const up = document.getElementById("up"); if (up) up.onchange = guard(async () => { const fd = new FormData(); fd.append("file", up.files[0]); toast("Reading the packet…"); const d = await api("/cases", { method: "POST", body: fd }); S.caseId = d.id; S.view = S.user.role === "admin" ? "unassigned" : "attention"; history.replaceState(null, "", "#/case/" + d.id); await loadList(); S.detail = d; toast(S.user.role === "admin" ? "Packet analyzed. Assign it to a nurse below." : "Packet analyzed: " + d.id); render(); });
   const asg = document.getElementById("assign"); if (asg) asg.onchange = guard(async () => { if (!+asg.value) return; S.detail = await api(`/cases/${S.caseId}/assign`, { method: "POST", body: { user_id: +asg.value } }); await loadList(); render(); });
   const bell = document.getElementById("bell"); if (bell) bell.onclick = guard(async () => { if (S.pop === "notif") { S.pop = null; return render(); } S.notifs = await api("/notifications"); S.pop = "notif"; render(); await api("/notifications/read", { method: "POST" }); S.user.unread = 0; });
   const rr = document.getElementById("rerun"); if (rr) rr.onclick = guard(async () => { await runEvals(); render(); toast("Evals re-run"); });

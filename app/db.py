@@ -101,6 +101,7 @@ def create_case(c, elements, engine, facts, analysis, packet_file, priority="sta
 def seed(c):
     from pipeline.run import process
     users = [
+        ("carla.mendez@humana-demo.test", "carla", "Carla Mendez", "admin", "Intake Coordinator"),
         ("maria.santos@humana-demo.test", "maria", "Maria Santos", "nurse", "UM Nurse"),
         ("james.okafor@humana-demo.test", "james", "James Okafor", "nurse", "UM Nurse"),
         ("priya.patel@humana-demo.test", "patel", "Dr. Priya Patel", "medical_director", "Medical Director"),
@@ -110,7 +111,7 @@ def seed(c):
         salt = secrets.token_hex(8)
         c.execute("INSERT INTO users(email,handle,name,role,title,salt,pw) VALUES(?,?,?,?,?,?,?)",
                   (email, handle, name, role, title, salt, hash_pw("demo1234", salt)))
-    uid = {h: c.execute("SELECT id FROM users WHERE handle=?", (h,)).fetchone()[0] for h in ("maria", "james", "patel", "brooks")}
+    uid = {h: c.execute("SELECT id FROM users WHERE handle=?", (h,)).fetchone()[0] for h in ("carla", "maria", "james", "patel", "brooks")}
 
     plan = [  # file, offset days, priority, status, assignee
         ("p06_deformity_meets.pdf", -5.0, "standard", "approved", "james"),
