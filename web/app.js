@@ -37,7 +37,7 @@ function clock(c) {
   return { text: t + " left · " + label, cls: h < (c.priority === "expedited" ? 24 : 48) ? "soon" : "" };
 }
 const STATUS = { new: "New", in_review: "In review", pended: "Pended", escalated: "Escalated", approved: "Approved", denied: "Denied" };
-const AI = { approve: ["Recommends approve", "ok", "✓"], pend: ["Missing info", "warn", "?"], escalate: ["Needs physician", "escalated", "↑"] };
+const AI = { approve: ["Recommends approve", "ok", "✓"], pend: ["Missing info", "warn", "?"], escalate: ["Needs physician", "escalated", "↑"], no_policy: ["No curated policy", "bad", "!"] };
 
 /* ---------- login ---------- */
 async function renderLogin() {
@@ -145,7 +145,8 @@ function detailHtml() {
   const done = ["approved", "denied"].includes(d.status);
   return `<div class="detail-head">
     <div class="dh-top"><div><div class="faint mono">${esc(d.id)}</div><h2 class="dh-name">${esc(d.member_name)} <span class="faint" style="font-weight:500;font-size:14px">${d.age ? d.age + "y · " : ""}${esc(d.member_id)}</span></h2>
-      <div class="dh-meta"><span>${esc(d.procedure.replace("Elective inpatient admission, ", "Inpatient admission, "))}</span><span>CPT ${esc(d.cpt || "-")}</span><span>${esc(d.facility)}</span></div></div>
+      <div class="dh-meta"><span>${esc(d.procedure.replace("Elective inpatient admission, ", "Inpatient admission, "))}</span><span>CPT ${esc(d.cpt || "-")}</span><span>${esc(d.facility)}</span></div>
+      <div class="faint" style="font-size:11.5px;margin-top:4px">Ingested via ${esc(d.engine)} · extracted via ${d.extractor === "llm" ? "Claude (3-vote consistency check)" : "rule-based"}</div></div>
       <div style="display:grid;gap:6px;justify-items:end"><span class="chip ${d.status}">${STATUS[d.status]}</span><span class="clock ${k.cls}">${esc(k.text)}</span>
         <label class="faint" style="font-size:12px">Assigned <select id="assign" style="width:auto;padding:3px 6px;margin-left:4px">${["", ...S.users.filter((u) => u.role === "nurse").map((u) => u.id)].map((id) => { const u = S.users.find((x) => x.id === id); return `<option value="${id}" ${d.assignee_id === id ? "selected" : ""}>${u ? esc(u.name) : "Unassigned"}</option>`; }).join("")}</select></label></div></div>
     <div class="tabs" role="tablist">${[["review", "Review"], ["packet", `Packet (${new Set(d.elements.map((e) => e.page)).size} pages)`], ["activity", `Activity (${d.comments.length})`]].map(([t, l]) => `<button class="tab ${S.tab === t ? "on" : ""}" role="tab" data-tab="${t}">${l}</button>`).join("")}</div></div>
@@ -154,6 +155,11 @@ function detailHtml() {
 
 function reviewHtml(d, a, ai, done) {
   const isMD = S.user.role === "medical_director";
+  if (a.action === "no_policy") {
+    return `<div class="banner" style="background:var(--bad-soft);color:var(--bad)"><b>No curated policy covers this procedure.</b> ${esc(a.rationale)}</div>
+      <div class="card"><h3>What happens next</h3><p class="muted" style="line-height:1.6">This isn't a clinical judgment call -- it's a gap in the curated policy table, which today only covers lumbar spinal fusion (CPT ${esc((a.covered_cpt_codes || []).join(", "))}). A reviewer needs to find the real policy for this procedure before anything can be checked. The retrieval fallback (<span class="mono">pipeline/policy_retrieval.py</span>) can search the full downloaded CMS corpus and draft a candidate checklist from it, but that draft is never trusted automatically -- it still needs a person to confirm it's the right policy.</p></div>
+      ${done ? "" : actionsHtml(d, a, isMD)}`;
+  }
   const groups = {};
   a.checklist.forEach((c) => (groups[c.policy_id] ||= { c, items: [] }).items.push(c));
   const pol = Object.fromEntries(a.policies.map((p) => [p.id, p]));

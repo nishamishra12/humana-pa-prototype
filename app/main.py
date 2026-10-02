@@ -87,11 +87,13 @@ def users(request: Request):
 
 def row_case(r, names):
     a = json.loads(r["analysis"])
+    f = json.loads(r["facts"])
     return dict(
         id=r["id"], member_name=r["member_name"], member_id=r["member_id"], dob=r["dob"], age=r["age"], facility=r["facility"],
         procedure=r["procedure_name"], cpt=r["cpt"], setting=r["setting"], status=r["status"], priority=r["priority"],
         assignee=names.get(r["assignee_id"]), assignee_id=r["assignee_id"], md=names.get(r["md_id"]), md_id=r["md_id"],
         received_at=r["received_at"], due_at=r["due_at"], decided_at=r["decided_at"], engine=r["engine"],
+        extractor=f.get("_extractor", "rule_based"),
         ai_action=a["action"], ai_missing=len(a["gate"]["questions"]), sla=db.sla_status(r["due_at"], r["decided_at"], r["priority"]))
 
 

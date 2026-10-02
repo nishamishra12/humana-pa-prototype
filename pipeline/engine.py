@@ -36,6 +36,15 @@ def _judge(crit, facts):
 
 
 def analyze(facts: dict) -> dict:
+    cpt = facts.get("_cpt")
+    covered = LIBRARY.get("covered_cpt_codes", [])
+    if cpt not in covered:
+        return dict(
+            checklist=[], gate=dict(complete=False, questions=[]), action="no_policy",
+            rationale=(f"No curated policy covers CPT {cpt or 'unknown'} ({facts.get('_procedure') or 'procedure not identified'}). "
+                      "The curated table only covers lumbar spinal fusion today. This case cannot be scored against the wrong "
+                      "policy, so it is routed for a policy lookup before any criteria can be checked."),
+            policies=[], cannot_deny=True, cpt_covered=False, covered_cpt_codes=covered)
     checklist, questions = [], {}
     policies = sorted(POLICIES.values(), key=lambda p: ORDER[p["level"]])
     for pol in policies:
@@ -85,7 +94,7 @@ def analyze(facts: dict) -> dict:
     return dict(checklist=checklist, gate=gate, action=action, rationale=rationale,
                 policies=[dict(id=p["id"], level=LEVEL_LABEL[p["level"]], title=p["title"], source=p["source"],
                                url=p["url"], verified=p["verified"]) for p in policies if p["criteria"]],
-                cannot_deny=True)
+                cannot_deny=True, cpt_covered=True)
 
 
 def _provider_facing(text):

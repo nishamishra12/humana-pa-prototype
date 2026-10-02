@@ -3,12 +3,12 @@
     "file": "holdout/h1_ambiguous_phrasing.pdf",
     "label": "Ambiguous phrasing (real dictation, no regex keywords)",
     "member": "Patricia Reyes",
-    "expected_action": "approve",
-    "note": "Every criterion is actually satisfied by the text. None of it uses extract.py's exact keywords, so it is expected to fail.",
+    "expected_action": "pend",
+    "note": "Four of five facts are actually present but phrased in ways extract.py's keywords miss. The fifth (indication_evidence) is genuinely not yet available -- the read is pending -- so the correct action really is pend, asking for that one result; this packet cannot correctly resolve to approve regardless of extractor quality. The real test here is whether the OTHER four facts are read correctly, not whether the final action is approve.",
     "facts": {
       "expected_los_days": {"truth": "present", "value": 3, "why": "'remain hospitalized for 3 nights' never matches the 'expected length of stay' lead-in the regex requires."},
       "comorbidities": {"truth": "present", "why": "'significant cardiac history' names a real risk factor but matches none of the fixed comorbidity terms (heart failure, COPD, etc)."},
-      "indication_evidence": {"truth": "absent", "why": "Imaging was obtained but the read is pending -- correctly nothing to find yet."},
+      "indication_evidence": {"truth": "absent", "why": "Imaging was obtained but the read is pending -- correctly nothing to find yet. This is the one fact in this packet that SHOULD be missing; a good extractor reports it as missing, not found."},
       "conservative_treatment": {"truth": "present", "why": "'extensive trial of nonsurgical management... physiotherapy and anti-inflammatory medication' describes conservative care without the words physical therapy/NSAID/non-operative."},
       "post_op_needs": {"truth": "present", "why": "'telemetry monitoring' is stated plainly and should be found correctly."}
     }

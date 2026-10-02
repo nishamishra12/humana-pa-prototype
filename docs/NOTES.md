@@ -567,3 +567,120 @@ hard, not representative -- a failure here names a real gap, not a claim about h
 fires on real packets. No regex patches were added in response to 1-3; patching each one as
 found is the whack-a-mole anti-pattern this exercise exists to argue against. The findings are
 the evidence for M7 (LLM extraction), not a punch list for extract.py.
+
+## M7 -- LLM extraction, self-consistency, and bounded retrieval (2026-10-02)
+
+### Part 1: LLM extractor (pipeline/extract_llm.py)
+
+Behind the same extract_facts() interface as the rule-based extractor (pipeline/run.py picks
+whichever is available; local flag forces rule-based). Header fields (member, CPT, procedure,
+etc.) stay on the existing regex -- that's boilerplate text regex already gets right 100% of
+the time; only the six clinical facts, where the real ambiguity lives, go to the model. Two
+things it does that regex structurally cannot:
+- Every claimed quote is checked against the real packet text before being trusted. A quote
+  that doesn't appear verbatim is downgraded to "missing" with a note -- the model's own page
+  number is never trusted; the real page comes from where the verified quote actually sits.
+- The prompt explicitly teaches the two lessons M6 found: negation ("no evidence of X" is
+  status "none", not "found" -- reread what the sentence asserts, not just its keywords) and
+  conflicting values (prefer the later, more specific, or post-review figure; name the
+  conflict in "note" rather than silently picking the first match).
+
+Comparison, same M6 held-out set, both extractors, full pipeline (ingest -> extract -> engine):
+
+| Metric | Rule-based | LLM (voted) |
+|---|---|---|
+| Action matched expectation | 3/4 | 4/4 |
+| Completeness recall | 73.3% | 100.0% |
+| Hallucination rate | 33.3% | 0.0% |
+
+(H1/Patricia Reyes's expected_action was originally mislabeled "approve" in the manifest --
+one of her 5 facts is genuinely absent (imaging read pending), so "pend" is actually correct
+regardless of extractor quality. Fixed the label; both extractors now correctly pend on her,
+which is right. The real signal for that packet is the other 4 facts, all now read correctly
+by the LLM, 3 of 4 missed by regex.)
+
+All three of M6's named failures are fixed directly: Patricia Reyes's ambiguous phrasing
+(cardiac history, "3 nights", nonsurgical management -- all found now), Marcus Webb's
+conflicting LOS (now correctly reports 3 midnights with a note explaining why 1 was
+superseded), and Angela Petrov's negation (now correctly "none", with a note that imaging
+rules out the finding). The critical hallucination from M6 is gone on this set.
+
+A new problem, found and fixed in the same session. The client in this environment exposes no
+temperature parameter at all (confirmed: not in the installed SDK's messages.create()
+signature) -- can't be dialed down. Direct testing found real run-to-run variance: on
+p03_missing_imaging.pdf, which the rule-based extractor gets right deterministically every
+time, 1 of 8 single-shot LLM runs decided a bare diagnosis ("spondylolisthesis") counted as
+sufficient imaging evidence on its own, when it should not (the LCD requires imaging or exam
+evidence, not just the surgeon's diagnostic label) -- flipping a correct "pend" to a wrong
+"approve". Fix: self-consistency voting. extract_facts(elements, n_votes=3) runs the
+extraction 3 times; a fact is only trusted if every run agrees on its status. On disagreement,
+the fact is marked "missing" with a visible note ("the model disagreed with itself across 3
+runs... flagged for human review"), not guessed at. Retested the same borderline packet 3
+times with voting on: 3/3 correct. This is the reproducibility NFR from ARCHITECTURE.md
+applied to the one place the model measurably disagrees with itself. n_votes defaults to 3 for
+the live app path (pipeline/run.py); n_votes=1 is available for fast iteration in scripts.
+
+Honest limitation, not hidden: voting sharply reduces variance but doesn't guarantee perfect
+stability run-to-run -- a full comparison run (scripts/compare_extractors.py) showed one
+sanity-set case (p04, Susan Whitfield) resolve to "pend" instead of the correct "escalate" due
+to a 3-vote split on comorbidities; 3 immediate manual reruns of that exact packet all came
+back correct (3/3 "escalate"). The safety net is doing its job -- disagreement converts to
+"ask a human" rather than a wrong clinical call -- but it means this path can occasionally cost
+an extra pend on a packet the deterministic regex never struggled with. Net effect is a clear
+improvement (73%->100% recall, 33%->0% hallucination on the targeted hard set), not a strictly
+dominant one. The eval harness is how this gets monitored going forward, not a one-time check.
+
+Extraction engine is now visible per case (facts["_extractor"]), surfaced via the API and
+shown in the case header: "Ingested via X - extracted via Y".
+
+### Part 2: bounded retrieval fallback (pipeline/policy_retrieval.py)
+
+Per ARCHITECTURE.md section 5: used only when a procedure has no curated entry, output always
+unverified and routed to a human, never substituted into the automated decision. Two steps:
+1. Keyword search narrows the full corpus (969 LCDs + 345 NCDs, policies/corpus/) to the top
+   ~8 candidates by term overlap (title weighted 3x over indications text).
+2. Claude picks among just those few, bounded and auditable, not an open-ended search -- and
+   is told explicitly that admitting no match is better than a wrong one.
+
+Tested against 3 real procedures, live:
+- "spinal cord stimulator implant for chronic pain" -> correctly matched LCD L36204 (Spinal
+  Cord Stimulators for Chronic Pain), drafted a real checklist (conservative treatment tried,
+  multidisciplinary psych/physical screening, etc.) from the actual policy text.
+- "screening colonoscopy" -> correctly matched NCD 210.3 (Colorectal Cancer Screening Tests)
+  over several diagnostic-colonoscopy LCDs that also scored well on keywords -- the model
+  correctly used "screening" to pick the NCD specifically, not just the top keyword hit.
+- "treatment of warts on the sole of the foot" -> correctly found no genuine match among 8
+  keyword-adjacent candidates (routine foot care, orthotics, skin-cancer radiation) and said
+  so, with real clinical reasoning for why each candidate doesn't fit. (First attempt hit a
+  real bug: max_tokens=300 cut off the model mid-explanation on this harder case, silently
+  dropping the required "reasoning" field. Fixed: raised to 600, added defensive .get() so a
+  truncated response degrades to "no match" instead of crashing.)
+
+Real correctness bug found and fixed in the same pass: the decision engine previously applied
+the curated lumbar-fusion criteria to any submitted procedure unconditionally -- there was no
+check at all. Verified directly: a total knee arthroplasty packet (CPT 27447) was asked for
+"imaging or exam evidence for the surgical indication" in the spinal sense. Not hypothetical --
+confirmed by direct test before the fix. Fix: policy_library.json now declares
+covered_cpt_codes (currently ["22612"]); engine.analyze() checks this first and returns a
+distinct action: "no_policy" result -- skipping the lumbar-fusion criteria entirely -- when the
+CPT isn't covered, rather than silently misapplying them. This stays in the deterministic
+engine (a lookup, not a model call), keeping with ARCHITECTURE.md section 6; the
+retrieval+drafting call itself is a separate, explicit step one layer up, never invoked
+automatically from inside the engine. Verified end-to-end through the real upload, list, and
+case-detail API endpoints -- all handle the new state without error. Frontend shows a plain
+"no curated policy" banner for this state; it does not yet inline the retrieved candidate
+policy into that view -- that polish is deferred to the later UX pass, consistent with the
+agreed sequencing (M7/M8 first, UX improvements after).
+
+### What's still open after M7
+- Retrieval's drafted criteria aren't wired into the live UI for a no_policy case yet (the
+  mechanism is proven standalone; inline display is UX-phase work).
+- Only lumbar fusion has curated, human-reviewable criteria. The other ~1,313 corpus documents
+  are searchable and draftable on demand, not pre-drafted in bulk -- a deliberate scope choice,
+  not an oversight: pre-drafting everything without a human in the loop would contradict the
+  "never silently substitute for the curated table" rule this whole mechanism exists to honor.
+- The eval harness itself had two bugs found and fixed this session: the holdout scorer
+  originally couldn't detect a right-status-wrong-value answer (Marcus Webb's case silently
+  read as "correct" until patched), and one manifest label was internally inconsistent (H1).
+  Both are fixed; worth remembering that the eval harness needs the same scrutiny as the code
+  it is scoring.

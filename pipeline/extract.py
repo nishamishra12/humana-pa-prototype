@@ -55,11 +55,12 @@ def _months(text):
     return n if unit.startswith("month") else n * 12 if unit.startswith("year") else round(n / 4.33, 1)
 
 
-def extract_facts(elements: list[Element]) -> dict:
-    lines = list(_lines(elements))
-    full = "\n".join(l for _, l in lines)
+def extract_header(full: str) -> dict:
+    """Header fields (member, facility, CPT, procedure, admit date, setting) are boilerplate
+    with a fixed format. Regex already gets these right 100% of the time in both eval sets,
+    so both the rule-based and LLM extractors reuse this instead of asking a model to redo
+    something that isn't broken."""
     facts = {}
-
     m = re.search(r"Member:\s*(.+?)\s+DOB:\s*([\d-]+)\s*\(age (\d+)\)\s+Member ID:\s*(\S+)", full)
     facts["_member"] = dict(name=m.group(1), dob=m.group(2), age=int(m.group(3)), member_id=m.group(4)) if m else {}
     m = re.search(r"Requesting facility:\s*(.+?),\s*Utilization", full)
@@ -72,6 +73,14 @@ def extract_facts(elements: list[Element]) -> dict:
     facts["_admit"] = m.group(1) if m else None
     m = re.search(r"Level of care requested:\s*(\w+)", full)
     facts["_setting"] = m.group(1).lower() if m else None
+    return facts
+
+
+def extract_facts(elements: list[Element]) -> dict:
+    lines = list(_lines(elements))
+    full = "\n".join(l for _, l in lines)
+    facts = extract_header(full)
+    facts["_extractor"] = "rule_based"
 
     # expected length of stay (midnights)
     los = _fact("missing")

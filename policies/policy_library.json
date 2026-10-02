@@ -3,6 +3,8 @@
   "generated": "2026-09-26",
   "hierarchy": ["REGULATION", "NCD", "LCD", "HUMANA_INTERNAL", "MCG"],
   "hierarchy_note": "Higher entries win. CMS-4201-F: MA plans may not apply internal criteria or MCG more restrictively than Traditional Medicare NCD/LCD/regulation.",
+  "covered_cpt_codes": ["22612"],
+  "covered_cpt_note": "The curated criteria below apply ONLY to these codes. Any other CPT has no entry here -- the engine must refuse to score it against lumbar fusion criteria and route it to the retrieval fallback (pipeline/policy_retrieval.py) instead.",
   "questions": [
     {
       "id": "Q1_LEVEL_OF_CARE",
