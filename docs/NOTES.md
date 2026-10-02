@@ -684,3 +684,58 @@ agreed sequencing (M7/M8 first, UX improvements after).
   read as "correct" until patched), and one manifest label was internally inconsistent (H1).
   Both are fixed; worth remembering that the eval harness needs the same scrutiny as the code
   it is scoring.
+
+## M8 -- deck rework (2026-10-02)
+
+Edited deck/Humana_PA_Deck.pptx directly (unzip, edit slide XML, rezip), not regenerated from
+scratch, so every slide this touch didn't is untouched. No LibreOffice on this machine, so no
+visual thumbnail/render QA was possible this round -- validated structurally instead
+(scripts/office/validate.py: all passed against the original; python-pptx opens all 14 slides
+with the expected shape counts) and by reading the packaged text back with markitdown to
+confirm every edit landed as intended. Flagging this limitation plainly: a visual pass in
+PowerPoint itself is still worth doing before presenting, especially slide 8's two touched text
+boxes (the North Star description and the guardrail description both grew close to or slightly
+past their proven character budget -- see the per-edit notes below).
+
+**Slide 2 (burden).** Added a plain-language definition of what PA actually is before the
+stats, per the still-open round-3 feedback item. Made room by cutting the survey date detail
+from the subtitle (it's already on the bottom source line, so this was a duplicate, not a
+loss): "Prior authorization is the approval a provider must get from the plan before a service
+is covered -- today, a largely manual, fax-based process." leads the line now.
+
+**Slide 5 (reckoning).** The OIG data's date (June 2024, reported June 2026) was previously
+only in small source text at the bottom -- the other still-open round-3 feedback item. Put it
+directly in the eyebrow title instead, which can't be missed: "WHAT THIS IS CAUSING -- DATA
+FROM 2024, REPORTED 2026." Shortened "CURRENT STATE" out of the title to make safe room for it
+in the same single-line box.
+
+**Slide 8 (KPI/North Star) -- the real rework, per D-008.** This was backwards before: the CMS
+clock was the North Star and "no increase in appeals overturned" was the only guardrail.
+Fixed to match the reasoning actually worked out in this conversation:
+- North Star renamed to first-pass correct determination rate, with the three lines from D-008
+  on the slide, each its own line: "Complete packet, criteria met: approved." / "Missing
+  something real: pended for exactly that." / "Denied: only when the file's evidence supports
+  it." (lightly tightened from the verbatim wording to fit the proven-safe character budget of
+  that text box -- the exact verbatim lines are in the speaker notes in full, with no space
+  constraint there.)
+- The three "levers" are no longer "avoidable pend rate / first-pass determination rate /
+  reviewer minutes" (that middle one is now the North Star itself, so keeping it there would
+  have been circular). Swapped in RFI cycles per case, tagged "NO PUBLIC BASELINE" to match
+  the evidence log honestly. Avoidable pend rate and reviewer minutes (Phase 2) unchanged --
+  already correct.
+- Guardrails, now plural: the CMS clock (already met -- Humana's CY2025 MA standard TAT
+  averages 1 day against the 7-day limit) and no increase in appeals overturned (today's real
+  number, ~65% of appealed MA denials, per the evidence log). Both the clock-already-met
+  evidence and the overturn baseline are now stated on the slide, not just implied.
+- Speaker notes rewritten in full to carry the actual reasoning: why the clock can't be a North
+  Star if it's already met, the verbatim three lines, the correctness-by-audit-sample point,
+  and the overturn-rate number reframed as a second argument for the North Star (a lot of those
+  overturns are first-pass-correctness failures, not appeals-process failures).
+
+Checked the rest of the deck for now-inconsistent references to the old framing (slide 10's
+Scope & Phasing already correctly lists avoidable pend rate and first-pass determination rate
+as Phase 1 targets -- that held up unchanged) -- nothing else in the deck referenced "CMS
+clock" or "North Star" outside slide 8, so no other slide needed a matching edit.
+
+The pre-M8 version is preserved in git history (commit 679650c) if a side-by-side comparison
+is ever needed -- `git show 679650c:deck/Humana_PA_Deck.pptx > old_deck.pptx`.
