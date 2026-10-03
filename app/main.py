@@ -316,7 +316,7 @@ def addendum(cid: str, body: Addendum, request: Request):
 
 
 @app.post("/api/cases")
-async def upload(request: Request, file: UploadFile = File(...), assignee_id: int | None = Form(None)):
+def upload(request: Request, file: UploadFile = File(...), assignee_id: int | None = Form(None)):
     c = db.conn()
     u = me(request, c)
     if not (file.filename or "").lower().endswith(".pdf"):

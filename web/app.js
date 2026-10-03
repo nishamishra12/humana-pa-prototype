@@ -306,10 +306,20 @@ function bind() {
   on("[data-tag]", (el) => { const t = document.getElementById("cbody"); t.value += (t.value && !t.value.endsWith(" ") ? " " : "") + "@" + el.dataset.tag + " "; t.focus(); });
   const out = document.getElementById("out"); if (out) out.onclick = guard(async () => { await api("/logout", { method: "POST" }); S.user = null; S.detail = null; S.caseId = null; renderLogin(); });
   const q = document.getElementById("q"); if (q) q.oninput = guard(debounce(async () => { S.q = q.value; await loadList(); render(); const nq = document.getElementById("q"); nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length); }, 250));
-  const up = document.getElementById("up"); if (up) up.onchange = guard(async () => { const fd = new FormData(); fd.append("file", up.files[0]); toast("Reading the packet…"); const d = await api("/cases", { method: "POST", body: fd }); S.caseId = d.id; S.view = S.user.role === "admin" ? "unassigned" : "attention"; history.replaceState(null, "", "#/case/" + d.id); await loadList(); S.detail = d; toast(S.user.role === "admin" ? "Packet analyzed. Assign it to a nurse below." : "Packet analyzed: " + d.id); render(); });
+  const up = document.getElementById("up"); if (up) up.onchange = guard(async () => { const file = up.files[0]; if (!file) return; const fd = new FormData(); fd.append("file", file); setBusy("Analyzing " + file.name + ". Reading the document, then checking it against policy. Takes 20 to 40 seconds. Keep this tab open."); let d; try { d = await api("/cases", { method: "POST", body: fd }); } finally { setBusy(null); } S.caseId = d.id; S.view = S.user.role === "admin" ? "unassigned" : "attention"; history.replaceState(null, "", "#/case/" + d.id); await loadList(); S.detail = d; toast(S.user.role === "admin" ? "Packet analyzed. Assign it to a nurse below." : "Packet analyzed: " + d.id); render(); });
   const asg = document.getElementById("assign"); if (asg) asg.onchange = guard(async () => { if (!+asg.value) return; S.detail = await api(`/cases/${S.caseId}/assign`, { method: "POST", body: { user_id: +asg.value } }); await loadList(); render(); });
   const bell = document.getElementById("bell"); if (bell) bell.onclick = guard(async () => { if (S.pop === "notif") { S.pop = null; return render(); } S.notifs = await api("/notifications"); S.pop = "notif"; render(); await api("/notifications/read", { method: "POST" }); S.user.unread = 0; });
   const rr = document.getElementById("rerun"); if (rr) rr.onclick = guard(async () => { await runEvals(); render(); toast("Evals re-run"); });
+}
+
+let _busyTimer = null;
+function setBusy(msg) {
+  const el = document.getElementById("busy");
+  clearInterval(_busyTimer);
+  if (!msg) { el.hidden = true; return; }
+  const t0 = Date.now();
+  const paint = () => { el.textContent = msg + " (" + Math.round((Date.now() - t0) / 1000) + "s)"; };
+  el.hidden = false; paint(); _busyTimer = setInterval(paint, 1000);
 }
 function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 

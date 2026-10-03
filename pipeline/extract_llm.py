@@ -138,7 +138,10 @@ def extract_facts(elements: list[Element], n_votes: int = 3) -> dict:
     disagrees with itself. n_votes=1 skips voting, for fast interactive use."""
     import anthropic
     client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-    runs = [_extract_facts_once(elements, client) for _ in range(max(1, n_votes))]
+    from concurrent.futures import ThreadPoolExecutor
+    n = max(1, n_votes)
+    with ThreadPoolExecutor(max_workers=n) as pool:
+        runs = list(pool.map(lambda _: _extract_facts_once(elements, client), range(n)))
     if len(runs) == 1:
         return runs[0]
 
