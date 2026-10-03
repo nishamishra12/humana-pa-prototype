@@ -48,6 +48,30 @@ Tracked as a before-and-after on the composite, not a ranking.
 | Provider satisfaction score | Quarterly provider survey on the prior authorization experience | AMA 2025 frames it (13 h/week); not Humana-specific |
 | Cost per determination | Total review, pend and appeal cost / determinations | Illustrative only |
 
+### Is avoidable pend rate really leading? Depends on provider reply time (unknown)
+
+It is leading only if the label arrives long before the lagging results (months). The label
+arrives when the provider replies, so reply time decides it.
+
+- **No public benchmark found.** CMS-0057-F metrics and Humana's reports do not include
+  provider response time to a pend. The sources I found give effort per request (CAQH: about
+  16 to 24 minutes per manual or portal request), not how long a reply takes. Practitioner
+  advice is to chase pends at 48 hours and five days (weak source).
+- The ~3-day pend loop in our own current-state diagram was an illustrative assumption from the
+  service design, not data. Do not quote it.
+- The standard clock bounds the answer: the plan has to resolve within the standard window
+  plus a limited extension (exact extension length under the 2026 rule is still unverified in
+  our notes). So a pend that gets a reply is labelled within weeks, against months for appeals.
+  Structurally leading, if replies actually arrive.
+- Two weaknesses to design around: pends that never get a reply cannot be labelled (report
+  reply rate and median time-to-reply next to the metric), and "already in the packet" is
+  self-reported by the provider (cross-check against the nurse's "this fact is present"
+  correction on a sample).
+- Test in the pilot's first weeks: median pend-to-reply time and share answered within 7 days
+  (the prototype already logs pend and reply timestamps). Proposed rule, my threshold: leading
+  if most pends are answered inside the 7-day window; if typical replies take longer than two
+  weeks, move the nurse-side correction signal to the front.
+
 ## Health metrics (must not get worse)
 
 | Metric | Guards against |
