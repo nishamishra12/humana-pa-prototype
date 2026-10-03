@@ -96,14 +96,15 @@ next case; intake: unassigned and workload). Move Evals out of the operational n
 - Opening another nurse's case by link shows a blank "Select a case to review." with no
   explanation. A server restart returns the user to sign-in with no message.
 
-### 8. The product does not yet produce the numbers we promised (important, structural)
-The North Star is first-pass correct determination rate, with avoidable pend rate and RFI
-cycles per case beneath it. The app has no way to capture them: no audit-sample workflow for
-"was this first-pass decision correct", no label for "was this pend avoidable", and no view of
-RFI cycles per case, though the audit trail holds the raw events. Without this the deck's
-metrics slide describes something the demo cannot show.
-Fix: a small quality view for a lead or director: sampled cases, mark correct or not, mark
-avoidable pends, counts per case. This is also what makes the product credible to a reviewer.
+### 8. The product records the process but not the quality signals (revised)
+Original version of this finding proposed an in-app "mark this decision correct" workflow.
+That was wrong for a demo: "correct" is a lagging fact and would be mock data. See
+docs/METRICS_FRAMEWORK.md. What remains true: the audit trail already supports several leading
+indicators (first-pass rate, RFI cycles per case, pend duration, escalation outcomes) but no
+screen shows them, and two of the best near-term signals are not captured at all: a
+structured provider reply ("already in the packet, page N") and a nurse correction when the AI
+called a fact missing that was present.
+Fix: add those two events and a small metrics view, labelled as demo data.
 
 ### 9. Missing for real work, by design for now
 Provider-facing side of the pend loop (replies are simulated); member view (deliberately
@@ -131,7 +132,7 @@ would still lose the nurse's place and still send the wrong provider questions.
    (5, 6, F-002, F-003).
 6. Then the visual system, profile menu, search and the staged upload progress (F-001,
    F-004, F-005, F-006).
-7. A quality and metrics view (8), once the flow is stable.
+7. A small leading-indicators view, plus the two missing events (8), once the flow is stable.
 
 Rough size, my estimate: 1 and 2 small; 4 small to medium (touches the engine, the extractor
-note and the screen); 3 and 5 medium (they restructure the case page); 8 medium.
+note and the screen); 3 and 5 medium (they restructure the case page); 8 small to medium.
