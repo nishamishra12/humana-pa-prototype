@@ -1,114 +1,97 @@
-# Metrics framework: North Star, leading and lagging indicators
+# Metrics: North Star, leading, lagging, health
 
-2026-10-03. Replaces the "quality view" idea in UX_CRITIQUE finding 8, which over-reached (see
-section 1). Builds on D-008. Figures about Humana come from its own CY2025 CMS-0057-F reports
-(docs/humana-metrics); everything marked "verify" should be checked before it goes on a slide.
+2026-10-03, second version. The first version listed 12 leading and 10 lagging indicators;
+that is a catalog, not a strategy, and it is in git history (commit 95e24f9). This version
+commits to one North Star, four leading indicators that form one composite, four lagging
+indicators, and four health metrics. Method follows the EnergySage lead-quality work: a
+year-horizon outcome, early behaviors that predict it, a composite so no single ratio decides,
+and lagging results that confirm it later.
 
-## 1. What changed in my thinking
+## North Star: Right-First-Time rate
 
-The North Star is first-pass correct determination rate. Two problems, both raised in testing:
+Share of prior authorization requests whose first determination did not need rework: no
+avoidable pend, no return from the medical director for missing information, and, for denials,
+no overturn on information that was already in the original packet.
 
-- **It cannot be shown live.** "Correct" is only knowable after the fact. A demo can describe it
-  and instrument toward it; it cannot display it as a real number.
-- **The slow signals cover only part of it.** A first-pass decision is one of three things:
-  approve, pend, or deny. Appeals, complaints and court cases can only ever see denials (and
-  some pends). A wrong approval is never appealed by anyone. Humana's data shows how thin this
-  is even for denials: 2.71% of MA denials are appealed, so 97% produce no outcome signal at
-  all, and Humana itself notes an overturn "may be the result of additional information
-  received", so an overturn is not proof the first decision was wrong.
+- It is the outcome all four parties want: the member gets care sooner, the provider does not
+  resubmit, the plan does not pay for review, appeal and reversal, the regulator sees fewer
+  wrongful denials.
+- It is a year-horizon goal, reviewed quarterly. It is not a number a demo can show live,
+  because "needed rework" is only fully known weeks to months later.
+- Target: set after a baseline in the first 60 days of a pilot. Stated ambition (mine, not
+  data): halve avoidable rework in year one.
 
-One correction to the slow end: it is not only courts. When an MA plan upholds a denial on
-reconsideration it must forward the case file to the CMS-contracted independent review entity
-(42 CFR 422.590: within 60 calendar days for standard, 7 for expedited; verified against the
-eCFR section). That outcome arrives in weeks to a few months, not years, and is a structured
-independent second opinion. It still covers denials only, and only those that get that far.
+Why not the alternatives. Within the CMS clock: Humana already meets it (MA standard mean 1
+day, CY2025), so it cannot move. Reviewer minutes saved: an efficiency number that can be won by
+reading less. Approval rate: gameable by approving more. Overturn rate on its own: sees only
+denials, and an overturn can come from new information.
 
-So the honest design is a ladder, with in-app leading indicators carrying the demo and the slow
-signals confirming the North Star after launch.
+## Leading indicators: one per handoff, combined into one composite
 
-## 2. The ladder: how fast can we know a first-pass decision was right?
+A case passes through four handoffs. Each gets exactly one early signal, observable within
+days inside the product, the same way post-registration behaviors predicted lead quality.
 
-| Speed | Signal | Covers | In the prototype? |
+| # | Handoff | Leading indicator | Reads as |
 |---|---|---|---|
-| Minutes | Nurse overrides or corrects the AI; nurse finds a fact the AI called missing | All three outcomes | Partly (override logged; corrections not yet) |
-| Days | Provider reply to a pend says "already in the packet, page N" | Pends | No (provider side is simulated; reply is free text) |
-| Days | Director returns an escalation as "not needed" | Escalations | Partly (return is logged, no reason) |
-| Weeks | Internal over-read: a senior reviewer re-reviews a sample of decisions (existing UM practice in general; confirm with Humana) | All three | No, and would be mock data in a demo |
-| Weeks to months | Plan appeals unit result; independent review entity result | Denials | No (needs Humana internal data) |
-| Months to years | Grievances and complaints, CMS or OIG audit findings, post-payment recoveries (the only window on wrong approvals) | Mixed | No |
-| Rare tail | Litigation | Denials | Not a metric, a tail risk |
+| 1 | Gate to provider | **Pend precision**: pends where the provider supplied something new / all pends (the opposite: provider replies "already in the packet, page N") | Was the question worth asking |
+| 2 | Provider loop | **One-cycle resolution**: pended cases settled in a single provider reply / pended cases | Did the question get answered cleanly |
+| 3 | AI to nurse | **Assist acceptance**: cases where the nurse took the recommendation with no fact corrected / cases | Did the reading and recommendation hold up |
+| 4 | Nurse to director | **Escalation precision**: escalations the director decides / escalations (versus returns as unnecessary or incomplete) | Did the right cases reach a physician |
 
-## 3. Leading indicators (observable inside the product, near real time)
+**Composite: Clean-First-Pass index.** Share of decided cases with no failure at any checkpoint
+they reached (pend not avoidable, resolved in one cycle, nothing corrected, escalation upheld).
+It is a case-level pass, not an average of four rates, so one indicator rising while another
+falls cannot hide: a case either went through clean or it did not. The four components stay
+visible for diagnosis. We do not rank users or cases; the question is whether the index is
+higher this quarter than the pre-launch baseline.
 
-"Today" is checked against the stored data: the audit trail already has assigned, pended,
-provider_reply, escalated, approved, received, analyzed and clock-alert events with timestamps.
+## Lagging indicators: confirm the North Star (3 to 12 months)
 
-| # | Metric | Definition | Source | Today? | Reads as |
-|---|---|---|---|---|---|
-| L1 | First-pass determination rate | Decided cases with zero pend cycles / decided cases | pended events | Yes | Proxy for the North Star: fast, but "no pend" is not the same as "correct" |
-| L2 | RFI cycles per case | Pend events per case | pended events | Yes | Direct lever; every extra cycle is the gate failing once |
-| L3 | Avoidable-pend rate (strict) | Pends where the provider replies the information was already in the packet / all pends | structured provider reply | **No** | The cleanest in-product answer to "was this pend avoidable", within days. Needs a structured reply: attached / already in packet (page) / cannot provide |
-| L4 | False-missing rate | Facts the AI called missing that the nurse marks as present / facts called missing | nurse correction action | **No** | Completeness recall measured in production, at decision time |
-| L5 | AI agreement and override rate | Final first action equals the recommendation / cases; split by direction (approve against a pend or escalate; pend or escalate against an approve) | recommendation vs first action | Partly | Whether the recommendation is trusted, and which way it errs |
-| L6 | Uncertainty rate | Cases with a model self-disagreement flag / LLM-read cases | stored notes | Partly (uploads) | Reliability of the reader, tracked over time |
-| L7 | Escalation appropriateness | Escalations the director decides / escalations (versus returned) | director action | Yes | Whether nurses escalate the right cases |
-| L8 | Avoidable escalation | Escalations returned for missing information / escalations | director return reason | **No** | Gate leakage into the physician's time |
-| L9 | Intake wait | Received to assigned | received and assigned events | Yes | Intake's own speed |
-| L10 | Pend duration | Pended to provider reply | pended and provider_reply events | Yes | Provider friction, and the clock cost of a pend |
-| L11 | Within-clock rate | Decided inside 72 h / 7 days | received, due, decided | Yes | Guardrail: already met by Humana (MA standard mean 1 day) |
-| L12 | Reviewer minutes | Active time per case | active-time instrumentation | **No** | Phase 2 hypothesis only; no baseline |
+| # | Indicator | Why it confirms | Baseline we have |
+|---|---|---|---|
+| 1 | **Overturn on information already in the original packet** (plan appeals reason code) | The direct lag of the North Star for denials | None public. Overall MA overturn is 64.72% (Humana CY2025), but it mixes new information with first-pass error |
+| 2 | **Independent review entity overturn on plan-upheld denials** | Structured outside check, weeks to months (42 CFR 422.590 forwarding) | None public that I verified |
+| 3 | **Provider PA experience** (survey plus repeat-submission rate) | The provider side of rework; the EnergySage installer-churn equivalent | AMA 2025 frames it (13 h/week), industry-wide not Humana-specific |
+| 4 | **Cost per determination**, including review, pend, appeal and reversal | The plan's reason to fund it | Illustrative only; needs real cost data |
 
-**Guardrails** (watch for gaming by approving more): approval share over time, override-to-
-approve rate, whether a nurse opened any citation before approving (automation bias), clock
-breach rate, denial share by director.
+## Health metrics (guardrails: must not get worse)
 
-## 4. Lagging indicators (confirm the North Star after launch)
+| # | Metric | Guards against | Standing |
+|---|---|---|---|
+| 1 | **CMS clock compliance** (72 h expedited, 7 days standard) | Speed bought at the cost of the clock | Humana already meets it; hold the line |
+| 2 | **Approval-share drift** vs baseline, plus post-payment error rate on approvals once available | Winning the North Star by approving more | MA standard denial 6.86% weighted (CY2025) is the reference |
+| 3 | **Citation check before approve** (nurse opened a cited page) | Automation bias: accepting the recommendation without reading | New event |
+| 4 | **Zero AI denials; rationale on 100% of denials** | The legal and ethical line | Already enforced in the product |
 
-| # | Metric | Source | Latency | Baseline we have | Limits |
-|---|---|---|---|---|---|
-| G1 | Appeal rate (appealed / denied) | Plan appeals unit | Weeks | Humana CY2025: MA 2.71%, Medicaid 7.19% | Most denials are never appealed |
-| G2 | Overturn rate on appeal | Plan appeals unit | Weeks | Humana CY2025: MA 64.72%, Medicaid 12.65%; OIG SNF 95% (June 2024 data, reported June 2026) | Overturn can reflect new information, not a first-pass error |
-| G3 | Overturn on information already in the original packet | Appeal reason code | Weeks | None public | The only version of G2 that maps to our North Star; needs a reason code Humana would have to add or already hold |
-| G4 | Independent review entity outcomes | Plan and CMS data | Weeks to months | None public that I verified | Denials only |
-| G5 | Grievances and complaints | Plan complaint system, CMS tracking | Months | None | Noisy, underreported |
-| G6 | Audit findings (CMS or OIG) | Regulator | Years | OIG reports in the deck | Rare, sample-based |
-| G7 | Post-payment recoveries on approved cases | Payment integrity | Months to years | None | The only signal on wrong approvals |
-| G8 | Provider burden and abrasion | Provider survey | Annual | AMA 2025 (13 h/week; physicians surveyed) | Industry-wide, not attributable |
-| G9 | Time to care and downstream utilization | Claims | Quarters | None | Confounded |
-| G10 | Admin cost per case; effect on medical loss ratio | Finance | Quarters | Illustrative only | Needs real cost data |
+## Can the prototype show this?
 
-## 5. Can we get the data? Three routes
+| Item | Today | To build |
+|---|---|---|
+| Leading 1 pend precision | No | Structured provider reply: attached / already in packet (page) / cannot provide |
+| Leading 2 one-cycle resolution | Yes | Pend events already logged |
+| Leading 3 assist acceptance | Partly | Nurse action "this fact is present" on an AI-missing fact; recommendation vs first action |
+| Leading 4 escalation precision | Partly | Director return reason |
+| Composite | After the above | A small leading-indicators view, labelled demo data |
+| Health 1 and 4 | Yes | Display only |
+| Health 3 | No | Log "opened packet page" |
+| North Star, lagging 1 to 4 | No | Described, with Humana baselines where they exist |
 
-1. **Instrument the prototype** (cheap, honest, demoable). Add events for: structured provider
-   reply type (L3), nurse fact correction (L4), director return reason (L8), "opened packet
-   page" (guardrail), first-open timestamp. Compute L1 to L11 from events in a small
-   metrics view for a lead or director. Label seeded and demo data as demo data.
-2. **Public and baseline data** (already in hand). Humana's CMS-0057-F reports give G1 and
-   G2 as the baseline to beat; OIG and AMA frame the problem.
-3. **Pilot design** (what we would do with Humana's data, described not built):
-   - **Step 0, backtest.** Replay historical packets whose eventual outcomes are known (denials
-     later overturned or upheld) through the system in shadow mode, and measure how many it would
-     have pended, escalated or approved differently. This produces a North Star estimate before
-     any live decision depends on it.
-   - **Shadow then assist.** Run beside nurses, compare agreement (L5), then turn on.
-   - **Over-read sample** for ground truth on a small slice, with confirmation from G3 and G4
-     over time.
+Four small events (provider reply type, nurse fact correction, director return reason, packet
+page opened) unlock the whole leading and health set.
 
-## 6. What to show in a product demo
+## How we would know the leading set is the right one
 
-- The North Star, its definition, and why it cannot be a live number (the ladder in section 2).
-- The metric tree: North Star, the levers beneath it, guardrails, and the slow confirmers.
-- The leading indicators the prototype already computes, labelled as demo data, plus the two
-  new ones (L3, L4) that need only small changes.
-- Baselines from Humana's own reports, and the pilot plan including the backtest.
-- Not a made-up "first-pass correct" percentage.
+The leading indicators are a hypothesis until they predict the lagging ones. In the pilot:
+compare cohorts of cases by composite pass or fail against later appeal and review-entity
+outcomes, and keep a leading indicator only if it separates them. Step zero, before any live
+use: replay historical packets with known outcomes through the system in shadow mode and
+measure how often it would have caught the rework. EnergySage precedent: the leading
+indicators moved first and moved together; the lagging result confirmed it months later.
 
-## 7. Decisions needed
+## Decisions needed
 
-1. Build the instrumentation and a small metrics view (route 1), and drop the "mark correct"
-   audit workflow from the near-term build? My recommendation: yes.
-2. Define avoidable pend strictly (provider says it was already supplied) or broadly (also
-   nurse corrections)? Suggest strict as the headline, broad as a secondary.
-3. Is the backtest part of the pitch? It is the strongest answer to "how do you know it works".
-4. Confirm with a UM practitioner that sampled over-reads of decisions are standard practice
-   before claiming it on a slide.
+1. Accept Right-First-Time as the North Star wording and the four-handoff leading set?
+2. Build the four events and the small leading-indicators view next?
+3. Keep the shadow-mode backtest as the first pilot step in the pitch?
+4. Confirm lagging 1 is obtainable: does Humana's appeals unit record why an appeal was
+   overturned? If not, say so in the pitch and treat it as a data request.

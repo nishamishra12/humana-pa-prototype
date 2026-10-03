@@ -104,7 +104,9 @@ indicators (first-pass rate, RFI cycles per case, pend duration, escalation outc
 screen shows them, and two of the best near-term signals are not captured at all: a
 structured provider reply ("already in the packet, page N") and a nurse correction when the AI
 called a fact missing that was present.
-Fix: add those two events and a small metrics view, labelled as demo data.
+Fix: four small events (structured provider reply, nurse fact correction, director return
+reason, packet page opened) and a small leading-indicators view, labelled as demo data. The
+metric set itself is in docs/METRICS_FRAMEWORK.md.
 
 ### 9. Missing for real work, by design for now
 Provider-facing side of the pend loop (replies are simulated); member view (deliberately
@@ -132,7 +134,7 @@ would still lose the nurse's place and still send the wrong provider questions.
    (5, 6, F-002, F-003).
 6. Then the visual system, profile menu, search and the staged upload progress (F-001,
    F-004, F-005, F-006).
-7. A small leading-indicators view, plus the two missing events (8), once the flow is stable.
+7. A small leading-indicators view, plus the four small events (8), once the flow is stable.
 
 Rough size, my estimate: 1 and 2 small; 4 small to medium (touches the engine, the extractor
 note and the screen); 3 and 5 medium (they restructure the case page); 8 small to medium.
