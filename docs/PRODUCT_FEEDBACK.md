@@ -58,3 +58,39 @@ Notes for the build:
   call is no, per the feedback above. Easy to flip back if needed.
 - Does not change nurse or medical director views. Server-side rule stays: admin cannot make
   clinical decisions.
+
+## F-003 -- Admin needs a case-to-nurse overview (UX, open)
+2026-10-03, from testing the Admin flow.
+
+Observed: the admin nav splits cases by status (Needs assignment, Pended, Escalated, Decided,
+Everything). That split is correct for intake and should stay. What is missing is the other
+axis: which cases each nurse holds. "Everything" is a list of cases, but it does not make the
+case-to-nurse relationship easy to see or act on.
+
+Wanted: one place that shows every case and who it is assigned to, as a summary or table.
+
+Proposed design (front-end call, open to change):
+- New admin nav item, "Team", with two parts:
+  1. Workload table, one row per nurse: open cases, and the same split by status (new, pended,
+     escalated), at-risk count (soon-due or breached), and the soonest CMS deadline they hold.
+     Expanding a row lists that nurse's cases. This is also the data F-002 needs next to the
+     assign control.
+  2. A case table underneath (or as the upgraded "Everything" view): member, procedure, status,
+     assigned nurse, medical director if escalated, time left on the clock. Sortable, filter by
+     nurse, click a row to open the case.
+- Reassign inline from the table (nurse dropdown on the row). Reassigning is the main thing
+  intake does, so it should not need opening each case.
+- Cases escalated to a physician show the medical director in the "with" column, so ownership is
+  clear even when it is no longer with the nurse.
+
+Notes for the build:
+- No new clinical logic. Everything needed is already in the cases list (assignee, medical
+  director, status, SLA state, priority). Counting per nurse can be done in the browser at this
+  scale; add a small summary endpoint if the case count grows.
+- Admin stays unable to make clinical decisions. The server blocks admin from escalating, so
+  anything beyond routing is a persona-rule change, not a UI change (see open question below).
+
+Open question for her: she mentioned intake being able to escalate. Today the server rejects
+that for admin (escalating to a medical director is a clinical call). Options: keep it blocked
+and let intake reassign or flag a case instead, or deliberately allow a non-clinical "flag for
+review" that does not go through the medical director path. Needs a decision before building.
