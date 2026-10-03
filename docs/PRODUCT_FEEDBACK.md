@@ -133,3 +133,6 @@ Wanted: make both discoverable.
 Not reproduced: I could not see the tab row going missing in my own browser pane. If it is
 hidden at a particular window size or zoom in the tester's browser, a screenshot of that
 screen would pin down whether it is a layout problem as well as a discoverability one.
+
+Update, 2026-10-03: the tester found the Activity tab and A10 passes (export downloads). The
+discoverability point above still stands as UX feedback; the "not reproduced" note is closed.
