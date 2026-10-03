@@ -1,3 +1,6 @@
+import os, tempfile
+from app import db
+db.DB_PATH = os.path.join(tempfile.mkdtemp(), "smoke.db")  # never touch the live demo database
 from fastapi.testclient import TestClient
 from app.main import app
 t = TestClient(app)

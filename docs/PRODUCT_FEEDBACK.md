@@ -136,3 +136,28 @@ screen would pin down whether it is a layout problem as well as a discoverabilit
 
 Update, 2026-10-03: the tester found the Activity tab and A10 passes (export downloads). The
 discoverability point above still stands as UX feedback; the "not reproduced" note is closed.
+
+## F-007 -- A nurse should see only her own cases (done)
+2026-10-03, from testing the nurse flow (N1).
+
+Observed: a signed-in nurse could open "Everything" and see every nurse's cases, and the API
+returned all cases to any logged-in user.
+
+Done (not deferred, because it is an access rule that the rest of the nurse tests depend on):
+- Server-enforced, not just hidden in the nav. A nurse's case list, counts and search are
+  limited to cases assigned to her. Every case endpoint (open, export, comment, assign, action,
+  provider reply) answers 404 for another nurse's case, the same as a case that does not exist,
+  so the API does not confirm it is there.
+- Nurse nav drops "Everything"; "All mine" is the full view. Admin keeps "Everything"
+  (intake needs the whole picture) and medical directors are unchanged.
+- Covered by scripts/nurse_scope_test.py: two nurses see disjoint sets, scoped counts, 404 on
+  all six endpoints, search cannot reach the other nurse's cases, admin and medical director
+  views unchanged. Reading of the request: "keep it all" taken as "All mine only".
+
+Open question: should a medical director also be limited to cases escalated to them, or keep
+seeing every case? Left unchanged for now (minimum-necessary access argues for limiting them
+too). Note: a nurse who escalates a case keeps seeing it in her Escalated view, since it stays
+assigned to her.
+
+Also fixed in this change: scripts/smoke_test.py now runs on a temporary database. It used to
+write to the live demo database, which is how a regression run changed demo cases earlier.

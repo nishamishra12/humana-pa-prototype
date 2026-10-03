@@ -36,6 +36,17 @@ def me(request: Request, c):
     return c.execute("SELECT * FROM users WHERE id=?", (uid,)).fetchone()
 
 
+def check_case_access(c, u, cid):
+    """A nurse works only her own cases. Another nurse's case answers the same 404 as a case
+    that does not exist, so the API never confirms it is there. Admin and medical directors
+    keep their wider view."""
+    if u["role"] != "nurse":
+        return
+    r = c.execute("SELECT assignee_id FROM cases WHERE id=?", (cid,)).fetchone()
+    if not r or r["assignee_id"] != u["id"]:
+        raise HTTPException(404, "Case not found")
+
+
 def user_dict(u):
     return dict(id=u["id"], handle=u["handle"], name=u["name"], role=u["role"], title=u["title"]) if u else None
 
@@ -108,7 +119,10 @@ def list_cases(request: Request, view: str = "all", q: str = ""):
     db.raise_sla_alerts(c)
     c.commit()
     names = names_map(c)
+    mine_only = u["role"] == "nurse"
     rows = [row_case(r, names) for r in c.execute("SELECT * FROM cases ORDER BY received_at DESC")]
+    if mine_only:
+        rows = [r for r in rows if r["assignee_id"] == u["id"]]
     open_ = ("new", "in_review", "pended", "escalated")
     at_risk = ("soon", "breached")
     def keep(r):
@@ -135,6 +149,8 @@ def list_cases(request: Request, view: str = "all", q: str = ""):
         rows = [r for r in rows if ql in (r["member_name"] + r["id"] + r["procedure"] + r["member_id"]).lower()]
     counts = {}
     allrows = [row_case(r, names) for r in c.execute("SELECT * FROM cases")]
+    if mine_only:
+        allrows = [r for r in allrows if r["assignee_id"] == u["id"]]
     counts["all"] = len(allrows)
     counts["mine"] = sum(1 for r in allrows if r["status"] in open_ and (r["assignee_id"] == u["id"] or r["md_id"] == u["id"]))
     counts["attention"] = sum(1 for r in allrows if r["status"] in ("new", "in_review") and r["assignee_id"] == u["id"])
@@ -166,7 +182,7 @@ def case_detail(c, cid):
 @app.get("/api/cases/{cid}")
 def get_case(cid: str, request: Request):
     c = db.conn()
-    me(request, c)
+    check_case_access(c, me(request, c), cid)
     return case_detail(c, cid)
 
 
@@ -175,7 +191,7 @@ def export_case(cid: str, request: Request):
     """The full case record: facts, criteria checklist, decision, and the complete append-only
     audit trail. This is the system-of-record artifact described in ARCHITECTURE.md section 7."""
     c = db.conn()
-    me(request, c)
+    check_case_access(c, me(request, c), cid)
     d = case_detail(c, cid)
     d["exported_at"] = db.now()
     d["note"] = "Made-up prototype data. Not a real member record."
@@ -192,6 +208,7 @@ class Assign(BaseModel):
 def assign(cid: str, body: Assign, request: Request):
     c = db.conn()
     u = me(request, c)
+    check_case_access(c, u, cid)
     c.execute("UPDATE cases SET assignee_id=? WHERE id=?", (body.user_id, cid))
     db.audit(c, cid, u["id"], "assigned", f"Assigned to user {body.user_id}")
     c.commit()
@@ -214,6 +231,7 @@ def post_comment(c, cid, u, body, kind="comment"):
 def add_comment(cid: str, body: Comment, request: Request):
     c = db.conn()
     u = me(request, c)
+    check_case_access(c, u, cid)
     if not body.body.strip():
         raise HTTPException(400, "Write something first")
     post_comment(c, cid, u, body.body.strip())
@@ -233,6 +251,7 @@ class Act(BaseModel):
 def act(cid: str, body: Act, request: Request):
     c = db.conn()
     u = me(request, c)
+    check_case_access(c, u, cid)
     r = c.execute("SELECT * FROM cases WHERE id=?", (cid,)).fetchone()
     if not r:
         raise HTTPException(404, "Case not found")
@@ -298,6 +317,7 @@ def addendum(cid: str, body: Addendum, request: Request):
     """Simulates the provider replying with the missing documentation, then re-runs the analysis."""
     c = db.conn()
     u = me(request, c)
+    check_case_access(c, u, cid)
     r = c.execute("SELECT * FROM cases WHERE id=?", (cid,)).fetchone()
     if not r:
         raise HTTPException(404, "Case not found")

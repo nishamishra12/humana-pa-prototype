@@ -92,7 +92,9 @@ function render() {
   const isAdmin = S.user.role === "admin";
   const views = isAdmin
     ? [["unassigned", "Needs assignment"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"], ["all", "Everything"]]
-    : [["attention", "Needs my review"], ["at_risk", "At risk"], ["mine", "All mine"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"], ["all", "Everything"]];
+    : S.user.role === "nurse"
+      ? [["attention", "Needs my review"], ["at_risk", "At risk"], ["mine", "All mine"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"]]
+      : [["attention", "Needs my review"], ["at_risk", "At risk"], ["mine", "All mine"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"], ["all", "Everything"]];
   $app.innerHTML = `<div class="shell">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">PA</span> PA Desk</div>
