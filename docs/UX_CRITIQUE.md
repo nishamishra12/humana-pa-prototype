@@ -104,8 +104,8 @@ indicators (first-pass rate, RFI cycles per case, pend duration, escalation outc
 screen shows them, and two of the best near-term signals are not captured at all: a
 structured provider reply ("already in the packet, page N") and a nurse correction when the AI
 called a fact missing that was present.
-Fix: four small events (structured provider reply, nurse fact correction, director return
-reason, packet page opened) and a small leading-indicators view, labelled as demo data. The
+Fix: four small events (structured provider reply, director return reason, nurse fact
+correction, packet page opened) and a small leading-indicators view, labelled as demo data. The
 metric set itself is in docs/METRICS_FRAMEWORK.md.
 
 ### 9. Missing for real work, by design for now
