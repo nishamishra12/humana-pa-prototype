@@ -63,13 +63,15 @@ def extract_header(full: str) -> dict:
     facts = {}
     m = re.search(r"Member:\s*(.+?)\s+DOB:\s*([\d-]+)\s*\(age (\d+)\)\s+Member ID:\s*(\S+)", full)
     facts["_member"] = dict(name=m.group(1), dob=m.group(2), age=int(m.group(3)), member_id=m.group(4)) if m else {}
-    m = re.search(r"Requesting facility:\s*(.+?),\s*Utilization", full)
-    facts["_facility"] = m.group(1) if m else None
+    m = (re.search(r"Requesting facility:\s*(.+?),\s*Utilization", full)
+         or re.search(r"Practice:\s*(.+)", full))  # longer packets label the facility "Practice:"
+    facts["_facility"] = m.group(1).strip() if m else None
     m = re.search(r"CPT\s*(\d{5})", full)
     facts["_cpt"] = m.group(1) if m else None
-    m = re.search(r"Requested service:\s*(.+)", full)
+    m = (re.search(r"Requested service:\s*(.+)", full)
+         or re.search(r"^(Elective inpatient admission,.+)$", full, re.M))  # same text, under a heading
     facts["_procedure"] = m.group(1).strip().rstrip(".") if m else None
-    m = re.search(r"Planned admit date:\s*([\d-]+)", full)
+    m = re.search(r"Planned admi(?:t|ssion) date:\s*([\d-]+)", full)
     facts["_admit"] = m.group(1) if m else None
     m = re.search(r"Level of care requested:\s*(\w+)", full)
     facts["_setting"] = m.group(1).lower() if m else None
