@@ -34,8 +34,10 @@ early signals instead.
 | Avoidable pend rate | Pends where the provider says "I already sent that" | Lower |
 | Avoidable escalation rate | Escalations the director sends back to the nurse | Lower |
 
-**Clean case rate** (the combined signal). Cases with none of the three problems. We compare it
-to the rate before launch. We do not rank nurses or cases.
+**Right-First-Time, early read.** This is the North Star without the third check. It counts
+cases with no avoidable pend and no avoidable escalation. We see it in days. When appeals data
+arrives months later, it becomes the full North Star. We compare it to the rate before launch.
+We do not rank nurses or cases.
 
 ## Long-term checks (we watch these for six months)
 
