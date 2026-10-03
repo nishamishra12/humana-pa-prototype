@@ -24,6 +24,8 @@ def _judge(crit, facts):
         return "info", key
     f = facts.get(key, {"status": "missing"})
     st = f["status"]
+    if st == "unsure":
+        return "unsure", key
     if key == "expected_los_days":
         if st == "found":
             return ("met" if f["value"] >= 2 else "not_met"), key
@@ -45,7 +47,7 @@ def analyze(facts: dict) -> dict:
                       "The curated table only covers lumbar spinal fusion today. This case cannot be scored against the wrong "
                       "policy, so it is routed for a policy lookup before any criteria can be checked."),
             policies=[], cannot_deny=True, cpt_covered=False, covered_cpt_codes=covered)
-    checklist, questions = [], {}
+    checklist, questions, unsure = [], {}, {}
     policies = sorted(POLICIES.values(), key=lambda p: ORDER[p["level"]])
     for pol in policies:
         for c in pol["criteria"]:
@@ -61,6 +63,8 @@ def analyze(facts: dict) -> dict:
                 note=(f or {}).get("note"),
             )
             checklist.append(item)
+            if status == "unsure":
+                unsure.setdefault(key, dict(fact=key, note=(f or {}).get("note")))
             if status == "missing" and not soft:
                 q = questions.setdefault(key, dict(fact=key, question=_provider_facing(c["if_missing"]), affects=[], note=(f or {}).get("note")))
                 q["affects"].append(c["id"])
@@ -78,9 +82,13 @@ def analyze(facts: dict) -> dict:
                 status="met" if ok else "not_met", fact_key="conservative_treatment",
                 evidence=dict(page=cons["page"], quote=cons["quote"]), note=f"{months:g} months documented."))
 
-    gate = dict(complete=not questions, questions=list(questions.values()))
+    gate = dict(complete=not questions and not unsure, questions=list(questions.values()), unsure=list(unsure.values()))
     not_met = [c for c in checklist if c["status"] == "not_met"]
-    if questions:
+    if unsure:
+        action = "verify"
+        rationale = ("The AI could not confirm " + ", ".join(_label(k) for k in unsure) +
+                     ". Check the packet and confirm it before you decide. Do not ask the provider yet.")
+    elif questions:
         action = "pend"
         rationale = ("The packet is missing " + ", ".join(_label(q["fact"]) for q in questions.values()) +
                      ". Ask the provider for exactly that before judging the case.")

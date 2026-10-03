@@ -111,6 +111,11 @@ input:focus, select:focus, textarea:focus, button:focus-visible { outline: 2px s
 .facts > div:nth-last-child(-n+3) { border-bottom: 0; }
 .fact-label { color: var(--ink2); font-weight: 600; }
 .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; }
+.dot-unsure { background: var(--warn); box-shadow: 0 0 0 3px var(--warn-soft); }
+.mk.unsure { background: var(--warn-soft); color: var(--warn); }
+.reco.verify .icon { background: var(--warn-soft); color: var(--warn); }
+.fixform { grid-column: 1 / -1; display: grid; gap: 8px; padding: 12px 14px; margin: 4px 0 8px; background: var(--hover); border-radius: 10px; }
+.fixform label { display: flex; gap: 8px; align-items: center; }
 .dot-found, .dot-met { background: var(--ok); } .dot-missing { background: var(--warn); } .dot-implied, .dot-advisory { background: var(--warn); } .dot-none, .dot-not_met { background: var(--bad); } .dot-info { background: var(--ink3); }
 .cite { border: 1px solid var(--line2); background: var(--panel); border-radius: 6px; padding: 1px 7px; font-size: 12px; font-weight: 650; color: var(--accent); }
 .cite:hover { background: var(--accent-soft); }

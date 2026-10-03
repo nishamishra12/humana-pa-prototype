@@ -101,7 +101,7 @@ def _to_fact(raw, elements):
         return _fact(raw.get("status", "missing") if raw else "missing", raw.get("note") if raw else None)
     page = _locate_quote(raw["quote"], elements)
     if page is None:
-        return _fact("missing", note=f"Model claimed a quote that could not be verified against the source text: \"{raw['quote'][:80]}\"")
+        return _fact("unsure", note=f"The AI quoted text it could not show in the packet: \"{raw['quote'][:80]}\". Check the packet.")
     f = _fact(raw["status"], raw.get("value"), page, raw["quote"], raw.get("note"))
     return f
 
@@ -151,5 +151,5 @@ def extract_facts(elements: list[Element], n_votes: int = 3) -> dict:
         if len(statuses) == 1:
             continue  # every run agreed; keep runs[0]'s version as-is
         votes = ", ".join(sorted(f"{r[key]['status']}" for r in runs))
-        facts[key] = _fact("missing", note=f"The model disagreed with itself across {len(runs)} runs on this fact ({votes}) -- flagged for human review rather than guessed at.")
+        facts[key] = _fact("unsure", note=f"The AI read this {len(runs)} times and gave different answers ({votes}). Check the packet.")
     return facts

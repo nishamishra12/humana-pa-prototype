@@ -138,3 +138,25 @@ would still lose the nurse's place and still send the wrong provider questions.
 
 Rough size, my estimate: 1 and 2 small; 4 small to medium (touches the engine, the extractor
 note and the screen); 3 and 5 medium (they restructure the case page); 8 small to medium.
+
+## Status of the flow fixes (updated 2026-10-04)
+
+Done and tested (scripts/flow_test.py, scripts/unsure_test.py):
+- Finding 1, silent handoffs: nurses are now told when a case is assigned to them, when the
+  provider replies, and when a director decides their escalated case. Lists show "Provider
+  replied" and "Returned by director".
+- Finding 2 and 2b: queues sort by time left (breached first); a "Saved. Next case" banner
+  follows each action.
+- Finding 4, "unsure" shown as "missing": a new "Couldn't confirm" state. The recommendation
+  becomes "Check the packet first" and no provider question is drafted. The nurse presses
+  Check or Fix on any fact: "in the packet", "the packet says there is none", or "not in the
+  packet". Each answer updates the recommendation and is logged as a correction (the feedback
+  loop, and the data for the nurse-correction metric).
+- Finding 5, director context: the director's screen leads with the nurse's question.
+- Finding 6, role fit: directors see "Waiting for my decision", Decided, Everything, and cannot
+  upload; nurses no longer see Evals.
+- Finding 7, session ended: the sign-in screen now says so.
+
+Not done yet: finding 3 (decision workspace: evidence beside the action, packet page beside
+the citation), admin home (F-002, F-003), the visual pass (F-001, F-004 to F-006), and the
+remaining metric events (provider reply type, director return reason, packet page opened).

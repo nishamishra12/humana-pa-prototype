@@ -15,7 +15,7 @@ def _classify(truth, status, expected_value, extracted_value):
     found = status == "found"
     if truth == "present":
         if not found:
-            return "false_negative_implied" if status == "implied" else "false_negative"
+            return "false_negative_implied" if status in ("implied", "unsure") else "false_negative"
         if expected_value is not None and extracted_value is not None and extracted_value != expected_value:
             return "wrong_value"
         return "correct"

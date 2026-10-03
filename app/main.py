@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from . import db
 from pipeline.ingest import Element
-from pipeline.extract import extract_facts
+from pipeline.extract import extract_facts, _months
 from pipeline.engine import analyze
 from pipeline.run import process
 
@@ -113,7 +113,7 @@ def row_case(r, names, last=None):
         assignee=names.get(r["assignee_id"]), assignee_id=r["assignee_id"], md=names.get(r["md_id"]), md_id=r["md_id"],
         received_at=r["received_at"], due_at=r["due_at"], decided_at=r["decided_at"], engine=r["engine"],
         extractor=f.get("_extractor", "rule_based"), last_event=(last or {}).get(r["id"]),
-        ai_action=a["action"], ai_missing=len(a["gate"]["questions"]), sla=db.sla_status(r["due_at"], r["decided_at"], r["priority"]))
+        ai_action=a["action"], ai_missing=len(a["gate"]["questions"]), ai_unsure=len(a["gate"].get("unsure", [])), sla=db.sla_status(r["due_at"], r["decided_at"], r["priority"]))
 
 
 def names_map(c):
@@ -356,6 +356,74 @@ def addendum(cid: str, body: Addendum, request: Request):
     return case_detail(c, cid)
 
 
+FACT_KEYS = ("expected_los_days", "comorbidities", "post_op_needs", "indication_evidence", "conservative_treatment", "shared_decision_making")
+INDICATIONS = ("instability", "deformity", "pseudarthrosis", "neural compression")
+CAN_BE_NONE = ("comorbidities", "post_op_needs", "indication_evidence")
+
+
+class FixFact(BaseModel):
+    kind: str  # found | none | missing
+    value: str = ""
+    page: int | None = None
+
+
+@app.post("/api/cases/{cid}/facts/{key}")
+def fix_fact(cid: str, key: str, body: FixFact, request: Request):
+    """The nurse's feedback on what the AI read. Saves her answer, logs it, and re-checks the case.
+    Every correction is a signal about how well the AI reads (see docs/METRICS_FRAMEWORK.md)."""
+    c = db.conn()
+    u = me(request, c)
+    check_case_access(c, u, cid)
+    if u["role"] not in ("nurse", "medical_director"):
+        raise HTTPException(403, "Only a nurse or medical director can correct what the AI read.")
+    if key not in FACT_KEYS:
+        raise HTTPException(404, "Unknown fact")
+    r = c.execute("SELECT * FROM cases WHERE id=?", (cid,)).fetchone()
+    if not r:
+        raise HTTPException(404, "Case not found")
+    if r["status"] in ("approved", "denied"):
+        raise HTTPException(400, "This case already has a decision")
+    facts = json.loads(r["facts"])
+    old = facts.get(key, {}).get("status", "missing")
+    kind, v = body.kind, body.value.strip()
+    if kind == "found":
+        if key == "shared_decision_making":
+            v = v or "Documented"
+        if not v:
+            raise HTTPException(400, "Write what the packet says")
+        if key == "expected_los_days":
+            try:
+                value = int(v)
+            except ValueError:
+                raise HTTPException(400, "Enter the number of midnights, like 3")
+        elif key == "comorbidities":
+            value = [x.strip() for x in re.split(r"[,;]", v) if x.strip()]
+        elif key == "indication_evidence":
+            if v.lower() not in INDICATIONS:
+                raise HTTPException(400, "Choose one: " + ", ".join(INDICATIONS))
+            value = v.lower()
+        else:
+            value = v
+        fact = dict(status="found", value=value, page=body.page, quote=f"Confirmed by {u['name']}: {v}", note=None, confirmed_by=u["name"])
+        if key == "conservative_treatment":
+            fact["duration_months"] = _months(v)
+    elif kind == "none":
+        if key not in CAN_BE_NONE:
+            raise HTTPException(400, "This fact cannot be marked as none")
+        fact = dict(status="none", value=[] if key == "comorbidities" else None, page=body.page, quote=f"Confirmed by {u['name']}: the packet says there is none", note=None, confirmed_by=u["name"])
+    elif kind == "missing":
+        fact = dict(status="missing", value=None, page=None, quote=None, note=f"Confirmed missing by {u['name']}", confirmed_by=u["name"])
+    else:
+        raise HTTPException(400, "kind must be found, none or missing")
+    facts[key] = fact
+    facts.setdefault("_corrections", []).append(dict(fact=key, was=old, now=fact["status"], by=u["name"], at=db.now()))
+    res = analyze(facts)
+    c.execute("UPDATE cases SET facts=?, analysis=? WHERE id=?", (json.dumps(facts), json.dumps(res), cid))
+    db.audit(c, cid, u["id"], "fact_corrected", f"{key}: {old} -> {fact['status']}. Recommendation is now: {res['action']}")
+    c.commit()
+    return case_detail(c, cid)
+
+
 @app.post("/api/cases")
 def upload(request: Request, file: UploadFile = File(...), assignee_id: int | None = Form(None)):
     c = db.conn()
@@ -415,7 +483,7 @@ def evals(request: Request):
         results.append(dict(file=m["file"], label=m["label"], expected_action=exp["action"], actual_action=res["action"],
                             expected_missing=sorted(exp["missing"]), actual_missing=missing,
                             passed=res["action"] == exp["action"] and missing == sorted(exp["missing"]),
-                            never_denied=res["action"] in ("approve", "pend", "escalate")))
+                            never_denied=res["action"] in ("approve", "pend", "escalate", "verify")))
     return dict(results=results, passed=sum(r["passed"] for r in results), total=len(results),
                 zero_denials=all(r["never_denied"] for r in results),
                 caveat="These packets and the rule-based extractor were written together, so a pass shows the pipeline works, not that it is accurate. Accuracy needs messier packets and the model extractor.")

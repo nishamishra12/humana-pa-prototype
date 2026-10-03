@@ -37,7 +37,7 @@ function clock(c) {
   return { text: t + " left · " + label, cls: h < (c.priority === "expedited" ? 24 : 48) ? "soon" : "" };
 }
 const STATUS = { new: "New", in_review: "In review", pended: "Pended", escalated: "Escalated", approved: "Approved", denied: "Denied" };
-const AI = { approve: ["Recommends approve", "ok", "✓"], pend: ["Missing info", "warn", "?"], escalate: ["Needs physician", "escalated", "↑"], no_policy: ["No curated policy", "bad", "!"] };
+const AI = { approve: ["Recommends approve", "ok", "✓"], pend: ["Missing info", "warn", "?"], escalate: ["Needs physician", "escalated", "↑"], no_policy: ["No curated policy", "bad", "!"], verify: ["Check the packet", "warn", "?"] };
 const ROLE_CHIP = { admin: ["Intake", "plain"], nurse: ["Nurse", "new"], medical_director: ["Medical director", "escalated"] };
 
 /* ---------- login ---------- */
@@ -124,7 +124,7 @@ function listHtml() {
         <div class="row-sub">${esc(c.id)} · CPT ${esc(c.cpt || "-")} · ${esc(c.procedure.replace("Elective inpatient admission, ", ""))}</div>
         <div class="row-meta"><span class="chip ${c.status}">${STATUS[c.status]}</span>
           ${c.last_event === "provider_reply" && c.status === "in_review" ? `<span class="chip ok">Provider replied</span>` : ""}${c.last_event === "returned" && c.status === "in_review" ? `<span class="chip escalated">Returned by director</span>` : ""}
-          ${["approved", "denied"].includes(c.status) ? "" : `<span class="chip ${ai[1]}">${ai[2]} ${ai[0]}${c.ai_action === "pend" ? " (" + c.ai_missing + ")" : ""}</span>`}
+          ${["approved", "denied"].includes(c.status) ? "" : `<span class="chip ${ai[1]}">${ai[2]} ${ai[0]}${c.ai_action === "pend" ? " (" + c.ai_missing + ")" : c.ai_action === "verify" ? " (" + c.ai_unsure + ")" : ""}</span>`}
           ${c.sla === "breached" ? `<span class="chip bad">Breached clock</span>` : c.sla === "soon" ? `<span class="chip warn">Due soon</span>` : ""}
           ${c.priority === "expedited" ? `<span class="chip bad">Expedited</span>` : ""}
           <span class="faint" style="font-size:12px">${c.assignee ? esc(c.assignee.name) : "Unassigned"}</span></div></button>`;
@@ -145,7 +145,7 @@ const FACTS = [
   ["conservative_treatment", "Conservative care", (f) => (f.status === "found" ? f.quote : null)],
   ["shared_decision_making", "Shared decision making", (f) => (f.status === "found" ? "Documented" : null)],
 ];
-const FSTATUS = { found: "Stated", implied: "Implied only", none: "Stated: none", missing: "Not in packet" };
+const FSTATUS = { found: "Stated", implied: "Implied only", none: "Stated: none", missing: "Not in packet", unsure: "Couldn't confirm" };
 
 function detailHtml() {
   S.cites = [];
@@ -159,6 +159,21 @@ function detailHtml() {
         <label class="faint" style="font-size:12px">Assigned <select id="assign" style="width:auto;padding:3px 6px;margin-left:4px">${["", ...S.users.filter((u) => u.role === "nurse").map((u) => u.id)].map((id) => { const u = S.users.find((x) => x.id === id); return `<option value="${id}" ${d.assignee_id === id ? "selected" : ""}>${u ? esc(u.name) : "Unassigned"}</option>`; }).join("")}</select></label></div></div>
     <div class="tabs" role="tablist">${[["review", "Review"], ["packet", `Packet (${new Set(d.elements.map((e) => e.page)).size} pages)`], ["activity", `Activity (${d.comments.length})`]].map(([t, l]) => `<button class="tab ${S.tab === t ? "on" : ""}" role="tab" data-tab="${t}">${l}</button>`).join("")}</div></div>
   <div class="body">${justActedHtml(d)}${S.tab === "review" ? reviewHtml(d, a, ai, done) : S.tab === "packet" ? packetHtml(d) : activityHtml(d)}</div>`;
+}
+
+const FIX_HINT = { expected_los_days: "Number of midnights, like 3", comorbidities: "For example: heart failure, diabetes", post_op_needs: "What care is needed after surgery", conservative_treatment: "What was tried and for how long", shared_decision_making: "Optional note", indication_evidence: "" };
+function fixForm(key) {
+  const none = ["comorbidities", "post_op_needs", "indication_evidence"].includes(key);
+  return `<div class="fixform"><b>What does the packet say?</b>
+    <label><input type="radio" name="fixkind" value="found" checked> It is in the packet</label>
+    ${none ? `<label><input type="radio" name="fixkind" value="none"> The packet says there is none</label>` : ""}
+    <label><input type="radio" name="fixkind" value="missing"> It is not in the packet</label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${key === "indication_evidence"
+      ? `<select id="fixvalue" style="width:auto"><option>instability</option><option>deformity</option><option>pseudarthrosis</option><option>neural compression</option></select>`
+      : `<input id="fixvalue" type="text" placeholder="${esc(FIX_HINT[key] || "")}" style="flex:1;min-width:200px">`}
+      <input id="fixpage" type="number" min="1" placeholder="Page" style="width:90px"></div>
+    <div class="faint" style="font-size:12px">This saves your answer, updates the recommendation, and tells us how well the AI read the packet.</div>
+    <div style="display:flex;gap:8px"><button class="btn primary small" data-savefix="${key}">Save</button><button class="btn small" data-fix="${key}">Cancel</button></div></div>`;
 }
 
 function justActedHtml(d) {
@@ -186,17 +201,18 @@ function reviewHtml(d, a, ai, done) {
   const groups = {};
   a.checklist.forEach((c) => (groups[c.policy_id] ||= { c, items: [] }).items.push(c));
   const pol = Object.fromEntries(a.policies.map((p) => [p.id, p]));
-  const mk = { met: "✓", missing: "?", advisory: "!", not_met: "✕", info: "i" };
-  const stLabel = { met: "Met", missing: "Missing", advisory: "Advisory", not_met: "Not met", info: "Info" };
+  const mk = { met: "✓", missing: "?", unsure: "?", advisory: "!", not_met: "✕", info: "i" };
+  const stLabel = { met: "Met", missing: "Missing", unsure: "Not sure", advisory: "Advisory", not_met: "Not met", info: "Info" };
+  const canFix = !done && ["nurse", "medical_director"].includes(S.user.role);
   return `
   ${questionCardHtml(d)}
   ${d.sla === "breached" ? `<div class="banner">This case has passed its ${d.priority === "expedited" ? "72-hour expedited" : "7-day standard"} CMS decision clock. The clock is a guardrail, not a target: it should never be breached, so this needs attention now.</div>` : ""}
-  <div class="reco ${a.action}"><div class="icon">${ai[2]}</div><div><h3>${a.action === "approve" ? "Recommendation: approve" : a.action === "pend" ? "Recommendation: pend and ask one specific question" : "Recommendation: escalate to a medical director"}</h3>
+  <div class="reco ${a.action}"><div class="icon">${ai[2]}</div><div><h3>${a.action === "approve" ? "Recommendation: approve" : a.action === "pend" ? "Recommendation: pend and ask one specific question" : a.action === "verify" ? "Recommendation: check the packet first" : "Recommendation: escalate to a medical director"}</h3>
     <p>${esc(a.rationale)}</p><div class="note">The system can recommend approve, pend or escalate. It cannot deny. Only a medical director can.</div></div></div>
 
   <div class="card"><h3>What the packet says</h3><div class="facts">
     ${FACTS.map(([key, label, fmt]) => { const f = d.facts[key] || { status: "missing" }; const v = fmt(f);
-      return `<div class="fact-label">${label}</div><div><span class="status-dot dot-${f.status}"></span>${v ? esc(v) : `<span class="muted">${FSTATUS[f.status]}</span>`}${f.status === "implied" ? `<div class="quote">“${esc(f.quote)}” — ${esc(f.note || "")}</div>` : ""}</div><div>${citeBtn(f.page, f.quote)}</div>`; }).join("")}
+      return `<div class="fact-label">${label}</div><div><span class="status-dot dot-${f.status}"></span>${v ? esc(v) : `<span class="muted">${FSTATUS[f.status]}</span>`}${f.status === "implied" ? `<div class="quote">“${esc(f.quote)}” — ${esc(f.note || "")}</div>` : ""}${["unsure", "missing"].includes(f.status) && f.note ? `<div class="quote">${esc(f.note)}</div>` : ""}${f.confirmed_by ? `<div class="faint" style="font-size:12px">Confirmed by ${esc(f.confirmed_by)}</div>` : ""}</div><div style="display:flex;gap:6px;align-items:center;justify-content:flex-end">${citeBtn(f.page, f.quote)}${canFix ? `<button class="btn small ${f.status === "unsure" ? "primary" : "ghost"}" data-fix="${key}">${f.status === "unsure" ? "Check" : "Fix"}</button>` : ""}</div>${S.fix === key ? fixForm(key) : ""}`; }).join("")}
   </div></div>
 
   <div class="card"><h3>Criteria checked, in order of authority</h3>
@@ -321,6 +337,14 @@ function bind() {
   on("[data-cite]", (el) => { const c = S.cites[+el.dataset.cite]; S.highlight = c; S.tab = "packet"; render(); const pg = document.getElementById("pg" + c.page); if (pg) pg.scrollIntoView({ block: "center" }); });
   on("[data-act]", (el) => { S.act = S.act === el.dataset.act ? null : el.dataset.act; if (el.dataset.act === "approve" && S.detail.analysis.action === "approve") return submit("approve"); render(); });
   on("[data-go]", (el) => submit(el.dataset.go));
+  on("[data-fix]", (el) => { S.fix = S.fix === el.dataset.fix ? null : el.dataset.fix; render(); });
+  on("[data-savefix]", async (el) => {
+    const key = el.dataset.savefix, kind = (document.querySelector('input[name="fixkind"]:checked') || {}).value || "found";
+    const page = document.getElementById("fixpage").value;
+    const d = await api(`/cases/${S.caseId}/facts/${key}`, { method: "POST", body: { kind, value: kind === "found" ? document.getElementById("fixvalue").value : "", page: page ? +page : null } });
+    S.detail = d; S.fix = null; await loadList(); S.user = await api("/me"); render();
+    toast("Saved. The recommendation is now: " + ({ approve: "approve", pend: "pend", escalate: "escalate", verify: "check the packet" }[d.analysis.action] || d.analysis.action));
+  });
   on("[data-tag]", (el) => { const t = document.getElementById("cbody"); t.value += (t.value && !t.value.endsWith(" ") ? " " : "") + "@" + el.dataset.tag + " "; t.focus(); });
   const out = document.getElementById("out"); if (out) out.onclick = guard(async () => { await api("/logout", { method: "POST" }); S.user = null; S.detail = null; S.caseId = null; renderLogin(); });
   const q = document.getElementById("q"); if (q) q.oninput = guard(debounce(async () => { S.q = q.value; await loadList(); render(); const nq = document.getElementById("q"); nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length); }, 250));
