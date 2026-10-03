@@ -9,7 +9,7 @@ async function api(path, opts = {}) {
   const o = { headers: {}, credentials: "same-origin", ...opts };
   if (o.body && !(o.body instanceof FormData)) { o.headers["Content-Type"] = "application/json"; o.body = JSON.stringify(o.body); }
   const r = await fetch("/api" + path, o);
-  if (r.status === 401 && !path.startsWith("/login")) { S.user = null; renderLogin(); throw new Error("signed out"); }
+  if (r.status === 401 && !path.startsWith("/login")) { S.user = null; S.loginNote = "Your session ended. Sign in again."; renderLogin(); throw new Error("signed out"); }
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(j.detail || "Something went wrong");
   return j;
@@ -46,13 +46,14 @@ async function renderLogin() {
   $app.innerHTML = `<div class="login"><div class="login-card">
     <div class="brand"><span class="brand-mark">PA</span> PA Desk</div>
     <p class="muted" style="margin:10px 0 0;line-height:1.5">Prior authorization decision support. Every case is made-up data.</p>
+    ${S.loginNote ? `<div class="banner" style="margin-top:12px">${esc(S.loginNote)}</div>` : ""}
     <form id="lf"><div class="field"><label for="em">Email</label><input id="em" type="email" autocomplete="username" required></div>
     <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required></div>
     <button class="btn primary" style="margin-top:16px;width:100%" type="submit">Sign in</button></form>
     <div class="demo-list"><div class="faint" style="font-size:12px">Demo accounts (password: demo1234)</div>
     ${accts.map((a) => `<button class="demo-btn" data-email="${esc(a.email)}"><span><b>${esc(a.name)}</b><br><span class="faint" style="font-size:12px">${esc(a.title)}</span></span><span class="chip ${ROLE_CHIP[a.role][1]}">${ROLE_CHIP[a.role][0]}</span></button>`).join("")}</div>
   </div></div>`;
-  const doLogin = guard(async (email, password) => { S.user = await api("/login", { method: "POST", body: { email, password } }); S.view = S.user.role === "medical_director" ? "mine" : S.user.role === "admin" ? "unassigned" : "attention"; S.caseId = null; await boot(); });
+  const doLogin = guard(async (email, password) => { S.loginNote = null; S.user = await api("/login", { method: "POST", body: { email, password } }); S.view = S.user.role === "medical_director" ? "decide" : S.user.role === "admin" ? "unassigned" : "attention"; S.caseId = null; await boot(); });
   document.getElementById("lf").onsubmit = (e) => { e.preventDefault(); doLogin(document.getElementById("em").value, document.getElementById("pw").value); };
   document.querySelectorAll(".demo-btn").forEach((b) => (b.onclick = () => doLogin(b.dataset.email, "demo1234")));
 }
@@ -94,27 +95,27 @@ function render() {
     ? [["unassigned", "Needs assignment"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"], ["all", "Everything"]]
     : S.user.role === "nurse"
       ? [["attention", "Needs my review"], ["at_risk", "At risk"], ["mine", "All mine"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"]]
-      : [["attention", "Needs my review"], ["at_risk", "At risk"], ["mine", "All mine"], ["pended", "Pended, waiting on provider"], ["escalated", "Escalated to physician"], ["done", "Decided"], ["all", "Everything"]];
+      : [["decide", "Waiting for my decision"], ["done", "Decided"], ["all", "Everything"]];
   $app.innerHTML = `<div class="shell">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">PA</span> PA Desk</div>
       <input class="search" id="q" type="search" placeholder="Search member, case, procedure" value="${esc(S.q)}" aria-label="Search cases">
       <div class="spacer"></div>
-      <label class="btn small" style="cursor:pointer">Upload packet<input type="file" id="up" accept="application/pdf" class="sr"></label>
+      ${isMD ? "" : `<label class="btn small" style="cursor:pointer">Upload packet<input type="file" id="up" accept="application/pdf" class="sr"></label>`}
       <div class="bell" style="position:relative"><button class="btn ghost small" id="bell" aria-label="Notifications">🔔</button>${S.user.unread ? `<span class="badge-dot">${S.user.unread}</span>` : ""}${S.pop === "notif" ? notifPop() : ""}</div>
       <div class="userchip"><span class="avatar ${isMD ? "md" : isAdmin ? "admin" : ""}">${esc(initials(S.user.name))}</span><div style="line-height:1.2"><b>${esc(S.user.name)}</b><br><span class="faint" style="font-size:12px">${esc(S.user.title)}</span></div><button class="btn ghost small" id="out">Sign out</button></div>
     </header>
     <div class="main">
       <nav class="nav" aria-label="Queues"><h4>Queues</h4>
         ${views.map(([v, l]) => `<button class="nav-item ${S.view === v ? "on" : ""}" data-view="${v}"><span>${l}</span><span class="count">${S.counts[v] ?? ""}</span></button>`).join("")}
-        <h4>Quality</h4><button class="nav-item ${S.view === "evals" ? "on" : ""}" data-view="evals"><span>Evals</span></button></nav>
+        ${S.user.role === "nurse" ? "" : `<h4>Quality</h4><button class="nav-item ${S.view === "evals" ? "on" : ""}" data-view="evals"><span>Evals</span></button>`}</nav>
       ${S.view === "evals" ? `<div style="grid-column: 2 / 4; overflow:auto">${evalsHtml()}</div>` : `<section class="list">${listHtml()}</section><section class="detail">${S.caseId && S.detail ? detailHtml() : `<div class="empty">Select a case to review.</div>`}</section>`}
     </div></div>`;
   bind();
 }
 
 function listHtml() {
-  const title = { attention: "Needs my review", at_risk: "At risk", mine: "All mine", unassigned: "Needs assignment", pended: "Pended", escalated: "Escalated", done: "Decided", all: "Everything" }[S.view];
+  const title = { attention: "Needs my review", at_risk: "At risk", mine: "All mine", decide: "Waiting for my decision", unassigned: "Needs assignment", pended: "Pended", escalated: "Escalated", done: "Decided", all: "Everything" }[S.view];
   return `<div class="list-head"><h3>${title}</h3><div class="faint" style="font-size:12.5px;margin-top:2px">${S.cases.length} case${S.cases.length === 1 ? "" : "s"}</div></div>` +
     (S.cases.length ? S.cases.map((c) => {
       const k = clock(c), ai = AI[c.ai_action];
@@ -122,6 +123,7 @@ function listHtml() {
         <div class="row-top"><span class="row-name">${esc(c.member_name)}</span><span class="clock ${k.cls}">${esc(k.text)}</span></div>
         <div class="row-sub">${esc(c.id)} · CPT ${esc(c.cpt || "-")} · ${esc(c.procedure.replace("Elective inpatient admission, ", ""))}</div>
         <div class="row-meta"><span class="chip ${c.status}">${STATUS[c.status]}</span>
+          ${c.last_event === "provider_reply" && c.status === "in_review" ? `<span class="chip ok">Provider replied</span>` : ""}${c.last_event === "returned" && c.status === "in_review" ? `<span class="chip escalated">Returned by director</span>` : ""}
           ${["approved", "denied"].includes(c.status) ? "" : `<span class="chip ${ai[1]}">${ai[2]} ${ai[0]}${c.ai_action === "pend" ? " (" + c.ai_missing + ")" : ""}</span>`}
           ${c.sla === "breached" ? `<span class="chip bad">Breached clock</span>` : c.sla === "soon" ? `<span class="chip warn">Due soon</span>` : ""}
           ${c.priority === "expedited" ? `<span class="chip bad">Expedited</span>` : ""}
@@ -156,7 +158,20 @@ function detailHtml() {
       <div style="display:grid;gap:6px;justify-items:end"><span class="chip ${d.status}">${STATUS[d.status]}</span><span class="clock ${k.cls}">${esc(k.text)}</span>
         <label class="faint" style="font-size:12px">Assigned <select id="assign" style="width:auto;padding:3px 6px;margin-left:4px">${["", ...S.users.filter((u) => u.role === "nurse").map((u) => u.id)].map((id) => { const u = S.users.find((x) => x.id === id); return `<option value="${id}" ${d.assignee_id === id ? "selected" : ""}>${u ? esc(u.name) : "Unassigned"}</option>`; }).join("")}</select></label></div></div>
     <div class="tabs" role="tablist">${[["review", "Review"], ["packet", `Packet (${new Set(d.elements.map((e) => e.page)).size} pages)`], ["activity", `Activity (${d.comments.length})`]].map(([t, l]) => `<button class="tab ${S.tab === t ? "on" : ""}" role="tab" data-tab="${t}">${l}</button>`).join("")}</div></div>
-  <div class="body">${S.tab === "review" ? reviewHtml(d, a, ai, done) : S.tab === "packet" ? packetHtml(d) : activityHtml(d)}</div>`;
+  <div class="body">${justActedHtml(d)}${S.tab === "review" ? reviewHtml(d, a, ai, done) : S.tab === "packet" ? packetHtml(d) : activityHtml(d)}</div>`;
+}
+
+function justActedHtml(d) {
+  if (!S.justActed || S.justActed.id !== d.id) return "";
+  const next = S.cases.find((c) => c.id !== d.id && !["approved", "denied"].includes(c.status));
+  return `<div class="banner" style="background:var(--ok-soft);color:var(--ok);display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><span><b>Saved.</b> ${esc(S.justActed.msg)}</span>${next ? `<button class="btn small primary" data-case="${next.id}">Next case: ${esc(next.member_name)}</button>` : `<span>No more cases in this list.</span>`}</div>`;
+}
+
+function questionCardHtml(d) {
+  if (d.status !== "escalated") return "";
+  const q = [...d.comments].reverse().find((c) => c.kind === "escalation");
+  if (!q) return "";
+  return `<div class="card" style="border-color:var(--esc)"><h3>Question for ${esc(d.md ? d.md.name : "the medical director")}</h3><p style="margin:0 0 6px;line-height:1.55">${esc(q.body.replace(/^@\w+\s*/, ""))}</p><div class="faint" style="font-size:12.5px">From ${q.user ? esc(q.user.name) : "the nurse"}, ${ago(q.created_at)}</div></div>`;
 }
 
 function reviewHtml(d, a, ai, done) {
@@ -174,6 +189,7 @@ function reviewHtml(d, a, ai, done) {
   const mk = { met: "✓", missing: "?", advisory: "!", not_met: "✕", info: "i" };
   const stLabel = { met: "Met", missing: "Missing", advisory: "Advisory", not_met: "Not met", info: "Info" };
   return `
+  ${questionCardHtml(d)}
   ${d.sla === "breached" ? `<div class="banner">This case has passed its ${d.priority === "expedited" ? "72-hour expedited" : "7-day standard"} CMS decision clock. The clock is a guardrail, not a target: it should never be breached, so this needs attention now.</div>` : ""}
   <div class="reco ${a.action}"><div class="icon">${ai[2]}</div><div><h3>${a.action === "approve" ? "Recommendation: approve" : a.action === "pend" ? "Recommendation: pend and ask one specific question" : "Recommendation: escalate to a medical director"}</h3>
     <p>${esc(a.rationale)}</p><div class="note">The system can recommend approve, pend or escalate. It cannot deny. Only a medical director can.</div></div></div>
@@ -336,6 +352,7 @@ const submit = guard(async (kind) => {
   else d = await api(`/cases/${id}/action`, { method: "POST", body: { action: kind, note: v("note") } });
   S.detail = d; S.act = null;
   if (kind === "comment") S.tab = "activity";
+  if (["approve", "pend", "escalate", "deny", "return"].includes(kind)) S.justActed = { id, msg: { approve: "Approved.", pend: "Question sent to the provider.", escalate: "Sent to the medical director.", deny: "Denied. Your reason is on the record.", return: "Returned to the nurse." }[kind] };
   const msgs = { approve: "Approved", pend: "Question sent. Case pended", escalate: "Escalated and tagged", deny: "Denied with rationale recorded", return: "Returned to nurse", reply: "Provider reply added and case re-analyzed", comment: "Comment posted" };
   toast(msgs[kind]);
   await loadList(); S.user = await api("/me"); render();

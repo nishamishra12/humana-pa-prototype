@@ -96,7 +96,15 @@ def users(request: Request):
     return [user_dict(u) for u in c.execute("SELECT * FROM users ORDER BY id")]
 
 
-def row_case(r, names):
+def last_events(c):
+    """Most recent handoff-type event per case, so lists can say 'Provider replied' etc."""
+    out = {}
+    for e in c.execute("SELECT case_id, action FROM audit WHERE action IN ('provider_reply','returned','assigned','pended','escalated','approved','approved_override','denied') ORDER BY id"):
+        out[e["case_id"]] = e["action"]
+    return out
+
+
+def row_case(r, names, last=None):
     a = json.loads(r["analysis"])
     f = json.loads(r["facts"])
     return dict(
@@ -104,7 +112,7 @@ def row_case(r, names):
         procedure=r["procedure_name"], cpt=r["cpt"], setting=r["setting"], status=r["status"], priority=r["priority"],
         assignee=names.get(r["assignee_id"]), assignee_id=r["assignee_id"], md=names.get(r["md_id"]), md_id=r["md_id"],
         received_at=r["received_at"], due_at=r["due_at"], decided_at=r["decided_at"], engine=r["engine"],
-        extractor=f.get("_extractor", "rule_based"),
+        extractor=f.get("_extractor", "rule_based"), last_event=(last or {}).get(r["id"]),
         ai_action=a["action"], ai_missing=len(a["gate"]["questions"]), sla=db.sla_status(r["due_at"], r["decided_at"], r["priority"]))
 
 
@@ -119,8 +127,9 @@ def list_cases(request: Request, view: str = "all", q: str = ""):
     db.raise_sla_alerts(c)
     c.commit()
     names = names_map(c)
+    last = last_events(c)
     mine_only = u["role"] == "nurse"
-    rows = [row_case(r, names) for r in c.execute("SELECT * FROM cases ORDER BY received_at DESC")]
+    rows = [row_case(r, names, last) for r in c.execute("SELECT * FROM cases ORDER BY received_at DESC")]
     if mine_only:
         rows = [r for r in rows if r["assignee_id"] == u["id"]]
     open_ = ("new", "in_review", "pended", "escalated")
@@ -134,27 +143,30 @@ def list_cases(request: Request, view: str = "all", q: str = ""):
             return r["status"] in open_ and r["sla"] in at_risk
         if view == "unassigned":
             return r["status"] in open_ and not r["assignee_id"]
+        if view == "decide":
+            return r["status"] == "escalated" and r["md_id"] == u["id"]
         if view in ("pended", "escalated"):
             return r["status"] == view
         if view == "done":
             return r["status"] in ("approved", "denied")
         return True
     rows = [r for r in rows if keep(r)]
-    if view == "at_risk":
-        rows.sort(key=lambda r: r["due_at"])
+    if view in ("attention", "mine", "at_risk", "pended", "escalated", "decide"):
+        rows.sort(key=lambda r: r["due_at"])  # least time left first; breached cases come first
     if view == "unassigned":
         rows.sort(key=lambda r: r["received_at"])
     if q:
         ql = q.lower()
         rows = [r for r in rows if ql in (r["member_name"] + r["id"] + r["procedure"] + r["member_id"]).lower()]
     counts = {}
-    allrows = [row_case(r, names) for r in c.execute("SELECT * FROM cases")]
+    allrows = [row_case(r, names, last) for r in c.execute("SELECT * FROM cases")]
     if mine_only:
         allrows = [r for r in allrows if r["assignee_id"] == u["id"]]
     counts["all"] = len(allrows)
     counts["mine"] = sum(1 for r in allrows if r["status"] in open_ and (r["assignee_id"] == u["id"] or r["md_id"] == u["id"]))
     counts["attention"] = sum(1 for r in allrows if r["status"] in ("new", "in_review") and r["assignee_id"] == u["id"])
     counts["at_risk"] = sum(1 for r in allrows if r["status"] in open_ and r["sla"] in at_risk)
+    counts["decide"] = sum(1 for r in allrows if r["status"] == "escalated" and r["md_id"] == u["id"])
     counts["unassigned"] = sum(1 for r in allrows if r["status"] in open_ and not r["assignee_id"])
     counts["pended"] = sum(1 for r in allrows if r["status"] == "pended")
     counts["escalated"] = sum(1 for r in allrows if r["status"] == "escalated")
@@ -167,7 +179,7 @@ def case_detail(c, cid):
     if not r:
         raise HTTPException(404, "Case not found")
     names = names_map(c)
-    d = row_case(r, names)
+    d = row_case(r, names, last_events(c))
     d["facts"] = json.loads(r["facts"])
     d["analysis"] = json.loads(r["analysis"])
     d["elements"] = [dict(page=e["page"], type=e["type"], text=e["text"]) for e in
@@ -209,8 +221,11 @@ def assign(cid: str, body: Assign, request: Request):
     c = db.conn()
     u = me(request, c)
     check_case_access(c, u, cid)
+    old = c.execute("SELECT assignee_id FROM cases WHERE id=?", (cid,)).fetchone()
     c.execute("UPDATE cases SET assignee_id=? WHERE id=?", (body.user_id, cid))
     db.audit(c, cid, u["id"], "assigned", f"Assigned to user {body.user_id}")
+    if body.user_id and body.user_id != u["id"] and (not old or old["assignee_id"] != body.user_id):
+        db.notify(c, body.user_id, cid, f"{u['name']} assigned {cid} to you")
     c.commit()
     return case_detail(c, cid)
 
@@ -268,12 +283,16 @@ def act(cid: str, body: Act, request: Request):
             raise HTTPException(400, "A denial needs the clinical rationale in the note")
         c.execute("UPDATE cases SET status='denied', decided_at=?, md_id=? WHERE id=?", (db.now(), u["id"], cid))
         db.audit(c, cid, u["id"], "denied", note)
+        if r["assignee_id"] and r["assignee_id"] != u["id"]:
+            db.notify(c, r["assignee_id"], cid, f"{u['name']} denied {cid}")
     elif a == "approve":
         if ai != "approve" and not note:
             raise HTTPException(400, "The system did not recommend approval. Add your reason to override.")
         c.execute("UPDATE cases SET status='approved', decided_at=? WHERE id=?", (db.now(), cid))
         db.audit(c, cid, u["id"], "approved" if ai == "approve" else "approved_override",
                  "Approved. Matched the recommendation." if ai == "approve" else f"Override of recommendation '{ai}': {note}")
+        if u["role"] == "medical_director" and r["assignee_id"] and r["assignee_id"] != u["id"]:
+            db.notify(c, r["assignee_id"], cid, f"{u['name']} approved {cid}")
     elif a == "pend":
         q = body.question.strip()
         if not q:
@@ -331,6 +350,8 @@ def addendum(cid: str, body: Addendum, request: Request):
     c.execute("INSERT INTO comments(case_id,user_id,kind,body,created_at) VALUES(?,?,?,?,?)",
               (cid, None, "provider_reply", body.text.strip(), db.now()))
     db.audit(c, cid, u["id"], "provider_reply", f"Provider response added as page {page}; re-analyzed. Recommendation: {res['action']}")
+    if r["assignee_id"]:
+        db.notify(c, r["assignee_id"], cid, f"The provider replied on {cid}. It is back in your queue")
     c.commit()
     return case_detail(c, cid)
 
@@ -339,6 +360,8 @@ def addendum(cid: str, body: Addendum, request: Request):
 def upload(request: Request, file: UploadFile = File(...), assignee_id: int | None = Form(None)):
     c = db.conn()
     u = me(request, c)
+    if u["role"] == "medical_director":
+        raise HTTPException(403, "Intake uploads packets. Medical directors decide escalated cases.")
     if not (file.filename or "").lower().endswith(".pdf"):
         raise HTTPException(400, "Upload a PDF packet")
     dest = os.path.join(UPLOADS, f"{secrets.token_hex(4)}_{os.path.basename(file.filename)}")
@@ -366,7 +389,7 @@ def upload(request: Request, file: UploadFile = File(...), assignee_id: int | No
 def notifications(request: Request):
     c = db.conn()
     u = me(request, c)
-    rows = c.execute("SELECT * FROM notifications WHERE user_id=? ORDER BY created_at DESC LIMIT 30", (u["id"],)).fetchall()
+    rows = c.execute("SELECT * FROM notifications WHERE user_id=? ORDER BY created_at DESC, id DESC LIMIT 30", (u["id"],)).fetchall()
     return [dict(id=r["id"], case_id=r["case_id"], body=r["body"], read=bool(r["read"]), created_at=r["created_at"]) for r in rows]
 
 
