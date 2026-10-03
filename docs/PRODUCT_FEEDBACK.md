@@ -94,3 +94,42 @@ Open question for her: she mentioned intake being able to escalate. Today the se
 that for admin (escalating to a medical director is a clinical call). Options: keep it blocked
 and let intake reassign or flag a case instead, or deliberately allow a non-clinical "flag for
 review" that does not go through the medical director path. Needs a decision before building.
+
+## F-004 -- Combine user name and Sign out into one profile menu (UX, open)
+2026-10-03, from testing the Admin flow.
+
+Observed: the top bar shows the user's name and a separate "Sign out" button side by side.
+
+Wanted: one profile control (avatar or initials plus name, with a dropdown arrow). Clicking it
+opens a small menu containing Sign out. Room for later items in the same menu (switch demo
+account, theme, notification settings) without crowding the top bar.
+
+Notes: applies to all three personas. The role title (Intake Coordinator, UM Nurse, Medical
+Director) can live in the menu header rather than in the bar, which also frees top-bar space
+for F-005.
+
+## F-005 -- Make search prominent (UX, open)
+2026-10-03, from testing the Admin flow (A9).
+
+Observed: search works, but it did not read as a search. Test A9 looked broken because the field
+was not noticed.
+
+Wanted: a clearly visible search control. Candidates: a wider field with a magnifier icon and
+a stronger border, a keyboard shortcut hint (press / to focus), and a visible placeholder that
+says what it searches ("Search member, case ID or procedure"). Consider showing result count
+as you type.
+
+## F-006 -- Export and the Activity tab are hard to find (UX, open)
+2026-10-03, from testing the Admin flow (A10). Not a defect: the export endpoint and download
+work (verified: 200, correct download headers, about 12.7 KB), and the Activity tab renders
+when a case is opened in the preview pane. The tester could not find the Activity tab, so the
+export action inside it was out of reach.
+
+Wanted: make both discoverable.
+- Move "Export case record" out of the Activity tab into the case header, as a visible action
+  or an overflow menu ("..."), so it is reachable from any tab.
+- Make the Review / Packet / Activity tabs more obvious (larger, clearer selected state).
+
+Not reproduced: I could not see the tab row going missing in my own browser pane. If it is
+hidden at a particular window size or zoom in the tester's browser, a screenshot of that
+screen would pin down whether it is a layout problem as well as a discoverability one.
