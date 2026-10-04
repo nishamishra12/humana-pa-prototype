@@ -61,9 +61,9 @@ const avatar = (name, x, y, size) => add({ name, kind: "image", x, y, w: size, h
 
 // frame
 add({ name: "eyebrow", kind: "text", static: true, x: 0.5, y: 0.3, w: 4, h: 0.28, runs: [{ text: "THE FRICTION", options: { bold: true, fontSize: 11, color: C.green, fontFace: B, charSpacing: 3 } }] });
-add({ name: "title", kind: "text", static: true, x: 0.5, y: 0.55, w: 9, h: 0.75, valign: "middle", runs: [{ text: "Six places this process loses time.", options: { fontSize: 26, color: C.ink, fontFace: H } }] });
-add({ name: "sub", kind: "text", static: true, x: 7.3, y: 0.55, w: 5.53, h: 0.75, align: "right", valign: "middle", runs: [{ text: "Nobody here is making a mistake. The process is.", options: { fontSize: 14, color: C.muted, fontFace: B } }] });
-add({ name: "footer", kind: "text", static: true, x: 0.5, y: 7.1, w: 12.33, h: 0.25, runs: [{ text: "Source: the Humana Use Case 1 brief, and the process on the previous slide.", options: { fontSize: 9, color: C.muted, fontFace: B } }] });
+add({ name: "title", kind: "text", x: 0.5, y: 0.55, w: 9, h: 0.75, valign: "middle", runs: [{ text: "Six places this process loses time.", options: { fontSize: 26, color: C.ink, fontFace: H } }] });
+add({ name: "sub", kind: "text", x: 7.3, y: 0.55, w: 5.53, h: 0.75, align: "right", valign: "middle", runs: [{ text: "Nobody here is making a mistake. The process is.", options: { fontSize: 14, color: C.muted, fontFace: B } }] });
+add({ name: "footer", kind: "text", x: 0.5, y: 7.1, w: 12.33, h: 0.25, runs: [{ text: "Source: the Humana Use Case 1 brief, and the process on the previous slide.", options: { fontSize: 9, color: C.muted, fontFace: B } }] });
 
 // the flow, in miniature (static: it is the map the pins land on)
 const NW = 2.0, NY = 1.95, NH = 0.8, XS = [0.5, 3.08, 5.66, 8.24, 10.83];
@@ -108,7 +108,7 @@ const CARDS = [
 ];
 CARDS.forEach(([n, title, desc, who], i) => {
   const x = CX[i % 3], y = CY[Math.floor(i / 3)];
-  const p2 = n === 6;
+  const p2 = false;
   const r = [
     { text: title, options: { bold: true, fontSize: 15, color: C.ink, fontFace: B, breakLine: true } },
     { text: desc, options: { fontSize: 11.5, color: C.muted, fontFace: B, breakLine: true } },
@@ -119,16 +119,57 @@ CARDS.forEach(([n, title, desc, who], i) => {
   add({ name: "Num" + n, kind: "node", x: x + 0.15, y: y + 0.15, w: 0.34, h: 0.34, fill: p2 ? C.purple : C.coral, line: p2 ? C.purple : C.coral, lineW: 1, radius: 0.17, align: "center", margin: [0, 0, 0, 0], runs: [{ text: String(n), options: { bold: true, fontSize: 11, color: C.white, fontFace: B } }] });
 });
 
+
+// ---- act two: the same frictions, now in federal rules (replaces the six cards) ----
+add({ name: "titleB", kind: "text", x: 0.5, y: 0.55, w: 9, h: 0.75, valign: "middle", runs: [{ text: "Federal rules now put a clock on all of this.", options: { fontSize: 26, color: C.ink, fontFace: H } }] });
+add({ name: "subB", kind: "text", x: 7.3, y: 0.55, w: 5.53, h: 0.75, align: "right", valign: "middle", runs: [{ text: "Applies to Medicare Advantage plans, including Humana's.", options: { fontSize: 14, color: C.muted, fontFace: B } }] });
+add({ name: "footerB", kind: "text", x: 0.5, y: 7.1, w: 12.33, h: 0.25, runs: [{ text: "Sources: CMS-0057-F final rule and fact sheet (cms.gov). 42 CFR 422.568(b).", options: { fontSize: 9, color: C.muted, fontFace: B } }] });
+const col = (name, i, color, soft, hdr, title, bullets) => add({
+  name, kind: "node", x: CX[i], y: 3.38, w: CW, h: 2.55, fill: C.white, line: color, lineW: 1.5, radius: 0.08, valign: "top", margin: [0.16, 0.18, 0.1, 0.18],
+  runs: [
+    { text: hdr, options: { bold: true, fontSize: 10, color, fontFace: B, charSpacing: 2, breakLine: true, paraSpaceAfter: 4 } },
+    { text: title, options: { bold: true, fontSize: 16, color: C.ink, fontFace: B, breakLine: true, paraSpaceAfter: 8 } },
+    ...bullets.map((b, k) => ({ text: b, options: { fontSize: 12.5, color: C.ink, fontFace: B, bullet: { indent: 14 }, breakLine: k < bullets.length - 1, paraSpaceAfter: 5 } })),
+  ],
+});
+col("Fed1", 0, C.coral, C.coralSoft, "IN EFFECT SINCE JANUARY 2026", "Decisions have a deadline", [
+  "72 hours for expedited requests. 7 calendar days for standard ones. An approval or a denial, not a pend.",
+  "A specific reason on every denial.",
+  "Prior authorization results published every year. The first report was due March 31, 2026.",
+]);
+col("Fed2", 1, C.amber, C.amberSoft, "THE RULE ON PENDING", "A pend does not stop the clock", [
+  "Asking the provider for more information does not pause it.",
+  "The plan may extend by up to 14 calendar days.",
+  "Only if it justifies the delay as in the member's interest, and tells the member in writing.",
+]);
+col("Fed3", 2, C.purple, C.purpleSoft, "COMING JANUARY 2027", "The member gets a window", [
+  "Four data interfaces (FHIR APIs) go live.",
+  "One of them, the Patient Access API, must show the member where a prior authorization stands.",
+]);
+add({ name: "Banner", kind: "node", x: 0.5, y: 6.1, w: 12.33, h: 0.8, fill: C.green, line: C.green, lineW: 1, radius: 0.08, margin: [0.06, 0.25, 0.06, 0.25], runs: [{ text: "These are not just frictions we feel. Federal rules now set the clock, ask for the reason, and make the results public. Getting every case to a decision inside that clock matters more than ever.", options: { fontSize: 14, bold: true, color: C.white, fontFace: B } }] });
+
 const FI = (name, delay = 0, dur = 500) => ({ t: "fadeIn", name, delay, dur });
-const slots = CARDS.map(([n]) => ({ hold: 0, fx: [FI("Card" + n), FI("Num" + n), FI("Pin" + n, 150)] }));
+const FO = (name, delay = 0, dur = 300) => ({ t: "fadeOut", name, delay, dur });
+const slots = [
+  ...CARDS.map(([n]) => ({ hold: 0, fx: [FI("Card" + n), FI("Num" + n), FI("Pin" + n, 150)] })),
+  // click 7: the six cards give way to the federal view
+  { hold: 0, fx: [...CARDS.flatMap(([n]) => [FO("Card" + n), FO("Num" + n), FO("Pin" + n)]), FO("title"), FO("sub"), FO("footer"), FI("titleB", 400), FI("subB", 400), FI("footerB", 400), FI("Fed1", 450)] },
+  { hold: 0, fx: [FI("Fed2")] },
+  { hold: 0, fx: [FI("Fed3")] },
+  { hold: 0, fx: [FI("Banner")] },
+];
 
 const STEP_NOTES = [
-  "First, reading by hand. The nurse reads all fourteen pages to find the same few facts. The brief says it plainly: clear-cut cases take almost as long as the hard ones, because the reading and matching still happen by hand.",
+  "First, reading by hand. The nurse reads all fourteen pages to find the same few facts. The brief says clear-cut cases take almost as long as the hard ones, because the reading and matching still happen by hand.",
   "Second, messy input. Packets come in by fax or portal, and format and quality change from one office to the next. Intake and the nurse inherit that.",
-  "Third, hunting instead of deciding. Benefits, eligibility, clinical policy, and provider systems sit in different places. No one view holds the full picture, so people spend their time looking, not judging.",
-  "Fourth, decisions vary. Two reviewers can read the same packet and land in different places. That is a fairness problem for the member and a trust problem for the provider.",
-  "Fifth, the pend loop. In John Doe's case, a detail a cleaner read could have caught in minutes sends the packet back to the provider. The case starts from zero, and the clock keeps running. This is the path you just watched.",
-  "Sixth, the member in the dark. John Doe waits for surgery and cannot see where his request stands. We name this one on purpose, and we fix it in phase two. The honest answer to 'why not now?': a member-facing status is only as good as the decision data behind it, so we build the trusted decision record first. It also touches member communications and a regulated status interface, which need their own compliance and security review. And the record we build in phase one is exactly what phase two reads from, so waiting costs us nothing.",
+  "Third, hunting instead of deciding. Benefits, eligibility, clinical policy, and provider systems sit in different places. No one view holds the full picture.",
+  "Fourth, decisions vary. Two reviewers can read the same packet and land in different places.",
+  "Fifth, the pend loop. A detail a cleaner read could have caught in minutes sends the packet back to the provider. The case starts from zero. This is the path you just watched.",
+  "Sixth, the member in the dark. John Doe waits for surgery and cannot see where his request stands. I am not trying to solve that one first. I will come back to it.",
+  "Here is why this is not just our problem. These frictions are now written into federal rules. Since January 2026, a decision is due in 72 hours for an expedited request and 7 calendar days for a standard one. That means an approval or a denial. Every denial needs a specific reason. And plans must publish their prior authorization results every year. The first report was due in March.",
+  "And a pend does not stop that clock. A plan can extend by up to 14 calendar days, but only if it justifies the delay as in the member's interest and tells the member in writing. So every avoidable pend is a documented delay, not a quiet pause.",
+  "Then in January 2027, about three months from now, four data interfaces go live. One of them, the Patient Access API, must show the member where a prior authorization stands. The member will finally have a window into the process.",
+  "So these are not just frictions we feel inside the process. Federal rules now set the clock, ask for the reason, and make the results public. Getting every case to a decision inside that clock matters more than ever.",
 ];
 const NOTES = "";
 const OUT_STEPS_UNUSED = true;
@@ -181,7 +222,7 @@ async function main() {
     });
     await pres.writeFile({ fileName: OUT_STEPS });
     fs.writeFileSync(path.join(__dirname, "preview.html"), preview());
-    if (process.argv.includes("--steps")) [4, 6, 10, 11, 13].forEach((k) => fs.writeFileSync(path.join(__dirname, `preview_s${k}.html`), preview().replace('new URLSearchParams(location.search).get("step")', `"${k}"`)));
+    if (process.argv.includes("--steps")) [6, 8, 10].forEach((k) => fs.writeFileSync(path.join(__dirname, `preview_s${k}.html`), preview().replace('new URLSearchParams(location.search).get("step")', `"${k}"`)));
     console.log("wrote", OUT_STEPS, "|", slots.length, "slides, press Next to walk through");
     return;
   }

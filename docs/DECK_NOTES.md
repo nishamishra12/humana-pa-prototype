@@ -21,12 +21,13 @@ Thread that all four share: member visibility in phase two.
 ## Story order (agreed)
 1. Title
 2. How a prior authorization moves today (built: one slide, 14 clicks)
-3. Six friction points in that process (built: one slide, 6 clicks)
-4. How big the problem is: the AMA and OIG numbers, expedited and standard clocks
-5. Why now: CMS clocks, January 2027 member access, state laws on AI denials
+3. Six friction points, then the federal rules that make them urgent (built: one slide, 10 clicks)
+4. How big the problem is: the AMA and OIG numbers
+5. What the market is doing, then the solution
 
-Each slide answers the question the last one raised. The closing line of slide 2 is
-"every step is somebody doing their job correctly," and slide 3 says where the process hurts.
+The separate "why now" slide is gone. Its content moved onto slide 3, so the federal rules land
+right after the friction points and carry more weight. Slide 2 ends on "every step is somebody
+doing their job correctly." Slide 3 says where the process hurts, then says it is now federal.
 
 ## The six friction points (agreed)
 Pulled from the Humana Use Case 1 brief unless noted.
@@ -34,23 +35,34 @@ Pulled from the Humana Use Case 1 brief unless noted.
 2. Messy input. Fax or portal, and format and quality vary.
 3. Hunting, not deciding. Benefits, eligibility, policy, and provider systems sit apart.
 4. Decisions vary from reviewer to reviewer.
-5. The pend loop. A detail a cleaner read could catch sends the packet back. The case starts from zero and the clock keeps running (the clock point is from CMS-0057-F).
-6. The member in the dark. The brief says members feel the stress of waiting. We name this and fix it in phase two.
+5. The pend loop. A detail a cleaner read could catch sends the packet back. The case starts from zero.
+6. The member in the dark. The brief says members feel the stress of waiting.
 
-No numbers on this slide. The brief gives no baseline numbers, so we keep invented figures out.
-The real numbers go on slide 4.
+The slide does not explain phase two. We say "I am not trying to solve point 6 first" and come
+back to it when we show the solution. No numbers on this part: the brief gives no baseline numbers.
+
+## The federal rules on slide 3 (checked against the sources on 2026-10-03)
+Applies to Medicare Advantage plans, so it covers Humana.
+- **In effect since January 1, 2026 (CMS-0057-F).** Decisions within 72 hours for expedited requests and 7 calendar days for standard requests. A specific reason on every denial. Prior authorization metrics published every year on the plan's website. The first report was due March 31, 2026.
+- **A pend does not stop the clock (42 CFR 422.568(b)).** The plan may extend a standard decision by up to 14 calendar days, only if it justifies the delay as in the enrollee's interest (or the enrollee asks for it), and it must tell the enrollee in writing, including the right to file an expedited grievance. Requesting more information is not itself a pause. This settles the question we left open earlier: the extension still applies alongside the new 7-day clock.
+- **January 1, 2027.** Four APIs go live: Patient Access, Provider Access, Payer-to-Payer, and Prior Authorization. The Patient Access API must include prior authorization information, excluding drugs. That is what gives the member a view of where a request stands.
+- Sources: CMS-0057-F fact sheet on cms.gov; eCFR 42 CFR 422.568.
+
+**Date fix.** The old deck says January 2027 is "fifteen months out." Today is October 2026, so it is about three months away. Slide 3 and the notes now say "about three months." Check the old slides for the same mistake.
+
+Suggested closing line for slide 3: "These are not just frictions we feel. Federal rules now set the clock, ask for the reason, and make the results public."
 
 ## Phase two: why not build member visibility now?
-Someone will ask, "why not just build it now with AI? It is easy." The answer has to hold up.
+Someone will ask, "why not just build it now with AI?" Keep this answer for the solution section, not slide 3.
 - A status shown to a member is only as good as the decision data behind it. We build the trusted decision record first.
-- It touches member communications and a regulated status interface (the CMS Patient Access API, due January 2027). That needs its own compliance and security review.
+- It touches member communications and a regulated status interface. That needs its own compliance and security review.
 - The record built in phase one is exactly what phase two reads from, so waiting costs nothing.
 Rule for the whole deck: every phase has a reason, and we say it out loud.
 
 ## Open items
 - **Intake checks.** In the prototype, intake only uploads the packet. It checks nothing. Decide the minimum checks intake should run (for example: member ID present, procedure code present, readable pages) and add them to the prototype and the process slides.
 - Finish the audience list, striking what each person does not care about.
-- Build slides 4 and 5 from the existing OIG, AMA, and CMS material.
+- Build slide 4 (AMA and OIG numbers) and the market and solution slides.
 - The old deck (14 slides) is out of date. Slides 4 to 14 need to be re-fit to this story.
 
 ## Files
