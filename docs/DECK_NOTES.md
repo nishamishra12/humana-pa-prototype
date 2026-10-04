@@ -61,6 +61,8 @@ The argument: Humana is fast, but when a denial is appealed it is often reversed
 - **Physicians (AMA, 1,000 physicians, December 2025):** 93% say prior authorization can delay care at least some of the time. 26% report a serious adverse event for a patient. These are physician reports, not patient counts.
 - **Dropped:** the 13 hours a week. It is provider time, and we are solving for the plan. No verified public number exists for plan-side reviewer time per request, so any hours-saved figure stays a labeled placeholder in the business case.
 
+Speaking order (her version): fast (1 day, 4 to 11 hours, 9.5 million), then Humana's 64.7% with "I do not claim 65% of denials are wrong", then the wider picture (80.7%, 95%), then the physicians (93%, 26%) as "the other side of the coin, which we may not solve", then the gap: no public figure for plan reviewer hours. A physician reports 13 hours a week. Do not claim reviewers spend the same. With 9.5 million requests and 14 pages each, expect a large share of their shift, and measure it in a pilot (this last part is an inference, not data). Then land: right the first time, speed is a line we do not cross.
+
 Careful wording:
 - Say "an overturned denial is care that was delayed," not "a wrong denial." Humana's own note and KFF both say overturns can come from new information. That supports the point: the first look was missing something.
 - Do not say 65% of all denials are wrong. 97% of Humana denials are never appealed.

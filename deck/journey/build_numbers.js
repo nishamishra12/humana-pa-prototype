@@ -59,9 +59,10 @@ add({ name: "footer", kind: "text", x: 0.5, y: 7.1, w: 12.33, h: 0.25, runs: [{ 
 
 const CW = 4.0, GX = 0.165, CX = [0.5, 0.5 + CW + GX, 0.5 + 2 * (CW + GX)];
 const sect = (name, y, text, color) => add({ name, kind: "text", x: 0.5, y, w: 12.33, h: 0.26, runs: [{ text, options: { bold: true, fontSize: 11, color, fontFace: B, charSpacing: 2 } }] });
-const stat = (name, i, y, h, color, soft, big, label, src) => add({
+const stat = (name, i, y, h, color, soft, big, label, src, tagline) => add({
   name, kind: "node", x: CX[i], y, w: CW, h, fill: soft, line: color, lineW: 1.5, radius: 0.08, valign: "top", margin: [0.1, 0.2, 0.08, 0.2],
   runs: [
+    ...(tagline ? [{ text: tagline, options: { bold: true, fontSize: 9.5, color, fontFace: B, charSpacing: 2, breakLine: true } }] : []),
     { text: big, options: { fontSize: 36, color, fontFace: H, breakLine: true } },
     { text: label, options: { bold: true, fontSize: 12.5, color: C.ink, fontFace: B, breakLine: true, paraSpaceAfter: 4 } },
     { text: src, options: { fontSize: 10, color: C.muted, fontFace: B } },
@@ -69,29 +70,32 @@ const stat = (name, i, y, h, color, soft, big, label, src) => add({
 });
 
 // row 1: Humana is fast, at scale
-sect("S1", 1.5, "HUMANA IS FAST, AT SCALE", C.ok);
-stat("A1", 0, 1.8, 1.4, C.ok, C.okSoft, "1 day", "standard decisions take, on average", "Humana Medicare Advantage, 2025. Federal limit: 7 days.");
-stat("A2", 1, 1.8, 1.4, C.ok, C.okSoft, "4 to 11 hours", "expedited decisions take, on average", "Depends on the contract, 2025. Federal limit: 72 hours.");
-stat("A3", 2, 1.8, 1.4, C.green, C.greenSoft, "9.5 million", "standard requests decided in one year", "Humana, 32 Medicare Advantage contracts, 2025.");
+sect("S1", 1.45, "HUMANA IS FAST, AT SCALE", C.ok);
+stat("A1", 0, 1.72, 1.3, C.ok, C.okSoft, "1 day", "standard decisions take, on average", "Humana Medicare Advantage, 2025. Federal limit: 7 days.");
+stat("A2", 1, 1.72, 1.3, C.ok, C.okSoft, "4 to 11 hours", "expedited decisions take, on average", "Depends on the contract, 2025. Federal limit: 72 hours.");
+stat("A3", 2, 1.72, 1.3, C.green, C.greenSoft, "9.5 million", "standard requests decided in one year", "Humana, 32 Medicare Advantage contracts, 2025.");
 
-// row 2: but a denial that is appealed is often reversed
-sect("S2", 3.38, "BUT WHEN A DENIAL IS APPEALED, IT IS OFTEN REVERSED", C.coral);
-stat("B1", 0, 3.68, 1.5, C.coral, C.coralSoft, "80.7%", "of appealed denials were overturned across Medicare Advantage", "KFF, 2024. 53 million requests, 4.1 million denied.");
-stat("B2", 1, 3.68, 1.5, C.coral, C.coralSoft, "64.7%", "of appealed Humana denials were overturned", "Humana's own federal reports, 2025. Only 2.7% of denials are appealed.");
-stat("B3", 2, 3.68, 1.5, C.coral, C.coralSoft, "95%", "of appealed skilled nursing denials were overturned", "HHS OIG, 19 plans, data from June 2024.");
+// row 2: but a denial that is appealed is often reversed. Humana first, then the wider picture
+sect("S2", 3.14, "BUT WHEN A DENIAL IS APPEALED, IT IS OFTEN REVERSED", C.coral);
+stat("B1", 0, 3.42, 1.55, C.coral, C.coralSoft, "64.7%", "of appealed Humana denials were overturned", "Humana's own federal reports, 2025. Only 2.7% of denials are appealed, so we do not claim 65% of denials are wrong.", "HUMANA");
+stat("B2", 1, 3.42, 1.55, C.coral, C.coralSoft, "80.7%", "of appealed denials were overturned across Medicare Advantage", "KFF, 2024. 53 million requests, 4.1 million denied.", "THE WIDER PICTURE");
+stat("B3", 2, 3.42, 1.55, C.coral, C.coralSoft, "95%", "of appealed skilled nursing denials were overturned", "HHS OIG, 19 plans, data from June 2024.", "THE EXTREME");
 
-// row 3: what physicians see, and the point
-sect("S3", 5.36, "WHAT PHYSICIANS SEE", C.amber);
-stat("C1", 0, 5.66, 1.3, C.amber, C.amberSoft, "93%", "of physicians say it can delay care at least some of the time", "AMA survey of 1,000 physicians, December 2025.");
-stat("C2", 1, 5.66, 1.3, C.amber, C.amberSoft, "26%", "report a serious adverse event for a patient", "Same survey. Physician-reported.");
-add({ name: "Point", kind: "node", x: CX[2], y: 5.66, w: CW, h: 1.3, fill: C.green, line: C.green, lineW: 1, radius: 0.08, margin: [0.1, 0.22, 0.1, 0.22], runs: [{ text: "An overturned denial is care that was delayed.", options: { fontSize: 15, bold: true, color: C.white, fontFace: B, breakLine: true, paraSpaceAfter: 4 } }, { text: "We have to be right the first time.", options: { fontSize: 15, bold: true, color: "D5EBE3", fontFace: B } }] });
+// row 3: the human side, and the point
+sect("S3", 5.1, "THE HUMAN SIDE: WHAT PHYSICIANS REPORT", C.amber);
+stat("C1", 0, 5.38, 1.35, C.amber, C.amberSoft, "93%", "of physicians say it can delay care at least some of the time", "AMA survey of 1,000 physicians, December 2025.");
+stat("C2", 1, 5.38, 1.35, C.amber, C.amberSoft, "26%", "report a serious adverse event for a patient", "Same survey. Physician-reported.");
+add({ name: "Point", kind: "node", x: CX[2], y: 5.38, w: CW, h: 1.35, fill: C.green, line: C.green, lineW: 1, radius: 0.08, margin: [0.1, 0.22, 0.1, 0.22], runs: [{ text: "An overturned denial is care that was delayed.", options: { fontSize: 15, bold: true, color: C.white, fontFace: B, breakLine: true, paraSpaceAfter: 4 } }, { text: "Our goal is not faster. It is right the first time.", options: { fontSize: 15, bold: true, color: "D5EBE3", fontFace: B } }] });
+add({ name: "Gap", kind: "text", x: 0.5, y: 6.8, w: 12.33, h: 0.28, valign: "middle", runs: [{ text: "Not published by Humana or CMS: how many hours plan reviewers spend on prior authorization. That is a number we would measure in a pilot.", options: { fontSize: 11, italic: true, color: C.muted, fontFace: B } }] });
 
 const slots = [];
 const STEP_NOTES = [
-  "Start with the good news. Humana is fast. In its own 2025 reports, a standard decision takes one day on average, against a seven-day federal limit. Expedited decisions take between four and eleven hours, against seventy-two. And it does this at scale: 9.5 million standard requests in a year.",
-  "But fast is not the same as right. When a denial is appealed, it is often reversed. Across all of Medicare Advantage, KFF found 80.7 percent of appealed denials were overturned in 2024. For Humana, its own reports show 64.7 percent. And the Inspector General found 95 percent of appealed skilled nursing denials were overturned. Be careful with these: only a small share of denials are appealed, about 2.7 percent at Humana, so this does not mean most denials are wrong. And an overturn can come from new information. But that is exactly the point. The first look was missing something.",
-  "On the human side, physicians report that prior authorization delays care at least some of the time, 93 percent, and 26 percent say it led to a serious adverse event for a patient. These are physician reports, not patient counts.",
-  "So an overturned denial is care that was delayed. Speed is already good. What we have to get right is the first decision.",
+  "I read Humana's own public reports, and Humana is fast. A standard decision takes one day on average. The federal limit is seven. An expedited decision takes four to eleven hours, and the federal limit is seventy-two. And that is across nine and a half million requests. That is real operational strength.",
+  "But fast is not the same as right. Sixty-five percent of appealed Humana denials were overturned. That comes from Humana's own federal report for 2025. I do not claim sixty-five percent of denials are wrong. Only about three percent of denials are appealed. But the ones that are appealed get reversed most of the time, and an overturn often comes from new information. That is my point. The first look was missing something.",
+  "Zoom out and the problem is bigger. Across all of Medicare Advantage, eighty-one percent of appealed denials were overturned in 2024. And the Inspector General found ninety-five percent of appealed skilled nursing denials were overturned.",
+  "There is another side of the coin. We may not solve this one directly, but it adds color to the problem. Physicians feel it, and they are the people closest to the patient. Ninety-three percent say prior authorization can delay care. Twenty-six percent report a serious adverse event for a patient.",
+  "One more thing. I could not find a report from Humana or from the federal government on how many hours reviewers spend on prior authorization. A physician reports thirteen hours a week. I will not say a utilization nurse spends the same. But with nine and a half million requests, and fourteen pages to read and check against policy on each one, I would expect a big part of their shift goes to this. A pilot is how we would measure it.",
+  "So we want to be right, and stay inside the federal limits. But the biggest goal is to be correct. An overturned denial is care that was delayed. Our goal is not to be faster. Our goal is to be right the first time. And speed becomes a line we do not cross.",
 ];
 const NOTES = "";
 const OUT_STEPS_UNUSED = true;
