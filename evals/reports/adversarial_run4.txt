@@ -1,0 +1,120 @@
+[extract] unreadable AI reply, attempt 1 (JSONDecodeError: Extra data: line 1 column 639 (char 638))
+[extract] unreadable AI reply, attempt 1 (JSONDecodeError: Expecting ',' delimiter: line 1 column 1059 (char 1058))
+[extract] unreadable AI reply, attempt 2 (JSONDecodeError: Expecting ',' delimiter: line 1 column 716 (char 715))
+[extract] AI reading failed (JSONDecodeError: Expecting ',' delimiter: line 1 column 716 (char 715))
+Recommendation matched the expected one: 27/40
+Found it when it was really there:       193/233 (82.8%)
+Claimed it when absent or ruled out:     0/47 (0.0%)
+Sent to the nurse as 'not sure':         33/280 (11.8%)
+Wrong values:                            9
+The system never denied:                 True
+
+DECISION METRICS  (positive group = 'needs a person': pend, escalate or verify)
+  Recall    (needed a person and was flagged):     24/28 = 85.7%   wrong approvals: 4
+  Precision (flagged and really needed a person):  24/26 = 92.3%   over-flags: 2
+  Approve precision (approved and was clean):      10/14 = 71.4%
+  Approve recall    (clean and was approved):      10/12 = 83.3%
+  Exact recommendation match:                      67.5%
+
+FAIL adversarial/adv_001.pdf expected=approve actual=verify (31.9s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['insulin-requiring DM2', 'CKD 3b', 'HTN', 'CAD with 3-vessel disease not revascularized', 'heart failure'] expected=['CKD stage 3b', 'type 2 diabetes on insulin', 'hypertension', 'dual antiplatelet therapy after recent NSTEMI']
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=1.2
+PASS adversarial/adv_002.pdf expected=escalate actual=escalate (31.7s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['ischemic cardiomyopathy / coronary artery disease', 'heart failure (HFrEF, NYHA III)', 'paroxysmal atrial fibrillation (rate controlled)', 'chronic kidney disease stage 3a', 'anemia (Hgb 11.6)'] expected=['paroxysmal atrial fibrillation on apixaban', 'CKD stage 3a', 'dual antithrombotic therapy', 'hypothyroidism']
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=43.5 expected=43.4
+FAIL adversarial/adv_003.pdf expected=escalate actual=approve (32.2s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=3 expected=2.9
+FAIL adversarial/adv_004.pdf expected=approve actual=verify (31.1s)
+      flagged_uncertain  lvef_method                      truth=present  status=unsure   got=None expected=nuclear imaging
+PASS adversarial/adv_005.pdf expected=escalate actual=escalate (23.6s)
+FAIL adversarial/adv_006.pdf expected=escalate actual=verify (26.7s)
+      wrong_value        lvef_percent                     truth=present  status=found    got=32 expected=38
+      flagged_uncertain  lvef_method                      truth=present  status=unsure   got=None expected=cardiac MRI
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=11.9
+PASS adversarial/adv_007.pdf expected=approve actual=approve (27.2s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['CKD 3b (eGFR 44)', 'BPH with prior post-anesthesia urinary retention', 'chronic anticoagulation (warfarin, prior LV apical thrombus)', 'trace ankle edema', 'mitral regurgitation'] expected=['chronic warfarin anticoagulation', 'CKD stage 3b', 'BPH with prior urinary retention']
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=65
+FAIL adversarial/adv_008.pdf expected=pend actual=verify (24.3s)
+      flagged_uncertain  nyha_class                       truth=absent   status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=79
+PASS adversarial/adv_009.pdf expected=verify actual=verify (23.2s)
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=ischemic
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=111
+PASS adversarial/adv_010.pdf expected=approve actual=approve (22.5s)
+      false_negative     optimal_medical_therapy_months   truth=present  status=missing  got=None expected=151.9
+FAIL adversarial/adv_011.pdf expected=escalate actual=pend (23.3s)
+      false_negative     cardiomyopathy_type              truth=present  status=other    got=other expected=other
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=7.3
+FAIL adversarial/adv_012.pdf expected=pend actual=verify (24.3s)
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=ischemic
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=52.0 expected=51.9
+PASS adversarial/adv_013.pdf expected=approve actual=approve (25.2s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['ischemic cardiomyopathy / heart failure with reduced ejection fraction', 'chronic kidney disease stage 3a', 'benign prostatic hyperplasia with prior urinary retention', 'bradycardia on high-dose beta blocker'] expected=['clopidogrel antiplatelet therapy', 'CKD stage 3a', 'bradycardia on beta blocker', 'BPH with prior urinary retention']
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=83.3
+PASS adversarial/adv_014.pdf expected=verify actual=verify (19.8s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['CKD 4 (eGFR 24)', 'Type 2 diabetes mellitus (insulin-requiring)', 'heart failure (HFrEF)', 'moderate functional mitral regurgitation'] expected=['CKD stage 4', 'type 2 diabetes on insulin']
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=None
+PASS adversarial/adv_015.pdf expected=verify actual=verify (46.8s)
+      flagged_uncertain  nyha_class                       truth=present  status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=127
+      flagged_uncertain  limiting_conditions              truth=negated  status=unsure   got=None expected=[]
+PASS adversarial/adv_016.pdf expected=verify actual=verify (26.2s)
+      flagged_uncertain  expected_los_days                truth=present  status=unsure   got=None expected=2
+      flagged_uncertain  comorbidities                    truth=present  status=unsure   got=None expected=['persistent atrial fibrillation', 'apixaban anticoagulation', 'digoxin therapy']
+      flagged_uncertain  lvef_percent                     truth=present  status=unsure   got=None expected=30
+      flagged_uncertain  lvef_method                      truth=present  status=unsure   got=None expected=echocardiography
+      flagged_uncertain  nyha_class                       truth=present  status=unsure   got=None expected=II
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=non-ischemic
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=13.8
+      flagged_uncertain  shared_decision_making           truth=present  status=unsure   got=None expected=None
+      flagged_uncertain  limiting_conditions              truth=present  status=unsure   got=None expected=None
+FAIL adversarial/adv_017.pdf expected=escalate actual=verify (20.9s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=11.8
+PASS adversarial/adv_018.pdf expected=pend actual=pend (20.0s)
+PASS adversarial/adv_019.pdf expected=approve actual=approve (21.8s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=109.3
+PASS adversarial/adv_020.pdf expected=approve actual=approve (23.4s)
+PASS adversarial/adv_021.pdf expected=approve actual=approve (12.5s)
+PASS adversarial/adv_022.pdf expected=approve actual=approve (10.1s)
+PASS adversarial/adv_023.pdf expected=verify actual=verify (12.9s)
+      flagged_uncertain  bmi                              truth=present  status=unsure   got=None expected=None
+FAIL adversarial/adv_024.pdf expected=verify actual=approve (12.9s)
+FAIL adversarial/adv_025.pdf expected=escalate actual=verify (10.2s)
+      flagged_uncertain  expected_los_days                truth=present  status=unsure   got=None expected=1
+PASS adversarial/adv_026.pdf expected=escalate actual=escalate (10.9s)
+      false_negative     comorbidities                    truth=present  status=none     got=None expected=['hypothyroidism', 'migraine without aura']
+PASS adversarial/adv_027.pdf expected=approve actual=approve (13.2s)
+PASS adversarial/adv_028.pdf expected=escalate actual=escalate (11.0s)
+PASS adversarial/adv_029.pdf expected=pend actual=pend (10.7s)
+PASS adversarial/adv_030.pdf expected=approve actual=approve (11.2s)
+PASS adversarial/adv_031.pdf expected=pend actual=pend (9.4s)
+PASS adversarial/adv_032.pdf expected=pend actual=pend (11.5s)
+      implied_not_stated expected_los_days                truth=absent   status=implied  got=None expected=None
+FAIL adversarial/adv_033.pdf expected=verify actual=approve (10.2s)
+PASS adversarial/adv_034.pdf expected=pend actual=pend (7.2s)
+PASS adversarial/adv_035.pdf expected=verify actual=verify (13.1s)
+      flagged_uncertain  expected_los_days                truth=present  status=unsure   got=None expected=None
+FAIL adversarial/adv_036.pdf expected=pend actual=verify (12.8s)
+      flagged_uncertain  prior_medical_treatment          truth=absent   status=unsure   got=None expected=None
+PASS adversarial/adv_037.pdf expected=pend actual=pend (7.3s)
+PASS adversarial/adv_038.pdf expected=approve actual=approve (11.7s)
+PASS adversarial/adv_039.pdf expected=escalate actual=escalate (11.4s)
+FAIL adversarial/adv_040.pdf expected=verify actual=approve (12.3s)
+
+By category (recommendation matched / packets):
+  ambiguous_verify             3/4
+  clean_control                4/4
+  conflict_dates               3/4
+  distractor_numbers           2/3
+  family_or_history_confusion  2/3
+  format_variants              2/3
+  hedged_language              2/3
+  missing_but_adjacent         2/3
+  negation                     2/3
+  planned_vs_done              2/3
+  temporal_trap                1/4
+  wrong_patient_or_copy_forward 2/3
+
+report saved: evals/reports/adversarial_20261004_1123.json

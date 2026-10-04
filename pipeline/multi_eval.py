@@ -43,6 +43,8 @@ def _value_ok(kind, want, got):
 def classify(kind, truth, want, status, got):
     if status == "unsure":
         return "flagged_uncertain"
+    if status == "implied" and truth == "absent":
+        return "implied_not_stated"  # 'implied' is the product's own state for "gestured at, no usable value". The nurse is asked, so it is not a claim.
     if truth == "present":
         if status != "found":
             return "false_negative"
@@ -52,13 +54,37 @@ def classify(kind, truth, want, status, got):
     return "correct" if status == "missing" else "false_positive"  # absent
 
 
+def case_class(expected, actual):
+    """Positive group = 'needs a person' (pend, escalate or verify). Flagged = the system did not approve.
+    TP caught a case that needed a person. FN approved a case that needed a person (the dangerous miss).
+    FP flagged a clean case (costs nurse time). TN approved a clean case."""
+    needs, flagged = expected != "approve", actual != "approve"
+    return ("TP" if flagged else "FN") if needs else ("FP" if flagged else "TN")
+
+
+def decision_metrics(results):
+    c = {k: 0 for k in ("TP", "FN", "FP", "TN")}
+    for r in results:
+        c[case_class(r["expected_action"], r["actual_action"])] += 1
+    pct = lambda a, b: round(100 * a / b, 1) if b else None
+    return dict(counts=c,
+                recall_needs_person=pct(c["TP"], c["TP"] + c["FN"]),   # of the cases that needed a person, how many were flagged
+                precision_needs_person=pct(c["TP"], c["TP"] + c["FP"]),  # of the cases flagged, how many really needed a person
+                wrong_approvals=c["FN"], over_flags=c["FP"],
+                approve_precision=pct(c["TN"], c["TN"] + c["FN"]),     # of the cases approved, how many were clean
+                approve_recall=pct(c["TN"], c["TN"] + c["FP"]),        # of the clean cases, how many were approved
+                exact_match=pct(sum(1 for r in results if r["action_matches"]), len(results)))
+
+
 def run_one(m, run_id=None, eval_set="multi"):
     """Runs one packet. When Honeycomb is on, the case trace and the scored result land in the same trace,
     so a wrong answer can be opened and read step by step."""
     with tel.span("eval.packet", **{"eval.run_id": run_id, "eval.set": eval_set, "eval.file": m["file"], "eval.category": m.get("category"),
                                     "eval.expected_action": m["expected_action"]}):
         out = _run_one(m)
-        tel.add(**{"eval.action_matches": out["action_matches"], "eval.actual_action": out["actual_action"], "eval.seconds": out["seconds"]})
+        cls = case_class(m["expected_action"], out["actual_action"])
+        tel.add(**{"eval.action_matches": out["action_matches"], "eval.actual_action": out["actual_action"], "eval.seconds": out["seconds"],
+                   "eval.class": cls, "eval.needs_person": m["expected_action"] != "approve", "eval.flagged": out["actual_action"] != "approve"})
         for f in out["facts"]:
             tel.event("eval.fact", **{"eval.run_id": run_id, "eval.set": eval_set, "eval.fact_key": f["fact"], "eval.truth": f["truth"],
                                       "eval.outcome": f["outcome"], "eval.status": f["status"], "eval.category": m.get("category"),
@@ -100,7 +126,7 @@ def run_multi(workers=3, manifest_path=MANIFEST):
     flagged = sum(1 for f in allf if f["outcome"] == "flagged_uncertain")
     halluc = [f for f in guarded if f["outcome"] == "false_positive"]
     return dict(
-        results=results, packets_total=len(results), action_matches=sum(1 for r in results if r["action_matches"]),
+        results=results, decision=decision_metrics(results), packets_total=len(results), action_matches=sum(1 for r in results if r["action_matches"]),
         completeness_recall=dict(correct=hits, total=len(present), pct=round(100 * hits / len(present), 1) if present else None),
         hallucination_rate=dict(count=len(halluc), total=len(guarded), pct=round(100 * len(halluc) / len(guarded), 1) if guarded else None),
         flagged_uncertain=dict(count=flagged, total=len(allf), pct=round(100 * flagged / len(allf), 1) if allf else None),

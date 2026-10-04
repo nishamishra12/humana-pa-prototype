@@ -18,6 +18,14 @@ print(f"Claimed it when absent or ruled out:     {hr['count']}/{hr['total']} ({h
 print(f"Sent to the nurse as 'not sure':         {fl['count']}/{fl['total']} ({fl['pct']}%)")
 print(f"Wrong values:                            {out['wrong_values']}")
 print(f"The system never denied:                 {out['zero_denials']}")
+d = out["decision"]; c = d["counts"]
+print()
+print("DECISION METRICS  (positive group = 'needs a person': pend, escalate or verify)")
+print(f"  Recall    (needed a person and was flagged):     {c['TP']}/{c['TP'] + c['FN']} = {d['recall_needs_person']}%   wrong approvals: {d['wrong_approvals']}")
+print(f"  Precision (flagged and really needed a person):  {c['TP']}/{c['TP'] + c['FP']} = {d['precision_needs_person']}%   over-flags: {d['over_flags']}")
+print(f"  Approve precision (approved and was clean):      {c['TN']}/{c['TN'] + c['FN']} = {d['approve_precision']}%")
+print(f"  Approve recall    (clean and was approved):      {c['TN']}/{c['TN'] + c['FP']} = {d['approve_recall']}%")
+print(f"  Exact recommendation match:                      {d['exact_match']}%")
 print()
 for r in out["results"]:
     print(("PASS" if r["action_matches"] else "FAIL"), r["file"], f"expected={r['expected_action']} actual={r['actual_action']} ({r['seconds']}s)")

@@ -17,6 +17,7 @@ from .ingest import Element
 from .extract import extract_header, _months, _fact
 from . import evidence as ev
 from . import telemetry as tel
+from . import dates
 
 EXTRACT_MODEL = os.getenv("PA_EXTRACT_MODEL", "claude-sonnet-5")
 
@@ -29,6 +30,23 @@ SYSTEM = """You read a prior authorization packet and fill in a fact form for on
 3. QUOTES. For every fact you report as found, none or implied, "evidence" must contain the exact sentence or phrase, copied verbatim, character for character, from the packet text below. Include up to 3 statements. If you cannot find an exact sentence that supports your answer, use status "missing" and an empty evidence list. Do not paraphrase. Do not invent a quote.
 
 4. NEVER GUESS a value that is not stated. "implied" means the text gestures at the fact without a usable value.
+   Do not calculate a value from other numbers (for example a BMI from height and weight). Use only what is written.
+
+5. THIS PATIENT ONLY. The member's name and date of birth are given with the packet. A page, note or record that belongs to a
+   different person (a different name, date of birth or id) is not evidence for this member. Ignore it and say so in "note".
+
+6. PLANNED IS NOT DONE. A visit that is scheduled, a program that will start, or a medicine that will be started has not happened.
+   Only something that was done counts. Care the patient arranged alone (a diet, an app, a commercial program) is not supervised treatment.
+
+7. AMBIGUOUS is rare. Use it only when you cannot choose one value and rule 2 does not settle it: a range for a number that the packet never
+   narrows (like "about 33-38%"), two conflicting statements with the SAME date, or a stated value that its own note contradicts (a BMI that
+   does not match the height and weight written in the same note). Explain in "note". It matters most when the range, conflict or contradiction could change whether the policy test for that fact is met
+   (each fact lists its policy test). Never use it for a fact stated clearly once, for a
+   conflict where one statement is later (rule 2 picks the later one), for hedged wording about something else, or for a fact that is simply absent.
+
+8. DATES. Where a fact has a date field, give it as YYYY-MM-DD, converted from however the packet writes it. If only a month and year are
+   given, use the first of that month. If only a year is given, use null. The program does the counting from those dates, so still give your
+   own best answer in "value" as well. Do not skip it.
 
 Only use the statuses allowed for each fact."""
 
@@ -44,11 +62,43 @@ def _value_schema(d):
     return {"type": ["string", "null"]}
 
 
+# Facts where the model returns the dates it found and code does the counting (pipeline/dates.py).
+DATE_INPUTS = {
+    "recent_mi_revasc": {"events": {"type": "array", "description": "Every heart attack, stent or bypass in the packet, each with its date. Include old ones. Empty if none.",
+                                    "items": {"type": "object", "properties": {
+                                        "type": {"type": "string", "enum": ["heart_attack", "stent", "bypass"]},
+                                        "date": {"type": ["string", "null"], "description": "YYYY-MM-DD, or null if the packet gives no date."},
+                                        "what": {"type": "string", "description": "Short label, like 'NSTEMI'."},
+                                        "quote": {"type": "string", "description": "Exact sentence from the packet that states the event."}},
+                                        "required": ["type", "date", "what", "quote"]}}},
+    "optimal_medical_therapy_months": {"start_date": {"type": ["string", "null"], "description": "YYYY-MM-DD the patient started the current heart failure medicines, or null."}},
+    "expected_los_days": {"admit_date": {"type": ["string", "null"], "description": "YYYY-MM-DD planned admission date given in the surgeon's plan, or null."},
+                          "discharge_date": {"type": ["string", "null"], "description": "YYYY-MM-DD expected discharge date given in the plan, or null."}},
+}
+
+
+def _policy_tests(proc):
+    """{fact key: [plain criterion text]} for the policies of this procedure. The reader needs to know what the number is for."""
+    from .procedures import library
+    lib = library()
+    pols = lib["policies"] if isinstance(lib["policies"], dict) else {p["id"]: p for p in lib["policies"]}
+    out = {}
+    for pid in proc.get("policies", []):
+        for c in pols.get(pid, {}).get("criteria", []):
+            if c.get("required_fact"):
+                out.setdefault(c["required_fact"], []).append(c["text"])
+    return out
+
+
 def build_tool(proc):
     props = {}
+    tests = _policy_tests(proc)
     for d in proc["facts"]:
-        props[d["key"]] = {"type": "object", "description": d["ask"], "properties": {
-            "status": {"type": "string", "enum": d["statuses"]},
+        why = " Policy test this feeds: " + " / ".join(tests[d["key"]][:2]) if tests.get(d["key"]) else ""
+        props[d["key"]] = {"type": "object", "description": d["ask"] + why, "properties": {
+            **({"calc": {"type": "object", "description": "Dates for the program to count with, as YYYY-MM-DD.", "properties": DATE_INPUTS[d["key"]]}}
+               if d["key"] in DATE_INPUTS else {}),
+            "status": {"type": "string", "enum": d["statuses"] + ["ambiguous"]},
             "value": _value_schema(d),
             "evidence": {"type": "array", "items": {"type": "object", "properties": {
                 "quote": {"type": "string", "description": "Exact text copied verbatim from the packet."},
@@ -81,22 +131,63 @@ def _coerce(raw, proc):
             if isinstance(e, str):
                 e = {"quote": e, "date": None, "supports_value": True}
             fixed.append({"quote": e.get("quote", ""), "date": e.get("date"), "supports_value": bool(e.get("supports_value", True))})
-        out[d["key"]] = {"status": v["status"], "value": v.get("value"), "evidence": [e for e in fixed if e["quote"]], "note": v.get("note")}
+        calc = v.get("calc")
+        if isinstance(calc, str):
+            try:
+                calc = json.loads(calc)
+            except Exception:
+                calc = None
+        out[d["key"]] = {"status": v["status"], "value": v.get("value"), "evidence": [e for e in fixed if e["quote"]], "note": v.get("note"),
+                         "calc": calc if isinstance(calc, dict) else None}
     return out
 
 
-def _run_once(packet_text, proc, client):
+def _apply_dates(out, admit):
+    """Replace the model's counting with ours, for the facts that carry dates. Only changes a fact when the dates are there."""
+    ad = dates.parse(admit)
+    if not ad:
+        return out
+    r = out.get("recent_mi_revasc")
+    if r and r.get("calc") and r["calc"].get("events") is not None and r["status"] in ("found", "none", "missing"):
+        inside, outside, undated = dates.recent_event(r["calc"]["events"], ad)
+        for e in inside:  # the sentence that backs a "found". Events outside the window are not quoted as support for "none".
+            if e.get("quote") and not any(x["quote"] == e["quote"] for x in r["evidence"]):
+                r["evidence"].append({"quote": e["quote"], "date": e.get("date"), "supports_value": True})
+        if inside:
+            e = inside[0]
+            r["status"], r["value"] = "found", f"{e.get('what') or e['type']} on {e['date']}, {e['days']} days before the planned date"
+        elif outside and not undated and r["status"] in ("found", "none"):
+            e = outside[0]  # every dated event is outside the window, so the answer is "none" from the dates, whatever the model said
+            r["derived"] = f"{e.get('what') or e['type']} on {e['date']} was {e['days']} days before the planned date, which is outside the waiting window."
+            r["status"], r["value"] = "none", None
+    t = out.get("optimal_medical_therapy_months")
+    if t and t.get("calc") and t["status"] == "found":
+        sd = dates.parse(t["calc"].get("start_date"))
+        if sd and sd < ad:
+            t["value"] = dates.months_between(sd, ad)
+    los = out.get("expected_los_days")
+    if los and los.get("calc") and los["status"] == "found":
+        a, dc = dates.parse(los["calc"].get("admit_date")), dates.parse(los["calc"].get("discharge_date"))
+        if a and dc and dc >= a and los["value"] is not None and (dc - a).days != los["value"]:
+            los["note"] = f"The plan's dates give {(dc - a).days} midnight(s). The packet also says {los['value']}."
+            los["value"] = (dc - a).days
+    return out
+
+
+def _run_once(packet_text, proc, client, header=None):
     last = None
+    header = header or {}
+    who = header.get("_member") or {}
     for attempt in (1, 2):  # one retry on an unreadable reply
         with tel.span("extract.read", model=EXTRACT_MODEL, attempt=attempt):
             resp = client.messages.create(
                 model=EXTRACT_MODEL, max_tokens=4000, system=SYSTEM, tools=[build_tool(proc)],
                 tool_choice={"type": "tool", "name": "record_facts"},
-                messages=[{"role": "user", "content": f"Procedure: {proc['name']}\n\nPacket:\n\n{packet_text}"}])
+                messages=[{"role": "user", "content": f"Procedure: {proc['name']}\nMember: {who.get('name', 'unknown')}   DOB: {who.get('dob', 'unknown')}   Member ID: {who.get('member_id', 'unknown')}\nPlanned procedure date: {header.get('_admit') or 'unknown'}\n\nPacket:\n\n{packet_text}"}])
             tel.llm_usage(resp)
             raw = next(b for b in resp.content if b.type == "tool_use").input
             try:
-                return _coerce(raw, proc)
+                return _apply_dates(_coerce(raw, proc), header.get("_admit"))
             except Exception as e:
                 last = e
                 tel.add(unreadable_reply=True)
@@ -104,9 +195,13 @@ def _run_once(packet_text, proc, client):
     raise last
 
 
-def _same(a, b, kind):
+DATE_COUNTED = {"optimal_medical_therapy_months": 0.5}  # months counted from a start date: reads within half a month agree
+
+
+def _same(a, b, kind, key=None):
     if kind == "number":
-        return a == b or (a is not None and b is not None and abs(float(a) - float(b)) < 1e-9)
+        tol = DATE_COUNTED.get(key, 1e-9)
+        return a == b or (a is not None and b is not None and abs(float(a) - float(b)) <= tol)
     if kind == "enum":
         return (a or "").lower() == (b or "").lower()
     return True  # text and list values are free wording; the status must agree, and the evidence is checked below
@@ -117,9 +212,12 @@ def _combine(runs, d):
     all reads added (duplicates removed)."""
     reads = [r.get(d["key"]) or {"status": "missing", "value": None, "evidence": [], "note": None} for r in runs]
     statuses = {r["status"] for r in reads}
+    amb = next((r for r in reads if r["status"] == "ambiguous"), None)
+    if amb:
+        return False, reads[0], "The packet is unclear or contradicts itself here. " + (amb.get("note") or "Check the packet.")
     if len(statuses) > 1:
         return False, reads[0], "We read this more than once and got different answers. Check the packet."
-    if not all(_same(reads[0]["value"], r["value"], d["kind"]) for r in reads[1:]):
+    if not all(_same(reads[0]["value"], r["value"], d["kind"], d["key"]) for r in reads[1:]):
         vals = ", ".join(sorted({str(r["value"]) for r in reads}))
         return False, reads[0], f"We read this more than once and got different values ({vals}). Check the packet."
     merged = list(reads[0]["evidence"])
@@ -160,6 +258,10 @@ def _assemble(d, agreed, raw, why, pages, verdicts):
         if hit:
             located.append(dict(page=hit["page"], quote=hit["text"], model_quote=e["quote"], match=hit["method"], score=hit["score"],
                                 date=e.get("date"), supports=bool(e.get("supports_value", True))))
+    if raw.get("derived") and st == "none":  # code decided "none" from the dates, so the model's quotes describe the event, not the absence
+        f = _fact("none", None, located[0]["page"] if located else None, located[0]["quote"] if located else None, raw["derived"])
+        f["evidence"] = [dict(x, supports=False) for x in located]
+        return f
     backing = [x for x in located if x["supports"]]
     if not backing:
         return _fact("unsure", note="We could not find the exact wording in the packet. Check it yourself.")
@@ -199,10 +301,11 @@ def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3) -> d
     client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
     full = "\n".join(e.text for e in elements)
     packet_text = "\n\n".join(f"[page {e.page}] {e.text}" for e in elements)
+    head = extract_header(full)
     n = max(1, n_votes)
     with tel.span("extract.reads", procedure=proc_key, votes=n, pages=len({e.page for e in elements})):
         with ThreadPoolExecutor(max_workers=n) as pool:
-            runs = list(pool.map(tel.bind(lambda _: _run_once(packet_text, proc, client)), range(n)))
+            runs = list(pool.map(tel.bind(lambda _: _run_once(packet_text, proc, client, head)), range(n)))
 
     pages = ev.page_texts(elements)
     combined = {d["key"]: _combine(runs, d) for d in defs}

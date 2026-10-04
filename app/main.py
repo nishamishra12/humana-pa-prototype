@@ -9,6 +9,7 @@ from pipeline.extract import _months
 from pipeline.engine import analyze
 from pipeline.run import process, extract as run_extract
 from pipeline.procedures import procedure_for_cpt, defs_by_key, display_for
+from pipeline import telemetry as tel
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 UPLOADS = os.path.join(ROOT, "uploads")
@@ -301,6 +302,43 @@ RETURN_REASONS = {
 }
 
 
+def _truth_for(packet_file):
+    """Test packets with a known right answer (evals/live_truth.json: {"adv_041.pdf": "pend"}). Real packets have none."""
+    try:
+        t = json.load(open(os.path.join(ROOT, "evals", "live_truth.json"), encoding="utf-8"))
+    except Exception:
+        return None
+    return t.get(re.sub(r"^[0-9a-f]{8}_", "", os.path.basename(packet_file or "")))
+
+
+def _cls(needs_person, flagged):
+    return ("TP" if flagged else "FN") if needs_person else ("FP" if flagged else "TN")
+
+
+def _tel_recommendation(cid, res, packet_file):
+    """One event when the AI recommends. If the packet has a known right answer, also the AI's own TP/FN/FP/TN."""
+    exp = _truth_for(packet_file)
+    a = dict(**{"case.id": cid, "ai.recommendation": res["action"], "ai.flagged": res["action"] != "approve"})
+    if exp:
+        a.update({"truth.expected_action": exp, "truth.needs_person": exp != "approve", "truth.class": _cls(exp != "approve", res["action"] != "approve")})
+    tel.event("case.ai_recommendation", **a)
+
+
+def _tel_decision(cid, packet_file, role, action, ai, reason=""):
+    """One event per human decision. No names, no free text. 'human.class' treats the human's decision as the judge of the AI:
+    the human flagged a case the AI approved -> FN (the AI missed it); the human approved a case the AI flagged -> FP (an over-flag)."""
+    if action not in ("approve", "pend", "escalate", "deny", "return"):
+        return
+    human_flagged = action != "approve"
+    ai_flagged = ai != "approve"
+    a = {"case.id": cid, "human.role": role, "human.action": action, "ai.recommendation": ai, "human.agrees_with_ai": human_flagged == ai_flagged,
+         "human.class": _cls(human_flagged, ai_flagged) if action != "return" else None, "human.return_reason": reason or None}
+    exp = _truth_for(packet_file)
+    if exp:
+        a.update({"truth.expected_action": exp, "truth.human_was_right": (action == "approve") == (exp == "approve")})
+    tel.event("case.human_decision", **a)
+
+
 class Act(BaseModel):
     action: str
     reason: str = ""
@@ -376,6 +414,7 @@ def act(cid: str, body: Act, request: Request):
     else:
         raise HTTPException(400, "Unknown action")
     c.commit()
+    _tel_decision(cid, r["packet_file"], u["role"], a, ai, body.reason if a == "return" else "")
     return case_detail(c, cid)
 
 
@@ -504,6 +543,7 @@ def upload(request: Request, file: UploadFile = File(...), assignee_id: int | No
             JOBS[job] = dict(stage=stage, **info)
     els, engine, facts, res = process(dest, progress=progress)
     cid = db.create_case(c, els, engine, facts, res, os.path.basename(dest))
+    _tel_recommendation(cid, res, os.path.basename(dest))
     if u["role"] == "admin":
         if assignee_id:
             nurse = c.execute("SELECT * FROM users WHERE id=? AND role='nurse'", (assignee_id,)).fetchone()

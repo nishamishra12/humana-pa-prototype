@@ -1,0 +1,100 @@
+[extract] unreadable AI reply, attempt 1 (JSONDecodeError: Extra data: line 1 column 766 (char 765))
+Recommendation matched the expected one: 26/40
+Found it when it was really there:       210/233 (90.1%)
+Claimed it when absent or ruled out:     1/47 (2.1%)
+Sent to the nurse as 'not sure':         19/280 (6.8%)
+Wrong values:                            7
+The system never denied:                 True
+
+DECISION METRICS  (positive group = 'needs a person': pend, escalate or verify)
+  Recall    (needed a person and was flagged):     22/28 = 78.6%   wrong approvals: 6
+  Precision (flagged and really needed a person):  22/23 = 95.7%   over-flags: 1
+  Approve precision (approved and was clean):      11/17 = 64.7%
+  Approve recall    (clean and was approved):      11/12 = 91.7%
+  Exact recommendation match:                      65.0%
+
+FAIL adversarial/adv_001.pdf expected=approve actual=verify (44.6s)
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=1.2
+PASS adversarial/adv_002.pdf expected=escalate actual=escalate (32.5s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=43.5 expected=43.4
+PASS adversarial/adv_003.pdf expected=escalate actual=escalate (30.6s)
+PASS adversarial/adv_004.pdf expected=approve actual=approve (27.2s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=63.8 expected=92.7
+PASS adversarial/adv_005.pdf expected=escalate actual=escalate (26.1s)
+FAIL adversarial/adv_006.pdf expected=escalate actual=verify (33.1s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=11.9
+PASS adversarial/adv_007.pdf expected=approve actual=approve (26.0s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=65.1 expected=65
+FAIL adversarial/adv_008.pdf expected=pend actual=verify (28.3s)
+      flagged_uncertain  nyha_class                       truth=absent   status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=79
+FAIL adversarial/adv_009.pdf expected=verify actual=approve (28.5s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=111
+PASS adversarial/adv_010.pdf expected=approve actual=approve (22.3s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=78.3 expected=151.9
+FAIL adversarial/adv_011.pdf expected=escalate actual=pend (29.8s)
+      false_negative     cardiomyopathy_type              truth=present  status=other    got=other expected=other
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=7.4 expected=7.3
+PASS adversarial/adv_012.pdf expected=pend actual=pend (22.3s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=51.9
+PASS adversarial/adv_013.pdf expected=approve actual=approve (27.2s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['chronic kidney disease stage 3a', 'benign prostatic hyperplasia', 'bradycardia on high-dose beta blocker', 'mild hearing loss'] expected=['clopidogrel antiplatelet therapy', 'CKD stage 3a', 'bradycardia on beta blocker', 'BPH with prior urinary retention']
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=64.9 expected=83.3
+PASS adversarial/adv_014.pdf expected=verify actual=verify (20.9s)
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=None
+PASS adversarial/adv_015.pdf expected=verify actual=verify (25.2s)
+      flagged_uncertain  nyha_class                       truth=present  status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=127
+      flagged_uncertain  limiting_conditions              truth=negated  status=unsure   got=None expected=[]
+PASS adversarial/adv_016.pdf expected=verify actual=verify (25.5s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=13.8
+      flagged_uncertain  limiting_conditions              truth=present  status=unsure   got=None expected=None
+FAIL adversarial/adv_017.pdf expected=escalate actual=verify (17.7s)
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=non-ischemic
+PASS adversarial/adv_018.pdf expected=pend actual=pend (18.0s)
+PASS adversarial/adv_019.pdf expected=approve actual=approve (21.9s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=109.3
+PASS adversarial/adv_020.pdf expected=approve actual=approve (23.4s)
+PASS adversarial/adv_021.pdf expected=approve actual=approve (14.7s)
+PASS adversarial/adv_022.pdf expected=approve actual=approve (12.3s)
+PASS adversarial/adv_023.pdf expected=verify actual=verify (12.3s)
+      flagged_uncertain  bmi                              truth=present  status=unsure   got=None expected=None
+FAIL adversarial/adv_024.pdf expected=verify actual=approve (11.6s)
+FAIL adversarial/adv_025.pdf expected=escalate actual=verify (11.3s)
+      flagged_uncertain  expected_los_days                truth=present  status=unsure   got=None expected=1
+FAIL adversarial/adv_026.pdf expected=escalate actual=verify (14.4s)
+      flagged_uncertain  comorbidities                    truth=present  status=unsure   got=None expected=['hypothyroidism', 'migraine without aura']
+PASS adversarial/adv_027.pdf expected=approve actual=approve (13.5s)
+PASS adversarial/adv_028.pdf expected=escalate actual=escalate (13.8s)
+PASS adversarial/adv_029.pdf expected=pend actual=pend (13.6s)
+PASS adversarial/adv_030.pdf expected=approve actual=approve (13.2s)
+FAIL adversarial/adv_031.pdf expected=pend actual=verify (10.5s)
+      flagged_uncertain  prior_medical_treatment          truth=absent   status=unsure   got=None expected=None
+PASS adversarial/adv_032.pdf expected=pend actual=pend (10.8s)
+      implied_not_stated expected_los_days                truth=absent   status=implied  got=None expected=None
+FAIL adversarial/adv_033.pdf expected=verify actual=approve (11.2s)
+PASS adversarial/adv_034.pdf expected=pend actual=pend (7.2s)
+FAIL adversarial/adv_035.pdf expected=verify actual=approve (13.4s)
+FAIL adversarial/adv_036.pdf expected=pend actual=approve (11.3s)
+      false_positive     prior_medical_treatment          truth=absent   status=found    got=Patient had multiple years of physician diet/exercise counseling at primary care visits (2024-2026), and self-directed Weight Watchers in 2019 with initial 12 lb loss followed by regain; she declined medication trial. These did not result in sustained weight loss. expected=None
+PASS adversarial/adv_037.pdf expected=pend actual=pend (11.4s)
+PASS adversarial/adv_038.pdf expected=approve actual=approve (13.7s)
+PASS adversarial/adv_039.pdf expected=escalate actual=escalate (13.0s)
+FAIL adversarial/adv_040.pdf expected=verify actual=approve (11.8s)
+
+By category (recommendation matched / packets):
+  ambiguous_verify             3/4
+  clean_control                4/4
+  conflict_dates               3/4
+  distractor_numbers           2/3
+  family_or_history_confusion  2/3
+  format_variants              1/3
+  hedged_language              2/3
+  missing_but_adjacent         2/3
+  negation                     2/3
+  planned_vs_done              2/3
+  temporal_trap                2/4
+  wrong_patient_or_copy_forward 1/3
+
+report saved: evals/reports/adversarial_20261004_1117.json
