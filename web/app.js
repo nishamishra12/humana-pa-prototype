@@ -299,7 +299,7 @@ function questionCardHtml(d) {
   const q = [...d.comments].reverse().find((c) => c.kind === "escalation");
   if (!q) return "";
   const by = q.user ? q.user.name : "the nurse", toMd = S.user.role === "medical_director";
-  return `<div class="card" style="border-color:var(--esc)"><h3 style="margin-bottom:2px">${toMd ? "Escalated by " + esc(by) : "Escalated to " + esc(d.md ? d.md.name : "a medical director")}</h3><div class="faint" style="font-size:12.5px;margin-bottom:10px">${ago(q.created_at)}</div><div class="faint" style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Reason</div><p style="margin:2px 0 0;line-height:1.55">${esc(q.body.replace(/^@\w+\s*/, ""))}</p></div>`;
+  return `<div class="reco escalate"><span class="mk big up">↑</span><div><h3>${toMd ? "Escalated by " + esc(by) : "Escalated to " + esc(d.md ? d.md.name : "a medical director")}</h3><div class="esc-when">${ago(q.created_at)}</div><div class="esc-label">Reason</div><p>${esc(q.body.replace(/^@\w+\s*/, ""))}</p></div></div>`;
 }
 const FIX_HINT = { expected_los_days: "Number of midnights, like 3", comorbidities: "For example: heart failure, diabetes", post_op_needs: "What care is needed after surgery", conservative_treatment: "What was tried and for how long", shared_decision_making: "Optional note", indication_evidence: "" };
 function fixForm(key) {
