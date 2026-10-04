@@ -7,8 +7,8 @@ const pptxgen = require("pptxgenjs");
 const JSZip = require("jszip");
 const { Resvg } = require("@resvg/resvg-js"); // draws the SVG art to PNG (npm i @resvg/resvg-js)
 
-const OUT = path.join(__dirname, "Friction_Click_Through.pptx"); // default: ONE slide, one click per step
-const OUT_STEPS = path.join(__dirname, "Friction_Steps.pptx"); // only with --slides: one slide per step
+const OUT = path.join(__dirname, "Federal_Click_Through.pptx"); // default: ONE slide, one click per step
+const OUT_STEPS = path.join(__dirname, "Federal_Steps.pptx"); // only with --slides: one slide per step
 const C = {
   ink: "16211E", muted: "5C6B66", green: "1F6F5C", greenSoft: "E3F0EB", line: "CBD5D1",
   coral: "B8452F", coralSoft: "FBE9E4", amber: "8A5A00", amberSoft: "FCEFD0",
@@ -48,87 +48,49 @@ const ART = {
   IcFax: faxIcon,
 };
 
-/* ---------- layout spec (inches) for slide 3: the friction points ---------- */
+/* ---------- layout spec (inches) for the federal rules slide ---------- */
 const items = [];
 const add = (o) => items.push(o);
-const runs = (title, desc, tc = C.ink, ts = 13, ds = 10.5, dc = C.muted) => [
-  { text: title, options: { bold: true, fontSize: ts, color: tc, fontFace: B, breakLine: !!desc } },
-  ...(desc ? [{ text: desc, options: { fontSize: ds, color: dc, fontFace: B } }] : []),
-];
-const AVM = [0.04, 0.08, 0.04, 0.72];
-const line = (name, x, y, w, h, o = {}) => add({ name, kind: "line", x, y, w, h, line: C.muted, lineW: 1.75, arrow: true, ...o });
-const avatar = (name, x, y, size) => add({ name, kind: "image", x, y, w: size, h: size });
 
-// frame
-add({ name: "eyebrow", kind: "text", static: true, x: 0.5, y: 0.3, w: 4, h: 0.28, runs: [{ text: "THE FRICTION", options: { bold: true, fontSize: 11, color: C.green, fontFace: B, charSpacing: 3 } }] });
-add({ name: "title", kind: "text", static: true, x: 0.5, y: 0.55, w: 9, h: 0.75, valign: "middle", runs: [{ text: "Six places this process loses time.", options: { fontSize: 26, color: C.ink, fontFace: H } }] });
-add({ name: "sub", kind: "text", static: true, x: 7.3, y: 0.55, w: 5.53, h: 0.75, align: "right", valign: "middle", runs: [{ text: "Nobody here is making a mistake. The process is.", options: { fontSize: 14, color: C.muted, fontFace: B } }] });
-add({ name: "footer", kind: "text", static: true, x: 0.5, y: 7.1, w: 12.33, h: 0.25, runs: [{ text: "Source: the Humana Use Case 1 brief, and the process on the previous slide.", options: { fontSize: 9, color: C.muted, fontFace: B } }] });
+add({ name: "eyebrow", kind: "text", static: true, x: 0.5, y: 0.3, w: 4, h: 0.28, runs: [{ text: "THE RULES", options: { bold: true, fontSize: 11, color: C.green, fontFace: B, charSpacing: 3 } }] });
+add({ name: "title", kind: "text", static: true, x: 0.5, y: 0.55, w: 8.6, h: 0.75, valign: "middle", runs: [{ text: "Federal rules now put a clock on all of this.", options: { fontSize: 26, color: C.ink, fontFace: H } }] });
+add({ name: "sub", kind: "text", static: true, x: 8.3, y: 0.55, w: 4.53, h: 0.75, align: "right", valign: "middle", runs: [{ text: "Applies to Medicare Advantage plans, including Humana's.", options: { fontSize: 13, color: C.muted, fontFace: B } }] });
+add({ name: "footer", kind: "text", static: true, x: 0.5, y: 7.1, w: 12.33, h: 0.25, runs: [{ text: "Sources: CMS-0057-F final rule and fact sheet (cms.gov). 42 CFR 422.568(b).", options: { fontSize: 9, color: C.muted, fontFace: B } }] });
 
-// the flow, in miniature (static: it is the map the pins land on)
-const NW = 2.0, NY = 1.95, NH = 0.8, XS = [0.5, 3.08, 5.66, 8.24, 10.83];
-const mini = (name, i, title, desc, art) => {
-  add({ name, kind: "node", static: true, x: XS[i], y: NY, w: NW, h: NH, fill: C.white, line: C.line, lineW: 1, runs: runs(title, desc, C.ink, 12, 9.5), margin: art ? AVM : [0.04, 0.1, 0.04, 0.1] });
-  if (art) avatar(art, XS[i] + 0.09, NY + 0.12, 0.56);
-};
-mini("N1", 0, "Surgeon's office", "Sends the packet", "AvL1");
-mini("N2", 1, "Intake", "Checks it in", "AvIntake");
-mini("N3", 2, "UM nurse", "Reads the packet", "AvNurse");
-add({ name: "N4", kind: "node", static: true, x: XS[3], y: NY, w: NW, h: NH, fill: C.white, line: C.line, lineW: 1, align: "center", runs: runs("Decision", "Approve, pend, escalate", C.ink, 12, 9.5), margin: [0.04, 0.1, 0.04, 0.1] });
-mini("N5", 4, "The member", "Waits for the answer", "AvM");
-const ARR = (n, i, o = {}) => line(n, XS[i] + NW + 0.04, NY + NH / 2, 0.5, 0, { static: true, ...o });
-ARR("A12", 0, { color: C.coral, dash: "dash" }); ARR("A23", 1); ARR("A34", 2); ARR("A45", 3);
-add({ name: "LblFax", kind: "text", static: true, x: XS[0] + NW, y: NY + 0.12, w: 0.58, h: 0.2, align: "center", runs: [{ text: "FAX", options: { bold: true, fontSize: 8, color: C.coral, fontFace: B, charSpacing: 2 } }] });
-// the pend loop under the flow: Decision -> back to the provider
-line("L1", XS[3] + NW / 2, NY + NH, 0, 0.3, { static: true, arrow: false, color: C.amber });
-line("L2", XS[0] + NW / 2, NY + NH + 0.3, XS[3] - XS[0] + NW / 2 - NW / 2, 0, { static: true, arrow: false, color: C.amber });
-line("L3", XS[0] + NW / 2, NY + NH, 0, 0.3, { static: true, color: C.amber, flipV: true });
-add({ name: "LblLoop", kind: "text", static: true, x: 3.2, y: NY + NH + 0.06, w: 4.0, h: 0.22, align: "center", runs: [{ text: "Pend: back to the provider, and it starts again", options: { fontSize: 9.5, color: C.amber, fontFace: B, bold: true } }] });
-
-// pins: where each friction lands on the flow (they appear with their card)
-const pin = (name, n, cx, cy) => add({ name, kind: "node", x: cx - 0.16, y: cy - 0.16, w: 0.32, h: 0.32, fill: C.coral, line: C.coral, lineW: 1, radius: 0.16, align: "center", margin: [0, 0, 0, 0], runs: [{ text: String(n), options: { bold: true, fontSize: 11, color: C.white, fontFace: B } }] });
-const pinY = NY - 0.2;
-pin("Pin1", 1, XS[2] + 0.55, pinY);
-pin("Pin3", 3, XS[2] + 1.45, pinY);
-pin("Pin2", 2, XS[0] + NW + 0.29, NY + NH / 2 + 0.34);
-pin("Pin4", 4, XS[3] + NW / 2, pinY);
-pin("Pin5", 5, XS[0] + NW / 2 + 1.0, NY + NH + 0.3);
-pin("Pin6", 6, XS[4] + NW / 2, pinY);
-
-// the six cards
-const CW = 4.0, CH = 1.72, GX = 0.165, CY = [3.38, 5.28];
-const CX = [0.5, 0.5 + CW + GX, 0.5 + 2 * (CW + GX)];
-const CARDS = [
-  [1, "Reading by hand", "The nurse reads all 14 pages to find the same few facts. Clear-cut cases take almost as long as hard ones.", "Felt by: the nurse"],
-  [2, "Messy input", "Packets arrive by fax or portal. Format and quality change from one office to the next.", "Felt by: intake and the nurse"],
-  [3, "Hunting, not deciding", "Benefits, eligibility, policy, and provider systems sit apart. No one view holds the full picture.", "Felt by: the nurse"],
-  [4, "Decisions vary", "Two reviewers can read the same packet and reach different decisions.", "Felt by: the plan and the provider"],
-  [5, "The pend loop", "A detail a cleaner read could catch in minutes sends the packet back. The case starts from zero, and the clock keeps running.", "Felt by: the provider and the member"],
-  [6, "The member in the dark", "John Doe waits on his surgery with no view of where his request stands.", "Felt by: the member"],
-];
-CARDS.forEach(([n, title, desc, who], i) => {
-  const x = CX[i % 3], y = CY[Math.floor(i / 3)];
-  const p2 = false;
-  const r = [
-    { text: title, options: { bold: true, fontSize: 15, color: C.ink, fontFace: B, breakLine: true } },
-    { text: desc, options: { fontSize: 11.5, color: C.muted, fontFace: B, breakLine: true } },
-    { text: who, options: { bold: true, fontSize: 10.5, color: C.coral, fontFace: B, breakLine: p2 } },
-    ...(p2 ? [{ text: "Phase 2. It needs a decision feed we can trust first.", options: { bold: true, fontSize: 11, color: C.purple, fontFace: B } }] : []),
-  ];
-  add({ name: "Card" + n, kind: "node", x, y, w: CW, h: CH, fill: p2 ? C.purpleSoft : C.white, line: p2 ? C.purple : C.line, lineW: 1.25, radius: 0.08, runs: r, valign: "top", margin: [0.17, 0.16, 0.1, 0.66] });
-  add({ name: "Num" + n, kind: "node", x: x + 0.15, y: y + 0.15, w: 0.34, h: 0.34, fill: p2 ? C.purple : C.coral, line: p2 ? C.purple : C.coral, lineW: 1, radius: 0.17, align: "center", margin: [0, 0, 0, 0], runs: [{ text: String(n), options: { bold: true, fontSize: 11, color: C.white, fontFace: B } }] });
+const CW = 4.0, GX = 0.165, CX = [0.5, 0.5 + CW + GX, 0.5 + 2 * (CW + GX)];
+const col = (name, i, color, soft, hdr, big, small, bullets) => add({
+  name, kind: "node", x: CX[i], y: 1.6, w: CW, h: 3.95, fill: C.white, line: color, lineW: 1.75, radius: 0.08, valign: "top", margin: [0.2, 0.22, 0.12, 0.22],
+  runs: [
+    { text: hdr, options: { bold: true, fontSize: 10.5, color, fontFace: B, charSpacing: 2, breakLine: true, paraSpaceAfter: 8 } },
+    { text: big, options: { bold: false, fontSize: 40, color, fontFace: H, breakLine: true } },
+    { text: small, options: { bold: true, fontSize: 14, color: C.ink, fontFace: B, breakLine: true, paraSpaceAfter: 10 } },
+    ...bullets.map((b, k) => ({ text: b, options: { fontSize: 13.5, color: C.ink, fontFace: B, bullet: { indent: 14 }, breakLine: k < bullets.length - 1, paraSpaceAfter: 6 } })),
+  ],
 });
+col("Fed1", 0, C.coral, C.coralSoft, "IN EFFECT SINCE JANUARY 2026", "72 hours", "for expedited requests. Standard: 7 calendar days.", [
+  "An approval or a denial. Not a pend.",
+  "A specific reason on every denial.",
+  "Results published every year. The first report was due March 31, 2026.",
+]);
+col("Fed2", 1, C.amber, C.amberSoft, "THE RULE ON PENDING", "+14 days", "the most a pend can add.", [
+  "A pend does not stop the clock.",
+  "The plan must justify the delay as in the member's interest.",
+  "And tell the member in writing.",
+]);
+col("Fed3", 2, C.purple, C.purpleSoft, "COMING JANUARY 2027", "Jan 2027", "the member gets a window. About three months from now.", [
+  "Four data interfaces (FHIR APIs) go live.",
+  "The Patient Access API must show the member where a prior authorization stands.",
+]);
+add({ name: "Banner", kind: "node", x: 0.5, y: 5.75, w: 12.33, h: 1.1, fill: C.green, line: C.green, lineW: 1, radius: 0.08, margin: [0.08, 0.3, 0.08, 0.3], runs: [{ text: "These are not just frictions we feel. Federal rules now set the clock, ask for the reason, and make the results public.", options: { fontSize: 17, bold: true, color: C.white, fontFace: B, breakLine: true, paraSpaceAfter: 4 } }, { text: "Getting every case to a decision inside that clock matters more than ever.", options: { fontSize: 14, color: "D5EBE3", fontFace: B } }] });
 
 const FI = (name, delay = 0, dur = 500) => ({ t: "fadeIn", name, delay, dur });
-const slots = CARDS.map(([n]) => ({ hold: 0, fx: [FI("Card" + n), FI("Num" + n), FI("Pin" + n, 150)] }));
+const slots = [{ hold: 0, fx: [FI("Fed1")] }, { hold: 0, fx: [FI("Fed2")] }, { hold: 0, fx: [FI("Fed3")] }, { hold: 0, fx: [FI("Banner")] }];
 
 const STEP_NOTES = [
-  "First, reading by hand. The nurse reads all fourteen pages to find the same few facts. The brief says clear-cut cases take almost as long as the hard ones, because the reading and matching still happen by hand.",
-  "Second, messy input. Packets come in by fax or portal, and format and quality change from one office to the next. Intake and the nurse inherit that.",
-  "Third, hunting instead of deciding. Benefits, eligibility, clinical policy, and provider systems sit in different places. No one view holds the full picture.",
-  "Fourth, decisions vary. Two reviewers can read the same packet and land in different places.",
-  "Fifth, the pend loop. A detail a cleaner read could have caught in minutes sends the packet back to the provider. The case starts from zero. This is the path you just watched.",
-  "Sixth, the member in the dark. John Doe waits for surgery and cannot see where his request stands. I am not trying to solve that one first. I will come back to it.",
+  "Here is why this is not just our problem. Since January 2026, a decision is due in 72 hours for an expedited request and 7 calendar days for a standard one. That means an approval or a denial. Every denial needs a specific reason. And plans must publish their prior authorization results every year. The first report was due in March.",
+  "And a pend does not stop that clock. A plan can extend by up to 14 calendar days, but only if it justifies the delay as in the member's interest and tells the member in writing. So every avoidable pend is a documented delay, not a quiet pause.",
+  "Then in January 2027, about three months from now, four data interfaces go live. One of them, the Patient Access API, must show the member where a prior authorization stands. The member will finally have a window into the process.",
+  "So these are not just frictions we feel inside the process. Federal rules now set the clock, ask for the reason, and make the results public. Getting every case to a decision inside that clock matters more than ever.",
 ];
 const NOTES = "";
 const OUT_STEPS_UNUSED = true;
@@ -150,13 +112,13 @@ function draw(pres, s, PNG, vis) {
     if (o.kind === "image") {
       s.addImage({ data: "image/png;base64," + PNG[o.name], x: o.x, y: o.y, w: o.w, h: o.h, objectName: o.name });
     } else if (o.kind === "line") {
-      s.addShape(pres.ShapeType.line, { x: o.x, y: o.y, w: o.w, h: o.h, flipH: !!o.flipH, flipV: !!o.flipV, objectName: o.name, line: { color: o.color || o.line, width: o.lineW, dashType: o.dash || "solid", ...(o.arrow ? { endArrowType: "triangle" } : {}) } });
+      s.addShape(pres.ShapeType.line, { x: o.x, y: o.y, w: o.w, h: o.h, flipH: !!o.flipH, objectName: o.name, line: { color: o.color || o.line, width: o.lineW, dashType: o.dash || "solid", ...(o.arrow ? { endArrowType: "triangle" } : {}) } });
     } else if (o.kind === "ring") {
       s.addShape(pres.ShapeType.roundRect, { x: o.x, y: o.y, w: o.w, h: o.h, rectRadius: 0.1, fill: { type: "none" }, line: { color: o.line, width: o.lineW }, objectName: o.name });
     } else if (o.kind === "node") {
       const m = o.margin || [0.06, 0.12, 0.06, 0.12]; // my spec order is top, right, bottom, left
       // pptxgenjs wants [left, right, bottom, top]
-      s.addText(o.runs, { shape: pres.ShapeType.roundRect, rectRadius: o.radius ?? 0.08, x: o.x, y: o.y, w: o.w, h: o.h, fill: { color: o.fill }, line: { color: o.line, width: o.lineW }, align: o.align || "left", valign: o.valign || "middle", margin: m2([m[3], m[1], m[2], m[0]]), objectName: o.name, isTextBox: false });
+      s.addText(o.runs, { shape: pres.ShapeType.roundRect, rectRadius: o.radius ?? 0.08, x: o.x, y: o.y, w: o.w, h: o.h, fill: { color: o.fill }, line: { color: o.line, width: o.lineW }, align: o.align || "left", valign: "middle", margin: m2([m[3], m[1], m[2], m[0]]), objectName: o.name, isTextBox: false });
     } else {
       s.addText(o.runs, { x: o.x, y: o.y, w: o.w, h: o.h, align: o.align || "left", valign: o.valign || "top", margin: 0, objectName: o.name, isTextBox: true, fit: "none" });
     }
@@ -166,7 +128,7 @@ function draw(pres, s, PNG, vis) {
 async function main() {
   const pres = new pptxgen();
   pres.layout = "LAYOUT_WIDE"; // 13.333 x 7.5 in
-  pres.title = "The friction points";
+  pres.title = "The federal rules";
   pres.author = "Nisha Mishra";
   const PNG = {};
   for (const [k, svg] of Object.entries(ART)) PNG[k] = Buffer.from(new Resvg(svg, { fitTo: { mode: "width", value: 360 } }).render().asPng()).toString("base64");
@@ -189,7 +151,7 @@ async function main() {
   const s = pres.addSlide();
   s.background = { color: C.white };
   draw(pres, s, PNG, null);
-  s.addNotes(["One slide. Click once per friction point. Finish your talking point, then click."].concat(STEP_NOTES.map((t, i) => "Click " + (i + 1) + ": " + t)).join(String.fromCharCode(10, 10)));
+  s.addNotes(["One slide. Click once per point. Finish your talking point, then click."].concat(STEP_NOTES.map((t, i) => "Click " + (i + 1) + ": " + t)).join(String.fromCharCode(10, 10)));
   await pres.writeFile({ fileName: OUT });
 
   // inject the animation

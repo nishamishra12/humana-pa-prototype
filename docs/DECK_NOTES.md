@@ -21,13 +21,15 @@ Thread that all four share: member visibility in phase two.
 ## Story order (agreed)
 1. Title
 2. How a prior authorization moves today (built: one slide, 14 clicks)
-3. Six friction points, then the federal rules that make them urgent (built: one slide, 10 clicks)
-4. How big the problem is: the AMA and OIG numbers
-5. What the market is doing, then the solution
+3. Six friction points (built: one slide, 6 clicks)
+4. The federal rules that make them urgent (built: one slide, 4 clicks)
+5. How big the problem is: the AMA and OIG numbers
+6. What the market is doing, then the solution
 
-The separate "why now" slide is gone. Its content moved onto slide 3, so the federal rules land
-right after the friction points and carry more weight. Slide 2 ends on "every step is somebody
-doing their job correctly." Slide 3 says where the process hurts, then says it is now federal.
+The separate "why now" slide is gone. Its content moved to slide 4, right after the friction
+points, so the federal rules land together with the pain. Slide 2 ends on "every step is
+somebody doing their job correctly." Slide 3 says where the process hurts. Slide 4 says it is now
+federal.
 
 ## The six friction points (agreed)
 Pulled from the Humana Use Case 1 brief unless noted.
@@ -41,19 +43,19 @@ Pulled from the Humana Use Case 1 brief unless noted.
 The slide does not explain phase two. We say "I am not trying to solve point 6 first" and come
 back to it when we show the solution. No numbers on this part: the brief gives no baseline numbers.
 
-## The federal rules on slide 3 (checked against the sources on 2026-10-03)
+## The federal rules on slide 4 (checked against the sources on 2026-10-03)
 Applies to Medicare Advantage plans, so it covers Humana.
 - **In effect since January 1, 2026 (CMS-0057-F).** Decisions within 72 hours for expedited requests and 7 calendar days for standard requests. A specific reason on every denial. Prior authorization metrics published every year on the plan's website. The first report was due March 31, 2026.
 - **A pend does not stop the clock (42 CFR 422.568(b)).** The plan may extend a standard decision by up to 14 calendar days, only if it justifies the delay as in the enrollee's interest (or the enrollee asks for it), and it must tell the enrollee in writing, including the right to file an expedited grievance. Requesting more information is not itself a pause. This settles the question we left open earlier: the extension still applies alongside the new 7-day clock.
 - **January 1, 2027.** Four APIs go live: Patient Access, Provider Access, Payer-to-Payer, and Prior Authorization. The Patient Access API must include prior authorization information, excluding drugs. That is what gives the member a view of where a request stands.
 - Sources: CMS-0057-F fact sheet on cms.gov; eCFR 42 CFR 422.568.
 
-**Date fix.** The old deck says January 2027 is "fifteen months out." Today is October 2026, so it is about three months away. Slide 3 and the notes now say "about three months." Check the old slides for the same mistake.
+**Date fix.** The old deck says January 2027 is "fifteen months out." Today is October 2026, so it is about three months away. Slide 4 and the notes now say "about three months." Check the old slides for the same mistake.
 
-Suggested closing line for slide 3: "These are not just frictions we feel. Federal rules now set the clock, ask for the reason, and make the results public."
+Closing line on slide 4: "These are not just frictions we feel. Federal rules now set the clock, ask for the reason, and make the results public."
 
 ## Phase two: why not build member visibility now?
-Someone will ask, "why not just build it now with AI?" Keep this answer for the solution section, not slide 3.
+Someone will ask, "why not just build it now with AI?" Keep this answer for the solution section, not slides 3 or 4.
 - A status shown to a member is only as good as the decision data behind it. We build the trusted decision record first.
 - It touches member communications and a regulated status interface. That needs its own compliance and security review.
 - The record built in phase one is exactly what phase two reads from, so waiting costs nothing.
@@ -68,5 +70,6 @@ Rule for the whole deck: every phase has a reason, and we say it out loud.
 ## Files
 - `deck/journey/build_journey.js` builds `Journey_Click_Through.pptx` (slide 2).
 - `deck/journey/build_friction.js` builds `Friction_Click_Through.pptx` (slide 3).
+- `deck/journey/build_federal.js` builds `Federal_Click_Through.pptx` (slide 4).
 - Each file is one slide with one click per step. Import into Google Slides with File, Import slides.
 - To build: `node build_friction.js`. It needs the `@resvg/resvg-js` package to draw the character art.
