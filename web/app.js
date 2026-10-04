@@ -298,7 +298,8 @@ function questionCardHtml(d) {
   if (d.status !== "escalated") return "";
   const q = [...d.comments].reverse().find((c) => c.kind === "escalation");
   if (!q) return "";
-  return `<div class="card" style="border-color:var(--esc)"><h3>Question for ${esc(d.md ? d.md.name : "the medical director")}</h3><p style="margin:0 0 6px;line-height:1.55">${esc(q.body.replace(/^@\w+\s*/, ""))}</p><div class="faint" style="font-size:12.5px">From ${q.user ? esc(q.user.name) : "the nurse"}, ${ago(q.created_at)}</div></div>`;
+  const by = q.user ? q.user.name : "the nurse", toMd = S.user.role === "medical_director";
+  return `<div class="card" style="border-color:var(--esc)"><h3 style="margin-bottom:2px">${toMd ? "Escalated by " + esc(by) : "Escalated to " + esc(d.md ? d.md.name : "a medical director")}</h3><div class="faint" style="font-size:12.5px;margin-bottom:10px">${ago(q.created_at)}</div><div class="faint" style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Reason</div><p style="margin:2px 0 0;line-height:1.55">${esc(q.body.replace(/^@\w+\s*/, ""))}</p></div>`;
 }
 const FIX_HINT = { expected_los_days: "Number of midnights, like 3", comorbidities: "For example: heart failure, diabetes", post_op_needs: "What care is needed after surgery", conservative_treatment: "What was tried and for how long", shared_decision_making: "Optional note", indication_evidence: "" };
 function fixForm(key) {
@@ -331,7 +332,7 @@ function reviewHtml(d, a, done) {
   return `<div class="cols">
     <div class="stack">${questionCardHtml(d)}
       ${d.sla === "breached" ? `<div class="banner">This case is past its ${d.priority === "expedited" ? "72-hour expedited" : "7-day standard"} CMS decision clock. It needs attention now.</div>` : ""}
-      ${reco}
+      ${d.status === "escalated" && questionCardHtml(d) ? "" : reco}
       <div class="card"><h3>What the packet says</h3>
         ${FACTS.map(([key, label, fmt]) => { const f = d.facts[key] || { status: "missing" }; const v = fmt(f);
           return `<div class="fr ${S.activeKey === key ? "on" : ""}"><b>${label}</b><div><span class="sd ${dotClass(f, key)}"></span>${v ? esc(v) : `<span class="muted">${FSTATUS[f.status]}</span>`}${f.status === "implied" ? `<div class="q">“${esc(f.quote)}” ${esc(f.note || "")}</div>` : ""}${["unsure", "missing"].includes(f.status) && f.note ? `<div class="q">${esc(f.note)}</div>` : ""}${f.confirmed_by ? `<div class="faint" style="font-size:12.5px">Confirmed by ${esc(f.confirmed_by)}</div>` : ""}</div><div class="acts">${citeBtn(f.page, f.quote, key)}${canFix ? `<button class="btn small ${f.status === "unsure" ? "primary" : "ghost"}" data-fix="${key}">${f.status === "unsure" ? "Check" : "Fix"}</button>` : ""}</div>${S.fix === key ? fixForm(key) : ""}</div>`; }).join("")}</div>
