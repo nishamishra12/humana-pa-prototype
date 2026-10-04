@@ -7,7 +7,8 @@ const pptxgen = require("pptxgenjs");
 const JSZip = require("jszip");
 const { Resvg } = require("@resvg/resvg-js"); // draws the SVG art to PNG (npm i @resvg/resvg-js)
 
-const OUT = path.join(__dirname, "Journey_Animation.pptx");
+const OUT = path.join(__dirname, "Journey_Animation.pptx"); // only with --animated
+const OUT_STEPS = path.join(__dirname, "Journey_Steps.pptx"); // default: one slide per step
 const C = {
   ink: "16211E", muted: "5C6B66", green: "1F6F5C", greenSoft: "E3F0EB", line: "CBD5D1",
   coral: "B8452F", coralSoft: "FBE9E4", amber: "8A5A00", amberSoft: "FCEFD0",
@@ -50,28 +51,28 @@ const ART = {
 /* ---------- layout spec (inches). Everything lives here so the preview and the slide match ---------- */
 const items = []; // {name, kind, x,y,w,h, ...}
 const add = (o) => items.push(o);
-const runs = (title, desc, tc = C.ink, ts = 14, ds = 11.5, dc = C.muted) => [
+const runs = (title, desc, tc = C.ink, ts = 13, ds = 10.5, dc = C.muted) => [
   { text: title, options: { bold: true, fontSize: ts, color: tc, fontFace: B, breakLine: !!desc } },
   ...(desc ? [{ text: desc, options: { fontSize: ds, color: dc, fontFace: B } }] : []),
 ];
 const AVM = [0.06, 0.12, 0.06, 1.0]; // text margin that leaves room for an avatar on the left
 const node = (name, x, y, w, h, title, desc, o = {}) => add({ name, kind: "node", x, y, w, h, fill: C.white, line: C.line, lineW: 1, runs: runs(title, desc, o.tc, o.ts, o.ds), margin: AVM, ...o });
 const avatar = (name, x, y, size) => add({ name, kind: "image", x, y, w: size, h: size });
-const tag = (name, x, y, w, h, text, o = {}) => add({ name, kind: "node", x, y, w, h, fill: C.coralSoft, line: C.coral, lineW: 1, runs: [{ text, options: { fontSize: 12, bold: true, color: C.coral, fontFace: B } }], margin: [0.05, 0.12, 0.05, 0.12], ...o });
+const tag = (name, x, y, w, h, text, o = {}) => add({ name, kind: "node", x, y, w, h, fill: C.coralSoft, line: C.coral, lineW: 1, runs: [{ text, options: { fontSize: 11, bold: true, color: C.coral, fontFace: B } }], margin: [0.05, 0.12, 0.05, 0.12], ...o });
 // a packet badge that straddles the bottom or top edge of a node, so it never crowds the text
-const pkt = (name, x, y) => add({ name, kind: "node", x, y, w: 0.95, h: 0.36, fill: C.white, line: C.coral, lineW: 1.5, radius: 0.06, align: "center", margin: [0, 0, 0, 0], runs: [{ text: "14 pages", options: { bold: true, fontSize: 11, color: C.coral, fontFace: B } }] });
+const pkt = (name, x, y) => add({ name, kind: "node", x, y, w: 0.95, h: 0.36, fill: C.white, line: C.coral, lineW: 1.5, radius: 0.06, align: "center", margin: [0, 0, 0, 0], runs: [{ text: "14 pages", options: { bold: true, fontSize: 10, color: C.coral, fontFace: B } }] });
 const ring = (name, x, y, w, h, color) => add({ name, kind: "ring", x: x - 0.06, y: y - 0.06, w: w + 0.12, h: h + 0.12, line: color, lineW: 3 });
-const caption = (name, text) => add({ name, kind: "text", x: 0.5, y: 6.5, w: 12.33, h: 0.65, valign: "middle", runs: [{ text, options: { fontSize: 18, color: C.ink, fontFace: B } }] });
-const label = (name, text, color) => add({ name, kind: "text", x: 7.3, y: 0.5, w: 5.53, h: 0.6, align: "right", valign: "middle", runs: [{ text, options: { bold: true, fontSize: 16, color, fontFace: B, charSpacing: 1 } }] });
+const caption = (name, text) => add({ name, kind: "text", x: 0.5, y: 6.5, w: 12.33, h: 0.65, valign: "middle", runs: [{ text, options: { fontSize: 16, color: C.ink, fontFace: B } }] });
+const label = (name, text, color) => add({ name, kind: "text", x: 7.3, y: 0.5, w: 5.53, h: 0.6, align: "right", valign: "middle", runs: [{ text, options: { bold: true, fontSize: 14, color, fontFace: B, charSpacing: 1 } }] });
 const line = (name, x, y, w, h, o = {}) => add({ name, kind: "line", x, y, w, h, line: C.muted, lineW: 2, arrow: true, ...o });
 
 // static frame
 add({ name: "eyebrow", kind: "text", static: true, x: 0.5, y: 0.3, w: 4, h: 0.28, runs: [{ text: "CURRENT STATE", options: { bold: true, fontSize: 11, color: C.green, fontFace: B, charSpacing: 3 } }] });
-add({ name: "title", kind: "text", static: true, x: 0.5, y: 0.55, w: 7.2, h: 0.75, valign: "middle", runs: [{ text: "How a prior authorization moves today.", options: { fontSize: 28, color: C.ink, fontFace: H } }] });
+add({ name: "title", kind: "text", static: true, x: 0.5, y: 0.55, w: 7.2, h: 0.75, valign: "middle", runs: [{ text: "How a prior authorization moves today.", options: { fontSize: 26, color: C.ink, fontFace: H } }] });
 add({ name: "panelProv", kind: "node", static: true, x: 0.5, y: 1.45, w: 4.45, h: 4.85, fill: C.provPanel, line: C.line, lineW: 1, radius: 0.1, runs: [{ text: " ", options: { fontSize: 8 } }] });
 add({ name: "panelPay", kind: "node", static: true, x: 5.55, y: 1.45, w: 7.28, h: 4.85, fill: C.payPanel, line: C.line, lineW: 1, radius: 0.1, runs: [{ text: " ", options: { fontSize: 8 } }] });
-add({ name: "hdrProv", kind: "text", static: true, x: 0.85, y: 1.52, w: 3.9, h: 0.55, runs: [{ text: "PROVIDER", options: { bold: true, fontSize: 12, color: C.ink, fontFace: B, charSpacing: 3, breakLine: true } }, { text: "Hospital or physician office", options: { fontSize: 11, color: C.muted, fontFace: B } }] });
-add({ name: "hdrPay", kind: "text", static: true, x: 5.8, y: 1.52, w: 6.5, h: 0.55, runs: [{ text: "PAYER", options: { bold: true, fontSize: 12, color: C.ink, fontFace: B, charSpacing: 3, breakLine: true } }, { text: "The health plan: Utilization Management (UM)", options: { fontSize: 11, color: C.muted, fontFace: B } }] });
+add({ name: "hdrProv", kind: "text", static: true, x: 0.85, y: 1.52, w: 3.9, h: 0.55, runs: [{ text: "PROVIDER", options: { bold: true, fontSize: 11, color: C.ink, fontFace: B, charSpacing: 3, breakLine: true } }, { text: "Hospital or physician office", options: { fontSize: 10, color: C.muted, fontFace: B } }] });
+add({ name: "hdrPay", kind: "text", static: true, x: 5.8, y: 1.52, w: 6.5, h: 0.55, runs: [{ text: "PAYER", options: { bold: true, fontSize: 11, color: C.ink, fontFace: B, charSpacing: 3, breakLine: true } }, { text: "The health plan: Utilization Management (UM)", options: { fontSize: 10, color: C.muted, fontFace: B } }] });
 add({ name: "footer", kind: "text", static: true, x: 0.5, y: 7.1, w: 12.33, h: 0.25, runs: [{ text: "An elective inpatient lumbar spinal fusion request, as it works today.", options: { fontSize: 9, color: C.muted, fontFace: B } }] });
 
 // provider side (nodes start at x 0.85 so the resend loop has room on the left)
@@ -80,7 +81,7 @@ avatar("AvL1", 0.97, 2.32, 0.71);
 pkt("P1", 3.55, 2.97); pkt("P1b", 3.55, 2.97);
 node("Member", 0.85, 3.45, 3.85, 0.95, "The member: John Doe, 71", "Waiting on the surgery. Sees none of this.");
 avatar("AvM", 0.97, 3.57, 0.71);
-node("L3", 0.85, 4.75, 3.85, 0.7, "Provider decodes the pend", "Works out what is missing.", { ts: 13, ds: 10.5, margin: [0.04, 0.12, 0.04, 0.85] });
+node("L3", 0.85, 4.75, 3.85, 0.7, "Provider decodes the pend", "Works out what is missing.", { ts: 12, ds: 10, margin: [0.04, 0.12, 0.04, 0.85] });
 avatar("AvL3", 0.95, 4.83, 0.54);
 pkt("PL3", 3.55, 5.27);
 tag("T3", 0.85, 5.68, 3.85, 0.55, "A pend does not stop the clock.");
@@ -94,19 +95,19 @@ tag("T5", 9.5, 2.2, 3.1, 0.95, "Back to the start of the line. Maybe a different
 node("Nurse", 5.8, 3.45, 3.5, 0.95, "UM nurse", "Reads all 14 pages and checks them against policy.");
 avatar("AvNurse", 5.92, 3.57, 0.71);
 pkt("P3", 8.3, 3.27);
-add({ name: "T2", kind: "text", x: 9.5, y: 3.4, w: 3.1, h: 0.28, runs: [{ text: "4 facts hidden in 14 pages", options: { bold: true, fontSize: 12, color: C.coral, fontFace: B } }] });
-const chip = (n, x, y, t) => add({ name: n, kind: "node", x, y, w: 1.5, h: 0.3, fill: C.white, line: C.green, lineW: 1, radius: 0.06, align: "center", margin: [0, 0.04, 0, 0.04], runs: [{ text: t, options: { fontSize: 11, color: C.ink, fontFace: B } }] });
+add({ name: "T2", kind: "text", x: 9.5, y: 3.4, w: 3.1, h: 0.28, runs: [{ text: "4 facts hidden in 14 pages", options: { bold: true, fontSize: 11, color: C.coral, fontFace: B } }] });
+const chip = (n, x, y, t) => add({ name: n, kind: "node", x, y, w: 1.5, h: 0.3, fill: C.white, line: C.green, lineW: 1, radius: 0.06, align: "center", margin: [0, 0.04, 0, 0.04], runs: [{ text: t, options: { fontSize: 10, color: C.ink, fontFace: B } }] });
 chip("Chip1", 9.5, 3.72, "Expected stay"); chip("Chip2", 11.1, 3.72, "Risk factors");
 chip("Chip3", 9.5, 4.06, "Imaging"); chip("Chip4", 11.1, 4.06, "Conservative care");
 
 // outcomes
-add({ name: "OutPend", kind: "node", x: 5.8, y: 4.75, w: 2.1, h: 0.7, fill: C.amberSoft, line: C.amber, lineW: 1, runs: runs("Pend", "Asks the provider", C.amber, 14, 11, C.amber), margin: [0.04, 0.12, 0.04, 0.14] });
-add({ name: "OutApprove", kind: "node", x: 8.0, y: 4.75, w: 2.1, h: 0.7, fill: C.okSoft, line: C.ok, lineW: 1, runs: runs("Approve", "Packet is complete", C.ok, 14, 11, C.ok), margin: [0.04, 0.12, 0.04, 0.14] });
-add({ name: "OutEsc", kind: "node", x: 10.25, y: 4.75, w: 2.3, h: 0.7, fill: C.purpleSoft, line: C.purple, lineW: 1, runs: runs("Escalate", "Needs a physician", C.purple, 14, 11, C.purple), margin: [0.04, 0.12, 0.04, 0.14] });
+add({ name: "OutPend", kind: "node", x: 5.8, y: 4.75, w: 2.1, h: 0.7, fill: C.amberSoft, line: C.amber, lineW: 1, runs: runs("Pend", "Asks the provider", C.amber, 13, 10, C.amber), margin: [0.04, 0.12, 0.04, 0.14] });
+add({ name: "OutApprove", kind: "node", x: 8.0, y: 4.75, w: 2.1, h: 0.7, fill: C.okSoft, line: C.ok, lineW: 1, runs: runs("Approve", "Packet is complete", C.ok, 13, 10, C.ok), margin: [0.04, 0.12, 0.04, 0.14] });
+add({ name: "OutEsc", kind: "node", x: 10.25, y: 4.75, w: 2.3, h: 0.7, fill: C.purpleSoft, line: C.purple, lineW: 1, runs: runs("Escalate", "Needs a physician", C.purple, 13, 10, C.purple), margin: [0.04, 0.12, 0.04, 0.14] });
 ring("RingPend", 5.8, 4.75, 2.1, 0.7, C.amber);
 ring("RingApprove", 8.0, 4.75, 2.1, 0.7, C.ok);
 ring("RingEsc", 10.25, 4.75, 2.3, 0.7, C.purple);
-node("MD", 9.1, 5.62, 3.6, 0.62, "Medical director", "Decides. Only role that can deny.", { fill: C.purpleSoft, line: C.purple, ts: 13, ds: 10.5, tc: C.purple, margin: [0.03, 0.1, 0.03, 0.8] });
+node("MD", 9.1, 5.62, 3.6, 0.62, "Medical director", "Decides. Only role that can deny.", { fill: C.purpleSoft, line: C.purple, ts: 12, ds: 10, tc: C.purple, margin: [0.03, 0.1, 0.03, 0.8] });
 avatar("AvMD", 9.18, 5.67, 0.52);
 tag("T4", 5.8, 5.62, 3.1, 0.62, "A denial can be appealed, and many are overturned.");
 
@@ -172,17 +173,20 @@ const slots = [
 ];
 
 /* ---------- build the slide ---------- */
-async function main() {
-  const pres = new pptxgen();
-  pres.layout = "LAYOUT_WIDE"; // 13.333 x 7.5 in
-  pres.title = "How a prior authorization moves today (animated)";
-  pres.author = "Nisha Mishra";
-  const s = pres.addSlide();
-  s.background = { color: C.white };
-  const PNG = {};
-  for (const [k, svg] of Object.entries(ART)) PNG[k] = Buffer.from(new Resvg(svg, { fitTo: { mode: "width", value: 360 } }).render().asPng()).toString("base64");
-  const m2 = (m) => (m ? m.map((v) => v * 72) : undefined); // inches -> points, [top,right,bottom,left]
+const ANIMATED = process.argv.includes("--animated");
+const animatedNames = new Set(slots.flatMap((sl) => sl.fx.map((e) => e.name)));
+
+// what is on screen after the first k slots have played
+function visibleAfter(k) {
+  const vis = new Set();
+  slots.slice(0, k).forEach((sl) => sl.fx.forEach((e) => (e.t === "fadeOut" ? vis.delete(e.name) : vis.add(e.name))));
+  return vis;
+}
+
+function draw(pres, s, PNG, vis) {
+  const m2 = (m) => m.map((v) => v * 72); // inches -> points
   items.forEach((o) => {
+    if (vis && animatedNames.has(o.name) && !vis.has(o.name)) return;
     if (o.kind === "image") {
       s.addImage({ data: "image/png;base64," + PNG[o.name], x: o.x, y: o.y, w: o.w, h: o.h, objectName: o.name });
     } else if (o.kind === "line") {
@@ -190,12 +194,41 @@ async function main() {
     } else if (o.kind === "ring") {
       s.addShape(pres.ShapeType.roundRect, { x: o.x, y: o.y, w: o.w, h: o.h, rectRadius: 0.1, fill: { type: "none" }, line: { color: o.line, width: o.lineW }, objectName: o.name });
     } else if (o.kind === "node") {
-      const m = o.margin || [0.06, 0.12, 0.06, 0.12];
-      s.addText(o.runs, { shape: pres.ShapeType.roundRect, rectRadius: o.radius ?? 0.08, x: o.x, y: o.y, w: o.w, h: o.h, fill: { color: o.fill }, line: { color: o.line, width: o.lineW }, align: o.align || "left", valign: "middle", margin: m2([m[0], m[1], m[2], m[3]]), objectName: o.name, isTextBox: false });
+      const m = o.margin || [0.06, 0.12, 0.06, 0.12]; // my spec order is top, right, bottom, left
+      // pptxgenjs wants [left, right, bottom, top]
+      s.addText(o.runs, { shape: pres.ShapeType.roundRect, rectRadius: o.radius ?? 0.08, x: o.x, y: o.y, w: o.w, h: o.h, fill: { color: o.fill }, line: { color: o.line, width: o.lineW }, align: o.align || "left", valign: "middle", margin: m2([m[3], m[1], m[2], m[0]]), objectName: o.name, isTextBox: false });
     } else {
       s.addText(o.runs, { x: o.x, y: o.y, w: o.w, h: o.h, align: o.align || "left", valign: o.valign || "top", margin: 0, objectName: o.name, isTextBox: true, fit: "none" });
     }
   });
+}
+
+async function main() {
+  const pres = new pptxgen();
+  pres.layout = "LAYOUT_WIDE"; // 13.333 x 7.5 in
+  pres.title = "How a prior authorization moves today";
+  pres.author = "Nisha Mishra";
+  const PNG = {};
+  for (const [k, svg] of Object.entries(ART)) PNG[k] = Buffer.from(new Resvg(svg, { fitTo: { mode: "width", value: 360 } }).render().asPng()).toString("base64");
+
+  if (!ANIMATED) {
+    // one slide per step: press Next to walk the flow
+    slots.forEach((_, i) => {
+      const s = pres.addSlide();
+      s.background = { color: C.white };
+      draw(pres, s, PNG, visibleAfter(i + 1));
+      s.addNotes(STEP_NOTES[i]);
+    });
+    await pres.writeFile({ fileName: OUT_STEPS });
+    fs.writeFileSync(path.join(__dirname, "preview.html"), preview());
+    if (process.argv.includes("--steps")) [4, 6, 10, 11, 13].forEach((k) => fs.writeFileSync(path.join(__dirname, `preview_s${k}.html`), preview().replace('new URLSearchParams(location.search).get("step")', `"${k}"`)));
+    console.log("wrote", OUT_STEPS, "|", slots.length, "slides, press Next to walk through");
+    return;
+  }
+
+  const s = pres.addSlide();
+  s.background = { color: C.white };
+  draw(pres, s, PNG, null);
   s.addNotes(NOTES);
   await pres.writeFile({ fileName: OUT });
 
@@ -213,9 +246,7 @@ async function main() {
   xml = xml.replace("</p:sld>", timing + "</p:sld>");
   zip.file(f, xml);
   fs.writeFileSync(OUT, await zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" }));
-  const pv = preview();
-  fs.writeFileSync(path.join(__dirname, "preview.html"), pv);
-  if (process.argv.includes("--steps")) [4, 6, 10, 11, 13].forEach((k) => fs.writeFileSync(path.join(__dirname, `preview_s${k}.html`), pv.replace('new URLSearchParams(location.search).get("step")', `"${k}"`)));
+  fs.writeFileSync(path.join(__dirname, "preview.html"), preview());
   let total = 0; slots.forEach((sl) => (total += sl.hold + Math.max(...sl.fx.map((e) => (e.delay + e.dur) / 1000))));
   console.log("wrote", OUT, "| animation length about", Math.round(total), "seconds");
 }
@@ -273,6 +304,24 @@ function preview() {
   const script = `<script>const S=${data};const q=new URLSearchParams(location.search).get("step");if(q!==null){const k=+q;const vis={};const all=new Set(S.flat().map(e=>e[0]));S.slice(0,k).forEach(sl=>sl.forEach(([n,t])=>{vis[n]=t!=="fadeOut"}));document.querySelectorAll("[data-n]").forEach(el=>{const n=el.dataset.n;if(all.has(n)&&!vis[n])el.style.display="none"})}</script>`;
   return `<!doctype html><meta charset="utf-8"><body style="margin:0;background:#fff"><div style="position:relative;width:${13.333 * px}px;height:${7.5 * px}px;background:#fff">${html}</div>${script}`;
 }
+
+
+const STEP_NOTES = [
+  "A surgeon decides the patient needs a lumbar spinal fusion. The office assembles a packet of clinical documents: notes, imaging, history. Meet John Doe, 71. He is waiting and sees none of this.",
+  "They fax the packet to the plan. Fourteen pages. Fax is still how most of this moves.",
+  "On the plan side, intake checks the member, the form, and the codes. That is a paperwork check. Nobody has read the clinical pages yet.",
+  "Intake assigns the packet to a UM nurse. She picks it up.",
+  "She reads all fourteen pages. She is hunting for four facts: the expected stay, the risk factors, the imaging evidence, and the conservative treatment. Then she checks each one against policy.",
+  "When she finishes, there are three ways out: approve, pend, or escalate.",
+  "Path one. Every fact is there and every criterion is met. She approves. This is the good case.",
+  "Path two. A fact is missing. She pends the case and it goes back to the provider.",
+  "The provider has to work out what is missing. Nobody tells them in plain terms. A pend does not stop the CMS clock.",
+  "They find it and resend. The packet goes through the fax all over again.",
+  "Back at intake, the case starts from zero. Maybe a different nurse reads it. The clock never stopped.",
+  "Path three. The facts are there, but the case is borderline. It goes to a medical director.",
+  "Only the medical director can deny. A denial can be appealed, and many are overturned. That is the cost of getting it wrong the first time.",
+  "Close on this: every step is somebody doing their job correctly. The delay is built into the process.",
+];
 
 const NOTES = `Walk this left to right and let it play. One click starts it.
 
