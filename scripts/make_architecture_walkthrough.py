@@ -34,7 +34,7 @@ Y = 70
 H = 118
 stages = [
     ("Intake", ["Intake uploads a PDF", "PDF only, 15 MB max", "40 new packets a day"], "code", "CODE"),
-    ("Document ETL", ["Unstructured service:", "pages to labeled", "elements, OCR scans"], "ext", "OUTSIDE SERVICE"),
+    ("ETL + AI", ["Unstructured service:", "OCR + vision models", "pages to elements"], "ext", "OUTSIDE SERVICE + AI"),
     ("Pick the policy", ["CPT code on the form", "picks the policy set:", "ICD, bariatric, spine"], "code", "CODE"),
     ("Read the packet", ["Claude reads all pages", "fills the fact form", "3 reads must agree"], "ai", "AI MODEL"),
     ("Check evidence", ["find each quote (fuzzy)", "2nd AI checks meaning", "numbers must match"], "ai", "CODE + AI"),
@@ -80,7 +80,7 @@ cards = [
     ("1 - What Unstructured does (the partitioner)",
      ["It turns a PDF into pieces a program can use. Each piece is a labeled element: a title, a paragraph, a table, a form, a header or a footer. Each one keeps its page number and where it sits on the page.",
       "Unstructured's own partitioner has four methods. <b>Auto</b> picks per page. <b>Fast</b> reads clean typed text with plain rules and no model. <b>High Res</b> looks at the page layout and runs OCR, so it handles scans and tables. <b>VLM</b> sends the page image to a vision-language model, the slowest and most accurate, best for handwriting and messy pages. Auto sends text-only pages to Fast and complex pages to High Res or VLM.",
-      "<b>Our app calls their Transform service, and it hides that choice.</b> It only has two settings, balanced (the default, which we use) and best. Their docs do not say which method it picks, so I do not claim one. I can say what it returned: labeled elements with coordinates, and readable text from a scanned packet. In my separate search experiment I did choose VLM myself."]),
+      "<b>That is why I label this step ETL plus AI.</b> Fast is plain rules, but the other methods read the page image with OCR, and VLM uses a vision-language model. <b>Our app calls their Transform service, and it hides that choice.</b> It only has two settings, balanced (the default, which we use) and best. Their docs do not say which method it picks, so I do not claim one. I can say what it returned: labeled elements with coordinates, and readable text from a scanned packet. In my separate search experiment I did choose VLM myself."]),
     ("2 - What OCR does",
      ["OCR means optical character recognition. A scanned page is only a picture. OCR finds the lines of text in the picture and works out which letter each shape is, so the page becomes text again.",
       "It makes small mistakes: an O for a zero, an l for a one, a smudged word. That is why the next steps never trust the text blindly. They match quotes with a similarity score and refuse a match if a number is different."]),
