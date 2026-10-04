@@ -1,0 +1,127 @@
+<title>PA Desk Operations</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{--bg:#f3f6f4;--panel:#ffffff;--ink:#14201c;--ink2:#51605b;--line:#d3dcd8;--acc:#1f6f5c;--accsoft:#e1efe9;--risk:#b8452f;--risksoft:#fbe8e3;--dir:#5f3aa8;--dirsoft:#ebe2f8;--amber:#8a5a00;--ambersoft:#fcefd0;--ok:#18764a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0e1614;--panel:#16211e;--ink:#e6efeb;--ink2:#a6b8b1;--line:#2b3a36;--acc:#4cc0a0;--accsoft:#12302a;--risk:#f08a73;--risksoft:#3a1f19;--dir:#b79cf0;--dirsoft:#2a2046;--amber:#f0b04a;--ambersoft:#35260c;--ok:#5fd18f}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0e1614;--panel:#16211e;--ink:#e6efeb;--ink2:#a6b8b1;--line:#2b3a36;--acc:#4cc0a0;--accsoft:#12302a;--risk:#f08a73;--risksoft:#3a1f19;--dir:#b79cf0;--dirsoft:#2a2046;--amber:#f0b04a;--ambersoft:#35260c;--ok:#5fd18f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 "IBM Plex Sans",system-ui,sans-serif;padding-inline:16px;padding-block:20px 60px}
+main{max-width:1100px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+h1{font-size:24px;margin:0 0 2px;font-weight:600}
+.sub{color:var(--ink2);margin:0;max-width:620px}
+.demo{background:var(--ambersoft);color:var(--amber);border-radius:8px;padding:6px 12px;font-size:12.5px;font-weight:500}
+nav{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:18px}
+nav button{font:inherit;font-weight:500;background:none;border:0;border-bottom:3px solid transparent;color:var(--ink2);padding:10px 14px;cursor:pointer}
+nav button[aria-selected="true"]{color:var(--acc);border-bottom-color:var(--acc)}
+h2{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink2);margin:26px 0 10px;font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .n{font-size:30px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi .l{color:var(--ink2);font-size:12.5px;margin-top:4px}
+.kpi.risk .n{color:var(--risk)}.kpi.acc .n{color:var(--acc)}.kpi.dir .n{color:var(--dir)}.kpi.amber .n{color:var(--amber)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card h3{font-size:14px;margin:0 0 2px}.card p{margin:0 0 10px;color:var(--ink2);font-size:12.5px}
+.bar{display:grid;grid-template-columns:minmax(120px,210px) 1fr 34px;gap:10px;align-items:center;margin:6px 0;font-size:13px}
+.bar .t{background:var(--bg);border-radius:5px;height:16px;overflow:hidden}.bar .f{height:100%;border-radius:5px;background:var(--acc)}
+.bar .v{font-variant-numeric:tabular-nums;text-align:right;font-weight:600}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+td:first-child{white-space:nowrap}
+.note{color:var(--ink2);font-size:12.5px}
+.future{border-style:dashed;background:transparent}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:500}
+.pill.gap{background:var(--ambersoft);color:var(--amber)}
+[hidden]{display:none!important}
+</style>
+<main>
+<header>
+<div><h1>PA Desk operations</h1><p class="sub">Two views of the same work. Executive: how much, how risky, how fast. Utilization management: who has what, and what is waiting.</p></div>
+<div class="demo" id="demo"></div>
+</header>
+<nav role="tablist"><button role="tab" id="t-exec" aria-selected="true" aria-controls="p-exec">Executive</button><button role="tab" id="t-um" aria-selected="false" aria-controls="p-um">Utilization management</button></nav>
+<section id="p-exec" role="tabpanel"></section>
+<section id="p-um" role="tabpanel" hidden></section>
+</main>
+<script>
+const D = {"generated": "2026-10-04 16:10 UTC", "n": 15, "exec": {"total": 15, "at_risk": 8, "clean": 7, "by_status": [{"label": "Not started", "n": 10}, {"label": "In review with a nurse", "n": 1}, {"label": "Waiting on the provider", "n": 1}, {"label": "With a medical director", "n": 2}, {"label": "Approved", "n": 1}, {"label": "Denied", "n": 0}], "risk_split": [{"label": "AI says approve (not at risk)", "n": 7}, {"label": "AI says pend: something is missing", "n": 3}, {"label": "AI says escalate: a rule is not met", "n": 5}, {"label": "AI says verify: unclear, a person decides", "n": 0}, {"label": "No policy for this service", "n": 0}], "pended": 1, "with_md": 2, "approved": 1, "denied": 0, "avg_hours": 4.8, "decided": 1, "within_deadline": 100, "overdue": 2, "due_soon": 0, "first_review_rate": 100, "agree_rate": 67, "n_actions": 6, "overrides": 0, "avoidable_escalations": 0, "returns": 0, "escalations": 3}, "um": {"unassigned": 0, "oldest_unassigned_days": 0, "aging": [{"label": "Under 1 day", "n": 4}, {"label": "1 to 3 days", "n": 7}, {"label": "3 to 5 days", "n": 2}, {"label": "5 days or more", "n": 1}], "nurses": [{"name": "Maria Santos", "assigned": 11, "open": 11, "at_risk_open": 6, "overdue": 2, "pended": 1, "escalated": 2, "decided": 0, "avg_hours": null, "overrides": 0}, {"name": "James Okafor", "assigned": 4, "open": 3, "at_risk_open": 2, "overdue": 0, "pended": 0, "escalated": 0, "decided": 1, "avg_hours": 4.8, "overrides": 0}], "directors": [{"name": "Dr. Priya Patel", "waiting": 2, "oldest_days": 2.9, "decided": 0, "returned": 0}, {"name": "Dr. Alan Brooks", "waiting": 0, "oldest_days": null, "decided": 0, "returned": 0}], "open": 14, "overdue": 2, "due_soon": 0, "at_risk_open": 8}};
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const dash = (v, suffix = "") => (v === null || v === undefined ? "n/a" : v + suffix);
+const kpi = (n, l, cls = "") => `<div class="kpi ${cls}"><div class="n">${n}</div><div class="l">${l}</div></div>`;
+function bars(rows, color) {
+  const max = Math.max(1, ...rows.map((r) => r.n));
+  return rows.map((r) => `<div class="bar"><span>${esc(r.label)}</span><span class="t"><span class="f" style="display:block;width:${(100 * r.n) / max}%;${color ? "background:" + color : ""}"></span></span><span class="v">${r.n}</span></div>`).join("");
+}
+const E = D.exec, U = D.um;
+$("#demo").textContent = `Made-up demo data: ${D.n} cases. Updated ${D.generated}`;
+$("#p-exec").innerHTML = `
+<h2>Right now</h2>
+<div class="kpis">
+ ${kpi(E.total, "Cases in the system")}
+ ${kpi(E.at_risk, "At risk: the AI sent it to a person", "risk")}
+ ${kpi(E.clean, "Not at risk: the AI recommends approve", "acc")}
+ ${kpi(E.with_md, "With a medical director", "dir")}
+ ${kpi(E.pended, "Waiting on the provider", "amber")}
+ ${kpi(E.denied, "Denied (only a director can)")}
+</div>
+<h2>Where the work is</h2>
+<div class="grid2">
+ <div class="card"><h3>Status of every case</h3><p>Where each case is today.</p>${bars(E.by_status)}</div>
+ <div class="card"><h3>What the AI recommended</h3><p>Not at risk means approve. The rest need a person.</p>${bars(E.risk_split, "var(--risk)")}</div>
+</div>
+<h2>Time and deadlines</h2>
+<div class="kpis">
+ ${kpi(E.avg_hours === null ? "n/a" : E.avg_hours + " h", `Average time from received to decision (${E.decided} decided)`)}
+ ${kpi(dash(E.within_deadline, "%"), "Decided within the CMS deadline")}
+ ${kpi(E.overdue, "Open and past the deadline", E.overdue ? "risk" : "")}
+ ${kpi(E.due_soon, "Open and due in 24 hours", E.due_soon ? "amber" : "")}
+</div>
+<h2>Leading indicators</h2>
+<div class="card"><div class="tw"><table>
+<thead><tr><th>Indicator</th><th class="num">Today</th><th>Better when</th><th>What it tells us</th></tr></thead><tbody>
+<tr><td>First-review rate</td><td class="num">${dash(E.first_review_rate, "%")}</td><td>Higher</td><td class="note">Decided cases that did not need a pend. Based on ${E.decided} decided case(s).</td></tr>
+<tr><td>Nurse agrees with the AI</td><td class="num">${dash(E.agree_rate, "%")}</td><td>Higher</td><td class="note">Of ${E.n_actions} nurse actions, how many matched the recommendation. ${E.overrides} approved against it.</td></tr>
+<tr><td>Avoidable escalations</td><td class="num">${E.avoidable_escalations} of ${E.escalations}</td><td>Lower</td><td class="note">Escalations a director sent back because the packet already had the answer.</td></tr>
+<tr><td>Avoidable pends</td><td class="num"><span class="pill gap">not captured yet</span></td><td>Lower</td><td class="note">Needs one change: the provider's reply is typed "sent new info" or "already sent".</td></tr>
+<tr><td>Overturned because the info was in the packet</td><td class="num"><span class="pill gap">needs Humana data</span></td><td>Lower</td><td class="note">Appeals data arrives months later. It turns the early read into the full North Star.</td></tr>
+</tbody></table></div></div>
+<h2>Next</h2>
+<div class="card future"><h3>Month over month</h3><p>Same tiles, one point per month, so the trend is visible. It needs three months of production data. The prototype shows today only.</p></div>`;
+
+$("#p-um").innerHTML = `
+<h2>Right now</h2>
+<div class="kpis">
+ ${kpi(U.unassigned, "Waiting at intake, not assigned" + (U.unassigned ? ` (oldest ${U.oldest_unassigned_days} days)` : ""), U.unassigned ? "amber" : "")}
+ ${kpi(U.open, "Open cases")}
+ ${kpi(U.at_risk_open, "Open and at risk", "risk")}
+ ${kpi(U.overdue, "Open and past the deadline", U.overdue ? "risk" : "")}
+ ${kpi(U.due_soon, "Due in 24 hours", U.due_soon ? "amber" : "")}
+</div>
+<h2>How long open cases have waited</h2>
+<div class="card"><p>Days since the case was received.</p>${bars(U.aging, "var(--amber)")}</div>
+<h2>By nurse</h2>
+<div class="card"><div class="tw"><table>
+<thead><tr><th>Nurse</th><th class="num">Assigned</th><th class="num">Open</th><th class="num">Open and at risk</th><th class="num">Waiting on provider</th><th class="num">With director</th><th class="num">Past deadline</th><th class="num">Decided</th><th class="num">Avg hours to decision</th><th class="num">Approved against the AI</th></tr></thead><tbody>
+${U.nurses.map((n) => `<tr><td>${esc(n.name)}</td><td class="num">${n.assigned}</td><td class="num">${n.open}</td><td class="num">${n.at_risk_open}</td><td class="num">${n.pended}</td><td class="num">${n.escalated}</td><td class="num">${n.overdue}</td><td class="num">${n.decided}</td><td class="num">${dash(n.avg_hours)}</td><td class="num">${n.overrides}</td></tr>`).join("")}
+</tbody></table></div>
+<p class="note" style="margin:10px 0 0">Hours to decision is elapsed time from received to decided, not minutes of active work. Tracking active time per case is a next step.</p></div>
+<h2>By medical director</h2>
+<div class="card"><div class="tw"><table>
+<thead><tr><th>Medical director</th><th class="num">Waiting for a decision</th><th class="num">Oldest waiting (days)</th><th class="num">Decided</th><th class="num">Returned to nurse</th></tr></thead><tbody>
+${U.directors.map((d) => `<tr><td>${esc(d.name)}</td><td class="num">${d.waiting}</td><td class="num">${dash(d.oldest_days)}</td><td class="num">${d.decided}</td><td class="num">${d.returned}</td></tr>`).join("")}
+</tbody></table></div></div>`;
+
+const tabs = { exec: ["#t-exec", "#p-exec"], um: ["#t-um", "#p-um"] };
+function show(k) {
+  for (const [key, [t, p]] of Object.entries(tabs)) { $(t).setAttribute("aria-selected", key === k); $(p).hidden = key !== k; }
+  try { localStorage.setItem("pa-dash-tab", k); } catch (e) {}
+}
+for (const k of Object.keys(tabs)) $(tabs[k][0]).onclick = () => show(k);
+try { const s = localStorage.getItem("pa-dash-tab"); if (s && tabs[s]) show(s); } catch (e) {}
+</script>
