@@ -6,7 +6,6 @@ Thumbs.db
 __pycache__/
 *.db
 .venv/
-policies/corpus/
 uploads/
 test/
 evals/search/pipes_out/

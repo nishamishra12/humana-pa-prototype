@@ -1,0 +1,634 @@
+[
+ {
+  "file": "live/live_001.pdf",
+  "procedure": "icd",
+  "label": "[clean_control] Clean control: non-ischemic cardiomyopathy with 15 months of GDMT and every fact plainly documented.",
+  "member": "Ottilie M. Ranganathan",
+  "needs_ocr": false,
+  "note": "Non-ischemic with 15 months of GDMT, LVEF 27% by echo, NYHA II, no MI or revascularization, SDM with a decision aid, no limiting condition, and 2 midnights with documented reasons. Every rule is met.",
+  "expected_action": "approve",
+  "expected_missing": [],
+  "facts": {
+   "expected_los_days": {
+    "truth": "present",
+    "value": 2,
+    "why": "'Anticipated stay: 2 midnights.'",
+    "critical": null
+   },
+   "comorbidities": {
+    "truth": "present",
+    "value": [
+     "CKD stage 3b",
+     "type 2 diabetes on insulin",
+     "iron deficiency anemia"
+    ],
+    "why": "Reasons listed on the admission plan.",
+    "critical": null
+   },
+   "lvef_percent": {
+    "truth": "present",
+    "value": 27,
+    "why": "Echo 21-Sep-2026: 27%. The 03/2026 value of 26% is older.",
+    "critical": null
+   },
+   "lvef_method": {
+    "truth": "present",
+    "value": "echocardiography",
+    "why": "Transthoracic echo, biplane.",
+    "critical": null
+   },
+   "nyha_class": {
+    "truth": "present",
+    "value": "II",
+    "why": "'NYHA functional class II.'",
+    "critical": null
+   },
+   "cardiomyopathy_type": {
+    "truth": "present",
+    "value": "non-ischemic",
+    "why": "Normal coronary arteries on the 2025 angiogram; dilated non-ischemic cardiomyopathy.",
+    "critical": null
+   },
+   "recent_mi_revasc": {
+    "truth": "negated",
+    "value": null,
+    "why": "'History of MI, coronary stent or bypass: none.'",
+    "critical": null
+   },
+   "optimal_medical_therapy_months": {
+    "truth": "present",
+    "value": 15.0,
+    "why": "All four GDMT drugs started 18-Aug-2025; 15 months to the 18-Nov-2026 implant (13.5 months to today).",
+    "critical": null
+   },
+   "shared_decision_making": {
+    "truth": "present",
+    "value": null,
+    "why": "Visit 29-Sep-2026 with a nurse practitioner using an evidence-based ICD decision aid.",
+    "critical": null
+   },
+   "limiting_conditions": {
+    "truth": "negated",
+    "value": [],
+    "why": "'Contraindications reviewed ... None present.'",
+    "critical": null
+   }
+  },
+  "category": "clean_control",
+  "difficulty": "easy"
+ },
+ {
+  "file": "live/live_002.pdf",
+  "procedure": "bariatric",
+  "label": "[clean_control] Clean control: BMI 42.7, diabetes and sleep apnea, a failed supervised program and a 2-midnight plan, all plainly stated.",
+  "member": "Fitzgerald A. Oyebanji",
+  "needs_ocr": false,
+  "note": "BMI 42.7 is 35 or more, type 2 diabetes is documented, the supervised program failed, and 2 midnights are expected with documented reasons. Every rule is met.",
+  "expected_action": "approve",
+  "expected_missing": [],
+  "facts": {
+   "expected_los_days": {
+    "truth": "present",
+    "value": 2,
+    "why": "'We expect him to stay two midnights.'",
+    "critical": null
+   },
+   "comorbidities": {
+    "truth": "present",
+    "value": [
+     "type 2 diabetes on insulin",
+     "obstructive sleep apnea on CPAP",
+     "hypertension"
+    ],
+    "why": "Consultation history.",
+    "critical": null
+   },
+   "bmi": {
+    "truth": "present",
+    "value": 42.7,
+    "why": "Consultation 2026-09-17: BMI 42.7.",
+    "critical": null
+   },
+   "prior_medical_treatment": {
+    "truth": "present",
+    "value": null,
+    "why": "Physician-supervised program 2025-11-03 to 2026-05-04 with meal replacement, diet, exercise and CBT; 1.8% loss; called unsuccessful.",
+    "critical": null
+   }
+  },
+  "category": "clean_control",
+  "difficulty": "easy"
+ },
+ {
+  "file": "live/live_003.pdf",
+  "procedure": "icd",
+  "label": "[corrected_addendum] The echo report body and three later notes say LVEF 32%, but a signed correction at the bottom of the echo report says that number came fro",
+  "member": "Philomena D. Arceneaux",
+  "needs_ocr": false,
+  "note": "All facts are present. The corrected LVEF is 42%, so rule 2 (35% or less) is not met. Every other rule passes.",
+  "expected_action": "escalate",
+  "expected_missing": [],
+  "facts": {
+   "expected_los_days": {
+    "truth": "present",
+    "value": 2,
+    "why": "'Expected stay: 2 midnights.'",
+    "critical": null
+   },
+   "comorbidities": {
+    "truth": "present",
+    "value": [
+     "warfarin anticoagulation for DVT",
+     "CKD stage 3a",
+     "limited mobility (walker)"
+    ],
+    "why": "Reasons on the pre-procedure plan.",
+    "critical": null
+   },
+   "lvef_percent": {
+    "truth": "present",
+    "value": 42,
+    "why": "The original 2026-09-08 report said 32%. The signed addendum on 2026-09-12 corrects it to 42% and says the 32% came from the 2024 study. The EP consult (09-10) and pre-procedure plan (09-15) still quote the uncorrected 32%. The corrected value stands.",
+    "critical": null
+   },
+   "lvef_method": {
+    "truth": "present",
+    "value": "echocardiography",
+    "why": "Transthoracic echo, biplane method of discs.",
+    "critical": null
+   },
+   "nyha_class": {
+    "truth": "present",
+    "value": "III",
+    "why": "EP consult: 'NYHA III'.",
+    "critical": null
+   },
+   "cardiomyopathy_type": {
+    "truth": "present",
+    "value": "ischemic",
+    "why": "Inferior MI 2020 and CABG 2020.",
+    "critical": null
+   },
+   "recent_mi_revasc": {
+    "truth": "negated",
+    "value": null,
+    "why": "MI Oct 2020 and CABG Nov 2020; 'No ... coronary events or procedures since.'",
+    "critical": null
+   },
+   "optimal_medical_therapy_months": {
+    "truth": "present",
+    "value": 71.5,
+    "why": "Carvedilol, losartan/ARNI and spironolactone since 2020-12-01. Not decisive (ischemic).",
+    "critical": null
+   },
+   "shared_decision_making": {
+    "truth": "present",
+    "value": null,
+    "why": "SDM visit 2026-09-14 with a PA using an evidence-based decision aid.",
+    "critical": null
+   },
+   "limiting_conditions": {
+    "truth": "negated",
+    "value": [],
+    "why": "'Limiting conditions: none.'",
+    "critical": null
+   }
+  },
+  "category": "corrected_addendum",
+  "difficulty": "hard"
+ },
+ {
+  "file": "live/live_004.pdf",
+  "procedure": "bariatric",
+  "label": "[wrong_unit] The latest note writes the weight as '248 kg' (it means pounds). The stated BMI of 40.0 matches 248 lb at 66 in, and the dietitian's metric weight ",
+  "member": "Teodoro B. Villanueva",
+  "needs_ocr": false,
+  "note": "The current BMI is 40.0 (the 'kg' label is a typo, and every reading is above 35). Diabetes is documented, the supervised program failed, and 2 midnights are expected with reasons. Every rule is met.",
+  "expected_action": "approve",
+  "expected_missing": [],
+  "facts": {
+   "expected_los_days": {
+    "truth": "present",
+    "value": 2,
+    "why": "'Length of stay we expect: 2 midnights.'",
+    "critical": null
+   },
+   "comorbidities": {
+    "truth": "present",
+    "value": [
+     "type 2 diabetes",
+     "hypertension",
+     "gout",
+     "fatty liver disease"
+    ],
+    "why": "First consultation problem list.",
+    "critical": null
+   },
+   "bmi": {
+    "truth": "present",
+    "value": 40.0,
+    "why": "The latest stated BMI is 40.0 (2026-09-24). Its weight is labeled '248 kg', but 248 lb at 66 in gives 40.0, the dietitian's 113 kg on 08-19 is about 249 lb, and the July BMI was 40.5. The unit label is a typo; the stated BMI is consistent. Either BMI is well above 35.",
+    "critical": null
+   },
+   "prior_medical_treatment": {
+    "truth": "present",
+    "value": null,
+    "why": "Supervised program 2025-09-08 to 2026-03-09 with diet, activity, behavior classes and phentermine; net -0.4%; not successful.",
+    "critical": null
+   }
+  },
+  "category": "wrong_unit",
+  "difficulty": "medium"
+ },
+ {
+  "file": "live/live_005.pdf",
+  "procedure": "icd",
+  "label": "[unauthorized_author] The only 'shared decision-making' document is an education session run by the device company's representative, not a clinician. A schedule",
+  "member": "Cyprian L. Mbaye",
+  "needs_ocr": false,
+  "note": "Rule 7 needs a documented shared decision-making visit with a decision tool. The packet has only a manufacturer rep's education session and a scheduler's checkbox, so the fact is absent. Pend and ask for a clinician's SDM note. All other rules pass.",
+  "expected_action": "pend",
+  "expected_missing": [],
+  "facts": {
+   "expected_los_days": {
+    "truth": "present",
+    "value": 2,
+    "why": "Physician section: 'Expected LOS 2 midnights.'",
+    "critical": null
+   },
+   "comorbidities": {
+    "truth": "present",
+    "value": [
+     "COPD",
+     "CKD stage 3a"
+    ],
+    "why": "Reasons in the physician section.",
+    "critical": null
+   },
+   "lvef_percent": {
+    "truth": "present",
+    "value": 29,
+    "why": "CMR 2026-09-03: LVEF 29%.",
+    "critical": null
+   },
+   "lvef_method": {
+    "truth": "present",
+    "value": "cardiac MRI",
+    "why": "Cardiac MRI.",
+    "critical": null
+   },
+   "nyha_class": {
+    "truth": "present",
+    "value": "III",
+    "why": "EP consult: 'NYHA class III'.",
+    "critical": null
+   },
+   "cardiomyopathy_type": {
+    "truth": "present",
+    "value": "ischemic",
+    "why": "Anterior STEMI 2019 with LAD scar.",
+    "critical": null
+   },
+   "recent_mi_revasc": {
+    "truth": "negated",
+    "value": null,
+    "why": "STEMI and PCI July 2019; 'No angina, heart attacks or further stents since.'",
+    "critical": null
+   },
+   "optimal_medical_therapy_months": {
+    "truth": "present",
+    "value": 87.5,
+    "why": "Metoprolol, ACEi/ARNI and spironolactone since 2019-07-22. Not decisive (ischemic).",
+    "critical": null
+   },
+   "shared_decision_making": {
+    "truth": "absent",
+    "value": null,
+    "why": "The only session (2026-09-25) was led by a manufacturer's representative with 'No clinician present'. That is device education, not a shared decision-making visit with a clinician. The scheduler's checkbox 'SDM: done 9/25' points to that same session and is not clinical documentation.",
+    "critical": null
+   },
+   "limiting_conditions": {
+    "truth": "negated",
+    "value": [],
+    "why": "Physician section: 'Limiting conditions: none.'",
+    "critical": null
+   }
+  },
+  "category": "unauthorized_author",
+  "difficulty": "hard"
+ },
+ {
+  "file": "live/live_006.pdf",
+  "procedure": "icd",
+  "label": "[wrong_test_type] The current LVEF of 30% comes from a coronary CT angiogram's functional analysis, which is not an accepted method. The last accepted-method st",
+  "member": "Annika S. Folau",
+  "needs_ocr": false,
+  "note": "All facts are present. The current LVEF was measured by cardiac CT, which is not an accepted method, so rule 3 is not met. All other rules pass.",
+  "expected_action": "escalate",
+  "expected_missing": [],
+  "facts": {
+   "expected_los_days": {
+    "truth": "present",
+    "value": 2,
+    "why": "'Expected stay: 2 midnights.'",
+    "critical": null
+   },
+   "comorbidities": {
+    "truth": "present",
+    "value": [
+     "osteoporosis with spine fractures",
+     "hypothyroidism"
+    ],
+    "why": "Reasons on the admission plan.",
+    "critical": null
+   },
+   "lvef_percent": {
+    "truth": "present",
+    "value": 30,
+    "why": "Most recent LVEF: CT functional analysis on 2026-09-02, 30%. The echo on 2025-06-10 (38%) is older.",
+    "critical": null
+   },
+   "lvef_method": {
+    "truth": "present",
+    "value": "other",
+    "why": "Cardiac CT is not echocardiography, nuclear imaging, cardiac MRI or angiography. The 'angiogram' is a CT angiogram of the coronaries, not a catheter ventriculogram.",
+    "critical": null
+   },
+   "nyha_class": {
+    "truth": "present",
+    "value": "II",
+    "why": "'NYHA II'.",
+    "critical": null
+   },
+   "cardiomyopathy_type": {
+    "truth": "present",
+    "value": "ischemic",
+    "why": "NSTEMI and CABG 2018.",
+    "critical": null
+   },
+   "recent_mi_revasc": {
+    "truth": "negated",
+    "value": null,
+    "why": "'No heart attack, stent or bypass since 2018.' The 2026 CT needed no intervention.",
+    "critical": null
+   },
+   "optimal_medical_therapy_months": {
+    "truth": "present",
+    "value": 101.5,
+    "why": "Carvedilol and valsartan since 2018-05-15. Not decisive (ischemic).",
+    "critical": null
+   },
+   "shared_decision_making": {
+    "truth": "present",
+    "value": null,
+    "why": "SDM by the EP physician on 2026-09-25 with an evidence-based decision aid.",
+    "critical": null
+   },
+   "limiting_conditions": {
+    "truth": "negated",
+    "value": [],
+    "why": "'Limiting conditions: none.'",
+    "critical": null
+   }
+  },
+  "category": "wrong_test_type",
+  "difficulty": "medium"
+ },
+ {
+  "file": "live/live_007.pdf",
+  "procedure": "icd",
+  "label": "[ambiguous_verify] A troponin rise during septic shock 37 days before the implant is called a 'type 2 NSTEMI' by the hospitalist and 'myocardial injury, not MI'",
+  "member": "Lazarus E. Brandvold",
+  "needs_ocr": false,
+  "note": "Rule 5 depends on whether the 2026-09-20 event, 37 days before the implant, was a heart attack. Two physicians in the packet disagree, so a person must decide. Every other rule passes.",
+  "expected_action": "verify",
+  "expected_missing": [],
+  "facts": {
+   "expected_los_days": {
+    "truth": "present",
+    "value": 2,
+    "why": "'Expected LOS: 2 midnights.'",
+    "critical": null
+   },
+   "comorbidities": {
+    "truth": "present",
+    "value": [
+     "recent septic shock with acute kidney injury",
+     "type 2 diabetes on insulin",
+     "obesity BMI 37"
+    ],
+    "why": "Reasons on the admission plan.",
+    "critical": null
+   },
+   "lvef_percent": {
+    "truth": "present",
+    "value": 26,
+    "why": "TTE 2026-10-01: 26%.",
+    "critical": null
+   },
+   "lvef_method": {
+    "truth": "present",
+    "value": "echocardiography",
+    "why": "TTE biplane.",
+    "critical": null
+   },
+   "nyha_class": {
+    "truth": "present",
+    "value": "II",
+    "why": "EP clinic: 'NYHA II'.",
+    "critical": null
+   },
+   "cardiomyopathy_type": {
+    "truth": "present",
+    "value": "non-ischemic",
+    "why": "NICM with normal coronaries on the 2024 cath.",
+    "critical": null
+   },
+   "recent_mi_revasc": {
+    "truth": "present",
+    "value": null,
+    "why": "The troponin event was on 2026-09-20, which is 37 days before the 2026-10-27 implant. The hospitalist's discharge summary codes it as 'Type 2 NSTEMI' (page 2); the cardiology consultant says it 'does NOT meet the universal definition for myocardial infarction' (page 3). If it was a heart attack, it is inside the 40-day window. No PCI or CABG.",
+    "critical": null
+   },
+   "optimal_medical_therapy_months": {
+    "truth": "present",
+    "value": 20.6,
+    "why": "GDMT since 2025-02-10; about 20.6 months to the implant.",
+    "critical": null
+   },
+   "shared_decision_making": {
+    "truth": "present",
+    "value": null,
+    "why": "SDM 2026-10-01 with an NP using an evidence-based decision aid.",
+    "critical": null
+   },
+   "limiting_conditions": {
+    "truth": "negated",
+    "value": [],
+    "why": "'Limiting conditions: none. Clinically stable.'",
+    "critical": null
+   }
+  },
+  "category": "ambiguous_verify",
+  "difficulty": "hard"
+ },
+ {
+  "file": "live/live_008.pdf",
+  "procedure": "icd",
+  "label": "[missing_but_adjacent] The LVEF of 25% is quoted from unnamed outside records. The only test in the packet is a treadmill ECG stress test, which measures no eje",
+  "member": "Margarethe I. Solberg",
+  "needs_ocr": false,
+  "note": "Rule 3 needs to know how the LVEF was measured, and nothing in the packet says. Pend and ask for the outside echo report or the 10-22 echo. All other rules pass.",
+  "expected_action": "pend",
+  "expected_missing": [],
+  "facts": {
+   "expected_los_days": {
+    "truth": "present",
+    "value": 2,
+    "why": "'Expected LOS: 2 midnights.'",
+    "critical": null
+   },
+   "comorbidities": {
+    "truth": "present",
+    "value": [
+     "CKD stage 3b",
+     "osteoporosis with fall risk"
+    ],
+    "why": "Reasons on the admission plan.",
+    "critical": null
+   },
+   "lvef_percent": {
+    "truth": "present",
+    "value": 25,
+    "why": "'LVEF 25%' per the prior cardiologist's records (also page 5). No in-packet imaging confirms it, and no study date is given.",
+    "critical": null
+   },
+   "lvef_method": {
+    "truth": "absent",
+    "value": null,
+    "why": "No page says how the 25% was measured. The treadmill test was ECG-only and measured no ejection fraction. The new echo is only scheduled for 2026-10-22.",
+    "critical": null
+   },
+   "nyha_class": {
+    "truth": "present",
+    "value": "III",
+    "why": "'NYHA III'.",
+    "critical": null
+   },
+   "cardiomyopathy_type": {
+    "truth": "present",
+    "value": "non-ischemic",
+    "why": "Non-ischemic dilated cardiomyopathy with normal coronaries on the Jan 2026 cath (per records).",
+    "critical": null
+   },
+   "recent_mi_revasc": {
+    "truth": "negated",
+    "value": null,
+    "why": "'No MI, stents or bypass ever.'",
+    "critical": null
+   },
+   "optimal_medical_therapy_months": {
+    "truth": "present",
+    "value": 9.7,
+    "why": "GDMT started 2026-01-20; about 9.7 months to the 2026-11-10 implant.",
+    "critical": null
+   },
+   "shared_decision_making": {
+    "truth": "present",
+    "value": null,
+    "why": "SDM by the EP physician on 2026-10-01 with an evidence-based decision aid.",
+    "critical": null
+   },
+   "limiting_conditions": {
+    "truth": "negated",
+    "value": [],
+    "why": "'Limiting conditions: none.'",
+    "critical": null
+   }
+  },
+  "category": "missing_but_adjacent",
+  "difficulty": "medium"
+ },
+ {
+  "file": "live/live_009.pdf",
+  "procedure": "bariatric",
+  "label": "[rounding] The current BMI is printed as 34.96. The surgeon's own text in the same note rounds it to '~35, meets criteria', and an earlier BMI was 35.4.",
+  "member": "Everett J. Pellegrino",
+  "needs_ocr": false,
+  "note": "All facts are present. The current BMI is 34.96, which is below 35, so rule 1 is not met even though the surgeon calls it '~35'. The other rules pass.",
+  "expected_action": "escalate",
+  "expected_missing": [],
+  "facts": {
+   "expected_los_days": {
+    "truth": "present",
+    "value": 2,
+    "why": "'Expected LOS: 2 midnights.'",
+    "critical": null
+   },
+   "comorbidities": {
+    "truth": "present",
+    "value": [
+     "type 2 diabetes",
+     "hypertension"
+    ],
+    "why": "Initial consultation.",
+    "critical": null
+   },
+   "bmi": {
+    "truth": "present",
+    "value": 34.96,
+    "why": "June 23 BMI 35.4 (page 2). September 29 BMI 34.96 (page 6), which is later and wins. 34.96 is below 35. The surgeon's '~35' is a rounding of the same measurement, not a separate value, and rounding does not change the threshold test (243.7 lb at 70 in computes to 34.96).",
+    "critical": null
+   },
+   "prior_medical_treatment": {
+    "truth": "present",
+    "value": null,
+    "why": "Supervised program Oct 6, 2025 to Apr 6, 2026 with diet, exercise and orlistat; net -0.8%; unsuccessful.",
+    "critical": null
+   }
+  },
+  "category": "rounding",
+  "difficulty": "hard"
+ },
+ {
+  "file": "live/live_010.pdf",
+  "procedure": "bariatric",
+  "label": "[ambiguous_verify] She enrolled in a 6-month supervised program but attended only 2 of 6 visits and was discharged for non-attendance. The program says it could",
+  "member": "Constance R. Ifeanyi",
+  "needs_ocr": false,
+  "note": "BMI, comorbidity and length of stay pass. Rule 3 depends on whether an incomplete program (2 of 6 visits) counts as unsuccessful medical treatment. The program and the surgeon disagree, so a person must decide.",
+  "expected_action": "verify",
+  "expected_missing": [],
+  "facts": {
+   "expected_los_days": {
+    "truth": "present",
+    "value": 2,
+    "why": "'Expected LOS: 2 midnights.'",
+    "critical": null
+   },
+   "comorbidities": {
+    "truth": "present",
+    "value": [
+     "type 2 diabetes on insulin",
+     "severe obstructive sleep apnea"
+    ],
+    "why": "Consultation history.",
+    "critical": null
+   },
+   "bmi": {
+    "truth": "present",
+    "value": 44.8,
+    "why": "Consult 2026-09-09: BMI 44.8.",
+    "critical": null
+   },
+   "prior_medical_treatment": {
+    "truth": "present",
+    "value": null,
+    "why": "Enrollment in a supervised program on 2026-01-12 is documented, but she attended 2 of 6 visits and was discharged for non-attendance. The program says it 'cannot judge whether medical management would have been effective'. The surgeon calls it a failure, and the PCP gives a caregiving reason for stopping. Whether this counts as having tried and been unsuccessful is a judgment call.",
+    "critical": null
+   }
+  },
+  "category": "ambiguous_verify",
+  "difficulty": "hard"
+ }
+]

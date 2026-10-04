@@ -1,0 +1,12 @@
+{
+ "live_001.pdf": "approve",
+ "live_002.pdf": "approve",
+ "live_003.pdf": "escalate",
+ "live_004.pdf": "approve",
+ "live_005.pdf": "pend",
+ "live_006.pdf": "escalate",
+ "live_007.pdf": "verify",
+ "live_008.pdf": "pend",
+ "live_009.pdf": "escalate",
+ "live_010.pdf": "verify"
+}

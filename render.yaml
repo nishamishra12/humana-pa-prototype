@@ -1,0 +1,27 @@
+# Render blueprint: New > Blueprint, pick this repo, then fill the three secret values in the dashboard.
+# The disk is what keeps cases, users and sign-ins across restarts and deploys.
+services:
+  - type: web
+    name: pa-desk
+    runtime: docker
+    plan: starter
+    healthCheckPath: /healthz
+    disk:
+      name: pa-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: PA_DATA_DIR
+        value: /data
+      - key: PA_COOKIE_SECURE
+        value: "1"
+      - key: PA_ENV
+        value: production
+      - key: PA_MAX_UPLOADS_PER_DAY
+        value: "40"
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: UNSTRUCTURED_API_KEY
+        sync: false
+      - key: HONEYCOMB_API_KEY
+        sync: false

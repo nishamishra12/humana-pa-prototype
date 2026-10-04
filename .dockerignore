@@ -1,0 +1,13 @@
+.git
+.env
+**/__pycache__
+*.db
+uploads
+deck
+docs
+scripts
+prototype
+test
+evals/search
+evals/reports
+node_modules

@@ -2,7 +2,9 @@ import sqlite3, json, os, hashlib, secrets, glob
 from datetime import datetime, timedelta, timezone
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
-DB_PATH = os.path.join(os.path.dirname(__file__), "pa.db")
+DATA_DIR = os.getenv("PA_DATA_DIR") or os.path.dirname(__file__)  # on a host, point this at the persistent disk
+os.makedirs(DATA_DIR, exist_ok=True)
+DB_PATH = os.path.join(DATA_DIR, "pa.db")
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, email TEXT UNIQUE, handle TEXT UNIQUE, name TEXT, role TEXT, title TEXT, salt TEXT, pw TEXT);
@@ -34,6 +36,7 @@ def hash_pw(pw, salt):
 def init():
     c = conn()
     c.executescript(SCHEMA)
+    c.execute("CREATE TABLE IF NOT EXISTS sessions(sid TEXT PRIMARY KEY, user_id INTEGER, created_at TEXT)")  # sign-ins survive a restart
     if c.execute("SELECT COUNT(*) FROM users").fetchone()[0] == 0:
         seed(c)
     seed_multi(c)

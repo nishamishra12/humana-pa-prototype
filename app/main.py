@@ -1,4 +1,5 @@
 import json, os, re, secrets, shutil
+from datetime import datetime, timezone
 from fastapi import FastAPI, Form, HTTPException, Request, Response, UploadFile, File
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -13,7 +14,7 @@ from pipeline import telemetry as tel
 from . import dashboard as dash_mod
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
-UPLOADS = os.path.join(ROOT, "uploads")
+UPLOADS = os.path.join(db.DATA_DIR if os.getenv("PA_DATA_DIR") else ROOT, "uploads")
 os.makedirs(UPLOADS, exist_ok=True)
 db.init()
 
@@ -31,7 +32,9 @@ def _reanalyze_all():
 _reanalyze_all()
 
 app = FastAPI(title="PA Decision Support")
-SESSIONS: dict[str, int] = {}
+SESSION_DAYS = 14
+MAX_UPLOAD_MB = 15
+MAX_UPLOADS_PER_DAY = int(os.getenv("PA_MAX_UPLOADS_PER_DAY", "40"))  # a cap on AI spend if the link is shared widely
 
 
 @app.middleware("http")
@@ -45,11 +48,11 @@ async def no_cache_static(request: Request, call_next):
 
 
 def me(request: Request, c):
-    sid = request.cookies.get("sid")
-    uid = SESSIONS.get(sid or "")
-    if not uid:
+    sid = request.cookies.get("sid") or ""
+    row = c.execute("SELECT user_id, created_at FROM sessions WHERE sid=?", (sid,)).fetchone()
+    if not row or (datetime.now(timezone.utc) - datetime.fromisoformat(row["created_at"])).days >= SESSION_DAYS:
         raise HTTPException(401, "Sign in required")
-    return c.execute("SELECT * FROM users WHERE id=?", (uid,)).fetchone()
+    return c.execute("SELECT * FROM users WHERE id=?", (row["user_id"],)).fetchone()
 
 
 def check_case_access(c, u, cid):
@@ -79,14 +82,17 @@ def login(body: Login, response: Response):
     if not u or db.hash_pw(body.password, u["salt"]) != u["pw"]:
         raise HTTPException(401, "Wrong email or password")
     sid = secrets.token_hex(16)
-    SESSIONS[sid] = u["id"]
-    response.set_cookie("sid", sid, httponly=True, samesite="lax")
+    c.execute("INSERT INTO sessions(sid,user_id,created_at) VALUES(?,?,?)", (sid, u["id"], db.now()))
+    c.commit()
+    response.set_cookie("sid", sid, httponly=True, samesite="lax", secure=os.getenv("PA_COOKIE_SECURE") == "1", max_age=SESSION_DAYS * 86400)
     return user_dict(u)
 
 
 @app.post("/api/logout")
 def logout(request: Request, response: Response):
-    SESSIONS.pop(request.cookies.get("sid", ""), None)
+    c = db.conn()
+    c.execute("DELETE FROM sessions WHERE sid=?", (request.cookies.get("sid", ""),))
+    c.commit()
     response.delete_cookie("sid")
     return {"ok": True}
 
@@ -540,6 +546,13 @@ def upload(request: Request, file: UploadFile = File(...), assignee_id: int | No
         raise HTTPException(403, "Intake uploads packets. Medical directors decide escalated cases.")
     if not (file.filename or "").lower().endswith(".pdf"):
         raise HTTPException(400, "Upload a PDF packet")
+    today = c.execute("SELECT COUNT(*) FROM audit WHERE action='received' AND created_at >= ?", (db.now(-1),)).fetchone()[0]
+    if today >= MAX_UPLOADS_PER_DAY:
+        raise HTTPException(429, f"The demo accepts {MAX_UPLOADS_PER_DAY} new packets a day. Try again tomorrow.")
+    file.file.seek(0, 2)
+    if file.file.tell() > MAX_UPLOAD_MB * 1024 * 1024:
+        raise HTTPException(413, f"Packets over {MAX_UPLOAD_MB} MB are not accepted in the demo")
+    file.file.seek(0)
     dest = os.path.join(UPLOADS, f"{secrets.token_hex(4)}_{os.path.basename(file.filename)}")
     with open(dest, "wb") as out:
         shutil.copyfileobj(file.file, out)
@@ -615,6 +628,31 @@ def evals_holdout(request: Request):
     out["caveat"] = ("We wrote these packets to be hard, not typical. A miss here points to one specific weakness. "
                       "It does not say how often that weakness shows up on real packets.")
     return out
+
+
+@app.get("/healthz")
+def healthz():
+    return {"ok": True}
+
+
+class ResetDemo(BaseModel):
+    confirm: str = ""
+
+
+@app.post("/api/admin/reset-demo")
+def reset_demo(body: ResetDemo, request: Request):
+    """Wipes every case and re-seeds the demo data. Intake only, and only with confirm='RESET'. For the day before a demo."""
+    c = db.conn()
+    u = me(request, c)
+    if u["role"] != "admin" or body.confirm != "RESET":
+        raise HTTPException(403, "Intake only, with confirm set to RESET")
+    for t in ("notifications", "audit", "comments", "elements", "cases", "sessions"):
+        c.execute(f"DELETE FROM {t}")
+    c.execute("DELETE FROM users")
+    c.commit()
+    c.close()
+    db.init()
+    return {"ok": True, "note": "Demo data reset. Everyone is signed out."}
 
 
 @app.get("/api/dashboard")

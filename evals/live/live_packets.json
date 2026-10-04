@@ -1,0 +1,795 @@
+[
+{
+  "id": "live_001",
+  "service": "icd",
+  "category": "clean_control",
+  "difficulty": "easy",
+  "why_hard": "Clean control: non-ischemic cardiomyopathy with 15 months of GDMT and every fact plainly documented.",
+  "member": {"name": "Ottilie M. Ranganathan", "dob": "1957-12-19", "age": 68, "member_id": "MBR-73015", "sex": "F"},
+  "practice": "Kestrel Point Cardiology",
+  "planned_admit_date": "2026-11-18",
+  "pages": [
+    {"title": "Heart failure consultation", "lines": [
+      "KESTREL POINT CARDIOLOGY | Advanced Heart Failure",
+      "Seen: 21-Sep-2026    Patient: Ranganathan, Ottilie M.    DOB 19-Dec-1957",
+      "",
+      "History: Mrs. Ranganathan developed exertional breathlessness in summer 2025. Admitted Aug 2025, found to have a dilated LV with EF in the 20s. Coronary angiogram 14-Aug-2025 showed smooth, normal coronaries. Started on full guideline therapy 18-Aug-2025 and titrated over the autumn.",
+      "Today she can do her shopping but must sit down after climbing one flight. No breathlessness at rest. No blackouts.",
+      "",
+      "Echo today: LVEF 27%.",
+      "",
+      "Impression:",
+      "- Dilated cardiomyopathy, non-ischaemic. NYHA functional class II.",
+      "- CKD stage 3b (creatinine 1.7).",
+      "- Type 2 diabetes on basal insulin.",
+      "",
+      "Recommendation: primary prevention ICD. Referred for a shared decision-making visit and to Dr. Varga-Holm for implant.",
+      "Dr. Eleni Papadakis-Moore"
+    ]},
+    {"title": "Echocardiogram report", "lines": [
+      "KESTREL POINT CARDIOLOGY - ECHO LAB",
+      "Date: 21-Sep-2026",
+      "Pt: RANGANATHAN OTTILIE M",
+      "",
+      "LVEF (biplane): 27 %",
+      "LVEDD 6.4 cm. Global hypokinesis. Moderate functional MR.",
+      "RV size and function normal. PASP 36 mmHg.",
+      "Conclusion: severe LV systolic impairment, essentially unchanged from 03/2026 (LVEF 26%).",
+      "Sonographer: K. Odhiambo   Reporting physician: R. Lindvall, MD"
+    ]},
+    {"title": "Coronary angiogram report (2025)", "lines": [
+      "KESTREL POINT REGIONAL HOSPITAL - CATH LAB",
+      "Procedure date: 14-Aug-2025",
+      "Ranganathan, Ottilie",
+      "Indication: new LV dysfunction",
+      "Left main, LAD, circumflex and RCA all angiographically normal. Right dominant.",
+      "Conclusion: normal coronary arteries. Non-ischaemic cause of LV dysfunction. No intervention.",
+      "Operator: S. Achterhof, MD"
+    ]},
+    {"title": "Current medications", "lines": [
+      "MEDICATION RECORD - Ranganathan, Ottilie M. - printed 21-Sep-2026",
+      "",
+      "Sacubitril/valsartan 97/103 mg twice daily     commenced 18-Aug-2025",
+      "Bisoprolol 7.5 mg daily                        commenced 18-Aug-2025",
+      "Eplerenone 25 mg daily                         commenced 18-Aug-2025",
+      "Dapagliflozin 10 mg daily                      commenced 18-Aug-2025",
+      "Insulin degludec 24 units nightly              commenced 2021",
+      "Furosemide 40 mg mornings                      commenced Aug-2025",
+      "Ferrous sulfate 325 mg daily                   commenced 2024"
+    ]},
+    {"title": "Shared decision-making visit", "lines": [
+      "KESTREL POINT CARDIOLOGY - DEVICE DECISION VISIT",
+      "Date: 29-Sep-2026",
+      "Patient: Ottilie Ranganathan, attended with her son",
+      "Clinician: Harriet Ojukwu, ANP",
+      "",
+      "We used a published, evidence-based ICD decision aid (paper version) and went through it page by page.",
+      "Topics: how often an ICD saves a life in someone like her, shocks (right and wrong), infection, lead faults, generator changes, switching it off near end of life, and the choice of no device.",
+      "She said in her own words that the device protects against sudden death but will not help her breathing.",
+      "Her choice: ICD.",
+      "H. Ojukwu ANP"
+    ]},
+    {"title": "Admission plan for device implant", "lines": [
+      "KESTREL POINT CARDIOLOGY - ELECTROPHYSIOLOGY ADMISSION PLAN",
+      "Prepared: 02-Oct-2026",
+      "Patient: Ranganathan, Ottilie M.   MBR-73015",
+      "Planned procedure: single-chamber ICD, CPT 33249. Admission 18-Nov-2026 (inpatient).",
+      "",
+      "Anticipated stay: 2 midnights.",
+      "Reasons: CKD 3b needing renal function check after contrast venogram; insulin-treated diabetes needing glucose management around fasting; iron-deficiency anaemia (Hb 10.6).",
+      "",
+      "History of MI, coronary stent or bypass: none.",
+      "Contraindications reviewed: no dementia, no illness expected to limit life to under a year, no atrial fibrillation, clinically stable. None present.",
+      "Dr. Ilona Varga-Holm"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Anticipated stay: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["CKD stage 3b", "type 2 diabetes on insulin", "iron deficiency anemia"], "page": 7, "why": "Reasons listed on the admission plan."},
+    "lvef_percent": {"truth": "present", "value": 27, "page": 3, "why": "Echo 21-Sep-2026: 27%. The 03/2026 value of 26% is older."},
+    "lvef_method": {"truth": "present", "value": "echocardiography", "page": 3, "why": "Transthoracic echo, biplane."},
+    "nyha_class": {"truth": "present", "value": "II", "page": 2, "why": "'NYHA functional class II.'"},
+    "cardiomyopathy_type": {"truth": "present", "value": "non-ischemic", "page": 4, "why": "Normal coronary arteries on the 2025 angiogram; dilated non-ischemic cardiomyopathy."},
+    "recent_mi_revasc": {"truth": "negated", "value": null, "page": 7, "why": "'History of MI, coronary stent or bypass: none.'"},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 15.0, "page": 5, "why": "All four GDMT drugs started 18-Aug-2025; 15 months to the 18-Nov-2026 implant (13.5 months to today)."},
+    "shared_decision_making": {"truth": "present", "value": null, "page": 6, "why": "Visit 29-Sep-2026 with a nurse practitioner using an evidence-based ICD decision aid."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 7, "why": "'Contraindications reviewed ... None present.'"}
+  },
+  "expected_action": "approve",
+  "action_reasoning": "Non-ischemic with 15 months of GDMT, LVEF 27% by echo, NYHA II, no MI or revascularization, SDM with a decision aid, no limiting condition, and 2 midnights with documented reasons. Every rule is met."
+},
+{
+  "id": "live_002",
+  "service": "bariatric",
+  "category": "clean_control",
+  "difficulty": "easy",
+  "why_hard": "Clean control: BMI 42.7, diabetes and sleep apnea, a failed supervised program and a 2-midnight plan, all plainly stated.",
+  "member": {"name": "Fitzgerald A. Oyebanji", "dob": "1963-03-30", "age": 63, "member_id": "MBR-26854", "sex": "M"},
+  "practice": "Halcyon Lakes Surgical Associates",
+  "planned_admit_date": "2026-12-02",
+  "pages": [
+    {"title": "Bariatric surgical consultation", "lines": [
+      "HALCYON LAKES SURGICAL ASSOCIATES - Metabolic & Bariatric Surgery",
+      "Date of visit: 2026.09.17",
+      "Name: OYEBANJI, FITZGERALD A.   Age 63   Male",
+      "",
+      "Measurements: height 68 in, weight 280.9 lb, BMI 42.7. BP 136/80.",
+      "",
+      "Mr. Oyebanji has type 2 diabetes (diagnosed 2011, now on metformin and insulin glargine, A1c 8.3), moderate obstructive sleep apnea using CPAP nightly, and hypertension on two agents. He finished a six-month physician-supervised weight program in May without success.",
+      "",
+      "Plan: laparoscopic Roux-en-Y gastric bypass. Clearances complete.",
+      "Signed: Beatriz Castellanos-Whitlow, MD"
+    ]},
+    {"title": "Weight management program completion letter", "lines": [
+      "HALCYON LAKES MEDICAL WEIGHT CLINIC",
+      "Letter dated 2026.05.11",
+      "Re: Fitzgerald Oyebanji",
+      "",
+      "Mr. Oyebanji took part in our physician-supervised program from 2025.11.03 to 2026.05.04 under Dr. Anselm Okpara. He came to all six monthly visits.",
+      "Program: partial meal replacement (two shakes a day), a 1,600 kcal plan, a supervised walking plan building to 150 min a week, and cognitive-behavioral sessions with our psychologist.",
+      "Weight at entry 287.0 lb; at exit 281.8 lb (a 1.8% loss). He did not reach the 5% target.",
+      "We consider medical weight management unsuccessful and support surgical referral.",
+      "A. Okpara, MD (Obesity Medicine)"
+    ]},
+    {"title": "Sleep study report", "lines": [
+      "HALCYON LAKES SLEEP CENTER - Home sleep apnea test",
+      "Recorded: 2024.10.06   Patient: Oyebanji, F.",
+      "AHI 33 events/h. Oxygen nadir 82%.",
+      "Diagnosis: moderate-to-severe obstructive sleep apnea. Auto-CPAP started 2024.11. Use last 30 days: 91% of nights over 4 h."
+    ]},
+    {"title": "Psychology clearance", "lines": [
+      "BEHAVIORAL MEDICINE - PRE-SURGICAL ASSESSMENT",
+      "2026.08.06   Fitzgerald Oyebanji",
+      "No binge eating or night eating. No current mood disorder. Understands lifelong follow-up and vitamins. Wife attended.",
+      "Outcome: cleared for surgery. - Dr. Simone Achebe-Varga, PsyD"
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "HALCYON LAKES LAB   collected 2026.09.15",
+      "Hemoglobin A1c 8.3 % (H)",
+      "Fasting glucose 171 (H)",
+      "Creatinine 1.0   eGFR 81",
+      "Hemoglobin 14.2   Ferritin 96",
+      "Vitamin D 27 (L)"
+    ]},
+    {"title": "Operative plan and level of care", "lines": [
+      "HALCYON LAKES SURGICAL ASSOCIATES - OPERATIVE PLAN",
+      "Written 2026.09.30   Patient: Oyebanji, Fitzgerald A.   MBR-26854",
+      "Operation: laparoscopic Roux-en-Y gastric bypass, CPT 43644. Admission 2026.12.02, inpatient.",
+      "",
+      "We expect him to stay two midnights.",
+      "Why: obstructive sleep apnea needing CPAP and continuous oximetry on the ward; insulin-treated diabetes needing dose cuts and glucose checks as feeding restarts; hypertension needing medicine changes.",
+      "B. Castellanos-Whitlow, MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'We expect him to stay two midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes on insulin", "obstructive sleep apnea on CPAP", "hypertension"], "page": 2, "why": "Consultation history."},
+    "bmi": {"truth": "present", "value": 42.7, "page": 2, "why": "Consultation 2026-09-17: BMI 42.7."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Physician-supervised program 2025-11-03 to 2026-05-04 with meal replacement, diet, exercise and CBT; 1.8% loss; called unsuccessful."}
+  },
+  "expected_action": "approve",
+  "action_reasoning": "BMI 42.7 is 35 or more, type 2 diabetes is documented, the supervised program failed, and 2 midnights are expected with documented reasons. Every rule is met."
+},
+{
+  "id": "live_003",
+  "service": "icd",
+  "category": "corrected_addendum",
+  "difficulty": "hard",
+  "why_hard": "The echo report body and three later notes say LVEF 32%, but a signed correction at the bottom of the echo report says that number came from a 2024 study and the real value is 42%.",
+  "member": {"name": "Philomena D. Arceneaux", "dob": "1952-06-11", "age": 74, "member_id": "MBR-51960", "sex": "F"},
+  "practice": "Sorrel Creek Heart Group",
+  "planned_admit_date": "2026-11-16",
+  "pages": [
+    {"title": "Echocardiogram report with addendum", "lines": [
+      "SORREL CREEK HEART GROUP - CARDIAC ULTRASOUND",
+      "Exam: transthoracic echocardiogram     Date of exam: Sept 8 2026",
+      "Patient: ARCENEAUX, PHILOMENA D     DOB Jun 11 1952",
+      "",
+      "LV: mildly dilated. Inferior and inferolateral hypokinesis.",
+      "LVEF: 32%",
+      "RV normal. Mild MR, mild TR. No effusion.",
+      "IMPRESSION: Moderately reduced LV systolic function, LVEF 32%.",
+      "Electronically signed: Marisol Teague, MD   Sept 8 2026 14:10",
+      "",
+      "------------------------------------------------------------",
+      "ADDENDUM / CORRECTED REPORT   Sept 12 2026 09:42",
+      "The LVEF in the original report (32%) was carried over in error from the patient's 2024 study during report generation. On review of today's images, LVEF measured by biplane method of discs is 42%. Corrected impression: mildly reduced LV systolic function, LVEF 42%. Wall motion findings unchanged. Referring physician notified by phone.",
+      "Electronically signed: Marisol Teague, MD   Sept 12 2026"
+    ]},
+    {"title": "Electrophysiology consultation", "lines": [
+      "SORREL CREEK HEART GROUP - ELECTROPHYSIOLOGY",
+      "Consult date: Sept 10 2026",
+      "Mrs. Arceneaux, 74, retired postal worker",
+      "",
+      "Inferior MI Oct 2020, CABG x3 Nov 2020. No chest pain, coronary events or procedures since. Breathless walking up the slope to church and with vacuuming; rests after a block. NYHA III. Never fainted.",
+      "",
+      "TTE Sept 8: LVEF 32%.",
+      "",
+      "Opinion: ischemic cardiomyopathy, LVEF <=35%, NYHA III, long on GDMT. Primary prevention ICD is indicated.",
+      "Plan: SDM visit, then implant in November.",
+      "Dr. Augustin Weatherby"
+    ]},
+    {"title": "Shared decision-making visit", "lines": [
+      "SORREL CREEK HEART GROUP - SDM VISIT (ICD)",
+      "Sept 14 2026",
+      "Patient: Philomena Arceneaux; daughter present",
+      "Clinician: Corinne Delahunt, PA-C",
+      "An evidence-based ICD decision aid (booklet) was used and reviewed in full.",
+      "We talked through benefit, harm, shocks, infection, battery changes, deactivation and the no-device option. She chose the ICD.",
+      "C. Delahunt PA-C"
+    ]},
+    {"title": "Medication list", "lines": [
+      "Arceneaux, Philomena - meds as of Sept 10 2026",
+      "carvedilol 25 mg twice daily (from Dec 1 2020)",
+      "sacubitril/valsartan 49/51 twice daily (from 2022; losartan Dec 1 2020 - 2022)",
+      "spironolactone 25 mg daily (from Dec 1 2020)",
+      "empagliflozin 10 mg daily (from 2023)",
+      "aspirin 81 mg; atorvastatin 80 mg",
+      "warfarin (mechanical mitral valve? NO - for DVT 2025, plan 12 months)"
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "SORREL CREEK LAB   Sept 9 2026",
+      "Na 138  K 4.4  Cr 1.2  eGFR 46",
+      "INR 2.4 (warfarin)",
+      "Hgb 12.2",
+      "NT-proBNP 940"
+    ]},
+    {"title": "Pre-procedure plan", "lines": [
+      "SORREL CREEK EP - PRE-PROCEDURE PLAN",
+      "Sept 15 2026",
+      "Patient: Arceneaux, Philomena D.   MBR-51960",
+      "Procedure: ICD, CPT 33249, inpatient admission Nov 16 2026.",
+      "Indication: ICM, LVEF 32% (TTE 9/8/26), NYHA III, SDM done 9/14.",
+      "Expected stay: 2 midnights - warfarin continued (INR goal 2.0-2.5) with pocket hematoma watch; CKD 3a; age 74 with walker.",
+      "Limiting conditions: none (cognition intact, no terminal illness, no AF, stable).",
+      "A. Weatherby MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected stay: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["warfarin anticoagulation for DVT", "CKD stage 3a", "limited mobility (walker)"], "page": 7, "why": "Reasons on the pre-procedure plan."},
+    "lvef_percent": {"truth": "present", "value": 42, "page": 2, "why": "The original 2026-09-08 report said 32%. The signed addendum on 2026-09-12 corrects it to 42% and says the 32% came from the 2024 study. The EP consult (09-10) and pre-procedure plan (09-15) still quote the uncorrected 32%. The corrected value stands."},
+    "lvef_method": {"truth": "present", "value": "echocardiography", "page": 2, "why": "Transthoracic echo, biplane method of discs."},
+    "nyha_class": {"truth": "present", "value": "III", "page": 3, "why": "EP consult: 'NYHA III'."},
+    "cardiomyopathy_type": {"truth": "present", "value": "ischemic", "page": 3, "why": "Inferior MI 2020 and CABG 2020."},
+    "recent_mi_revasc": {"truth": "negated", "value": null, "page": 3, "why": "MI Oct 2020 and CABG Nov 2020; 'No ... coronary events or procedures since.'"},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 71.5, "page": 5, "why": "Carvedilol, losartan/ARNI and spironolactone since 2020-12-01. Not decisive (ischemic)."},
+    "shared_decision_making": {"truth": "present", "value": null, "page": 4, "why": "SDM visit 2026-09-14 with a PA using an evidence-based decision aid."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 7, "why": "'Limiting conditions: none.'"}
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts are present. The corrected LVEF is 42%, so rule 2 (35% or less) is not met. Every other rule passes."
+},
+{
+  "id": "live_004",
+  "service": "bariatric",
+  "category": "wrong_unit",
+  "difficulty": "medium",
+  "why_hard": "The latest note writes the weight as '248 kg' (it means pounds). The stated BMI of 40.0 matches 248 lb at 66 in, and the dietitian's metric weight of 113 kg confirms it.",
+  "member": {"name": "Teodoro B. Villanueva", "dob": "1970-01-28", "age": 56, "member_id": "MBR-84402", "sex": "M"},
+  "practice": "Marrowstone Bariatric Clinic",
+  "planned_admit_date": "2026-11-30",
+  "pages": [
+    {"title": "First surgical consultation", "lines": [
+      "MARROWSTONE BARIATRIC CLINIC",
+      "Consultation 07/14/2026",
+      "Teodoro B. Villanueva, 56-year-old man",
+      "Weight 251 lb, height 5 ft 6 in, BMI 40.5.",
+      "Problems: type 2 diabetes (metformin + empagliflozin, A1c 7.7), hypertension (lisinopril), gout, fatty liver on ultrasound 2025.",
+      "He completed our medical weight program; it did not work for him.",
+      "Plan: work-up for laparoscopic gastric bypass.",
+      "Dr. Ingeborg Salazar-Pike"
+    ]},
+    {"title": "Medical weight program summary", "lines": [
+      "MARROWSTONE MEDICAL WEIGHT PROGRAM",
+      "Summary for: Villanueva, Teodoro",
+      "Supervising physician: Dr. Kwame Lindsey-Adair",
+      "Enrolled 09/08/2025, last visit 03/09/2026 (7 visits).",
+      "What we did: 1,700 kcal plan with dietitian review each month, a step-count goal of 8,000/day, group behavior classes, and phentermine 37.5 mg from 10/2025 to 12/2025 (stopped for insomnia and a rise in blood pressure).",
+      "Weight: 254 lb -> 249 lb -> 253 lb. Net change -0.4%.",
+      "Result: not successful. Referred to surgery."
+    ]},
+    {"title": "Dietitian pre-operative assessment", "lines": [
+      "MARROWSTONE NUTRITION SERVICES",
+      "08/19/2026   Teodoro Villanueva",
+      "Scale weight 113.0 kg. Height 167.6 cm.",
+      "Diet history: large evening meals, two sweetened coffees a day.",
+      "Education: staged post-op diet, protein 60-80 g/day, chewable vitamins.",
+      "RD: Annelise Okafor-Brandt"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-SURGICAL PSYCHOLOGY - 08/05/2026",
+      "Villanueva, Teodoro",
+      "No eating disorder. Mild anxiety, well managed. Strong support from wife and adult son.",
+      "Cleared for bariatric surgery. - Dr. Pietro Ndlovu, PhD"
+    ]},
+    {"title": "Pre-operative visit", "lines": [
+      "MARROWSTONE BARIATRIC CLINIC - PRE-OP VISIT",
+      "Date: 09/24/2026",
+      "Pt: VILLANUEVA, TEODORO B",
+      "Vitals: Wt 248 kg   Ht 66 in   BMI 40.0   BP 132/82   HR 78",
+      "Down 3 lb on the pre-op diet. Gout quiet. Sugars 120s-160s.",
+      "A/P: ready for surgery once authorized.",
+      "I. Salazar-Pike MD"
+    ]},
+    {"title": "Operative plan", "lines": [
+      "MARROWSTONE BARIATRIC CLINIC - OPERATIVE PLAN",
+      "09/28/2026   Villanueva, Teodoro B.   MBR-84402",
+      "Laparoscopic Roux-en-Y gastric bypass (CPT 43644). Inpatient admission 11/30/2026.",
+      "Length of stay we expect: 2 midnights.",
+      "Supporting reasons: diabetes on an SGLT2 inhibitor (held 3 days pre-op; watch for ketoacidosis and glucose); hypertension; fatty liver with enlarged left lobe.",
+      "I. Salazar-Pike MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Length of stay we expect: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "hypertension", "gout", "fatty liver disease"], "page": 2, "why": "First consultation problem list."},
+    "bmi": {"truth": "present", "value": 40.0, "page": 6, "why": "The latest stated BMI is 40.0 (2026-09-24). Its weight is labeled '248 kg', but 248 lb at 66 in gives 40.0, the dietitian's 113 kg on 08-19 is about 249 lb, and the July BMI was 40.5. The unit label is a typo; the stated BMI is consistent. Either BMI is well above 35."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Supervised program 2025-09-08 to 2026-03-09 with diet, activity, behavior classes and phentermine; net -0.4%; not successful."}
+  },
+  "expected_action": "approve",
+  "action_reasoning": "The current BMI is 40.0 (the 'kg' label is a typo, and every reading is above 35). Diabetes is documented, the supervised program failed, and 2 midnights are expected with reasons. Every rule is met."
+},
+{
+  "id": "live_005",
+  "service": "icd",
+  "category": "unauthorized_author",
+  "difficulty": "hard",
+  "why_hard": "The only 'shared decision-making' document is an education session run by the device company's representative, not a clinician. A scheduler's checklist then marks SDM as done.",
+  "member": {"name": "Cyprian L. Mbaye", "dob": "1956-08-30", "age": 70, "member_id": "MBR-19628", "sex": "M"},
+  "practice": "Northwind Arrhythmia Center",
+  "planned_admit_date": "2026-11-05",
+  "pages": [
+    {"title": "Electrophysiology consultation", "lines": [
+      "NORTHWIND ARRHYTHMIA CENTER",
+      "Office consultation - 2026-09-16",
+      "Patient: Mbaye, Cyprian L.   70 y/o M",
+      "",
+      "Reason: primary prevention ICD.",
+      "Background: anterior STEMI Jul 2019, primary PCI to LAD at that time. No angina, heart attacks or further stents since. Gets breathless walking 100 yards and on any incline; comfortable sitting. NYHA class III.",
+      "",
+      "CMR 2026-09-03: LVEF 29%, large anterior scar.",
+      "",
+      "A/P: ischemic cardiomyopathy, LVEF 29%, NYHA III on GDMT since 2019 -> ICD indicated. Arrange device education. Implant early November.",
+      "Dr. Rasmus Ekwueme-Hart"
+    ]},
+    {"title": "Cardiac MRI report", "lines": [
+      "NORTHWIND IMAGING - CARDIAC MRI",
+      "Study date: 2026-09-03",
+      "MBAYE, CYPRIAN",
+      "LVEDVi 121 mL/m2   LVEF 29%   RVEF 51%",
+      "LGE: transmural scar of the mid-apical anterior wall and apex (LAD territory).",
+      "Impression: ischemic cardiomyopathy, LVEF 29%. No LV thrombus."
+    ]},
+    {"title": "Device education session", "lines": [
+      "AURELIA MEDICAL DEVICES - PATIENT EDUCATION RECORD",
+      "Session date: 2026-09-25   Location: Northwind Arrhythmia Center, room 4",
+      "Patient: Cyprian Mbaye",
+      "Presenter: Devon Stroud, Clinical Specialist (manufacturer representative)",
+      "",
+      "Reviewed the ICD decision aid booklet with patient and wife. Showed a demo device and explained remote monitoring, what a shock feels like, battery life, and the company's MRI-conditional labeling.",
+      "Patient said he would like to go ahead.",
+      "Signed: Devon Stroud, Clinical Specialist, Aurelia Medical Devices",
+      "(No clinician present.)"
+    ]},
+    {"title": "Medication list", "lines": [
+      "NORTHWIND ARRHYTHMIA CENTER - MEDICATIONS (2026-09-16)",
+      "metoprolol succinate 100 mg daily     start 2019-07-22",
+      "sacubitril/valsartan 97/103 mg BID    start 2021-03",
+      "ramipril                              2019-07-22 to 2021-03",
+      "spironolactone 25 mg daily            start 2019-07-22",
+      "dapagliflozin 10 mg daily             start 2023-01",
+      "aspirin 81 mg, prasugrel stopped 2020, rosuvastatin 40 mg",
+      "tiotropium inhaler daily"
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "NORTHWIND LAB 2026-09-17",
+      "Na 139  K 4.6  Cr 1.5  eGFR 49",
+      "Hgb 13.9  Plt 221  INR 1.0",
+      "NT-proBNP 1,560"
+    ]},
+    {"title": "Pre-procedure checklist and admission plan", "lines": [
+      "NORTHWIND ARRHYTHMIA CENTER - PRE-PROCEDURE CHECKLIST",
+      "Completed by: L. Fairbairn (procedure scheduler)   2026-09-30",
+      "Patient: Mbaye, Cyprian L.   MBR-19628   CPT 33249   Admit 2026-11-05 inpatient",
+      "[x] Consent packet mailed",
+      "[x] SDM: done 9/25",
+      "[x] Labs within 30 days",
+      "",
+      "Physician section (Dr. Ekwueme-Hart, 2026-10-01):",
+      "Expected LOS 2 midnights. Reasons: COPD on tiotropium (risk of hypoventilation after sedation); CKD 3a with contrast venogram; age 70.",
+      "Limiting conditions: none - cognition intact, no terminal illness, sinus rhythm without AF, clinically stable."
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "Physician section: 'Expected LOS 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["COPD", "CKD stage 3a"], "page": 7, "why": "Reasons in the physician section."},
+    "lvef_percent": {"truth": "present", "value": 29, "page": 3, "why": "CMR 2026-09-03: LVEF 29%."},
+    "lvef_method": {"truth": "present", "value": "cardiac MRI", "page": 3, "why": "Cardiac MRI."},
+    "nyha_class": {"truth": "present", "value": "III", "page": 2, "why": "EP consult: 'NYHA class III'."},
+    "cardiomyopathy_type": {"truth": "present", "value": "ischemic", "page": 2, "why": "Anterior STEMI 2019 with LAD scar."},
+    "recent_mi_revasc": {"truth": "negated", "value": null, "page": 2, "why": "STEMI and PCI July 2019; 'No angina, heart attacks or further stents since.'"},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 87.5, "page": 5, "why": "Metoprolol, ACEi/ARNI and spironolactone since 2019-07-22. Not decisive (ischemic)."},
+    "shared_decision_making": {"truth": "absent", "value": null, "page": null, "why": "The only session (2026-09-25) was led by a manufacturer's representative with 'No clinician present'. That is device education, not a shared decision-making visit with a clinician. The scheduler's checkbox 'SDM: done 9/25' points to that same session and is not clinical documentation."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 7, "why": "Physician section: 'Limiting conditions: none.'"}
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 7 needs a documented shared decision-making visit with a decision tool. The packet has only a manufacturer rep's education session and a scheduler's checkbox, so the fact is absent. Pend and ask for a clinician's SDM note. All other rules pass."
+},
+{
+  "id": "live_006",
+  "service": "icd",
+  "category": "wrong_test_type",
+  "difficulty": "medium",
+  "why_hard": "The current LVEF of 30% comes from a coronary CT angiogram's functional analysis, which is not an accepted method. The last accepted-method study (2025 echo) showed 38%.",
+  "member": {"name": "Annika S. Folau", "dob": "1950-02-07", "age": 76, "member_id": "MBR-60291", "sex": "F"},
+  "practice": "Harrowgate Cardiology & Rhythm",
+  "planned_admit_date": "2026-10-30",
+  "pages": [
+    {"title": "Cardiology follow-up note", "lines": [
+      "HARROWGATE CARDIOLOGY & RHYTHM",
+      "Follow-up, 18 September 2026",
+      "Mrs. Annika Folau (76)",
+      "",
+      "Known ischemic cardiomyopathy: NSTEMI May 2018, CABG x2 (LIMA-LAD, SVG-RCA) May 2018. No events since.",
+      "Breathless after about 2 blocks; fine with housework at her own pace. NYHA II.",
+      "",
+      "She had a gated coronary CT angiogram on 2 September to check her grafts after atypical chest pain. Grafts widely patent, no new disease, no intervention needed. The CT functional analysis gave LVEF 30%, down from 38% on echo in June 2025.",
+      "",
+      "Plan: refer to EP for primary prevention ICD based on the CT LVEF.",
+      "Dr. Theo Marchbanks"
+    ]},
+    {"title": "Coronary CT angiogram report", "lines": [
+      "HARROWGATE IMAGING - CT CORONARY ANGIOGRAM WITH FUNCTIONAL ANALYSIS",
+      "Date: 2 September 2026",
+      "Folau, Annika S.",
+      "Technique: retrospective ECG-gated, 10 phases reconstructed.",
+      "Grafts: LIMA-LAD patent. SVG-RCA patent. Native vessels: chronic occlusions as before, no new stenosis.",
+      "Functional analysis (CT): LVEDV 162 mL, LVESV 113 mL, LVEF 30%.",
+      "Impression: patent bypass grafts. Reduced LV function on CT functional analysis, LVEF 30%."
+    ]},
+    {"title": "Echocardiogram report (2025)", "lines": [
+      "HARROWGATE CARDIOLOGY - ECHOCARDIOGRAM",
+      "Date: 10 June 2025",
+      "Folau, Annika",
+      "LVEF 38% (biplane). Inferior hypokinesis. Mild MR.",
+      "Impression: mildly-moderately reduced LV function."
+    ]},
+    {"title": "EP consultation and SDM", "lines": [
+      "HARROWGATE CARDIOLOGY & RHYTHM - ELECTROPHYSIOLOGY",
+      "25 September 2026",
+      "Annika Folau, with husband",
+      "",
+      "Indication reviewed: ICM, LVEF 30% (CT 2 Sept), NYHA II, on GDMT since 2018.",
+      "",
+      "Shared decision-making done today by me with an evidence-based ICD decision aid (printed). Covered benefit, shocks, complications, deactivation and the option to wait for repeat imaging. She chose the ICD.",
+      "Plan: implant 30 October.",
+      "Dr. Ngaio Petersen-Obi"
+    ]},
+    {"title": "Medication list", "lines": [
+      "Folau, Annika - current medicines (18 Sept 2026)",
+      "carvedilol 12.5 mg twice daily - since 15 May 2018",
+      "valsartan 80 mg twice daily - since 15 May 2018",
+      "eplerenone 25 mg daily - since 2019",
+      "dapagliflozin 10 mg daily - since 2023",
+      "aspirin 81 mg, atorvastatin 40 mg",
+      "levothyroxine 100 mcg"
+    ]},
+    {"title": "Admission plan", "lines": [
+      "HARROWGATE EP - ADMISSION PLAN   1 October 2026",
+      "Folau, Annika S.   MBR-60291   CPT 33249   Admit 30 October 2026 (inpatient)",
+      "Expected stay: 2 midnights.",
+      "Reasons: age 76 with osteoporotic spine fractures (positioning, pain control); hypothyroidism; lives alone - needs PT and device check before discharge.",
+      "No heart attack, stent or bypass since 2018.",
+      "Limiting conditions: none (no dementia, no terminal illness, no AF, stable).",
+      "Dr. Ngaio Petersen-Obi"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected stay: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["osteoporosis with spine fractures", "hypothyroidism"], "page": 7, "why": "Reasons on the admission plan."},
+    "lvef_percent": {"truth": "present", "value": 30, "page": 3, "why": "Most recent LVEF: CT functional analysis on 2026-09-02, 30%. The echo on 2025-06-10 (38%) is older."},
+    "lvef_method": {"truth": "present", "value": "other", "page": 3, "why": "Cardiac CT is not echocardiography, nuclear imaging, cardiac MRI or angiography. The 'angiogram' is a CT angiogram of the coronaries, not a catheter ventriculogram."},
+    "nyha_class": {"truth": "present", "value": "II", "page": 2, "why": "'NYHA II'."},
+    "cardiomyopathy_type": {"truth": "present", "value": "ischemic", "page": 2, "why": "NSTEMI and CABG 2018."},
+    "recent_mi_revasc": {"truth": "negated", "value": null, "page": 7, "why": "'No heart attack, stent or bypass since 2018.' The 2026 CT needed no intervention."},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 101.5, "page": 6, "why": "Carvedilol and valsartan since 2018-05-15. Not decisive (ischemic)."},
+    "shared_decision_making": {"truth": "present", "value": null, "page": 5, "why": "SDM by the EP physician on 2026-09-25 with an evidence-based decision aid."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 7, "why": "'Limiting conditions: none.'"}
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts are present. The current LVEF was measured by cardiac CT, which is not an accepted method, so rule 3 is not met. All other rules pass."
+},
+{
+  "id": "live_007",
+  "service": "icd",
+  "category": "ambiguous_verify",
+  "difficulty": "hard",
+  "why_hard": "A troponin rise during septic shock 37 days before the implant is called a 'type 2 NSTEMI' by the hospitalist and 'myocardial injury, not MI' by the cardiology consultant. One reading blocks the implant and the other does not.",
+  "member": {"name": "Lazarus E. Brandvold", "dob": "1959-11-15", "age": 66, "member_id": "MBR-38176", "sex": "M"},
+  "practice": "Juniper Ridge Electrophysiology",
+  "planned_admit_date": "2026-10-27",
+  "pages": [
+    {"title": "Hospital discharge summary", "lines": [
+      "ST. COLUMBA HOSPITAL - DISCHARGE SUMMARY",
+      "Admitted 09/18/2026   Discharged 09/25/2026   Attending: hospitalist service",
+      "Patient: Brandvold, Lazarus E.   66M",
+      "",
+      "Principal diagnosis: septic shock due to acute cholangitis (choledocholithiasis).",
+      "Secondary diagnoses: Type 2 NSTEMI (demand ischemia) 09/20/2026; acute kidney injury, resolved; known non-ischemic cardiomyopathy.",
+      "",
+      "Course: norepinephrine x 48 h, ERCP with stone extraction 09/19. hs-troponin T rose to 412 ng/L on 09/20 during hypotension and fell over 3 days. No chest pain. Cardiology consulted.",
+      "Discharged home off pressors, eating, walking the halls.",
+      "Hospitalist: Dr. Grete Oyelowo-Sand"
+    ]},
+    {"title": "Inpatient cardiology consultation", "lines": [
+      "ST. COLUMBA HOSPITAL - CARDIOLOGY CONSULT",
+      "09/21/2026   Brandvold, Lazarus",
+      "Asked to see for troponin elevation.",
+      "No ischemic symptoms. ECG: sinus tachycardia, no new ST changes or Q waves compared with 2025. Bedside echo: global hypokinesis unchanged from baseline, no new regional wall motion abnormality.",
+      "Assessment: acute myocardial injury due to septic shock. Does NOT meet the universal definition for myocardial infarction (no symptoms, ECG or imaging evidence of ischemia). No ischemic work-up needed. Coronaries normal on 2024 cath.",
+      "Dr. Mateo Achterberg-Lindo, Cardiology"
+    ]},
+    {"title": "EP clinic note", "lines": [
+      "JUNIPER RIDGE ELECTROPHYSIOLOGY",
+      "Clinic visit: 10/01/2026",
+      "Mr. Brandvold, 66",
+      "",
+      "Known NICM since 2024 (normal coronaries on cath 2024). GDMT since 02/10/2025.",
+      "Recovered fully from the September sepsis admission. Back to walking his dog; short of breath on stairs and long walks. NYHA II. No syncope.",
+      "TTE 10/01/2026: LVEF 26%.",
+      "",
+      "Plan: primary prevention ICD as planned before his illness. SDM today with our NP. Admit 10/27.",
+      "Dr. Solveig Mankiller-Reyes"
+    ]},
+    {"title": "Echocardiogram report", "lines": [
+      "JUNIPER RIDGE - TTE",
+      "10/01/2026   BRANDVOLD, LAZARUS E",
+      "LVEF 26% (biplane). LV dilated, global hypokinesis. Mild MR.",
+      "Compared with 03/2026 (LVEF 27%): unchanged."
+    ]},
+    {"title": "Shared decision-making note", "lines": [
+      "JUNIPER RIDGE EP - SDM ENCOUNTER",
+      "10/01/2026   Lazarus Brandvold (wife present)",
+      "Clinician: Folake Henderson-Ruiz, NP",
+      "Evidence-based ICD decision aid (video and handout) reviewed together.",
+      "Benefit, risks, shocks, infection, deactivation and alternatives discussed. He chose the ICD.",
+      "F. Henderson-Ruiz NP"
+    ]},
+    {"title": "Medication list", "lines": [
+      "Brandvold, Lazarus - medicines 10/01/2026",
+      "sacubitril/valsartan 49/51 BID   from 02/10/2025",
+      "metoprolol succinate 100 mg      from 02/10/2025",
+      "spironolactone 25 mg             from 02/10/2025",
+      "empagliflozin 10 mg              from 04/2025",
+      "ursodiol (post-ERCP)             from 09/2026"
+    ]},
+    {"title": "Admission plan", "lines": [
+      "JUNIPER RIDGE EP - ADMISSION PLAN   10/02/2026",
+      "Brandvold, Lazarus E.   MBR-38176   CPT 33249   Admit 10/27/2026 inpatient",
+      "Expected LOS: 2 midnights. Reasons: recent septic shock with AKI (renal check after contrast); type 2 diabetes on insulin; obesity BMI 37.",
+      "No PCI or CABG ever.",
+      "Limiting conditions: none. Clinically stable, cognition intact, no terminal illness, no AF.",
+      "Dr. Solveig Mankiller-Reyes"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["recent septic shock with acute kidney injury", "type 2 diabetes on insulin", "obesity BMI 37"], "page": 8, "why": "Reasons on the admission plan."},
+    "lvef_percent": {"truth": "present", "value": 26, "page": 5, "why": "TTE 2026-10-01: 26%."},
+    "lvef_method": {"truth": "present", "value": "echocardiography", "page": 5, "why": "TTE biplane."},
+    "nyha_class": {"truth": "present", "value": "II", "page": 4, "why": "EP clinic: 'NYHA II'."},
+    "cardiomyopathy_type": {"truth": "present", "value": "non-ischemic", "page": 4, "why": "NICM with normal coronaries on the 2024 cath."},
+    "recent_mi_revasc": {"truth": "present", "value": null, "ambiguous": true, "page": 2, "why": "The troponin event was on 2026-09-20, which is 37 days before the 2026-10-27 implant. The hospitalist's discharge summary codes it as 'Type 2 NSTEMI' (page 2); the cardiology consultant says it 'does NOT meet the universal definition for myocardial infarction' (page 3). If it was a heart attack, it is inside the 40-day window. No PCI or CABG."},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 20.6, "page": 7, "why": "GDMT since 2025-02-10; about 20.6 months to the implant."},
+    "shared_decision_making": {"truth": "present", "value": null, "page": 6, "why": "SDM 2026-10-01 with an NP using an evidence-based decision aid."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 8, "why": "'Limiting conditions: none. Clinically stable.'"}
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rule 5 depends on whether the 2026-09-20 event, 37 days before the implant, was a heart attack. Two physicians in the packet disagree, so a person must decide. Every other rule passes."
+},
+{
+  "id": "live_008",
+  "service": "icd",
+  "category": "missing_but_adjacent",
+  "difficulty": "medium",
+  "why_hard": "The LVEF of 25% is quoted from unnamed outside records. The only test in the packet is a treadmill ECG stress test, which measures no ejection fraction. The new echo is only scheduled.",
+  "member": {"name": "Margarethe I. Solberg", "dob": "1954-05-26", "age": 72, "member_id": "MBR-90542", "sex": "F"},
+  "practice": "Tamarack Valley Heart Clinic",
+  "planned_admit_date": "2026-11-10",
+  "pages": [
+    {"title": "New patient cardiology visit", "lines": [
+      "TAMARACK VALLEY HEART CLINIC",
+      "New patient: 9-17-2026",
+      "Margarethe I. Solberg, 72 F, moved here from Arizona in the summer",
+      "",
+      "Per records from her prior cardiologist: non-ischemic dilated cardiomyopathy diagnosed Jan 2026, LVEF 25%, cath Jan 2026 with normal coronaries. GDMT started 1-20-2026.",
+      "Today: tires walking from the parking lot, rests on stairs. NYHA III. No syncope. No chest pain.",
+      "",
+      "Plan: exercise test for functional capacity. Repeat echo to establish baseline here (scheduled 10-22-2026). EP referral for primary prevention ICD.",
+      "Dr. Bartholomew Ijeoma-Strand"
+    ]},
+    {"title": "Exercise treadmill test", "lines": [
+      "TAMARACK VALLEY HEART CLINIC - EXERCISE TREADMILL TEST (ECG only)",
+      "Date: 9-24-2026   Solberg, Margarethe",
+      "Protocol: modified Bruce. Duration 5:10. Peak 4.6 METs. Stopped for dyspnea.",
+      "Peak HR 112 (76% predicted). BP 118/70 -> 142/74.",
+      "ECG: no ischemic ST changes. Occasional PVCs, no sustained arrhythmia.",
+      "Impression: reduced functional capacity. Negative for ischemia by ECG criteria. No imaging performed."
+    ]},
+    {"title": "Medication list", "lines": [
+      "Solberg, Margarethe - medication list 9-17-2026",
+      "sacubitril/valsartan 49/51 BID ..... started 1-20-2026",
+      "carvedilol 12.5 mg BID ............. started 1-20-2026",
+      "spironolactone 25 mg ............... started 1-20-2026",
+      "dapagliflozin 10 mg ................ started 1-20-2026",
+      "apixaban - none; aspirin - none",
+      "alendronate weekly ................. 2020"
+    ]},
+    {"title": "EP consultation", "lines": [
+      "TAMARACK VALLEY HEART CLINIC - ELECTROPHYSIOLOGY",
+      "10-1-2026   Solberg, Margarethe I.",
+      "NICM, EF 25% per outside records, NYHA III, GDMT since January.",
+      "No MI, stents or bypass ever.",
+      "SDM done today: I reviewed an evidence-based ICD decision aid with her and her sister; she chose the ICD.",
+      "Plan: implant 11-10-2026, inpatient.",
+      "Dr. Henrike Abernathy-Moss"
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "TAMARACK LAB 9-17-2026",
+      "Na 137  K 4.7  Cr 1.3  eGFR 42",
+      "Hgb 11.9  INR 1.0",
+      "NT-proBNP 2,310"
+    ]},
+    {"title": "Admission plan", "lines": [
+      "TAMARACK VALLEY EP - ADMISSION PLAN   10-2-2026",
+      "Solberg, Margarethe I.   MBR-90542   CPT 33249   Admit 11-10-2026",
+      "Expected LOS: 2 midnights. Reasons: CKD 3b (eGFR 42); osteoporosis with high fall risk; lives alone.",
+      "Limiting conditions: none (no dementia, no terminal illness, no AF, stable).",
+      "Dr. Henrike Abernathy-Moss"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["CKD stage 3b", "osteoporosis with fall risk"], "page": 7, "why": "Reasons on the admission plan."},
+    "lvef_percent": {"truth": "present", "value": 25, "page": 2, "why": "'LVEF 25%' per the prior cardiologist's records (also page 5). No in-packet imaging confirms it, and no study date is given."},
+    "lvef_method": {"truth": "absent", "value": null, "page": null, "why": "No page says how the 25% was measured. The treadmill test was ECG-only and measured no ejection fraction. The new echo is only scheduled for 2026-10-22."},
+    "nyha_class": {"truth": "present", "value": "III", "page": 2, "why": "'NYHA III'."},
+    "cardiomyopathy_type": {"truth": "present", "value": "non-ischemic", "page": 2, "why": "Non-ischemic dilated cardiomyopathy with normal coronaries on the Jan 2026 cath (per records)."},
+    "recent_mi_revasc": {"truth": "negated", "value": null, "page": 5, "why": "'No MI, stents or bypass ever.'"},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 9.7, "page": 4, "why": "GDMT started 2026-01-20; about 9.7 months to the 2026-11-10 implant."},
+    "shared_decision_making": {"truth": "present", "value": null, "page": 5, "why": "SDM by the EP physician on 2026-10-01 with an evidence-based decision aid."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 7, "why": "'Limiting conditions: none.'"}
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 3 needs to know how the LVEF was measured, and nothing in the packet says. Pend and ask for the outside echo report or the 10-22 echo. All other rules pass."
+},
+{
+  "id": "live_009",
+  "service": "bariatric",
+  "category": "rounding",
+  "difficulty": "hard",
+  "why_hard": "The current BMI is printed as 34.96. The surgeon's own text in the same note rounds it to '~35, meets criteria', and an earlier BMI was 35.4.",
+  "member": {"name": "Everett J. Pellegrino", "dob": "1967-09-03", "age": 59, "member_id": "MBR-47713", "sex": "M"},
+  "practice": "Saltmarsh Weight Surgery Partners",
+  "planned_admit_date": "2026-12-07",
+  "pages": [
+    {"title": "Initial bariatric consultation", "lines": [
+      "SALTMARSH WEIGHT SURGERY PARTNERS",
+      "Initial consultation - June 23, 2026",
+      "Everett J. Pellegrino, 58",
+      "Ht 70 in, Wt 246.7 lb, BMI 35.4",
+      "Type 2 diabetes since 2016 (metformin, glipizide; A1c 8.0). Hypertension on amlodipine.",
+      "Has done a supervised program; will obtain records.",
+      "Dr. Rowena Kincaid-Abiodun"
+    ]},
+    {"title": "Supervised weight program records", "lines": [
+      "SALTMARSH MEDICAL WEIGHT PROGRAM - DISCHARGE",
+      "Pellegrino, Everett   Program period: Oct 6, 2025 to Apr 6, 2026",
+      "Physician: Dr. Callum Ferreira-Nwosu",
+      "Monthly visits x 7, dietitian plan of 1,800 kcal, resistance and walking program, orlistat 120 mg TID Nov 2025 to Feb 2026 (stopped for GI effects).",
+      "Weight 251 -> 245 -> 249 lb (net -0.8%).",
+      "Did not meet goal. Unsuccessful."
+    ]},
+    {"title": "Psychology evaluation", "lines": [
+      "PRE-SURGICAL PSYCHOLOGY - August 12, 2026",
+      "Pellegrino, Everett",
+      "No eating disorder, no substance misuse. Cleared."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "SALTMARSH LAB - September 25, 2026",
+      "A1c 7.8 (H)  Glucose 152 (H)",
+      "Cr 0.9   K 4.3",
+      "LDL 109   Hgb 15.0"
+    ]},
+    {"title": "Pre-operative visit", "lines": [
+      "SALTMARSH WEIGHT SURGERY PARTNERS - PRE-OP VISIT",
+      "September 29, 2026   Pellegrino, Everett J.",
+      "",
+      "VITALS (EHR flowsheet): Height 70.0 in | Weight 243.7 lb | BMI 34.96 kg/m2 | BP 134/80",
+      "",
+      "A/P: BMI ~35, meets criteria with T2DM. Lost a few pounds on the pre-op diet. Proceed with RYGB once approved.",
+      "R. Kincaid-Abiodun MD"
+    ]},
+    {"title": "Operative plan", "lines": [
+      "SALTMARSH - OPERATIVE PLAN   October 1, 2026",
+      "Pellegrino, Everett J.   MBR-47713",
+      "Laparoscopic RYGB, CPT 43644. Inpatient admission December 7, 2026.",
+      "Expected LOS: 2 midnights. Reasons: T2DM on sulfonylurea (hypoglycemia risk as intake falls); hypertension; age 59.",
+      "R. Kincaid-Abiodun MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "hypertension"], "page": 2, "why": "Initial consultation."},
+    "bmi": {"truth": "present", "value": 34.96, "page": 6, "why": "June 23 BMI 35.4 (page 2). September 29 BMI 34.96 (page 6), which is later and wins. 34.96 is below 35. The surgeon's '~35' is a rounding of the same measurement, not a separate value, and rounding does not change the threshold test (243.7 lb at 70 in computes to 34.96)."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Supervised program Oct 6, 2025 to Apr 6, 2026 with diet, exercise and orlistat; net -0.8%; unsuccessful."}
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts are present. The current BMI is 34.96, which is below 35, so rule 1 is not met even though the surgeon calls it '~35'. The other rules pass."
+},
+{
+  "id": "live_010",
+  "service": "bariatric",
+  "category": "ambiguous_verify",
+  "difficulty": "hard",
+  "why_hard": "She enrolled in a 6-month supervised program but attended only 2 of 6 visits and was discharged for non-attendance. The program says it could not judge efficacy; the surgeon calls it a failure.",
+  "member": {"name": "Constance R. Ifeanyi", "dob": "1972-10-10", "age": 53, "member_id": "MBR-55019", "sex": "F"},
+  "practice": "Bramblewood Metabolic Surgery",
+  "planned_admit_date": "2026-11-24",
+  "pages": [
+    {"title": "Surgical consultation", "lines": [
+      "BRAMBLEWOOD METABOLIC SURGERY",
+      "Consult date: 09/09/2026",
+      "Ms. Constance R. Ifeanyi, 53",
+      "Height 64 in. Weight 261 lb. BMI 44.8.",
+      "Type 2 diabetes (A1c 8.6, on insulin). Severe obstructive sleep apnea, CPAP since 2023. Knee pain.",
+      "Weight history: enrolled in a medically supervised program this year and it failed. Has failed medically supervised weight loss.",
+      "Plan: Roux-en-Y gastric bypass.",
+      "Dr. Ambrose Delacroix-Mensah"
+    ]},
+    {"title": "Program discharge letter", "lines": [
+      "BRAMBLEWOOD MEDICAL WEIGHT MANAGEMENT",
+      "Discharge letter - 06/22/2026",
+      "Participant: Constance Ifeanyi",
+      "Program: 6-month physician-supervised weight management, enrolled 01/12/2026.",
+      "Visits attended: 01/12/2026 and 02/09/2026. Missed: 03/09, 04/13, 05/11, 06/08 (no-shows; two reschedules not kept).",
+      "Weight at visit 1: 263 lb. Weight at visit 2: 262 lb.",
+      "Plan given at enrollment: 1,500 kcal diet, walking program, dietitian follow-up. No medication started.",
+      "Status: discharged for non-attendance. Program not completed. Because she attended only 2 of 6 visits, we cannot judge whether medical management would have been effective.",
+      "Dr. Tamsin Oduya-Lowell, Program Director"
+    ]},
+    {"title": "Primary care note", "lines": [
+      "BRAMBLEWOOD FAMILY PRACTICE - 07/15/2026",
+      "Ifeanyi, Constance",
+      "She stopped going to the weight program in March: she became the main caregiver for her mother after a stroke and had no transport. Says she kept trying the diet at home but weight unchanged (260 lb today).",
+      "Supports referral to surgery.",
+      "Dr. Gideon Okonkwo-Hale"
+    ]},
+    {"title": "Sleep study summary", "lines": [
+      "BRAMBLEWOOD SLEEP LAB - PSG 05/2023",
+      "Ifeanyi, Constance   AHI 41/h, severe OSA. CPAP 13 cm H2O. 2026 use: 84% of nights over 4 h."
+    ]},
+    {"title": "Psychology evaluation", "lines": [
+      "PRE-SURGICAL PSYCHOLOGY   08/20/2026",
+      "Ifeanyi, Constance",
+      "Caregiver stress, coping adequately. No eating disorder. Cleared."
+    ]},
+    {"title": "Operative plan", "lines": [
+      "BRAMBLEWOOD - OPERATIVE PLAN   09/30/2026",
+      "Ifeanyi, Constance R.   MBR-55019",
+      "Laparoscopic RYGB (CPT 43644). Inpatient admission 11/24/2026.",
+      "Expected LOS: 2 midnights. Reasons: severe OSA on CPAP; insulin-treated T2DM; knee pain limiting early walking (VTE risk).",
+      "Dr. Ambrose Delacroix-Mensah"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes on insulin", "severe obstructive sleep apnea"], "page": 2, "why": "Consultation history."},
+    "bmi": {"truth": "present", "value": 44.8, "page": 2, "why": "Consult 2026-09-09: BMI 44.8."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "ambiguous": true, "page": 3, "why": "Enrollment in a supervised program on 2026-01-12 is documented, but she attended 2 of 6 visits and was discharged for non-attendance. The program says it 'cannot judge whether medical management would have been effective'. The surgeon calls it a failure, and the PCP gives a caregiving reason for stopping. Whether this counts as having tried and been unsuccessful is a judgment call."}
+  },
+  "expected_action": "verify",
+  "action_reasoning": "BMI, comorbidity and length of stay pass. Rule 3 depends on whether an incomplete program (2 of 6 visits) counts as unsuccessful medical treatment. The program and the surgeon disagree, so a person must decide."
+}
+]
