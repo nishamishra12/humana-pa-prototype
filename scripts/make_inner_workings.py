@@ -37,13 +37,19 @@ def show(v):
     return str(v)
 
 
+import base64
+IMG = base64.b64encode(open(os.path.join(ROOT, 'docs', 'assets', 'unstructured_parse.webp'), 'rb').read()).decode()
+
 # ---------- step 2 (summary)
 els = T["ingest"]["elements"]
 types = collections.Counter(x["type"] for x in els)
 pages = len({x["page"] for x in els})
 s2 = f"""<div class="two"><div class="pane"><h4>Input</h4><p>The packet PDF: {pages} pages, a made-up patient. Every page is a picture, with no text in the file.</p></div>
 <div class="pane"><h4>Output: {len(els)} elements in {T['ingest']['seconds']} s</h4><p>{" ".join(badge(f"{k} {v}", "gray") for k, v in types.most_common())}</p>
-<p class="note">This is the part Unstructured's screen already shows well. Everything below starts from these elements.</p></div></div>"""
+<p class="note">We keep three things per element: the page, the type and the text. The coordinates and element ids are also returned, and not used yet.</p></div></div>
+<div class="pane wide"><h4>The same packet in Unstructured's own screen</h4>
+<img class="shot" alt="Unstructured parse screen: the scanned page on the left with colored boxes around each element, and the list of elements, types and text on the right" src="data:image/webp;base64,{IMG}">
+<p class="note">Left: the scanned page with a box around each element. Right: the structured list it returns, with a type for each (Title, NarrativeText, Table, Header, Footer). The table rows come back as real tables. Everything below starts from this list.</p></div>"""
 
 # ---------- step 3
 src = T["cpt_source"]
@@ -176,6 +182,22 @@ s6 = f"""<div class="two"><div class="pane"><h4>Input: the facts and the policy 
 <div class="pane"><h4>Output: the checklist and the recommendation</h4><table class="ev"><thead><tr><th>Layer</th><th>Criterion</th><th>Value found</th><th>Result</th></tr></thead><tbody>{rows6}</tbody></table>
 <div class="rec">Recommendation: <b>{e(act)}</b>. A nurse still confirms it. The same facts always give the same answer.</div></div></div>"""
 
+
+GH = "https://github.com/nishamishra12/humana-pa-prototype/blob/master/"
+files = [
+    ("2", "ETL + AI", "pipeline/ingest.py", "Calls Unstructured and keeps page, type and text for each element."),
+    ("3", "Pick the policy", "pipeline/extract.py", "extract_header: finds the CPT code, planned date and member with pattern matching."),
+    ("3", "Pick the policy", "pipeline/procedures.py", "procedure_for_cpt: the lookup from CPT code to service."),
+    ("3", "Pick the policy", "policies/policy_library.json", "The curated library: services, policy stacks, every criterion and its source."),
+    ("4", "Read the packet", "pipeline/extract_llm.py", "The rules the reader follows (SYSTEM near the top), the form it fills (build_tool), the three reads and their comparison."),
+    ("5", "Check the evidence", "pipeline/evidence.py", "locate_quote (exact, then fuzzy) and verify_meaning (the second AI check and its prompt)."),
+    ("6", "Apply the rules", "pipeline/engine.py", "analyze: compares facts with each criterion and picks approve, pend, escalate or verify."),
+    ("all", "One case, start to finish", "pipeline/run.py", "Calls the steps in order."),
+]
+file_rows = "".join(f'<tr><td>{n}</td><td>{e(t)}</td><td><a href="{GH}{f}">{e(f)}</a></td><td>{e(d)}</td></tr>' for n, t, f, d in files)
+where_html = f"""<section><h2>Where each step lives in the code</h2><div class="pane wide tw"><table><thead><tr><th>Step</th><th>What</th><th>File on GitHub</th><th>What is in it</th></tr></thead><tbody>{file_rows}</tbody></table>
+<p class="note" style="margin-top:10px">The policy criteria were written once by hand from the official policy text (saved in policies/raw) and stored in the library with their source. They are not pulled from the policy documents while a case runs.</p></div></section>"""
+
 # ---------- found while looking
 found = """<ul><li><b>The request form on a scan.</b> Unstructured read this form two different ways on two calls: once as one long line with no colons, once as a table. My header reader only understood typed forms, so on scans it missed the member, the facility and the planned date, and the date counting never switched on. It now handles both layouts. On the 76 typed packets it gives identical results.</li>
 <li><b>The meaning check against a counted number.</b> The packet says "8 months as of today". Code counts 9.5 months to the planned procedure date. The second AI called that a contradiction and the case was flagged. The check now tests the start date the packet gives, and the case is approved.</li></ul>
@@ -216,14 +238,14 @@ tr:last-child td{{border-bottom:0}}table.look tr.on td{{background:var(--accsoft
 ul.crit{{margin:4px 0 0;padding-left:18px}}ul.crit li{{margin:3px 0}}
 del{{background:var(--redsoft);color:var(--red);text-decoration:none}}ins{{background:var(--ambersoft);color:var(--amber);text-decoration:none;font-weight:600}}
 table.demo td:first-child{{width:28%}}
-.found{{background:var(--ambersoft);border-radius:10px;padding:14px 18px;margin-top:30px}}
+.shot{{max-width:100%;border:1px solid var(--line);border-radius:8px;display:block;margin:0 0 10px}}
 </style>
 <main>
 <h1>Inside the case: what each step does</h1>
 <p class="lead">One real, made-up packet (<b>{e(T['file'])}</b>, a scan) run through PA Desk. Each step shows what goes in on the left and what comes out on the right, the way Unstructured's screen shows its parse. The data on this page is the real output of that run.</p>
 <nav>{nav}</nav>
 {sections}
-<div class="found"><h2 style="margin-top:0">What I found by looking inside</h2>{found}</div>
+{where_html}
 </main>
 """
 with open(OUT, "w", encoding="utf-8", newline="\n") as f:
