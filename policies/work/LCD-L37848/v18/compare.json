@@ -1,0 +1,62 @@
+{
+ "policy_id": "LCD-L37848",
+ "rows": [
+  {
+   "id": "LCD-IND",
+   "fact": "indication_evidence",
+   "result": "same",
+   "approved": "present",
+   "draft": "present",
+   "draft_id": "INST-CAUSE"
+  },
+  {
+   "id": "LCD-CONS",
+   "fact": "conservative_treatment",
+   "result": "same",
+   "approved": "present",
+   "draft": "present",
+   "draft_id": "REV-CONSERVATIVE"
+  },
+  {
+   "id": "LCD-SDM",
+   "fact": "shared_decision_making",
+   "result": "same",
+   "approved": "present",
+   "draft": "present",
+   "draft_id": "SDM"
+  },
+  {
+   "id": "LCD-LEVELS",
+   "fact": "levels_fused",
+   "result": "missed",
+   "approved": "informational",
+   "draft": null
+  }
+ ],
+ "extra": [
+  {
+   "id": "DEFORM-FUNC",
+   "fact": "post_op_needs",
+   "test": "present",
+   "text": "For symptomatic spinal deformity, there must be functional limitation in daily activities due to back pain or discomfort."
+  },
+  {
+   "id": "REV-PAIN-RELIEF",
+   "fact": "post_op_needs",
+   "test": "present",
+   "text": "For revision surgery for pseudarthrosis, the patient must have had a period of reduced pain initially following the prior surgery."
+  },
+  {
+   "id": "REV-TIME",
+   "fact": "post_op_needs",
+   "test": "gte 1",
+   "text": "For revision surgery for pseudarthrosis, at least 1 year must have passed since the prior surgery."
+  }
+ ],
+ "counts": {
+  "same": 3,
+  "differs": 0,
+  "missed": 1
+ },
+ "approved_count": 4
+}

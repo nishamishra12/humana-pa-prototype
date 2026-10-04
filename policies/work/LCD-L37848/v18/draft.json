@@ -1,0 +1,278 @@
+{
+ "criteria": [
+  {
+   "id": "SDM",
+   "text": "There must be documented shared decision making with the patient including risks and benefits, where possible.",
+   "source_quote": "there must be documented shared decision making with the patient or the individual who is serving as the proxy decision maker for the patient with the appropriate discussion of anticipated risks and benefits of the procedure",
+   "cite": "Requirements",
+   "required_fact": "shared_decision_making",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there documented shared decision making discussion with the patient including risks and benefits?",
+   "short": "missing shared decision making documentation",
+   "confidence": "medium"
+  },
+  {
+   "id": "IND-ONE",
+   "text": "Patient must meet at least one of the listed indications for lumbar fusion.",
+   "source_quote": "Documentation must demonstrate that the patient met at least 1 of the indications for the procedure as described below.",
+   "cite": "Requirements",
+   "required_fact": "indication_evidence",
+   "test": {
+    "type": "in",
+    "value": [
+     "instability",
+     "deformity",
+     "pseudarthrosis",
+     "neural compression"
+    ]
+   },
+   "if_missing": "Which qualifying indication (instability, deformity, pseudarthrosis, or neural compression) is documented for this patient?",
+   "short": "no qualifying indication documented",
+   "confidence": "high"
+  },
+  {
+   "id": "INST-CAUSE",
+   "text": "If instability is the indication, there must be radiographic or clinical evidence of instability due to one of the listed causes (congenital deformity, trauma, fracture, chronic degenerative condition, tumor, infection, erosive condition, space-occupying lesion, or iatrogenic cause).",
+   "source_quote": "Radiographic or clinical evidence of instability due to any 1 of the following",
+   "cite": "1",
+   "required_fact": "indication_evidence",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "instability"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there radiographic or clinical evidence of instability, and what underlying cause (e.g., trauma, degenerative condition, tumor) is documented?",
+   "short": "instability cause not documented",
+   "confidence": "medium"
+  },
+  {
+   "id": "DEFORM-FUNC",
+   "text": "For symptomatic spinal deformity, there must be functional limitation in daily activities due to back pain or discomfort.",
+   "source_quote": "Functional limitation in daily activities due to back pain or discomfort",
+   "cite": "2.a",
+   "required_fact": "post_op_needs",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "deformity"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is functional limitation in daily activities due to back pain documented?",
+   "short": "functional limitation not documented",
+   "confidence": "low"
+  },
+  {
+   "id": "DEFORM-NONRESPONSE",
+   "text": "For symptomatic spinal deformity, the patient must have had nonresponse to at least 1 year of non-operative treatment.",
+   "source_quote": "Nonresponse to at least 1 year of non-operative treatment",
+   "cite": "2.b",
+   "required_fact": "conservative_treatment",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "deformity"
+   },
+   "test": {
+    "type": "gte",
+    "value": 1
+   },
+   "if_missing": "How long did the patient undergo non-operative treatment and did they fail to respond?",
+   "short": "non-operative treatment duration not documented as at least 1 year",
+   "confidence": "medium"
+  },
+  {
+   "id": "DEFORM-IMBALANCE",
+   "text": "Sagittal or coronal imbalance of at least 5 cm as measured on radiographic imaging of the entire spine (one of three alternative deformity criteria).",
+   "source_quote": "Sagittal or coronal imbalance by at least 5 cm as measured on radiographic imaging of the entire spine",
+   "cite": "2.c",
+   "required_fact": "indication_evidence",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "deformity"
+   },
+   "test": {
+    "type": "gte",
+    "value": 5
+   },
+   "if_missing": "Is sagittal or coronal imbalance of at least 5 cm documented on full-spine imaging?",
+   "short": "imbalance measurement not documented",
+   "confidence": "low"
+  },
+  {
+   "id": "DEFORM-PROGRESSION",
+   "text": "Progression of deformity by at least 10 degrees (one of three alternative deformity criteria).",
+   "source_quote": "Progression of deformity by at least 10 degrees",
+   "cite": "2.d",
+   "required_fact": "indication_evidence",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "deformity"
+   },
+   "test": {
+    "type": "gte",
+    "value": 10
+   },
+   "if_missing": "Is progression of deformity of at least 10 degrees documented?",
+   "short": "deformity progression not documented",
+   "confidence": "low"
+  },
+  {
+   "id": "DEFORM-SCOLIOSIS",
+   "text": "Scoliotic curvature of greater than 30 degrees (one of three alternative deformity criteria).",
+   "source_quote": "Scoliotic curvature of greater than 30 degrees",
+   "cite": "2.e",
+   "required_fact": "indication_evidence",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "deformity"
+   },
+   "test": {
+    "type": "gte",
+    "value": 30
+   },
+   "if_missing": "Is scoliotic curvature greater than 30 degrees documented?",
+   "short": "scoliotic curvature not documented",
+   "confidence": "low"
+  },
+  {
+   "id": "REV-PAIN-RELIEF",
+   "text": "For revision surgery for pseudarthrosis, the patient must have had a period of reduced pain initially following the prior surgery.",
+   "source_quote": "The patient had a period of reduced pain initially following surgery",
+   "cite": "3.a",
+   "required_fact": "post_op_needs",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "pseudarthrosis"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Did the patient have a period of reduced pain after the initial surgery?",
+   "short": "initial pain relief period not documented",
+   "confidence": "low"
+  },
+  {
+   "id": "REV-TIME",
+   "text": "For revision surgery for pseudarthrosis, at least 1 year must have passed since the prior surgery.",
+   "source_quote": "The time since the prior surgery has been at least 1 year",
+   "cite": "3.b",
+   "required_fact": "post_op_needs",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "pseudarthrosis"
+   },
+   "test": {
+    "type": "gte",
+    "value": 1
+   },
+   "if_missing": "How long has it been since the prior spine surgery?",
+   "short": "time since prior surgery not at least 1 year",
+   "confidence": "medium"
+  },
+  {
+   "id": "REV-RADIOGRAPHIC",
+   "text": "For revision surgery for pseudarthrosis, there must be clear radiographic evidence of pseudarthrosis.",
+   "source_quote": "There is clear radiographic evidence of pseudarthrosis",
+   "cite": "3.c",
+   "required_fact": "indication_evidence",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "pseudarthrosis"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there clear radiographic evidence of pseudarthrosis?",
+   "short": "radiographic evidence of pseudarthrosis not documented",
+   "confidence": "high"
+  },
+  {
+   "id": "REV-CONSERVATIVE",
+   "text": "For revision surgery for pseudarthrosis, the patient must have exhausted available conservative treatment measures.",
+   "source_quote": "The patient has exhausted available conservative treatment measures",
+   "cite": "3.d",
+   "required_fact": "conservative_treatment",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "pseudarthrosis"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "What conservative treatments were tried and exhausted prior to revision surgery?",
+   "short": "conservative treatment exhaustion not documented",
+   "confidence": "medium"
+  },
+  {
+   "id": "CONSERVATIVE-DOC",
+   "text": "The medical record must clearly reflect which conservative treatments the patient tried or is not a candidate for and why.",
+   "source_quote": "The medical record must clearly reflect which conservative treatments the patient has tried or is not a candidate for and why",
+   "cite": "Requirements (after 3.d)",
+   "required_fact": "conservative_treatment",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "What conservative treatments (medical therapy, physical/exercise therapy, injections) were tried or why was the patient not a candidate?",
+   "short": "conservative treatment documentation missing",
+   "confidence": "high"
+  },
+  {
+   "id": "REV-COUNSELING",
+   "text": "For revision surgery, the medical record must reflect that counseling on the poor outcomes of revision fusion was done and the patient wished to proceed with informed consent.",
+   "source_quote": "The medical record must reflect that this counseling was done and that the patient wished to undergo surgery with the appropriately informed consent.",
+   "cite": "Requirements (after 3.d)",
+   "required_fact": "shared_decision_making",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "pseudarthrosis"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there documentation that the patient was counseled on the risks/poor outcomes of revision fusion and provided informed consent?",
+   "short": "revision counseling/informed consent not documented",
+   "confidence": "medium"
+  },
+  {
+   "id": "NEURAL-COMPRESSION",
+   "text": "For symptomatic compression of neural elements, the record must reflect disc compression of neural elements for each level fused based on this indication.",
+   "source_quote": "The record must reflect disc compression of neural elements for each level fused based on this indication.",
+   "cite": "4",
+   "required_fact": "indication_evidence",
+   "applies_if": {
+    "fact": "indication_evidence",
+    "equals": "neural compression"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is disc compression of neural elements documented for each fused level?",
+   "short": "neural compression not documented for each fused level",
+   "confidence": "high"
+  }
+ ],
+ "new_facts": [],
+ "not_modeled": [
+  {
+   "quote": "If more than 1 level is fused under this indication, the record must reflect that each fused level is affected by 1 of the above conditions.",
+   "why": "Requires level-by-level fusion data not captured by a single indication_evidence fact; needs per-level clinical detail outside current vocabulary."
+  },
+  {
+   "quote": "Lumbar fusion must be performed by a qualified surgeon in an operating room with the necessary equipment.",
+   "why": "Describes facility/provider qualification requirements, not a clinical indication fact in the vocabulary."
+  },
+  {
+   "quote": "For elective surgeries, providers should verify that the necessary equipment and hardware to perform the procedure on a patient is available prior to the induction of anesthesia.",
+   "why": "Operational/logistical requirement, not a clinical criterion mappable to a packet fact."
+  }
+ ],
+ "_usage": {
+  "input_tokens": 3832,
+  "output_tokens": 3566
+ },
+ "_model": "claude-sonnet-5"
+}

@@ -1,0 +1,75 @@
+{
+ "info": {
+  "profile": "balanced",
+  "pages": 2,
+  "engine": "unstructured"
+ },
+ "elements": [
+  {
+   "type": "Title",
+   "text": "LCD L37848: Lumbar Spinal Fusion",
+   "page": 1,
+   "id": "e1"
+  },
+  {
+   "type": "Title",
+   "text": "Version 18\nDefinitions and Scope",
+   "page": 1,
+   "id": "e2"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "This local coverage determination (LCD) discusses fusions of the lumbar spine.",
+   "page": 1,
+   "id": "e3"
+  },
+  {
+   "type": "Title",
+   "text": "Background",
+   "page": 1,
+   "id": "e4"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "This LCD will discuss indications for surgical fusion of the lumbar spine. Total disc arthroplasty is not covered by this\nLCD.",
+   "page": 1,
+   "id": "e5"
+  },
+  {
+   "type": "Title",
+   "text": "Requirements",
+   "page": 1,
+   "id": "e6"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Lumbar fusion must be performed by a qualified surgeon in an operating room with the necessary equipment. For\nelective surgeries, providers should verify that the necessary equipment and hardware to perform the procedure on a\npatient is available prior to the induction of anesthesia.\n\nDocumentation must demonstrate that the patient met at least 1 of the indications for the procedure as described below.\nWhere possible, there must be documented shared decision making with the patient or the individual who is serving as\nthe proxy decision maker for the patient with the appropriate discussion of anticipated risks and benefits of the\nprocedure.",
+   "page": 1,
+   "id": "e7"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Indications for lumbar fusion include any of the following.",
+   "page": 1,
+   "id": "e8"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "A patient must have at least 1 of the following:",
+   "page": 1,
+   "id": "e9"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "A patient must have at least 1 of the following:\n\n1. Radiographic or clinical evidence of instability due to any 1 of the following:\n\na. Congenital deformities,\n\nb. Trauma,\n\nc. Fractures,\n\nd. Chronic degenerative conditions,\n\ne. Tumor,\n\nf. Infection,\n\ng. Erosive conditions,\n\nh. Space-occupying lesions, or\n\ni. Iatrogenic causes, including expected instability as a consequence of another medically necessary spine procedure.\n\nIf more than 1 level is fused under this indication, the record must reflect that each fused level is affected by 1 of the above conditions.\n\n2. Symptomatic spinal deformity (in the absence of instability or neural compression) which meets the following criteria:\n\nBoth of the first 2 criteria must be met:\n\na. Functional limitation in daily activities due to back pain or discomfort and\n\nb. Nonresponse to at least 1 year of non-operative treatment\n\nAny 1 of these 3 criteria must be met:\n\nc. Sagittal or coronal imbalance by at least 5 cm as measured on radiographic imaging of the entire spine, or\n\nd. Progression of deformity by at least 10 degrees, or\n\ne. Scoliotic curvature of greater than 30 degrees\n\n3. Revision surgery for pseudarthrosis following an initial spine surgery if the following conditions are all met.\n\na. The patient had a period of reduced pain initially following surgery and\n\nb. The time since the prior surgery has been at least 1 year and\n\nc. There is clear radiographic evidence of pseudarthrosis and\n\nd. The patient has exhausted available conservative treatment measures",
+   "page": 1,
+   "id": "e10"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The medical record must clearly reflect which conservative treatments the patient has tried or is not a candidate for and\nwhy, including medical therapies, physical and exercise therapies and injections. Outcomes for fusion in revision\nsurgery, usually do not lead to pain relief and as such fusion is considered a last resort treatment option only when all\nother treatment options have failed. This information must be communicated to the patient prior to surgery to allow for\nappropriate shared decision making with a well-informed patient. The medical record must reflect that this counseling\nwas done and that the patient wished to undergo surgery with the appropriately informed consent.\n\n4. Symptomatic compression of neural elements for which disc excision is necessary for decompression. The record\nmust reflect disc compression of neural elements for each level fused based on this indication.\n\nTitle XVIII of the Social Security Act, Sec.1862(a)(1)(A) allows coverage and payment for only those services that are\nconsidered to be reasonable and necessary for the diagnosis or treatment of illness or injury or to improve the\nfunctioning of a malformed body member\n\nTitle XVIII of the Social Security Act, Sec.1862(a)(1)(D) in the case of clinical care items and services provided with\nrespect to research and experimentation\n\nCMS Internet-Only Manual, Pub. 100-08, Medicare Program Integrity Manual, Chapter 13, Sec.13.5.1 General\nRequirements (states that \"reasonable and necessary\" services must be ordered and/or furnished by qualified\npersonnel)",
+   "page": 2,
+   "id": "e11"
+  }
+ ]
+}

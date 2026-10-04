@@ -1,0 +1,12 @@
+{
+ "policy_id": "NCD-240.4",
+ "level": "NCD",
+ "title": "Continuous Positive Airway Pressure (CPAP) Therapy For Obstructive Sleep Apnea (OSA)",
+ "version": "v3",
+ "effective": "03/13/2008",
+ "url": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=226",
+ "source": "CMS Coverage API",
+ "sha256": "609123bd2ef8bc8e108e8431ee87ce7fed98d240d77acd419ed7f30366a912d7",
+ "chars": 8208,
+ "retrieved_at": "2026-10-04T19:03:49+00:00"
+}

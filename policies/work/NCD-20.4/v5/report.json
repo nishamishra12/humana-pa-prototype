@@ -1,0 +1,144 @@
+{
+ "criteria": [
+  {
+   "id": "B1-VT-VF",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B2-PriorMI-LVEF",
+   "level": "review",
+   "issues": [
+    "the policy writes this as a fraction; the draft converted it to a percent. Check the conversion."
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B2-NotNYHA4",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B2-NoRecentRevascMI",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B2-SDM",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B3-Ischemic-NYHA",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B3-Ischemic-LVEF",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B3-NoRecentRevascMI",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B3-SDM",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B4-NonIschemic-NYHA",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B4-NonIschemic-LVEF",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B4-OMT",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B4-NoRecentRevascMI",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B4-SDM",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "B5-SDM",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AllCovered-ClinicallyStable",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AllCovered-LVEFMethod",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AllCovered-NoLimitingConditions",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 17,
+  "review": 1,
+  "fail": 0
+ },
+ "total": 18,
+ "uncovered": [
+  "For each of the 6 covered indications above, the following additional criteria must also be met:",
+  "Nationally Non-Covered Indications"
+ ],
+ "new_facts": [],
+ "not_modeled": 7
+}

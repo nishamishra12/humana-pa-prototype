@@ -1,0 +1,171 @@
+{
+ "info": {
+  "profile": "balanced",
+  "pages": 3,
+  "engine": "unstructured"
+ },
+ "elements": [
+  {
+   "type": "Title",
+   "text": "NCD 240.4: Continuous Positive Airway Pressure (CPAP) Therapy For Obstructive Sleep Apnea (OSA)",
+   "page": 1,
+   "id": "e1"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Version 3, effective 03/13/2008",
+   "page": 1,
+   "id": "e2"
+  },
+  {
+   "type": "Title",
+   "text": "A. General",
+   "page": 1,
+   "id": "e3"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Continuous Positive Airway Pressure (CPAP) is a non-invasive technique for providing single levels of air pressure from\na flow generator, via a nose mask, through the nares. The purpose is to prevent the collapse of the oropharyngeal walls\nand the obstruction of airflow during sleep, which occurs in obstructive sleep apnea (OSA).",
+   "page": 1,
+   "id": "e4"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The apnea hypopnea index (AHI) is equal to the average number of episodes of apnea and hypopnea per hour. The\nrespiratory disturbance index (RDI) is equal to the average number of respiratory disturbances per hour.",
+   "page": 1,
+   "id": "e5"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Apnea is defined as a cessation of airflow for at least 10 seconds. Hypopnea is defined as an abnormal respiratory event lasting at least 10 seconds with at least a 30% reduction in thoracoabdominal movement or airflow as compared to baseline, and with at least a 4% oxygen desaturation.",
+   "page": 1,
+   "id": "e6"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The AHI and/or RDI may be measured by polysomnography (PSG) in a facility-based sleep study laboratory, or by a Type II home sleep test (HST) monitor, a Type III HST monitor, or a Type IV HST monitor measuring at least 3 channels.",
+   "page": 1,
+   "id": "e7"
+  },
+  {
+   "type": "Title",
+   "text": "B. Nationally Covered Indications",
+   "page": 1,
+   "id": "e8"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Effective for claims with dates of service on and after March 13, 2008, the Centers for Medicare & Medicaid Services\n(CMS) determines that CPAP therapy when used in adult patients with OSA is considered reasonable and necessary\nunder the following situations:",
+   "page": 1,
+   "id": "e9"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The use of CPAP is covered under Medicare when used in adult patients with OSA. Coverage of CPAP is initially limited\nto a 12-week period to identify beneficiaries diagnosed with OSA as subsequently described who benefit from CPAP.\nCPAP is subsequently covered only for those beneficiaries diagnosed with OSA who benefit from CPAP during this\n12-week period.",
+   "page": 1,
+   "id": "e10"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The provider of CPAP must conduct education of the beneficiary prior to the use of the CPAP device to ensure that the\nbeneficiary has been educated in the proper use of the device. A caregiver, for example a family member, may be\ncompensatory, if consistently available in the beneficiary's home and willing and able to safely operate the CPAP device.",
+   "page": 1,
+   "id": "e11"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "A positive diagnosis of OSA for the coverage of CPAP must include a clinical evaluation and a positive:",
+   "page": 1,
+   "id": "e12"
+  },
+  {
+   "type": "ListItem",
+   "text": "attended PSG performed in a sleep laboratory; or",
+   "page": 1,
+   "id": "e13"
+  },
+  {
+   "type": "ListItem",
+   "text": "unattended HST with a Type II home sleep monitoring device; or",
+   "page": 1,
+   "id": "e14"
+  },
+  {
+   "type": "ListItem",
+   "text": "unattended HST with a Type III home sleep monitoring device; or",
+   "page": 1,
+   "id": "e15"
+  },
+  {
+   "type": "ListItem",
+   "text": "unattended HST with a Type IV home sleep monitoring device that measures at least 3 channels.",
+   "page": 1,
+   "id": "e16"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The sleep test must have been previously ordered by the beneficiary's treating physician and furnished under\nappropriate physician supervision.",
+   "page": 1,
+   "id": "e17"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "An initial 12-week period of CPAP is covered in adult patients with OSA if either of the following criterion using the AHI\nor RDI are met:",
+   "page": 1,
+   "id": "e18"
+  },
+  {
+   "type": "ListItem",
+   "text": "AHI or RDI greater than or equal to 15 events per hour, or",
+   "page": 1,
+   "id": "e19"
+  },
+  {
+   "type": "ListItem",
+   "text": "AHI or RDI greater than or equal to 5 events and less than or equal to 14 events per hour with documented symptoms of\nexcessive daytime sleepiness, impaired cognition, mood disorders or insomnia, or documented hypertension, ischemic\nheart disease, or history of stroke.",
+   "page": 1,
+   "id": "e20"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The AHI or RDI is calculated on the average number of events of per hour. If the AHI or RDI is calculated based on less\nthan 2 hours of continuous recorded sleep, the total number of recorded events to calculate the AHI or RDI during sleep\ntesting must be at a minimum the number of events that would have been required in a 2-hour period.",
+   "page": 1,
+   "id": "e21"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Apnea is defined as a cessation of airflow for at least 10 seconds. Hypopnea is defined as an abnormal respiratory\nevent lasting at least 10 seconds with at least a 30% reduction in thoracoabdominal movement or airflow as compared\nto baseline, and with at least a 4% oxygen desaturation.",
+   "page": 1,
+   "id": "e22"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Coverage with Evidence Development (CED): Medicare provides the following limited coverage for CPAP in adult beneficiaries who do not qualify for CPAP coverage based on criteria 1-7 above. A clinical study seeking Medicare payment for CPAP provided to a beneficiary who is an enrolled subject in that study must address one or more of the following questions\n\nIn Medicare-aged subjects with clinically identified risk factors for OSA, how does the diagnostic accuracy of a clinical trial of CPAP compare with PSG and Type II, III & IV HST in identifying subjects with OSA who will respond to CPAP?\n\nIn Medicare-aged subjects with clinically identified risk factors for OSA who have not undergone confirmatory testing with PSG or Type II, III & IV HST, does CPAP cause clinically meaningful harm?\n\nThe study must meet the following additional standards:\n\nThe principal purpose of the research study is to test whether a particular intervention potentially improves the participants' health outcomes.\n\nThe research study is well-supported by available scientific and medical information or it is intended to clarify or establish the health outcomes of interventions already in common clinical use.\n\nThe research study does not unjustifiably duplicate existing studies.\n\nThe research study design is appropriate to answer the research question being asked in the study.\n\nThe research study is sponsored by an organization or individual capable of executing the proposed study successfully.\n\nThe research study is in compliance with all applicable Federal regulations concerning the protection of human subjects found at 45 CFR Part 46. If a study is Food and Drug Administration-regulated, it also must be in compliance with 21 CFR Parts 50 and 56.\n\nAll aspects of the research study are conducted according to the appropriate standards of scientific integrity.\n\nThe research study has a written protocol that clearly addresses, or incorporates by reference, the Medicare standards.\n\nThe clinical research study is not designed to exclusively test toxicity or disease pathophysiology in healthy individuals. Trials of all medical technologies measuring therapeutic outcomes as one of the objectives meet this standard only if the disease or condition being studied is life-threatening as defined in 21 CFR Sec. 312.81(a) and the patient has no other viable treatment options.\n\nThe clinical research study is registered on the ClinicalTrials.gov Web site by the principal sponsor/investigator prior to the enrollment of the first study subject.\n\nThe research study protocol specifies the method and timing of public release of all pre-specified outcomes to be measured, including release of outcomes if outcomes are negative or study is terminated early. The results must be made public within 24 months of the end of data collection. If a report is planned for publication in a peer-reviewed journal, then that initial release may be an abstract that meets the requirements of the International Committee of Medical Journal Editors. However, a full report of the outcomes must be made public no later than 3 years after the end of data collection.\n\nThe research study protocol must explicitly discuss subpopulations affected by the treatment under investigation, particularly traditionally underrepresented groups in clinical studies, how the inclusion and exclusion criteria affect enrollment of these populations, and a plan for the retention and reporting of said populations in the trial. If the inclusion and exclusion criteria are expected to have a negative effect on the recruitment or retention of underrepresented populations, the protocol must discuss why these criteria are necessary.\n\nThe research study protocol explicitly discusses how the results are or are not expected to be generalizable to the Medicare population to infer whether Medicare patients may benefit from the intervention. Separate discussions in the protocol may be necessary for populations eligible for Medicare due to age, disability, or Medicaid eligibility.",
+   "page": 2,
+   "id": "e23"
+  },
+  {
+   "type": "Title",
+   "text": "C. Nationally Non-covered Indications",
+   "page": 2,
+   "id": "e24"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Effective for claims with dates of services on and after March 13, 2008, other diagnostic tests for the diagnosis of OSA,\nother than those noted above for prescribing CPAP, are not sufficient for the coverage of CPAP.",
+   "page": 2,
+   "id": "e25"
+  },
+  {
+   "type": "Title",
+   "text": "D. Other",
+   "page": 2,
+   "id": "e26"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "N/A\n\n(This NCD last reviewed March 2008.)",
+   "page": 3,
+   "id": "e27"
+  }
+ ]
+}

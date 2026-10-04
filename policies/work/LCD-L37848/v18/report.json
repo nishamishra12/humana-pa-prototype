@@ -1,0 +1,134 @@
+{
+ "criteria": [
+  {
+   "id": "SDM",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "IND-ONE",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "INST-CAUSE",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "DEFORM-FUNC",
+   "level": "review",
+   "issues": [
+    "the AI marked its own confidence low"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "DEFORM-NONRESPONSE",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "DEFORM-IMBALANCE",
+   "level": "review",
+   "issues": [
+    "the AI marked its own confidence low"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "DEFORM-PROGRESSION",
+   "level": "review",
+   "issues": [
+    "the AI marked its own confidence low"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "DEFORM-SCOLIOSIS",
+   "level": "review",
+   "issues": [
+    "the AI marked its own confidence low"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "REV-PAIN-RELIEF",
+   "level": "review",
+   "issues": [
+    "the AI marked its own confidence low"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "REV-TIME",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "REV-RADIOGRAPHIC",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "REV-CONSERVATIVE",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "CONSERVATIVE-DOC",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "REV-COUNSELING",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NEURAL-COMPRESSION",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 10,
+  "review": 5,
+  "fail": 0
+ },
+ "total": 15,
+ "uncovered": [
+  "Both of the first 2 criteria must be met:",
+  "surgery, usually do not lead to pain relief and as such fusion is considered a last resort treatment option only when all",
+  "Title XVIII of the Social Security Act, Sec.1862(a)(1)(A) allows coverage and payment for only those services that are",
+  "CMS Internet-Only Manual, Pub.",
+  "Requirements (states that \"reasonable and necessary\" services must be ordered and/or furnished by qualified"
+ ],
+ "new_facts": [],
+ "not_modeled": 3
+}

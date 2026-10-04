@@ -1,0 +1,85 @@
+{
+ "criteria": [
+  {
+   "id": "BMI-35-COVERED",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "COMORBID-PRESENT",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PRIOR-MED-TX-UNSUCCESSFUL",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "LSG-BMI-35",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "LSG-COMORBID-PRESENT",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "LSG-PRIOR-MED-TX",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "T2DM-COMORBIDITY",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "OBESITY-ALONE-NONCOVERED",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 8,
+  "review": 0,
+  "fail": 0
+ },
+ "total": 8,
+ "uncovered": [
+  "questions exist about the safety of prolonged adherence for 2 months or more to a very low calorie weight reduction",
+  "pouch (30 cc) results in feelings of satiety following even small meals.",
+  "The AGB achieves weight loss by gastric restriction only.",
+  "Sleeve gastrectomy is a 70%-80% greater curvature gastrectomy (sleeve resection of the stomach) with continuity of the",
+  "was the first step in a two-stage procedure when performing RYGBP, but more recently has been offered as a",
+  "The VGB achieves weight loss by gastric restriction only.",
+  "Nationally Covered Indications",
+  "Effective for dates of service on and after February 21, 2006, these procedures are only covered when performed at",
+  "Effective for dates of service on and after September 24, 2013, facilities are no longer required to be certified.",
+  "Nationally Non-Covered Indications",
+  "Effective for services performed on and after June 27, 2012, Medicare Administrative Contractors (MACs) acting within",
+  "Where weight loss is necessary before surgery in order to ameliorate the complications posed by obesity when it",
+  "The risks associated with the achievement of rapid weight loss must be carefully balanced against the risk posed by the"
+ ],
+ "new_facts": [
+  "procedure_type"
+ ],
+ "not_modeled": 6
+}

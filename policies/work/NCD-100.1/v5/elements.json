@@ -1,0 +1,201 @@
+{
+ "info": {
+  "profile": "balanced",
+  "pages": 3,
+  "engine": "unstructured"
+ },
+ "elements": [
+  {
+   "type": "Title",
+   "text": "NCD 100.1: Bariatric Surgery for Treatment of Co-Morbid Conditions Related to Morbid Obesity",
+   "page": 1,
+   "id": "e1"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Version 5, effective 09/24/2013",
+   "page": 1,
+   "id": "e2"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Please note, sections 40.5, 100.8, 100.11, and 100.14 have been removed from the National Coverage Determination\n(NCD) Manual and incorporated into NCD 100.1",
+   "page": 1,
+   "id": "e3"
+  },
+  {
+   "type": "Title",
+   "text": "A. General",
+   "page": 1,
+   "id": "e4"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Obesity may be caused by medical conditions such as hypothyroidism, Cushing's disease, and hypothalamic lesions, or\ncan aggravate a number of cardiac and respiratory diseases as well as diabetes and hypertension. Non-surgical\nservices in connection with the treatment of obesity are covered when such services are an integral and necessary part\nof a course of treatment for one of these medical conditions.",
+   "page": 1,
+   "id": "e5"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "In addition, supplemented fasting is a type of very low calorie weight reduction regimen used to achieve rapid weight\nloss. The reduced calorie intake is supplemented by a mixture of protein, carbohydrates, vitamins, and minerals. Serious\nquestions exist about the safety of prolonged adherence for 2 months or more to a very low calorie weight reduction\nregimen as a general treatment for obesity, because of instances of cardiopathology and sudden death, as well as\npossible loss of body protein.",
+   "page": 1,
+   "id": "e6"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Bariatric surgery procedures are performed to treat comorbid conditions associated with morbid obesity. Two types of\nsurgical procedures are employed. Malabsorptive procedures divert food from the stomach to a lower part of the\ndigestive tract where the normal mixing of digestive fluids and absorption of nutrients cannot occur. Restrictive\nprocedures restrict the size of the stomach and decrease intake. Surgery can combine both types of procedures.",
+   "page": 1,
+   "id": "e7"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The following are descriptions of bariatric surgery procedures:",
+   "page": 1,
+   "id": "e8"
+  },
+  {
+   "type": "Title",
+   "text": "1. Roux-en-Y Gastric Bypass (RYGBP)",
+   "page": 1,
+   "id": "e9"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The RYGBP achieves weight loss by gastric restriction and malabsorption. Reduction of the stomach to a small gastric\npouch (30 cc) results in feelings of satiety following even small meals. This small pouch is connected to a segment of\nthe jejunum, bypassing the duodenum and very proximal small intestine, thereby reducing absorption. RYGBP\nprocedures can be open or laparoscopic.",
+   "page": 1,
+   "id": "e10"
+  },
+  {
+   "type": "Title",
+   "text": "2. Biliopancreatic Diversion with Duodenal Switch (BPD/DS) or Gastric Reduction Duodenal Switch (BPD/GRDS)",
+   "page": 1,
+   "id": "e11"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The BPD achieves weight loss by gastric restriction and malabsorption. The stomach is partially resected, but the\nremaining capacity is generous compared to that achieved with RYGBP. As such, patients eat relatively normal-sized\nmeals and do not need to restrict intake radically, since the most proximal areas of the small intestine (i.e., the\nduodenum and jejunum) are bypassed, and substantial malabsorption occurs. The partial BPD/DS or BPD/GRDS is a\nvariant of the BPD procedure. It involves resection of the greater curvature of the stomach, preservation of the pyloric\nsphincter, and transection of the duodenum above the ampulla of Vater with a duodeno-ileal anastomosis and a lower\nileo-ileal anastomosis. BPD/DS or BPD/GRDS procedures can be open or laparoscopic.",
+   "page": 1,
+   "id": "e12"
+  },
+  {
+   "type": "Title",
+   "text": "3. Adjustable Gastric Banding (AGB)",
+   "page": 1,
+   "id": "e13"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The AGB achieves weight loss by gastric restriction only. A band creating a gastric pouch with a capacity of\napproximately 15 to 30 cc's encircles the uppermost portion of the stomach. The band is an inflatable doughnut-shaped\nballoon, the diameter of which can be adjusted in the clinic by adding or removing saline via a port that is positioned\nbeneath the skin. The bands are adjustable, allowing the size of the gastric outlet to be modified as needed, depending\non the rate of a patient's weight loss. AGB procedures are laparoscopic only.",
+   "page": 1,
+   "id": "e14"
+  },
+  {
+   "type": "Title",
+   "text": "4. Sleeve Gastrectomy",
+   "page": 1,
+   "id": "e15"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Sleeve gastrectomy is a 70%-80% greater curvature gastrectomy (sleeve resection of the stomach) with continuity of the\ngastric lesser curve being maintained while simultaneously reducing stomach volume. In the past, sleeve gastrectomy\nwas the first step in a two-stage procedure when performing RYGBP, but more recently has been offered as a\nstand-alone surgery. Sleeve gastrectomy procedures can be open or laparoscopic.",
+   "page": 1,
+   "id": "e16"
+  },
+  {
+   "type": "Title",
+   "text": "5. Vertical Gastric Banding (VGB)",
+   "page": 1,
+   "id": "e17"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The VGB achieves weight loss by gastric restriction only. The upper part of the stomach is stapled, creating a narrow",
+   "page": 1,
+   "id": "e18"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "gastric inlet or pouch that remains connected with the remainder of the stomach. In addition, a non-adjustable band is\nplaced around this new inlet in an attempt to prevent future enlargement of the stoma (opening). As a result, patients\nexperience a sense of fullness after eating small meals. Weight loss from this procedure results entirely from eating less.\nVGB procedures are essentially no longer performed.",
+   "page": 2,
+   "id": "e19"
+  },
+  {
+   "type": "Title",
+   "text": "B. Nationally Covered Indications",
+   "page": 2,
+   "id": "e20"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Effective for services performed on and after February 21, 2006, Open and laparoscopic Roux-en-Y gastric bypass\n(RYGBP), open and laparoscopic Biliopancreatic Diversion with Duodenal Switch (BPD/DS) or Gastric Reduction\nDuodenal Switch (BPD/GRDS), and laparoscopic adjustable gastric banding (LAGB) are covered for Medicare\nbeneficiaries who have a body-mass index >= 35, have at least one co-morbidity related to obesity, and have been\npreviously unsuccessful with medical treatment for obesity.",
+   "page": 2,
+   "id": "e21"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Effective for dates of service on and after February 21, 2006, these procedures are only covered when performed at\nfacilities that are: (1) certified by the American College of Surgeons as a Level 1 Bariatric Surgery Center (program\nstandards and requirements in effect on February 15, 2006); or (2) certified by the American Society for Bariatric\nSurgery as a Bariatric Surgery Center of Excellence (program standards and requirements in effect on February 15,\n2006). Effective for dates of service on and after September 24, 2013, facilities are no longer required to be certified.",
+   "page": 2,
+   "id": "e22"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Effective for services performed on and after February 12, 2009, the Centers for Medicare & Medicaid Services (CMS)\ndetermines that Type 2 diabetes mellitus is a co-morbidity for purposes of this NCD.",
+   "page": 2,
+   "id": "e23"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "A list of approved facilities and their approval dates are listed and maintained on the CMS Coverage Web site at\nhttp://www.cms.gov/Medicare/Medicare-General-Information/MedicareApprovedFacility/Bariatric-Surgery.html, and\npublished in the Federal Register for services provided up to and including date of service September 23, 2013.",
+   "page": 2,
+   "id": "e24"
+  },
+  {
+   "type": "Title",
+   "text": "C. Nationally Non-Covered Indications",
+   "page": 2,
+   "id": "e25"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Treatments for obesity alone remain non-covered.\n\nSupplemented fasting is not covered under the Medicare program as a general treatment for obesity (see section D.\nbelow for discretionary local coverage).\n\nThe following bariatric surgery procedures are non-covered for all Medicare beneficiaries:\nOpen adjustable gastric banding;\nOpen sleeve gastrectomy;\nLaparoscopic sleeve gastrectomy (prior to June 27, 2012);\nOpen and laparoscopic vertical banded gastroplasty;\nIntestinal bypass surgery; and,\nGastric balloon for treatment of obesity.",
+   "page": 2,
+   "id": "e26"
+  },
+  {
+   "type": "Title",
+   "text": "D. Other",
+   "page": 2,
+   "id": "e27"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Effective for services performed on and after June 27, 2012, Medicare Administrative Contractors (MACs) acting within\ntheir respective jurisdictions may determine coverage of stand-alone laparoscopic sleeve gastrectomy (LSG) for the\ntreatment of co-morbid conditions related to obesity in Medicare beneficiaries only when all of the following conditions\na.-c. are satisfied.",
+   "page": 2,
+   "id": "e28"
+  },
+  {
+   "type": "ListItem",
+   "text": "The beneficiary has a body-mass index (BMI) >= 35 kg/m 2 ,\nThe beneficiary has at least one co-morbidity related to obesity, and,\nThe beneficiary has been previously unsuccessful with medical treatment for obesity.",
+   "page": 2,
+   "id": "e29"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The determination of coverage for any bariatric surgery procedures that are not specifically identified in an NCD as\ncovered or non-covered, for Medicare beneficiaries who have a body-mass index >= 35, have at least one co-morbidity\nrelated to obesity, and have been previously unsuccessful with medical treatment for obesity, is left to the local MACs.",
+   "page": 2,
+   "id": "e30"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Where weight loss is necessary before surgery in order to ameliorate the complications posed by obesity when it\ncoexists with pathological conditions such as cardiac and respiratory diseases, diabetes, or hypertension (and other",
+   "page": 2,
+   "id": "e31"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "more conservative techniques to achieve this end are not regarded as appropriate), supplemented fasting with adequate\nmonitoring of the patient is eligible for coverage on a case-by-case basis or pursuant to a local coverage determination.\nThe risks associated with the achievement of rapid weight loss must be carefully balanced against the risk posed by the\ncondition requiring surgical treatment.",
+   "page": 3,
+   "id": "e32"
+  }
+ ]
+}

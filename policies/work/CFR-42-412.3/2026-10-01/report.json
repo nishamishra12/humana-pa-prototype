@@ -1,0 +1,67 @@
+{
+ "criteria": [
+  {
+   "id": "ORDER-PRESENT",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (inpatient_admission_order): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "ORDER-TIMING",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (order_timing): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "LOS-2MIDNIGHT",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "LOS-FACTORS-DOCUMENTED",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "INPATIENT-ONLY-PROCEDURE",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (inpatient_only_procedure): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SHORT-STAY-SUPPORT",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 3,
+  "review": 3,
+  "fail": 0
+ },
+ "total": 6,
+ "uncovered": [
+  "In addition, inpatient rehabilitation facilities also must adhere to the admission requirements specified in Sec."
+ ],
+ "new_facts": [
+  "inpatient_admission_order",
+  "order_timing",
+  "inpatient_only_procedure"
+ ],
+ "not_modeled": 3
+}

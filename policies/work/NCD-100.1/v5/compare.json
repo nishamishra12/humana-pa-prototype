@@ -1,0 +1,36 @@
+{
+ "policy_id": "NCD-100.1",
+ "rows": [
+  {
+   "id": "BAR-BMI",
+   "fact": "bmi",
+   "result": "same",
+   "approved": "gte 35",
+   "draft": "gte 35",
+   "draft_id": "BMI-35-COVERED"
+  },
+  {
+   "id": "BAR-CM",
+   "fact": "comorbidities",
+   "result": "same",
+   "approved": "present",
+   "draft": "present",
+   "draft_id": "COMORBID-PRESENT"
+  },
+  {
+   "id": "BAR-TX",
+   "fact": "prior_medical_treatment",
+   "result": "same",
+   "approved": "present",
+   "draft": "present",
+   "draft_id": "PRIOR-MED-TX-UNSUCCESSFUL"
+  }
+ ],
+ "extra": [],
+ "counts": {
+  "same": 3,
+  "differs": 0,
+  "missed": 0
+ },
+ "approved_count": 3
+}

@@ -1,0 +1,53 @@
+{
+ "policy_id": "CFR-42-412.3",
+ "rows": [
+  {
+   "id": "LOC-1",
+   "fact": "expected_los_days",
+   "result": "same",
+   "approved": "gte 2",
+   "draft": "gte 2",
+   "draft_id": "LOS-2MIDNIGHT"
+  },
+  {
+   "id": "LOC-2",
+   "fact": "comorbidities",
+   "result": "same",
+   "approved": "present",
+   "draft": "present",
+   "draft_id": "LOS-FACTORS-DOCUMENTED"
+  },
+  {
+   "id": "LOC-3",
+   "fact": null,
+   "result": "info",
+   "note": "informational note, not tested"
+  }
+ ],
+ "extra": [
+  {
+   "id": "ORDER-PRESENT",
+   "fact": "inpatient_admission_order",
+   "test": "present",
+   "text": "The patient must be formally admitted as an inpatient pursuant to a physician or other qualified practitioner's order for inpatient admission."
+  },
+  {
+   "id": "ORDER-TIMING",
+   "fact": "order_timing",
+   "test": "present",
+   "text": "The physician order for admission must be furnished at or before the time of the inpatient admission."
+  },
+  {
+   "id": "INPATIENT-ONLY-PROCEDURE",
+   "fact": "inpatient_only_procedure",
+   "test": "present",
+   "text": "An inpatient admission for a surgical procedure on the Medicare inpatient-only list is generally appropriate regardless of expected duration of care."
+  }
+ ],
+ "counts": {
+  "same": 2,
+  "differs": 0,
+  "missed": 0
+ },
+ "approved_count": 2
+}

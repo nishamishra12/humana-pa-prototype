@@ -1,0 +1,156 @@
+{
+ "criteria": [
+  {
+   "id": "PATIENT-ADULT",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (patient_age_adult): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "CLINICAL-EVAL",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (clinical_evaluation_done): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SLEEP-TEST-TYPE",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (sleep_test_type): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SLEEP-TEST-ORDERED-BY-PHYSICIAN",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (sleep_test_ordered_by_treating_physician): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SLEEP-TEST-PHYSICIAN-SUPERVISION",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (sleep_test_physician_supervision): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AHI-RDI-HIGH",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (ahi_rdi_value): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AHI-RDI-MOD-RANGE",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (ahi_rdi_value): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AHI-RDI-MOD-RANGE-UPPER",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (ahi_rdi_value): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AHI-RDI-MOD-SYMPTOMS",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (qualifying_symptom_or_comorbidity): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SLEEP-DURATION-MINIMUM",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (sleep_test_event_count_adequate_for_duration): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "BENEFICIARY-EDUCATION",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (beneficiary_education_completed): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "INITIAL-12WEEK-LIMIT",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "CONTINUED-BENEFIT",
+   "level": "review",
+   "issues": [
+    "uses a NEW fact (cpap_benefit_during_12_weeks): the packet reader needs this fact added"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 1,
+  "review": 12,
+  "fail": 0
+ },
+ "total": 13,
+ "uncovered": [
+  "Apnea is defined as a cessation of airflow for at least 10 seconds.",
+  "Hypopnea is defined as an abnormal respiratory event lasting at least 10 seconds with at least a 30% reduction in thoracoabdominal movement or airflow as compared to baseline, and with at least a 4% oxygen desaturation.",
+  "Nationally Covered Indications",
+  "compensatory, if consistently available in the beneficiary's home and willing and able to safely operate the CPAP device.",
+  "Apnea is defined as a cessation of airflow for at least 10 seconds.",
+  "event lasting at least 10 seconds with at least a 30% reduction in thoracoabdominal movement or airflow as compared",
+  "The study must meet the following additional standards:",
+  "If a study is Food and Drug Administration-regulated, it also must be in compliance with 21 CFR Parts 50 and 56.",
+  "Trials of all medical technologies measuring therapeutic outcomes as one of the objectives meet this standard only if the disease or condition being studied is life-threatening as defined in 21 CFR Sec.",
+  "The research study protocol specifies the method and timing of public release of all pre-specified outcomes to be measured, including release of outcomes if outcomes are negative or study is terminated early.",
+  "The results must be made public within 24 months of the end of data collection.",
+  "If a report is planned for publication in a peer-reviewed journal, then that initial release may be an abstract that meets the requirements of the International Committee of Medical Journal Editors.",
+  "However, a full report of the outcomes must be made public no later than 3 years after the end of data collection.",
+  "The research study protocol must explicitly discuss subpopulations affected by the treatment under investigation, particularly traditionally underrepresented groups in clinical studies, how the inclusion and exclusion criteria affect enrollment of these populations, and a plan for the retention and reporting of said populations in the trial.",
+  "If the inclusion and exclusion criteria are expected to have a negative effect on the recruitment or retention of underrepresented populations, the protocol must discuss why these criteria are necessary.",
+  "Nationally Non-covered Indications"
+ ],
+ "new_facts": [
+  "patient_age_adult",
+  "clinical_evaluation_done",
+  "sleep_test_type",
+  "sleep_test_ordered_by_treating_physician",
+  "sleep_test_physician_supervision",
+  "ahi_rdi_value",
+  "qualifying_symptom_or_comorbidity",
+  "sleep_test_event_count_adequate_for_duration",
+  "beneficiary_education_completed",
+  "cpap_benefit_during_12_weeks"
+ ],
+ "not_modeled": 2
+}

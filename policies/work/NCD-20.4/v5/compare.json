@@ -1,0 +1,76 @@
+{
+ "policy_id": "NCD-20.4",
+ "rows": [
+  {
+   "id": "ICD-PATH",
+   "fact": "cardiomyopathy_type",
+   "result": "differs",
+   "approved": "in ischemic, non-ischemic",
+   "draft": "present",
+   "draft_id": "B1-VT-VF"
+  },
+  {
+   "id": "ICD-LVEF",
+   "fact": "lvef_percent",
+   "result": "same",
+   "approved": "lte 35",
+   "draft": "lte 35",
+   "draft_id": "B3-Ischemic-LVEF"
+  },
+  {
+   "id": "ICD-METHOD",
+   "fact": "lvef_method",
+   "result": "same",
+   "approved": "in angiography, cardiac mri, echocardiography, nuclear imaging",
+   "draft": "in angiography, cardiac mri, echocardiography, nuclear imaging",
+   "draft_id": "AllCovered-LVEFMethod"
+  },
+  {
+   "id": "ICD-NYHA",
+   "fact": "nyha_class",
+   "result": "same",
+   "approved": "in ii, iii",
+   "draft": "in ii, iii",
+   "draft_id": "B3-Ischemic-NYHA"
+  },
+  {
+   "id": "ICD-WAIT",
+   "fact": "recent_mi_revasc",
+   "result": "same",
+   "approved": "absent",
+   "draft": "absent",
+   "draft_id": "B2-NoRecentRevascMI"
+  },
+  {
+   "id": "ICD-OMT",
+   "fact": "optimal_medical_therapy_months",
+   "result": "same",
+   "approved": "gte 3",
+   "draft": "gte 3",
+   "draft_id": "B4-OMT"
+  },
+  {
+   "id": "ICD-SDM",
+   "fact": "shared_decision_making",
+   "result": "same",
+   "approved": "present",
+   "draft": "present",
+   "draft_id": "B2-SDM"
+  },
+  {
+   "id": "ICD-EXCL",
+   "fact": "limiting_conditions",
+   "result": "same",
+   "approved": "absent",
+   "draft": "absent",
+   "draft_id": "AllCovered-ClinicallyStable"
+  }
+ ],
+ "extra": [],
+ "counts": {
+  "same": 7,
+  "differs": 1,
+  "missed": 0
+ },
+ "approved_count": 8
+}

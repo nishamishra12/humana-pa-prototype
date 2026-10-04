@@ -1,0 +1,12 @@
+{
+ "policy_id": "LCD-L37848",
+ "level": "LCD",
+ "title": "Lumbar Spinal Fusion",
+ "version": "v18",
+ "effective": "09/12/2024",
+ "url": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=37848",
+ "source": "CMS Coverage API",
+ "sha256": "19b40450db7b65cad124500a3281c800a231b53ac2215ed23bc70f24fa0fc81c",
+ "chars": 4128,
+ "retrieved_at": "2026-10-04T19:03:05+00:00"
+}

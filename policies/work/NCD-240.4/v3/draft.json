@@ -1,0 +1,325 @@
+{
+ "criteria": [
+  {
+   "id": "PATIENT-ADULT",
+   "text": "CPAP therapy is covered only for adult patients with OSA.",
+   "source_quote": "CPAP therapy when used in adult patients with OSA",
+   "cite": "B",
+   "required_fact": "patient_age_adult",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is the patient an adult?",
+   "short": "Not documented as adult patient",
+   "confidence": "high"
+  },
+  {
+   "id": "CLINICAL-EVAL",
+   "text": "A positive diagnosis of OSA must include a clinical evaluation.",
+   "source_quote": "A positive diagnosis of OSA for the coverage of CPAP must include a clinical evaluation",
+   "cite": "B",
+   "required_fact": "clinical_evaluation_done",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Was a clinical evaluation for OSA documented?",
+   "short": "No clinical evaluation documented",
+   "confidence": "high"
+  },
+  {
+   "id": "SLEEP-TEST-TYPE",
+   "text": "The OSA diagnosis must be confirmed by one of the specified sleep test types (attended PSG, or unattended HST Type II, III, or IV with at least 3 channels).",
+   "source_quote": "attended PSG performed in a sleep laboratory; or unattended HST with a Type II home sleep monitoring device; or unattended HST with a Type III home sleep monitoring device; or unattended HST with a Type IV home sleep monitoring device that measures at least 3 channels",
+   "cite": "B",
+   "required_fact": "sleep_test_type",
+   "test": {
+    "type": "in",
+    "value": [
+     "PSG",
+     "HST_Type_II",
+     "HST_Type_III",
+     "HST_Type_IV_3ch"
+    ]
+   },
+   "if_missing": "What type of sleep test was used to diagnose OSA (PSG, HST Type II, III, or IV)?",
+   "short": "Sleep test type not documented or not an approved type",
+   "confidence": "high"
+  },
+  {
+   "id": "SLEEP-TEST-ORDERED-BY-PHYSICIAN",
+   "text": "The sleep test must have been ordered by the beneficiary's treating physician.",
+   "source_quote": "The sleep test must have been previously ordered by the beneficiary's treating physician",
+   "cite": "B",
+   "required_fact": "sleep_test_ordered_by_treating_physician",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Was the sleep test ordered by the beneficiary's treating physician?",
+   "short": "Sleep test not documented as ordered by treating physician",
+   "confidence": "high"
+  },
+  {
+   "id": "SLEEP-TEST-PHYSICIAN-SUPERVISION",
+   "text": "The sleep test must have been furnished under appropriate physician supervision.",
+   "source_quote": "furnished under appropriate physician supervision",
+   "cite": "B",
+   "required_fact": "sleep_test_physician_supervision",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Was the sleep test furnished under appropriate physician supervision?",
+   "short": "Physician supervision of sleep test not documented",
+   "confidence": "high"
+  },
+  {
+   "id": "AHI-RDI-HIGH",
+   "text": "AHI or RDI greater than or equal to 15 events per hour qualifies for initial 12-week CPAP coverage.",
+   "source_quote": "AHI or RDI greater than or equal to 15 events per hour",
+   "cite": "B",
+   "required_fact": "ahi_rdi_value",
+   "test": {
+    "type": "gte",
+    "value": 15
+   },
+   "if_missing": "What is the patient's AHI or RDI value (events per hour)?",
+   "short": "AHI/RDI not documented as >=15",
+   "confidence": "high"
+  },
+  {
+   "id": "AHI-RDI-MOD-RANGE",
+   "text": "AHI or RDI between 5 and 14 events per hour (inclusive) qualifies for initial coverage only if accompanied by documented symptoms/comorbidities.",
+   "source_quote": "AHI or RDI greater than or equal to 5 events and less than or equal to 14 events per hour with documented symptoms of excessive daytime sleepiness, impaired cognition, mood disorders or insomnia, or documented hypertension, ischemic heart disease, or history of stroke",
+   "cite": "B",
+   "required_fact": "ahi_rdi_value",
+   "test": {
+    "type": "gte",
+    "value": 5
+   },
+   "if_missing": "What is the patient's AHI or RDI value (events per hour)?",
+   "short": "AHI/RDI not documented in 5-14 range",
+   "confidence": "medium"
+  },
+  {
+   "id": "AHI-RDI-MOD-RANGE-UPPER",
+   "text": "The moderate AHI/RDI range must not exceed 14 events per hour to use the symptom-based pathway.",
+   "source_quote": "less than or equal to 14 events per hour",
+   "cite": "B",
+   "required_fact": "ahi_rdi_value",
+   "test": {
+    "type": "lte",
+    "value": 14
+   },
+   "if_missing": "What is the patient's AHI or RDI value (events per hour)?",
+   "short": "AHI/RDI exceeds 14 for moderate pathway",
+   "confidence": "medium"
+  },
+  {
+   "id": "AHI-RDI-MOD-SYMPTOMS",
+   "text": "For AHI/RDI 5-14, documented qualifying symptoms or comorbidities (excessive daytime sleepiness, impaired cognition, mood disorders, insomnia, hypertension, ischemic heart disease, or history of stroke) must be present.",
+   "source_quote": "with documented symptoms of excessive daytime sleepiness, impaired cognition, mood disorders or insomnia, or documented hypertension, ischemic heart disease, or history of stroke",
+   "cite": "B",
+   "required_fact": "qualifying_symptom_or_comorbidity",
+   "test": {
+    "type": "in",
+    "value": [
+     "excessive_daytime_sleepiness",
+     "impaired_cognition",
+     "mood_disorder",
+     "insomnia",
+     "hypertension",
+     "ischemic_heart_disease",
+     "history_of_stroke"
+    ]
+   },
+   "applies_if": {
+    "fact": "ahi_rdi_value",
+    "equals": "5-14"
+   },
+   "if_missing": "Is there documentation of excessive daytime sleepiness, impaired cognition, mood disorder, insomnia, hypertension, ischemic heart disease, or history of stroke?",
+   "short": "No qualifying symptom/comorbidity documented for moderate AHI/RDI range",
+   "confidence": "high"
+  },
+  {
+   "id": "SLEEP-DURATION-MINIMUM",
+   "text": "If the AHI or RDI is calculated based on less than 2 hours of continuous recorded sleep, the total recorded events must be scaled to equal what would have been required in a 2-hour period.",
+   "source_quote": "If the AHI or RDI is calculated based on less than 2 hours of continuous recorded sleep, the total number of recorded events to calculate the AHI or RDI during sleep testing must be at a minimum the number of events that would have been required in a 2-hour period.",
+   "cite": "B",
+   "required_fact": "sleep_test_event_count_adequate_for_duration",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "If sleep recording was less than 2 hours, were sufficient events recorded to meet the 2-hour equivalent threshold?",
+   "short": "Insufficient recorded events for short sleep duration",
+   "confidence": "medium"
+  },
+  {
+   "id": "BENEFICIARY-EDUCATION",
+   "text": "The provider of CPAP must conduct education of the beneficiary prior to use of the device.",
+   "source_quote": "The provider of CPAP must conduct education of the beneficiary prior to the use of the CPAP device",
+   "cite": "B",
+   "required_fact": "beneficiary_education_completed",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Was beneficiary education on CPAP use completed prior to use?",
+   "short": "Beneficiary education not documented",
+   "confidence": "high"
+  },
+  {
+   "id": "INITIAL-12WEEK-LIMIT",
+   "text": "Initial CPAP coverage is limited to a 12-week period to identify beneficiaries who benefit.",
+   "source_quote": "Coverage of CPAP is initially limited to a 12-week period",
+   "cite": "B",
+   "required_fact": null,
+   "test": {
+    "type": "informational"
+   },
+   "if_missing": null,
+   "short": "Initial coverage period informational note",
+   "confidence": "high"
+  },
+  {
+   "id": "CONTINUED-BENEFIT",
+   "text": "Continued CPAP coverage beyond the initial 12 weeks requires documentation that the beneficiary benefited from CPAP during that period.",
+   "source_quote": "CPAP is subsequently covered only for those beneficiaries diagnosed with OSA who benefit from CPAP during this 12-week period",
+   "cite": "B",
+   "required_fact": "cpap_benefit_during_12_weeks",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there documentation that the beneficiary benefited from CPAP during the initial 12-week period?",
+   "short": "Benefit during initial 12-week period not documented",
+   "confidence": "high"
+  }
+ ],
+ "new_facts": [
+  {
+   "key": "patient_age_adult",
+   "label": "Patient is an adult",
+   "kind": "enum",
+   "ask": "Is the patient an adult (as opposed to pediatric)?",
+   "statuses": [
+    "yes",
+    "no",
+    "unknown"
+   ]
+  },
+  {
+   "key": "clinical_evaluation_done",
+   "label": "Clinical evaluation for OSA completed",
+   "kind": "enum",
+   "ask": "Was a clinical evaluation for OSA performed and documented?",
+   "statuses": [
+    "yes",
+    "no",
+    "unknown"
+   ]
+  },
+  {
+   "key": "sleep_test_type",
+   "label": "Type of sleep test used for OSA diagnosis",
+   "kind": "enum",
+   "ask": "What type of sleep test was used (attended PSG, unattended HST Type II, Type III, or Type IV with 3+ channels)?",
+   "values": [
+    "PSG",
+    "HST_Type_II",
+    "HST_Type_III",
+    "HST_Type_IV_3ch",
+    "other"
+   ]
+  },
+  {
+   "key": "sleep_test_ordered_by_treating_physician",
+   "label": "Sleep test ordered by treating physician",
+   "kind": "enum",
+   "ask": "Was the sleep test ordered by the beneficiary's treating physician?",
+   "statuses": [
+    "yes",
+    "no",
+    "unknown"
+   ]
+  },
+  {
+   "key": "sleep_test_physician_supervision",
+   "label": "Sleep test furnished under physician supervision",
+   "kind": "enum",
+   "ask": "Was the sleep test furnished under appropriate physician supervision?",
+   "statuses": [
+    "yes",
+    "no",
+    "unknown"
+   ]
+  },
+  {
+   "key": "ahi_rdi_value",
+   "label": "AHI or RDI value (events per hour)",
+   "kind": "number",
+   "ask": "What is the patient's AHI or RDI value, in events per hour?"
+  },
+  {
+   "key": "qualifying_symptom_or_comorbidity",
+   "label": "Qualifying symptom or comorbidity present",
+   "kind": "list",
+   "ask": "Does the patient have documented excessive daytime sleepiness, impaired cognition, mood disorder, insomnia, hypertension, ischemic heart disease, or history of stroke?",
+   "values": [
+    "excessive_daytime_sleepiness",
+    "impaired_cognition",
+    "mood_disorder",
+    "insomnia",
+    "hypertension",
+    "ischemic_heart_disease",
+    "history_of_stroke",
+    "none"
+   ]
+  },
+  {
+   "key": "sleep_test_event_count_adequate_for_duration",
+   "label": "Event count adequate for recorded sleep duration under 2 hours",
+   "kind": "enum",
+   "ask": "If recorded sleep was less than 2 hours, were enough events recorded to meet the 2-hour equivalent minimum?",
+   "statuses": [
+    "yes",
+    "no",
+    "not_applicable",
+    "unknown"
+   ]
+  },
+  {
+   "key": "beneficiary_education_completed",
+   "label": "Beneficiary education on CPAP completed",
+   "kind": "enum",
+   "ask": "Was the beneficiary educated on proper CPAP use prior to starting therapy?",
+   "statuses": [
+    "yes",
+    "no",
+    "unknown"
+   ]
+  },
+  {
+   "key": "cpap_benefit_during_12_weeks",
+   "label": "Beneficiary benefited from CPAP during initial 12-week period",
+   "kind": "enum",
+   "ask": "Is there documentation that the beneficiary benefited from CPAP during the initial 12-week trial period?",
+   "statuses": [
+    "yes",
+    "no",
+    "unknown"
+   ]
+  }
+ ],
+ "not_modeled": [
+  {
+   "quote": "Medicare provides the following limited coverage for CPAP in adult beneficiaries who do not qualify for CPAP coverage based on criteria 1-7 above... A clinical study seeking Medicare payment for CPAP provided to a beneficiary who is an enrolled subject in that study must address one or more of the following questions",
+   "why": "This is a research/clinical trial pathway (Coverage with Evidence Development) requiring study enrollment and compliance with numerous research standards (IRB approval, ClinicalTrials.gov registration, protocol design, etc.) that are not clinical facts about a single patient's packet and require case-by-case human review of study qualification."
+  },
+  {
+   "quote": "other diagnostic tests for the diagnosis of OSA, other than those noted above for prescribing CPAP, are not sufficient for the coverage of CPAP",
+   "why": "This is a negative/exclusionary restatement already captured by the SLEEP-TEST-TYPE criterion's closed list; no additional distinct fact needed."
+  }
+ ],
+ "_usage": {
+  "input_tokens": 5058,
+  "output_tokens": 4785
+ },
+ "_model": "claude-sonnet-5"
+}

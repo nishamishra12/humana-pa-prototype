@@ -1,0 +1,351 @@
+{
+ "criteria": [
+  {
+   "id": "B1-VT-VF",
+   "text": "Patient has a personal history of sustained VT not associated with acute MI and not due to transient/reversible cause, or cardiac arrest due to VF not due to a transient/reversible cause.",
+   "source_quote": "Patients with a personal history of sustained ventricular tachyarrhythmia (VT) or cardiac arrest due to ventricular fibrillation (VF).",
+   "cite": "B.1",
+   "required_fact": "cardiomyopathy_type",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "other"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Does the patient have a documented history of sustained VT or cardiac arrest due to VF, not due to a transient or reversible cause?",
+   "short": "No documented sustained VT/VF history",
+   "confidence": "medium"
+  },
+  {
+   "id": "B2-PriorMI-LVEF",
+   "text": "Patient has a prior MI and a measured LVEF of 30% or less.",
+   "source_quote": "Patients with a prior MI and a measured left ventricular ejection fraction (LVEF) <= 0.30.",
+   "cite": "B.2",
+   "required_fact": "lvef_percent",
+   "applies_if": null,
+   "test": {
+    "type": "lte",
+    "value": 30
+   },
+   "if_missing": "What is the patient's most recent measured LVEF?",
+   "short": "LVEF not documented as ≤30%",
+   "confidence": "high"
+  },
+  {
+   "id": "B2-NotNYHA4",
+   "text": "Patient (prior MI pathway) must not have NYHA Class IV heart failure.",
+   "source_quote": "New York Heart Association (NYHA) classification IV heart failure",
+   "cite": "B.2",
+   "required_fact": "nyha_class",
+   "applies_if": {
+    "fact": "lvef_percent",
+    "equals": "<=30_pathway"
+   },
+   "test": {
+    "type": "in",
+    "value": [
+     "I",
+     "II",
+     "III"
+    ]
+   },
+   "if_missing": "What is the patient's NYHA heart failure class?",
+   "short": "NYHA Class IV present (excluded)",
+   "confidence": "medium"
+  },
+  {
+   "id": "B2-NoRecentRevascMI",
+   "text": "Patient (prior MI pathway) must not have had CABG/PCI within past 3 months or MI within past 40 days.",
+   "source_quote": "Had a coronary artery bypass graft (CABG), or percutaneous coronary intervention (PCI) with angioplasty and/or stenting, within the past 3 months; or, Had an MI within the past 40 days",
+   "cite": "B.2",
+   "required_fact": "recent_mi_revasc",
+   "applies_if": null,
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Has the patient had a CABG/PCI in the past 3 months or an MI in the past 40 days?",
+   "short": "Recent MI/revascularization present (excluded)",
+   "confidence": "high"
+  },
+  {
+   "id": "B2-SDM",
+   "text": "A formal shared decision making encounter using an evidence-based decision tool on ICDs must occur prior to implant for prior MI/LVEF pathway patients.",
+   "source_quote": "For these patients identified in B2, a formal shared decision making encounter must occur between the patient and a physician ... using an evidence-based decision tool on ICDs prior to initial ICD implantation.",
+   "cite": "B.2",
+   "required_fact": "shared_decision_making",
+   "applies_if": null,
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there documentation of a formal shared decision making visit using an evidence-based ICD decision tool prior to implant?",
+   "short": "Shared decision making encounter not documented",
+   "confidence": "high"
+  },
+  {
+   "id": "B3-Ischemic-NYHA",
+   "text": "Patient with severe ischemic dilated cardiomyopathy must have NYHA Class II or III heart failure.",
+   "source_quote": "have NYHA Class II or III heart failure, LVEF <= 35%",
+   "cite": "B.3",
+   "required_fact": "nyha_class",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "ischemic"
+   },
+   "test": {
+    "type": "in",
+    "value": [
+     "II",
+     "III"
+    ]
+   },
+   "if_missing": "What is the patient's NYHA class?",
+   "short": "NYHA class not II or III",
+   "confidence": "high"
+  },
+  {
+   "id": "B3-Ischemic-LVEF",
+   "text": "Patient with severe ischemic dilated cardiomyopathy must have LVEF ≤35%.",
+   "source_quote": "LVEF <= 35%",
+   "cite": "B.3",
+   "required_fact": "lvef_percent",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "ischemic"
+   },
+   "test": {
+    "type": "lte",
+    "value": 35
+   },
+   "if_missing": "What is the patient's most recent measured LVEF?",
+   "short": "LVEF not documented as ≤35%",
+   "confidence": "high"
+  },
+  {
+   "id": "B3-NoRecentRevascMI",
+   "text": "Ischemic cardiomyopathy patients must not have had CABG/PCI within past 3 months or MI within past 40 days.",
+   "source_quote": "Had a CABG, or PCI with angioplasty and/or stenting, within the past 3 months; or, Had an MI within the past 40 days",
+   "cite": "B.3",
+   "required_fact": "recent_mi_revasc",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "ischemic"
+   },
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Has the patient had a CABG/PCI in the past 3 months or an MI in the past 40 days?",
+   "short": "Recent MI/revascularization present (excluded)",
+   "confidence": "high"
+  },
+  {
+   "id": "B3-SDM",
+   "text": "A formal shared decision making encounter must occur prior to implant for ischemic cardiomyopathy pathway patients.",
+   "source_quote": "For these patients identified in B3, a formal shared decision making encounter must occur between the patient and a physician ... using an evidence-based decision tool on ICDs prior to initial ICD implantation.",
+   "cite": "B.3",
+   "required_fact": "shared_decision_making",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "ischemic"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there documentation of a formal shared decision making visit using an evidence-based ICD decision tool prior to implant?",
+   "short": "Shared decision making encounter not documented",
+   "confidence": "high"
+  },
+  {
+   "id": "B4-NonIschemic-NYHA",
+   "text": "Patient with severe non-ischemic dilated cardiomyopathy must have NYHA Class II or III heart failure.",
+   "source_quote": "have NYHA Class II or III heart failure, LVEF <= 35%, been on optimal medical therapy for at least 3 months",
+   "cite": "B.4",
+   "required_fact": "nyha_class",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "non-ischemic"
+   },
+   "test": {
+    "type": "in",
+    "value": [
+     "II",
+     "III"
+    ]
+   },
+   "if_missing": "What is the patient's NYHA class?",
+   "short": "NYHA class not II or III",
+   "confidence": "high"
+  },
+  {
+   "id": "B4-NonIschemic-LVEF",
+   "text": "Patient with severe non-ischemic dilated cardiomyopathy must have LVEF ≤35%.",
+   "source_quote": "LVEF <= 35%",
+   "cite": "B.4",
+   "required_fact": "lvef_percent",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "non-ischemic"
+   },
+   "test": {
+    "type": "lte",
+    "value": 35
+   },
+   "if_missing": "What is the patient's most recent measured LVEF?",
+   "short": "LVEF not documented as ≤35%",
+   "confidence": "high"
+  },
+  {
+   "id": "B4-OMT",
+   "text": "Patient with severe non-ischemic dilated cardiomyopathy must have been on optimal medical therapy for at least 3 months.",
+   "source_quote": "been on optimal medical therapy for at least 3 months",
+   "cite": "B.4",
+   "required_fact": "optimal_medical_therapy_months",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "non-ischemic"
+   },
+   "test": {
+    "type": "gte",
+    "value": 3
+   },
+   "if_missing": "How many months has the patient been on optimal (guideline-directed) medical therapy for heart failure?",
+   "short": "Optimal medical therapy duration <3 months or undocumented",
+   "confidence": "high"
+  },
+  {
+   "id": "B4-NoRecentRevascMI",
+   "text": "Non-ischemic cardiomyopathy patients must not have had CABG/PCI within past 3 months or MI within past 40 days.",
+   "source_quote": "Had a CABG or PCI with angioplasty and/or stenting, within the past 3 months; or, Had an MI within the past 40 days",
+   "cite": "B.4",
+   "required_fact": "recent_mi_revasc",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "non-ischemic"
+   },
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Has the patient had a CABG/PCI in the past 3 months or an MI in the past 40 days?",
+   "short": "Recent MI/revascularization present (excluded)",
+   "confidence": "high"
+  },
+  {
+   "id": "B4-SDM",
+   "text": "A formal shared decision making encounter must occur prior to implant for non-ischemic cardiomyopathy pathway patients.",
+   "source_quote": "For these patients identified in B4, a formal shared decision making encounter must occur between the patient and a physician ... using an evidence-based decision tool on ICDs prior to initial ICD implantation.",
+   "cite": "B.4",
+   "required_fact": "shared_decision_making",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "non-ischemic"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there documentation of a formal shared decision making visit using an evidence-based ICD decision tool prior to implant?",
+   "short": "Shared decision making encounter not documented",
+   "confidence": "high"
+  },
+  {
+   "id": "B5-SDM",
+   "text": "A formal shared decision making encounter must occur prior to implant for patients with familial/genetic arrhythmia disorders.",
+   "source_quote": "For these patients identified in B5, a formal shared decision making encounter must occur between the patient and a physician ... using an evidence-based decision tool on ICDs prior to initial ICD implantation.",
+   "cite": "B.5",
+   "required_fact": "shared_decision_making",
+   "applies_if": {
+    "fact": "cardiomyopathy_type",
+    "equals": "other"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there documentation of a formal shared decision making visit using an evidence-based ICD decision tool prior to implant?",
+   "short": "Shared decision making encounter not documented",
+   "confidence": "medium"
+  },
+  {
+   "id": "AllCovered-ClinicallyStable",
+   "text": "Patient must be clinically stable (e.g., not in shock) for all covered indications.",
+   "source_quote": "Patients must be clinically stable (e.g., not in shock, from any etiology);",
+   "cite": "B (general)",
+   "required_fact": "limiting_conditions",
+   "applies_if": null,
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have any limiting conditions (e.g., shock, instability) documented?",
+   "short": "Patient not documented as clinically stable",
+   "confidence": "high"
+  },
+  {
+   "id": "AllCovered-LVEFMethod",
+   "text": "LVEF must be measured by echocardiography, radionuclide/nuclear imaging, cardiac MRI, or catheter angiography.",
+   "source_quote": "LVEF must be measured by echocardiography, radionuclide (nuclear medicine) imaging, cardiac magnetic resonance imaging (MRI), or catheter angiography;",
+   "cite": "B (general)",
+   "required_fact": "lvef_method",
+   "applies_if": null,
+   "test": {
+    "type": "in",
+    "value": [
+     "echocardiography",
+     "nuclear imaging",
+     "cardiac MRI",
+     "angiography"
+    ]
+   },
+   "if_missing": "How was the patient's LVEF measured?",
+   "short": "LVEF measurement method not documented or not an approved method",
+   "confidence": "high"
+  },
+  {
+   "id": "AllCovered-NoLimitingConditions",
+   "text": "Patient must not have significant irreversible brain damage, a non-cardiac disease with survival likelihood under 1 year, or atrial fibrillation with poorly controlled ventricular rate.",
+   "source_quote": "Significant, irreversible brain damage; or, Any disease, other than cardiac disease ... associated with a likelihood of survival less than 1 year; or, Supraventricular tachycardia such as atrial fibrillation with a poorly controlled ventricular rate.",
+   "cite": "B (general)",
+   "required_fact": "limiting_conditions",
+   "applies_if": null,
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have any of: severe irreversible brain damage, a non-cardiac condition with survival under 1 year, or poorly controlled atrial fibrillation?",
+   "short": "Limiting condition present (excluded)",
+   "confidence": "high"
+  }
+ ],
+ "new_facts": [],
+ "not_modeled": [
+  {
+   "quote": "An episode of sustained VT, either spontaneous or induced by an electrophysiology (EP) study, not associated with an acute myocardial infarction (MI) and not due to a transient or reversible cause; or An episode of cardiac arrest due to VF, not due to a transient or reversible cause.",
+   "why": "Requires detailed clinical event characterization (spontaneous vs EP-induced, association with acute MI, transient/reversible cause determination) beyond a single fact in the vocabulary; a person should review the clinical narrative."
+  },
+  {
+   "quote": "Clinical symptoms and findings that would make them a candidate for coronary revascularization.",
+   "why": "This is a clinical judgment exclusion not captured by a discrete fact in the vocabulary; requires physician assessment of revascularization candidacy."
+  },
+  {
+   "quote": "Patients with documented, familial or genetic disorders with a high risk of life-threatening tachyarrhythmias (sustained VT or VF), to include, but not limited to, long QT syndrome or hypertrophic cardiomyopathy.",
+   "why": "Determining whether a specific genetic/familial disorder qualifies as high-risk requires clinical/genetic review beyond the simple 'other' cardiomyopathy_type category; a person should verify the specific diagnosis."
+  },
+  {
+   "quote": "Patients with an existing ICD may receive an ICD replacement if it is required due to the end of battery life, elective replacement indicator (ERI), or device/lead malfunction.",
+   "why": "This is a separate replacement pathway requiring device-specific technical facts (battery status, ERI, malfunction) not in the vocabulary."
+  },
+  {
+   "quote": "Patients who meet all CMS coverage requirements for cardiac pacemakers, and who meet the criteria in this national coverage determination for an ICD, may receive the combined devices in one procedure, at the time the pacemaker is clinically indicated;",
+   "why": "Requires cross-referencing a separate NCD for cardiac pacemakers, which is outside this policy's scope and fact vocabulary."
+  },
+  {
+   "quote": "For patients that are candidates for heart transplantation on the United Network for Organ Sharing (UNOS) transplant list awaiting a donor heart, coverage of ICDs ... is determined by the local Medicare Administrative Contractors (MACs).",
+   "why": "Coverage determination is delegated to local MACs rather than fixed national criteria, so it cannot be reduced to a single testable rule here."
+  },
+  {
+   "quote": "All other indications for ICDs not currently covered in accordance with this decision may be covered under Category B Investigational Device Exemption (IDE) trials (42 CFR 405.201).",
+   "why": "This references a separate regulatory pathway (IDE trials) requiring case-specific trial enrollment verification outside the fact vocabulary."
+  }
+ ],
+ "_usage": {
+  "input_tokens": 5189,
+  "output_tokens": 5655
+ },
+ "_model": "claude-sonnet-5"
+}

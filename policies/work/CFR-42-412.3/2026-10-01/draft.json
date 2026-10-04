@@ -1,0 +1,140 @@
+{
+ "criteria": [
+  {
+   "id": "ORDER-PRESENT",
+   "text": "The patient must be formally admitted as an inpatient pursuant to a physician or other qualified practitioner's order for inpatient admission.",
+   "source_quote": "formally admitted as an inpatient pursuant to an order for inpatient admission by a physician or other qualified practitioner",
+   "cite": "(a)",
+   "required_fact": "inpatient_admission_order",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there a documented physician order for inpatient admission?",
+   "short": "Missing inpatient admission order",
+   "confidence": "medium"
+  },
+  {
+   "id": "ORDER-TIMING",
+   "text": "The physician order for admission must be furnished at or before the time of the inpatient admission.",
+   "source_quote": "The physician order must be furnished at or before the time of the inpatient admission.",
+   "cite": "(c)",
+   "required_fact": "order_timing",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Was the admission order dated at or before the time of inpatient admission?",
+   "short": "Order not timed at or before admission",
+   "confidence": "medium"
+  },
+  {
+   "id": "LOS-2MIDNIGHT",
+   "text": "For non-exempt, non-limited-stay cases, the admitting physician must expect the patient to require hospital care that crosses two midnights.",
+   "source_quote": "an inpatient admission is generally appropriate for payment under Medicare Part A when the admitting physician expects the patient to require hospital care that crosses two midnights",
+   "cite": "(d)(1)",
+   "required_fact": "expected_los_days",
+   "test": {
+    "type": "gte",
+    "value": 2
+   },
+   "if_missing": "How many midnights of hospital care does the physician expect the patient to require?",
+   "short": "Expected stay does not cross two midnights",
+   "confidence": "high",
+   "applies_if": null
+  },
+  {
+   "id": "LOS-FACTORS-DOCUMENTED",
+   "text": "The clinical factors supporting the physician's expectation of a stay crossing two midnights must be documented in the medical record.",
+   "source_quote": "The factors that lead to a particular clinical expectation must be documented in the medical record in order to be granted consideration.",
+   "cite": "(d)(1)(i)",
+   "required_fact": "comorbidities",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Are the comorbidities, symptom severity, medical needs, or adverse event risk factors documented that support the two-midnight expectation?",
+   "short": "Supporting clinical factors not documented",
+   "confidence": "medium"
+  },
+  {
+   "id": "INPATIENT-ONLY-PROCEDURE",
+   "text": "An inpatient admission for a surgical procedure on the Medicare inpatient-only list is generally appropriate regardless of expected duration of care.",
+   "source_quote": "An inpatient admission for a surgical procedure specified by Medicare as inpatient only under Sec. 419.22(n) of this chapter is generally appropriate for payment under Medicare Part A regardless of the expected duration of care.",
+   "cite": "(d)(2)",
+   "required_fact": "inpatient_only_procedure",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is the surgical procedure on the Medicare inpatient-only list under 42 CFR 419.22(n)?",
+   "short": "Not an inpatient-only listed procedure",
+   "confidence": "medium"
+  },
+  {
+   "id": "SHORT-STAY-SUPPORT",
+   "text": "For admissions expected to last less than two midnights, the medical record must support the physician's clinical judgment to admit as inpatient based on complex medical factors.",
+   "source_quote": "In these cases, the factors that lead to the decision to admit the patient as an inpatient must be supported by the medical record in order to be granted consideration.",
+   "cite": "(d)(3)",
+   "required_fact": "comorbidities",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there medical record documentation supporting the decision to admit as inpatient despite an expected stay under two midnights?",
+   "short": "Short-stay admission not supported by medical record",
+   "confidence": "medium",
+   "applies_if": {
+    "fact": "expected_los_days",
+    "equals": "under_2"
+   }
+  }
+ ],
+ "new_facts": [
+  {
+   "key": "inpatient_admission_order",
+   "label": "Physician order for inpatient admission present",
+   "kind": "event",
+   "ask": "Is there a documented order from a qualified, privileged physician or practitioner for inpatient admission?",
+   "statuses": [
+    "found",
+    "none"
+   ]
+  },
+  {
+   "key": "order_timing",
+   "label": "Timing of the admission order relative to admission",
+   "kind": "event",
+   "ask": "Was the order furnished at or before the time of inpatient admission?",
+   "statuses": [
+    "at_or_before",
+    "after",
+    "unknown"
+   ]
+  },
+  {
+   "key": "inpatient_only_procedure",
+   "label": "Procedure is on the Medicare inpatient-only list",
+   "kind": "event",
+   "ask": "Is the planned surgical procedure listed as inpatient-only under 42 CFR 419.22(n)?",
+   "statuses": [
+    "found",
+    "none"
+   ]
+  }
+ ],
+ "not_modeled": [
+  {
+   "quote": "who has admitting privileges at the hospital as permitted by State law, and who is knowledgeable about the patient's hospital course, medical plan of care, and current condition",
+   "why": "Requires verifying practitioner credentialing and privileging status, which is an administrative/credentialing fact outside the clinical packet vocabulary and not modeled as a clinical fact."
+  },
+  {
+   "quote": "If an unforeseen circumstance, such as a beneficiary's death or transfer, results in a shorter beneficiary stay than the physician's expectation of at least 2 midnights, the patient may be considered to be appropriately treated on an inpatient basis",
+   "why": "This is an exception pathway dependent on unforeseen events (death, transfer) that is not a prospective clinical criterion checkable from a packet; requires case-by-case human judgment."
+  },
+  {
+   "quote": "Claims for services and procedures removed from the inpatient only list under Sec. 419.22 of this chapter on or after January 1, 2021 are exempt from certain medical review activities until the Secretary determines that the service or procedure is more commonly performed in the outpatient setting than the inpatient setting.",
+   "why": "This describes a review-exemption policy contingent on regulatory/administrative determinations, not a clinical fact checkable in a patient packet."
+  }
+ ],
+ "_usage": {
+  "input_tokens": 4210,
+  "output_tokens": 2250
+ },
+ "_model": "claude-sonnet-5"
+}
