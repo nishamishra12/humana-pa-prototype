@@ -66,34 +66,36 @@ add({ name: "sub", kind: "text", static: true, x: 7.3, y: 0.55, w: 5.53, h: 0.75
 add({ name: "footer", kind: "text", static: true, x: 0.5, y: 7.1, w: 12.33, h: 0.25, runs: [{ text: "Source: the Humana Use Case 1 brief, and the process on the previous slide.", options: { fontSize: 9, color: C.muted, fontFace: B } }] });
 
 // the flow, in miniature (static: it is the map the pins land on)
-const NW = 2.0, NY = 1.95, NH = 0.8, XS = [0.5, 3.08, 5.66, 8.24, 10.83];
-const mini = (name, i, title, desc, art) => {
-  add({ name, kind: "node", static: true, x: XS[i], y: NY, w: NW, h: NH, fill: C.white, line: C.line, lineW: 1, runs: runs(title, desc, C.ink, 12, 9.5), margin: art ? AVM : [0.04, 0.1, 0.04, 0.1] });
-  if (art) avatar(art, XS[i] + 0.09, NY + 0.12, 0.56);
+const NW = 1.82, NY = 1.95, NH = 0.8, XS = [0.5, 2.6, 4.7, 6.8, 8.9, 11.0];
+const MAVM = [0.04, 0.06, 0.04, 0.62];
+const mini = (name, i, title, desc, art, o = {}) => {
+  add({ name, kind: "node", static: true, x: XS[i], y: NY, w: NW, h: NH, fill: C.white, line: C.line, lineW: 1, runs: runs(title, desc, C.ink, 11, 9), margin: art ? MAVM : [0.04, 0.08, 0.04, 0.08], ...o });
+  if (art) avatar(art, XS[i] + 0.08, NY + 0.17, 0.46);
 };
 mini("N1", 0, "Surgeon's office", "Sends the packet", "AvL1");
 mini("N2", 1, "Intake", "Checks it in", "AvIntake");
 mini("N3", 2, "UM nurse", "Reads the packet", "AvNurse");
-add({ name: "N4", kind: "node", static: true, x: XS[3], y: NY, w: NW, h: NH, fill: C.white, line: C.line, lineW: 1, align: "center", runs: runs("Decision", "Approve, pend, escalate", C.ink, 12, 9.5), margin: [0.04, 0.1, 0.04, 0.1] });
-mini("N5", 4, "The member", "Waits for the answer", "AvM");
-const ARR = (n, i, o = {}) => line(n, XS[i] + NW + 0.04, NY + NH / 2, 0.5, 0, { static: true, ...o });
-ARR("A12", 0, { color: C.coral, dash: "dash" }); ARR("A23", 1); ARR("A34", 2); ARR("A45", 3);
-add({ name: "LblFax", kind: "text", static: true, x: XS[0] + NW, y: NY + 0.12, w: 0.58, h: 0.2, align: "center", runs: [{ text: "FAX", options: { bold: true, fontSize: 8, color: C.coral, fontFace: B, charSpacing: 2 } }] });
+mini("N4", 3, "Decision", "Approve, pend, escalate", null, { align: "center" });
+mini("N5", 4, "Medical director", "Only when escalated", "AvMD", { fill: C.purpleSoft, line: C.purple });
+mini("N6", 5, "The member", "Waits for the answer", "AvM");
+const ARR = (n, i, o = {}) => line(n, XS[i] + NW + 0.03, NY + NH / 2, 0.22, 0, { static: true, ...o });
+ARR("A12", 0, { color: C.coral, dash: "dash" }); ARR("A23", 1); ARR("A34", 2); ARR("A45", 3, { color: C.purple }); ARR("A56", 4);
+add({ name: "LblFax", kind: "text", static: true, x: XS[0] + NW - 0.04, y: NY + 0.1, w: 0.36, h: 0.2, align: "center", runs: [{ text: "FAX", options: { bold: true, fontSize: 7.5, color: C.coral, fontFace: B } }] });
 // the pend loop under the flow: Decision -> back to the provider
 line("L1", XS[3] + NW / 2, NY + NH, 0, 0.3, { static: true, arrow: false, color: C.amber });
-line("L2", XS[0] + NW / 2, NY + NH + 0.3, XS[3] - XS[0] + NW / 2 - NW / 2, 0, { static: true, arrow: false, color: C.amber });
+line("L2", XS[0] + NW / 2, NY + NH + 0.3, XS[3] - XS[0], 0, { static: true, arrow: false, color: C.amber });
 line("L3", XS[0] + NW / 2, NY + NH, 0, 0.3, { static: true, color: C.amber, flipV: true });
-add({ name: "LblLoop", kind: "text", static: true, x: 3.2, y: NY + NH + 0.06, w: 4.0, h: 0.22, align: "center", runs: [{ text: "Pend: back to the provider, and it starts again", options: { fontSize: 9.5, color: C.amber, fontFace: B, bold: true } }] });
+add({ name: "LblLoop", kind: "text", static: true, x: 2.5, y: NY + NH + 0.06, w: 4.2, h: 0.22, align: "center", runs: [{ text: "Pend: back to the provider, and it starts again", options: { fontSize: 9.5, color: C.amber, fontFace: B, bold: true } }] });
 
 // pins: where each friction lands on the flow (they appear with their card)
 const pin = (name, n, cx, cy) => add({ name, kind: "node", x: cx - 0.16, y: cy - 0.16, w: 0.32, h: 0.32, fill: C.coral, line: C.coral, lineW: 1, radius: 0.16, align: "center", margin: [0, 0, 0, 0], runs: [{ text: String(n), options: { bold: true, fontSize: 11, color: C.white, fontFace: B } }] });
 const pinY = NY - 0.2;
-pin("Pin1", 1, XS[2] + 0.55, pinY);
-pin("Pin3", 3, XS[2] + 1.45, pinY);
-pin("Pin2", 2, XS[0] + NW + 0.29, NY + NH / 2 + 0.34);
-pin("Pin4", 4, XS[3] + NW / 2, pinY);
+pin("Pin1", 1, XS[2] + 0.45, pinY);
+pin("Pin3", 3, XS[2] + 1.37, pinY);
+pin("Pin2", 2, XS[0] + NW + 0.14, pinY);
+pin("Pin4", 4, XS[3] + NW + 0.14, pinY);
 pin("Pin5", 5, XS[0] + NW / 2 + 1.0, NY + NH + 0.3);
-pin("Pin6", 6, XS[4] + NW / 2, pinY);
+pin("Pin6", 6, XS[5] + NW / 2, pinY);
 
 // the six cards
 const CW = 4.0, CH = 1.72, GX = 0.165, CY = [3.38, 5.28];
@@ -102,7 +104,7 @@ const CARDS = [
   [1, "Reading by hand", "The nurse reads all 14 pages to find the same few facts. Clear-cut cases take almost as long as hard ones.", "Felt by: the nurse"],
   [2, "Messy input", "Packets arrive by fax or portal. Format and quality change from one office to the next.", "Felt by: intake and the nurse"],
   [3, "Hunting, not deciding", "Benefits, eligibility, policy, and provider systems sit apart. No one view holds the full picture.", "Felt by: the nurse"],
-  [4, "Decisions vary", "Two reviewers can read the same packet and reach different decisions.", "Felt by: the plan and the provider"],
+  [4, "Decisions vary", "Two reviewers, nurse or physician, can read the same packet and reach different decisions.", "Felt by: the plan and the provider"],
   [5, "The pend loop", "A detail a cleaner read could catch in minutes sends the packet back. The case starts from zero, and the clock keeps running.", "Felt by: the provider and the member"],
   [6, "The member in the dark", "John Doe waits on his surgery with no view of where his request stands.", "Felt by: the member"],
 ];
