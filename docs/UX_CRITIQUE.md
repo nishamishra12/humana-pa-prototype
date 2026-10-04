@@ -75,7 +75,7 @@ confirms the fact is truly absent.
 
 ### 5. The director's decision lacks its own context (critical)
 The nurse's note to the director ("packet is complete but the stay is 1 midnight... can you
-make the call?") lives only on the Activity tab; it is not on the Review tab where the
+make the call?") lives only on the Chat tab; it is not on the Review tab where the
 director decides (proven: absent from the Review tab). The director lands on the nurse-style
 page with the AI recommendation first.
 Fix: the director's case view leads with the question being asked and who asked, then the

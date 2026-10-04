@@ -267,7 +267,7 @@ function caseHtml() {
           <div class="muted">${esc(d.procedure.replace("Elective inpatient admission, ", "Inpatient admission, "))} · CPT ${esc(d.cpt || "-")} · ${esc(d.facility)}</div></div>
         <div class="chead-right"><span class="chip ${d.status}">${STATUS[d.status]}</span>${d.priority === "expedited" ? `<span class="chip bad">Expedited</span>` : ""}<span class="chip">${ic("clock", 14)}${esc(k.text)}</span>
           <span class="muted" style="font-size:13px">${d.assignee ? esc(d.assignee.name) : "Not assigned"}</span></div></div>
-      <div class="tabs" role="tablist">${[["review", isAdmin ? "Assign" : "Review"], ["packet", `Full packet · ${pages} page${pages === 1 ? "" : "s"}`], ["activity", `Activity · ${d.comments.length}`]].map(([t, l]) => `<button class="tab ${S.tab === t ? "on" : ""}" role="tab" data-tab="${t}">${l}</button>`).join("")}</div></div>
+      <div class="tabs" role="tablist">${[["review", isAdmin ? "Assign" : "Review"], ["packet", `Full packet · ${pages} page${pages === 1 ? "" : "s"}`], ["activity", `Chat · ${d.comments.length}`]].map(([t, l]) => `<button class="tab ${S.tab === t ? "on" : ""}" role="tab" data-tab="${t}">${l}</button>`).join("")}</div></div>
     <div class="cbody" id="cbody-scroll">${justActedHtml(d)}${S.tab === "review" ? (isAdmin ? adminHtml(d, a) : reviewHtml(d, a, done)) : S.tab === "packet" ? fullPacketHtml(d) : activityHtml(d)}</div>
     ${showBar ? decisionBar(d, a) : ""}</div>`;
 }
@@ -393,8 +393,8 @@ function activityHtml(d) {
   <div class="card"><div>${items.map((i) => i.kind === "c" ? `<div class="tl-item"><span class="avatar sm ${i.c.user && i.c.user.role === "medical_director" ? "md" : ""}">${i.c.user ? esc(initials(i.c.user.name)) : "PR"}</span>
       <div class="tl-body"><span class="tl-who">${i.c.user ? esc(i.c.user.name) : "Provider office"}</span><span class="tl-time">${ago(i.c.created_at)}</span>${label[i.c.kind] ? ` <span class="chip plain">${label[i.c.kind]}</span>` : ""}<div class="bubble ${i.c.kind}">${body(i.c.body)}</div></div></div>`
     : `<div class="tl-item"><span class="sys-dot"></span><div class="tl-body muted"><b>${esc(i.a.user ? i.a.user.name : "PA Desk")}</b> · ${esc(ACT_LABEL[i.a.action] || i.a.action.replace(/_/g, " "))}<span class="tl-time">${ago(i.a.created_at)}</span><div class="faint" style="font-size:13px">${esc(i.a.detail)}</div></div></div>`).join("")}</div></div>
-  <div class="card"><h3>Add a comment</h3><textarea id="cbody" placeholder="Write a note. Use @patel or @brooks to tag a medical director."></textarea>
-    <div class="action-row" style="margin-top:8px"><button class="btn primary" data-go="comment">Post</button>${S.users.filter((u) => u.id !== S.user.id).map((u) => `<button class="btn small" data-tag="${u.handle}">@${u.handle}</button>`).join("")}</div></div></div>`;
+  <div class="card"><h3>Send a message</h3><textarea id="cbody" placeholder="Write a message. Use @patel or @brooks to tag a medical director."></textarea>
+    <div class="action-row" style="margin-top:8px"><button class="btn primary" data-go="comment">Send</button>${S.users.filter((u) => u.id !== S.user.id).map((u) => `<button class="btn small" data-tag="${u.handle}">@${u.handle}</button>`).join("")}</div></div></div>`;
 }
 
 /* ---------- decision bar ---------- */
@@ -582,7 +582,7 @@ const submit = guard(async (kind) => {
   S.detail = d; S.act = null;
   if (kind === "comment") S.tab = "activity";
   if (["approve", "pend", "escalate", "deny", "return"].includes(kind)) { S.justActed = { id, msg: { approve: "Approved.", pend: "Question sent to the provider.", escalate: "Sent to the medical director.", deny: "Denied. Your reason is on the record.", return: "Returned to the nurse." }[kind] }; S.tab = "review"; }
-  const msgs = { approve: "Approved", pend: "Question sent. Case pended", escalate: "Escalated and tagged", deny: "Denied with reason recorded", return: "Returned to nurse", reply: "Provider reply added. Case checked again", comment: "Comment posted" };
+  const msgs = { approve: "Approved", pend: "Question sent. Case pended", escalate: "Escalated and tagged", deny: "Denied with reason recorded", return: "Returned to nurse", reply: "Provider reply added. Case checked again", comment: "Message sent" };
   toast(msgs[kind]);
   await refresh(); render();
 });
