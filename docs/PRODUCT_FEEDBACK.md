@@ -169,3 +169,23 @@ write to the live demo database, which is how a regression run changed demo case
 - **Read the whole packet.** A nurse can read all pages on her own, not only cited pages. Done (Full packet tab and original PDF).
 - **Upload screen.** Keep "Reading the packet". Remove technical wording. Done.
 - **No technical words anywhere.** The UM team does not care how the check works. Done across the screens, notes, and activity log.
+
+## F-008 -- Show the cited sentence on the real page image (improvement, open)
+
+Today the nurse sees the cited sentence highlighted in the extracted text. Unstructured already returns
+the coordinates of every element on the page, but the app keeps only page, type and text and throws the
+coordinates away. With them, the screen could draw a box on the actual page image (the scan) around the
+quoted sentence, as Unstructured's own screen does for its parse.
+
+Why it matters: the nurse sees where the fact is on the original fax, which is the page she trusts. It is
+the strongest answer to "how do I know the AI read it right", and it helps most on scans, where OCR text
+can differ slightly from what is printed.
+
+What it takes: keep the coordinates and page size from the parse, store them on each element, render the
+page image in the case view, and map the located quote to its element box. Needs a check that a quote
+spanning several elements still gets a sensible box.
+
+Related, smaller gaps found the same day (open):
+- A fax with no CPT code today ends as "no policy". It should ask the provider for the code, suggest the
+  service from the written description for a nurse to confirm, and accept letter-plus-digit codes and
+  several codes on one request.
