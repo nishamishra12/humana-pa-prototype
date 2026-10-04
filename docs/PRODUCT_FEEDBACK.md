@@ -189,3 +189,18 @@ Related, smaller gaps found the same day (open):
 - A fax with no CPT code today ends as "no policy". It should ask the provider for the code, suggest the
   service from the written description for a nurse to confirm, and accept letter-plus-digit codes and
   several codes on one request.
+
+## F-009 -- Policy owner and a policy library screen (improvement, open)
+
+Missing piece found in the interview prep: how do new policies and changed policies get in? Today the
+criteria were written by hand once, with AI help, from official text, and nobody with policy authority
+approved them. Needed: a policy owner role and a "Policy library" admin screen.
+
+- A scheduled job fetches new and changed policies (CMS coverage database, eCFR), and a PDF upload goes
+  through Unstructured.
+- An AI drafts the criteria through a fixed form, with the exact source sentence for each one.
+- Code checks each draft: the cited sentence exists in the source, the schema is valid, and a change report
+  shows what differs from the last version.
+- The policy owner reviews the source text beside each draft criterion, approves, edits or rejects, then
+  publishes a new versioned library. Each case records the version it used.
+- A brand-new service can be drafted end to end, marked draft until approved.
