@@ -7,7 +7,7 @@ const pptxgen = require("pptxgenjs");
 const JSZip = require("jszip");
 const { Resvg } = require("@resvg/resvg-js"); // draws the SVG art to PNG (npm i @resvg/resvg-js)
 
-const OUT = path.join(__dirname, "Federal_Click_Through.pptx"); // default: ONE slide, one click per step
+const OUT = path.join(__dirname, "Federal_Rules.pptx"); // ONE plain slide, no animation
 const OUT_STEPS = path.join(__dirname, "Federal_Steps.pptx"); // only with --slides: one slide per step
 const C = {
   ink: "16211E", muted: "5C6B66", green: "1F6F5C", greenSoft: "E3F0EB", line: "CBD5D1",
@@ -132,6 +132,18 @@ async function main() {
   pres.author = "Nisha Mishra";
   const PNG = {};
   for (const [k, svg] of Object.entries(ART)) PNG[k] = Buffer.from(new Resvg(svg, { fitTo: { mode: "width", value: 360 } }).render().asPng()).toString("base64");
+
+  // this slide is a plain slide: everything is on screen from the start, no clicks
+  {
+    const s = pres.addSlide();
+    s.background = { color: C.white };
+    draw(pres, s, PNG, null);
+    s.addNotes(STEP_NOTES.join(String.fromCharCode(10, 10)));
+    await pres.writeFile({ fileName: OUT });
+    fs.writeFileSync(path.join(__dirname, "preview.html"), preview());
+    console.log("wrote", OUT, "| one plain slide, no animation");
+    return;
+  }
 
   if (!ANIMATED) {
     // one slide per step: press Next to walk the flow

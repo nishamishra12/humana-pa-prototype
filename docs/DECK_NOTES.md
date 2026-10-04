@@ -22,7 +22,7 @@ Thread that all four share: member visibility in phase two.
 1. Title
 2. How a prior authorization moves today (built: one slide, 14 clicks)
 3. Six friction points (built: one slide, 6 clicks)
-4. The federal rules that make them urgent (built: one slide, 4 clicks)
+4. The federal rules that make them urgent (built: one plain slide, no animation)
 5. How big the problem is: the AMA and OIG numbers
 6. What the market is doing, then the solution
 
@@ -70,6 +70,6 @@ Rule for the whole deck: every phase has a reason, and we say it out loud.
 ## Files
 - `deck/journey/build_journey.js` builds `Journey_Click_Through.pptx` (slide 2).
 - `deck/journey/build_friction.js` builds `Friction_Click_Through.pptx` (slide 3).
-- `deck/journey/build_federal.js` builds `Federal_Click_Through.pptx` (slide 4).
+- `deck/journey/build_federal.js` builds `Federal_Rules.pptx` (slide 4, a plain slide with no animation).
 - Each file is one slide with one click per step. Import into Google Slides with File, Import slides.
 - To build: `node build_friction.js`. It needs the `@resvg/resvg-js` package to draw the character art.
