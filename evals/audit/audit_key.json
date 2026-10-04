@@ -1,0 +1,302 @@
+{
+ "c01": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "expected_los_days",
+  "file": "icd5_recent_mi.pdf",
+  "status": "found",
+  "ai_verdict": "unrelated",
+  "match": "exact",
+  "page": 2,
+  "planted": true
+ },
+ "c02": {
+  "case": "Yolanda Prescott",
+  "fact_key": "comorbidities",
+  "file": "bar3_bmi_changed.pdf",
+  "status": "found",
+  "ai_verdict": "insufficient",
+  "match": "exact",
+  "page": 5,
+  "planted": true
+ },
+ "c03": {
+  "case": "Gerald Fitzpatrick",
+  "fact_key": "limiting_conditions",
+  "file": "icd1_complete_nonischemic.pdf",
+  "status": "none",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 8,
+  "planted": false
+ },
+ "c04": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "shared_decision_making",
+  "file": "icd5_recent_mi.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 7,
+  "planted": false
+ },
+ "c05": {
+  "case": "Raymond Okafor",
+  "fact_key": "limiting_conditions",
+  "file": "icd3_conflicting_lvef.pdf",
+  "status": "none",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 6,
+  "planted": false
+ },
+ "c06": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "optimal_medical_therapy_months",
+  "file": "icd5_recent_mi.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 5,
+  "planted": false
+ },
+ "c07": {
+  "case": "Yolanda Prescott",
+  "fact_key": "comorbidities",
+  "file": "bar3_bmi_changed.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 2,
+  "planted": false
+ },
+ "c08": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "recent_mi_revasc",
+  "file": "icd5_recent_mi.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 2,
+  "planted": false
+ },
+ "c09": {
+  "case": "Yolanda Prescott",
+  "fact_key": "prior_medical_treatment",
+  "file": "bar3_bmi_changed.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 5,
+  "planted": false
+ },
+ "c10": {
+  "case": "Raymond Okafor",
+  "fact_key": "recent_mi_revasc",
+  "file": "icd3_conflicting_lvef.pdf",
+  "status": "none",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 2,
+  "planted": false
+ },
+ "c11": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "cardiomyopathy_type",
+  "file": "icd5_recent_mi.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 2,
+  "planted": false
+ },
+ "c12": {
+  "case": "Gerald Fitzpatrick",
+  "fact_key": "optimal_medical_therapy_months",
+  "file": "icd1_complete_nonischemic.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 5,
+  "planted": false
+ },
+ "c13": {
+  "case": "Gerald Fitzpatrick",
+  "fact_key": "lvef_percent",
+  "file": "icd1_complete_nonischemic.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 3,
+  "planted": false
+ },
+ "c14": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "lvef_percent",
+  "file": "icd5_recent_mi.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 3,
+  "planted": false
+ },
+ "c15": {
+  "case": "Gerald Fitzpatrick",
+  "fact_key": "lvef_method",
+  "file": "icd1_complete_nonischemic.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 3,
+  "planted": false
+ },
+ "c16": {
+  "case": "Gerald Fitzpatrick",
+  "fact_key": "nyha_class",
+  "file": "icd1_complete_nonischemic.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 2,
+  "planted": false
+ },
+ "c17": {
+  "case": "Gerald Fitzpatrick",
+  "fact_key": "recent_mi_revasc",
+  "file": "icd1_complete_nonischemic.pdf",
+  "status": "none",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 2,
+  "planted": false
+ },
+ "c18": {
+  "case": "Raymond Okafor",
+  "fact_key": "lvef_method",
+  "file": "icd3_conflicting_lvef.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 3,
+  "planted": false
+ },
+ "c19": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "limiting_conditions",
+  "file": "icd5_recent_mi.pdf",
+  "status": "none",
+  "ai_verdict": "contradicts",
+  "match": "exact",
+  "page": 8,
+  "planted": true
+ },
+ "c20": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "limiting_conditions",
+  "file": "icd5_recent_mi.pdf",
+  "status": "none",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 8,
+  "planted": false
+ },
+ "c21": {
+  "case": "Gerald Fitzpatrick",
+  "fact_key": "expected_los_days",
+  "file": "icd1_complete_nonischemic.pdf",
+  "status": "found",
+  "ai_verdict": "unrelated",
+  "match": "exact",
+  "page": 3,
+  "planted": true
+ },
+ "c22": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "expected_los_days",
+  "file": "icd5_recent_mi.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 8,
+  "planted": false
+ },
+ "c23": {
+  "case": "Raymond Okafor",
+  "fact_key": "shared_decision_making",
+  "file": "icd3_conflicting_lvef.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 5,
+  "planted": false
+ },
+ "c24": {
+  "case": "Gerald Fitzpatrick",
+  "fact_key": "optimal_medical_therapy_months",
+  "file": "icd1_complete_nonischemic.pdf",
+  "status": "found",
+  "ai_verdict": "insufficient",
+  "match": "exact",
+  "page": 2,
+  "planted": true
+ },
+ "c25": {
+  "case": "Marcia Delgado-Finch",
+  "fact_key": "expected_los_days",
+  "file": "bar1_complete.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 7,
+  "planted": false
+ },
+ "c26": {
+  "case": "Raymond Okafor",
+  "fact_key": "comorbidities",
+  "file": "icd3_conflicting_lvef.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 6,
+  "planted": false
+ },
+ "c27": {
+  "case": "Raymond Okafor",
+  "fact_key": "nyha_class",
+  "file": "icd3_conflicting_lvef.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 2,
+  "planted": false
+ },
+ "c28": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "cardiomyopathy_type",
+  "file": "icd5_recent_mi.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 8,
+  "planted": true
+ },
+ "c29": {
+  "case": "Dennis Kowalczyk",
+  "fact_key": "lvef_method",
+  "file": "icd5_recent_mi.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 3,
+  "planted": false
+ },
+ "c30": {
+  "case": "Gerald Fitzpatrick",
+  "fact_key": "expected_los_days",
+  "file": "icd1_complete_nonischemic.pdf",
+  "status": "found",
+  "ai_verdict": "supports",
+  "match": "exact",
+  "page": 8,
+  "planted": false
+ }
+}

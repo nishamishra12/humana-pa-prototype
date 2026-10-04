@@ -1,0 +1,824 @@
+<title>Citation Audit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#f4f6f5;--panel:#fff;--ink:#14201c;--ink2:#4a5a55;--line:#cfd8d4;--acc:#1f6f5c;--accsoft:#e2f0eb;--mark:#ffe98a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1715;--panel:#16211e;--ink:#e5eeea;--ink2:#a9bab4;--line:#2c3b37;--acc:#4cc0a0;--accsoft:#12302a;--mark:#5a4b00}}
+:root[data-theme="dark"]{--bg:#0f1715;--panel:#16211e;--ink:#e5eeea;--ink2:#a9bab4;--line:#2c3b37;--acc:#4cc0a0;--accsoft:#12302a;--mark:#5a4b00}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "IBM Plex Sans",system-ui,sans-serif;padding:24px 16px 120px}
+main{max-width:860px;margin:0 auto}h1{font-size:24px;margin:0 0 6px}p.lead{color:var(--ink2);margin:0 0 16px;max-width:680px}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:16px}
+.bar b{font-variant-numeric:tabular-nums}button{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--acc);background:var(--acc);color:var(--bg);font-weight:600;cursor:pointer}
+button.alt{background:transparent;color:var(--acc)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.card.done{border-color:var(--acc)}.meta{display:flex;gap:12px;flex-wrap:wrap;color:var(--ink2);font-size:12.5px}
+h3{font-size:17px;margin:6px 0 8px;font-weight:600}.ask{color:var(--ink2);font-size:13px;margin-bottom:6px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}.opts label{border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer;background:var(--bg)}
+.opts label:has(input:checked){border-color:var(--acc);background:var(--accsoft);font-weight:600}.opts input{margin-right:6px}
+details{margin-top:12px}summary{cursor:pointer;color:var(--acc);font-weight:500}pre.page{white-space:pre-wrap;font:13px/1.55 "IBM Plex Sans",system-ui,sans-serif;background:var(--bg);border-radius:8px;padding:12px;margin:8px 0 0;max-height:360px;overflow:auto}
+mark{background:var(--mark);color:inherit;padding:1px 2px;border-radius:3px}.nf{margin-top:8px;color:var(--ink2)}
+#out{width:100%;min-height:90px;margin-top:10px;font:12px/1.4 ui-monospace,Consolas,monospace;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px}
+</style>
+<main>
+<h1>Citation audit</h1>
+<p class="lead">Each item shows a claim the product made and the page it cited. Open the page, find the highlighted sentence, and judge it yourself. Do not guess what the product meant. Answer only from what the page says. All data is made up. About 30 minutes.</p>
+<div class="bar"><span>Answered <b id="n">0</b> of 30</span><button id="copy">Copy my answers</button><button class="alt" id="reset">Clear</button></div>
+<section class="card" id="c01">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 2</span></div>
+<h3>Expected stay: 2 midnights</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c01">
+<label><input type="radio" name="c01" value="yes"> Yes</label>
+<label><input type="radio" name="c01" value="partly"> Partly</label>
+<label><input type="radio" name="c01" value="no"> No</label>
+<label><input type="radio" name="c01" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 2 of 8
+Cardiology Consultation - ICD Evaluation
+Date: 2026-09-29.   Patient: Dennis Kowalczyk   Age: 70   Sex: M
+Reason for referral
+Primary-prevention ICD evaluation, ischemic cardiomyopathy with reduced ejection fraction.
+History of present illness
+70-year-old man with long-standing multivessel coronary artery disease managed medically, and ischemic cardiomyopathy with chronic systolic heart failure. He reports dyspnea on walking up a slope or more than two blocks, with no symptoms during routine household tasks and none at rest (NYHA II). No syncope. No sustained ventricular arrhythmia documented.
+He was hospitalized earlier this month; see the interval history below and the discharge summary on page 6.
+Interval history
+Admitted 2026-09-09 to Erie Shores Medical Center with chest pressure and a troponin rise, diagnosed
+with an NSTEMI. Coronary angiography the next day showed known multivessel disease without a target
+for PCI; managed medically. Discharged 2026-09-12 free of angina.
+PMH
+Coronary artery disease, ischemic cardiomyopathy, hypertension, hyperlipidemia, type 2 diabetes
+(metformin). No CABG. No prior stent. Former smoker, quit 2015. Left inguinal hernia repair 2012.
+Exam
+BP 124/70, HR 66, SpO2 96%. Lungs with minimal bibasilar crackles. No edema. Regular rhythm.
+Assessment and plan
+<mark>Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI.</mark> Planned ICD per EP. SDM
+visit completed (page 7). Continue GDMT and antiplatelet therapy.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c02">
+<div class="meta"><span>Bariatric surgery (Roux-en-Y gastric bypass)</span><span>Yolanda Prescott</span><span>cited page 5</span></div>
+<h3>Comorbidities: type 2 diabetes mellitus, hypothyroidism</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c02">
+<label><input type="radio" name="c02" value="yes"> Yes</label>
+<label><input type="radio" name="c02" value="partly"> Partly</label>
+<label><input type="radio" name="c02" value="no"> No</label>
+<label><input type="radio" name="c02" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Capital Bariatric Surgery Associates  |  Fax (614) 555-0196  |  Received 2026-10-04  |  Page 5 of 7
+Weight Management Program - Dietitian Intake and Progress Notes
+Program: supervised weight management program, Capital Bariatric Surgery Associates.    Dietitian: M.
+Okoye, RD.
+Patient: Yolanda Prescott.
+Program intake, 2026-03-09
+Height 63 in, weight 204 lb, BMI 36.1 kg/m2 at intake. Comorbid type 2 diabetes. Baseline 24-hour recall
+shows frequent sweetened beverages and late-evening eating. Goals: 1,300-kcal plan, protein target 70
+g/day, 30 min walking 5 days/week.
+Follow-up
+Monthly visits 2026-04 through 2026-09 attended. Intermediate weights: 2026-05 200 lb, 2026-07 195 lb.
+Physician-supervised, with phentermine 37.5 mg daily added 2026-04 and stopped 2026-06 for
+palpitations.
+Assessment
+<mark>Six months of supervised dietary and medication-assisted treatment with partial, non-durable weight loss;
+glycemic control not adequate. Medical treatment judged unsuccessful.</mark>
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c03">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Gerald Fitzpatrick</span><span>cited page 8</span></div>
+<h3>The packet says there is none (conditions that rule out an icd)</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c03">
+<label><input type="radio" name="c03" value="yes"> Yes</label>
+<label><input type="radio" name="c03" value="partly"> Partly</label>
+<label><input type="radio" name="c03" value="no"> No</label>
+<label><input type="radio" name="c03" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Heartland Cardiac Electrophysiology Associates  |  Fax (330) 555-0171  |  Received 2026-10-04  |  Page 8 of 8
+Electrophysiology Surgeon Operative Plan
+Date: 2026-09-30.   Surgeon: Dr. Anita Rao, MD, cardiac electrophysiology.
+Patient: Gerald Fitzpatrick.
+Planned procedure
+Insertion of a transvenous single-chamber ICD (CPT 33249), left subclavian approach under conscious
+sedation, with defibrillation testing per protocol. Pre-op: hold nothing; INR not applicable (no anticoagulant).
+Indication
+Primary prevention of sudden cardiac death in non-ischemic dilated cardiomyopathy with chronic systolic
+heart failure.
+Expected hospital course
+Anticipated inpatient stay: 2 midnights, for post-implant rhythm monitoring on telemetry, pocket and
+lead-position surveillance with a repeat chest film, device interrogation, and renal function and volume
+status monitoring given CKD and diuretic dosing. Discharge on post-op day 2 if device checks are normal.
+Comorbidities relevant to peri-procedural risk
+Chronic heart failure, hypertension, and CKD stage 3 (eGFR 48).
+Pre-procedure assessment
+Patient is clinically stable: euvolemic, NYHA III unchanged over 3 months, no admission since spring. <mark>No
+condition limiting life expectancy to under one year, no severe neurologic impairment, no atrial fibrillation
+(sinus rhythm on ECG), no active infection. No conditions that would rule out an ICD were identified.</mark>
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c04">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 7</span></div>
+<h3>Shared decision making: Documented</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c04">
+<label><input type="radio" name="c04" value="yes"> Yes</label>
+<label><input type="radio" name="c04" value="partly"> Partly</label>
+<label><input type="radio" name="c04" value="no"> No</label>
+<label><input type="radio" name="c04" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 7 of 8
+Shared Decision Making Visit Note - ICD
+Date: 2026-09-30.   Clinician: Dr. H. Abernathy (EP).   Duration 35 minutes.   Patient and daughter present.
+<mark>We used the ICD patient decision aid (illustrated pamphlet and interactive web tool, evidence-based) to
+review the survival benefit of a primary-prevention ICD, procedural risk, shocks, and the alternative of
+medical therapy alone.</mark> The patient described his own priorities and chose to move ahead with the device.
+Informed of the recent heart attack and the usual waiting period; patient states understanding.
+Outcome
+Shared decision making visit completed and documented before implant scheduling.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c05">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Raymond Okafor</span><span>cited page 6</span></div>
+<h3>The packet says there is none (conditions that rule out an icd)</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c05">
+<label><input type="radio" name="c05" value="yes"> Yes</label>
+<label><input type="radio" name="c05" value="partly"> Partly</label>
+<label><input type="radio" name="c05" value="no"> No</label>
+<label><input type="radio" name="c05" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 6 of 7
+Electrophysiology Surgeon Operative Plan
+Date: 2026-09-29.   Surgeon: Dr. Priya Venkataraman, MD, electrophysiology.   Patient: Raymond Okafor.
+Planned procedure
+Transvenous ICD implant, CPT 33249, left subclavian access.
+Indication as submitted
+Primary-prevention ICD for non-ischemic dilated cardiomyopathy, on a background of HFrEF, NYHA II. See
+imaging in this packet for the most current ventricular function.
+Hospital course
+Expected length of stay: 2 midnights for post-implant telemetry and device check.
+Comorbidities
+Heart failure, hypertension, hyperlipidemia, chronic kidney disease stage 2, gout.
+Condition
+<mark>Clinically stable, euvolemic, no conditions limiting survival, no severe neurologic impairment, no atrial
+fibrillation. No exclusion identified.</mark>
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c06">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 5</span></div>
+<h3>Months on heart failure medicines: 14 months</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c06">
+<label><input type="radio" name="c06" value="yes"> Yes</label>
+<label><input type="radio" name="c06" value="partly"> Partly</label>
+<label><input type="radio" name="c06" value="no"> No</label>
+<label><input type="radio" name="c06" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Erie Shores Heart Institute | Fax (440) 555-0191 | Received 2026-10-04 | Page 5 of 8
+Heart Failure Medication List with Start Dates
+Patient: Dennis Kowalczyk.   Reconciled 2026-09-29.
+Drug Dose Start date sacubitril/valsartan 49/51 mg BID 2025-08-04 metoprolol succinate 100 mg daily 2025-08-04 eplerenone 25 mg daily 2025-09-15 dapagliflozin 10 mg daily 2025-10-20 furosemide 40 mg daily 2025-08-04 aspirin 81 mg daily 2012 clopidogrel 75 mg daily 2026-09-10 (post NSTEMI) rosuvastatin 40 mg daily 2026-09-10 (increased) metformin 1000 mg BID 2016
+<mark>Patient has been on guideline-directed HF therapy for more than a year (14 months since 2025-08).</mark>
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c07">
+<div class="meta"><span>Bariatric surgery (Roux-en-Y gastric bypass)</span><span>Yolanda Prescott</span><span>cited page 2</span></div>
+<h3>Comorbidities: type 2 diabetes mellitus, hypothyroidism</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c07">
+<label><input type="radio" name="c07" value="yes"> Yes</label>
+<label><input type="radio" name="c07" value="partly"> Partly</label>
+<label><input type="radio" name="c07" value="no"> No</label>
+<label><input type="radio" name="c07" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Capital Bariatric Surgery Associates | Fax (614) 555-0196 | Received 2026-10-04 | Page 2 of 7
+Bariatric Surgeon Pre-operative Visit
+Date: 2026-09-14.
+Patient: Yolanda Prescott
+Age: 65
+Sex: F
+Interval history
+Ms. Prescott is a 65-year-old woman with obesity and type 2 diabetes, seen after six months in our
+supervised weight management program. She has lost some weight but remains symptomatic: diabetes not
+at goal (HbA1c 7.8%), joint pain, fatigue.
+Measurements today
+Height 63 in, weight 191 lb, BMI 33.8 kg/m2.
+PMH
+<mark>Type 2 diabetes mellitus. Hypothyroidism. Cesarean section 1992. Cataract surgery 2024. Never smoker.</mark>
+Medications
+Metformin 1000 mg BID, empagliflozin 10 mg daily, levothyroxine 88 mcg daily, phentermine discontinued
+2026-06.
+Exam
+BP 122/74, HR 80, SpO2 98%. Abdomen soft, no hernia. No edema.
+Plan
+Proceed with the surgical pathway as planned; request authorization for laparoscopic Roux-en-Y gastric
+bypass. Operative plan on page 7.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c08">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 2</span></div>
+<h3>Recent heart attack, bypass, or stent: NSTEMI on 2026-09-09, within 40 days of planned implant on 2026-10-14; no PCI or CABG performed</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c08">
+<label><input type="radio" name="c08" value="yes"> Yes</label>
+<label><input type="radio" name="c08" value="partly"> Partly</label>
+<label><input type="radio" name="c08" value="no"> No</label>
+<label><input type="radio" name="c08" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 2 of 8
+Cardiology Consultation - ICD Evaluation
+Date: 2026-09-29.   Patient: Dennis Kowalczyk   Age: 70   Sex: M
+Reason for referral
+Primary-prevention ICD evaluation, ischemic cardiomyopathy with reduced ejection fraction.
+History of present illness
+70-year-old man with long-standing multivessel coronary artery disease managed medically, and ischemic cardiomyopathy with chronic systolic heart failure. He reports dyspnea on walking up a slope or more than two blocks, with no symptoms during routine household tasks and none at rest (NYHA II). No syncope. No sustained ventricular arrhythmia documented.
+He was hospitalized earlier this month; see the interval history below and the discharge summary on page 6.
+Interval history
+<mark>Admitted 2026-09-09 to Erie Shores Medical Center with chest pressure and a troponin rise, diagnosed
+with an NSTEMI.</mark> Coronary angiography the next day showed known multivessel disease without a target
+for PCI; managed medically. Discharged 2026-09-12 free of angina.
+PMH
+Coronary artery disease, ischemic cardiomyopathy, hypertension, hyperlipidemia, type 2 diabetes
+(metformin). No CABG. No prior stent. Former smoker, quit 2015. Left inguinal hernia repair 2012.
+Exam
+BP 124/70, HR 66, SpO2 96%. Lungs with minimal bibasilar crackles. No edema. Regular rhythm.
+Assessment and plan
+Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI. Planned ICD per EP. SDM
+visit completed (page 7). Continue GDMT and antiplatelet therapy.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c09">
+<div class="meta"><span>Bariatric surgery (Roux-en-Y gastric bypass)</span><span>Yolanda Prescott</span><span>cited page 5</span></div>
+<h3>Prior medical treatment: Six months (2026-03 to 2026-09) of a physician-supervised weight management program including a 1,300-kcal diet, 70 g/day protein target, walking 30 min 5 days/week, and phentermine 37.5 mg daily added 2026-04 and stopped 2026-06 for palpitations; weight decreased from 204 lb to 195 lb but glycemic control remained inadequate (HbA1c 7.8%), and the treatment was judged unsuccessful.</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c09">
+<label><input type="radio" name="c09" value="yes"> Yes</label>
+<label><input type="radio" name="c09" value="partly"> Partly</label>
+<label><input type="radio" name="c09" value="no"> No</label>
+<label><input type="radio" name="c09" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Capital Bariatric Surgery Associates  |  Fax (614) 555-0196  |  Received 2026-10-04  |  Page 5 of 7
+Weight Management Program - Dietitian Intake and Progress Notes
+Program: supervised weight management program, Capital Bariatric Surgery Associates.    Dietitian: M.
+Okoye, RD.
+Patient: Yolanda Prescott.
+Program intake, 2026-03-09
+Height 63 in, weight 204 lb, BMI 36.1 kg/m2 at intake. Comorbid type 2 diabetes. Baseline 24-hour recall
+shows frequent sweetened beverages and late-evening eating. Goals: 1,300-kcal plan, protein target 70
+g/day, 30 min walking 5 days/week.
+Follow-up
+Monthly visits 2026-04 through 2026-09 attended. Intermediate weights: 2026-05 200 lb, 2026-07 195 lb.
+Physician-supervised, with phentermine 37.5 mg daily added 2026-04 and stopped 2026-06 for
+palpitations.
+Assessment
+<mark>Six months of supervised dietary and medication-assisted treatment with partial, non-durable weight loss;
+glycemic control not adequate. Medical treatment judged unsuccessful.</mark>
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c10">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Raymond Okafor</span><span>cited page 2</span></div>
+<h3>The packet says there is none (recent heart attack, bypass, or stent)</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c10">
+<label><input type="radio" name="c10" value="yes"> Yes</label>
+<label><input type="radio" name="c10" value="partly"> Partly</label>
+<label><input type="radio" name="c10" value="no"> No</label>
+<label><input type="radio" name="c10" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 2 of 7
+Cardiology Consultation Note
+Date of service: 2026-09-09.   Patient: Raymond Okafor   Age: 72   Sex: M
+HPI
+72-year-old man with a non-ischemic dilated cardiomyopathy diagnosed last year. He was started on heart
+failure medications after the diagnosis. He walks his dog daily and can climb a flight of stairs; he notes
+slight breathlessness with brisk walking uphill but not with ordinary activity. No orthopnea. No syncope. No
+ICD discharges (no device). Symptoms put him in NYHA class II.
+Ischemic work-up and events
+Cardiac catheterization (see page 4) showed no obstructive coronary disease. <mark>He has not had a
+myocardial infarction, bypass surgery or stent at any time, certainly not within the last year.</mark>
+PMH
+Hypertension. Hyperlipidemia. Gout. Chronic kidney disease stage 2. Left rotator cuff repair 2017.
+Non-smoker. Occasional wine.
+Exam
+BP 122/76, HR 64, SpO2 98%, BMI 31. No JVD. Clear lungs. Regular rhythm, no gallop. No edema.
+Assessment and plan
+Non-ischemic dilated cardiomyopathy with HFrEF, NYHA II. His EF has improved on therapy. Continue GDMT. Discussed ICD candidacy with EP; formal shared decision making visit on 2026-09-18 (page 5).
+Surgical plan on page 6.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c11">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 2</span></div>
+<h3>Cause of heart failure: ischemic</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c11">
+<label><input type="radio" name="c11" value="yes"> Yes</label>
+<label><input type="radio" name="c11" value="partly"> Partly</label>
+<label><input type="radio" name="c11" value="no"> No</label>
+<label><input type="radio" name="c11" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 2 of 8
+Cardiology Consultation - ICD Evaluation
+Date: 2026-09-29.   Patient: Dennis Kowalczyk   Age: 70   Sex: M
+Reason for referral
+Primary-prevention ICD evaluation, ischemic cardiomyopathy with reduced ejection fraction.
+History of present illness
+70-year-old man with long-standing multivessel coronary artery disease managed medically, and ischemic cardiomyopathy with chronic systolic heart failure. He reports dyspnea on walking up a slope or more than two blocks, with no symptoms during routine household tasks and none at rest (NYHA II). No syncope. No sustained ventricular arrhythmia documented.
+He was hospitalized earlier this month; see the interval history below and the discharge summary on page 6.
+Interval history
+Admitted 2026-09-09 to Erie Shores Medical Center with chest pressure and a troponin rise, diagnosed
+with an NSTEMI. Coronary angiography the next day showed known multivessel disease without a target
+for PCI; managed medically. Discharged 2026-09-12 free of angina.
+PMH
+Coronary artery disease, ischemic cardiomyopathy, hypertension, hyperlipidemia, type 2 diabetes
+(metformin). No CABG. No prior stent. Former smoker, quit 2015. Left inguinal hernia repair 2012.
+Exam
+BP 124/70, HR 66, SpO2 96%. Lungs with minimal bibasilar crackles. No edema. Regular rhythm.
+Assessment and plan
+<mark>Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI.</mark> Planned ICD per EP. SDM
+visit completed (page 7). Continue GDMT and antiplatelet therapy.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c12">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Gerald Fitzpatrick</span><span>cited page 5</span></div>
+<h3>Months on heart failure medicines: 8 months</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c12">
+<label><input type="radio" name="c12" value="yes"> Yes</label>
+<label><input type="radio" name="c12" value="partly"> Partly</label>
+<label><input type="radio" name="c12" value="no"> No</label>
+<label><input type="radio" name="c12" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Heartland Cardiac Electrophysiology Associates  |  Fax (330) 555-0171  |  Received 2026-10-04  |  Page 5 of 8
+Medication Reconciliation - Heart Failure Clinic
+Reconciled 2026-09-16 with patient and pharmacy fill history.
+Allergies: sulfa (rash).
+Guideline-directed medical therapy for HFREF
+Drug Dose Start date Status sacubitril/valsartan 97/103 mg BID 2026-02-02 active (titrated up 04-2026) carvedilol 25 mg BID 2026-02-02 active (titrated up 05-2026) spironolactone 25 mg daily 2026-03-02 active dapagliflozin 10 mg daily 2026-03-16 active furosemide 40 mg daily 2026-01-20 active, dose adjusted PRN
+Other medications
+amlodipine 5 mg daily 2019 active atorvastatin 20 mg nightly 2022 active omeprazole 20 mg daily 2023 active
+Comment
+<mark>Patient has remained on optimal tolerated doses of ARNI, beta blocker, MRA and SGLT2 inhibitor continuously since early February 2026, a total of 8 months of guideline-directed medical therapy at today&#x27;s date.</mark> Adherence good per pharmacy refills; no missed fills. No drug intolerance. Potassium and creatinine monitored at each titration.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c13">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Gerald Fitzpatrick</span><span>cited page 3</span></div>
+<h3>Ejection fraction: 28%</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c13">
+<label><input type="radio" name="c13" value="yes"> Yes</label>
+<label><input type="radio" name="c13" value="partly"> Partly</label>
+<label><input type="radio" name="c13" value="no"> No</label>
+<label><input type="radio" name="c13" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 3 of 8
+Transthoracic Echocardiogram Report
+Study date: 2026-08-12.   Indication: cardiomyopathy, reassessment of LV function on therapy.
+Patient: Gerald Fitzpatrick    DOB: 1959-03-12    Sonographer: K. Yamada, RDCS.    Interpreting physician:
+R. Castellano, MD, FASE.
+Findings
+Left ventricle: moderately to severely dilated (LVIDd 6.3 cm, LVIDs 5.6 cm). Wall thickness normal. Global
+hypokinesis with no discrete regional wall motion abnormality. No LV thrombus on contrast-enhanced
+views.
+<mark>Left ventricular ejection fraction 28% by TTE (biplane method of discs, apical 4- and 2-chamber).</mark>
+Diastolic function: restrictive filling pattern, E/e&#x27; 17.
+Left atrium: moderately enlarged, LA volume index 44 mL/m2.
+Right ventricle: normal size, mildly reduced longitudinal function, TAPSE 15 mm.
+Valves: mild-to-moderate functional mitral regurgitation. Mild tricuspid regurgitation. Aortic valve trileaflet,
+no stenosis.
+Estimated RVSP 38 mmHg. IVC 2.0 cm with less than 50% collapse. No pericardial effusion.
+Impression
+1. Dilated left ventricle with severely reduced systolic function, LVEF 28%.
+2. Mild-to-moderate functional MR. 3. Elevated filling pressures. 4. No thrombus.
+Electronically signed 2026-08-12 16:41.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c14">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 3</span></div>
+<h3>Ejection fraction: 31%</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c14">
+<label><input type="radio" name="c14" value="yes"> Yes</label>
+<label><input type="radio" name="c14" value="partly"> Partly</label>
+<label><input type="radio" name="c14" value="no"> No</label>
+<label><input type="radio" name="c14" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Erie Shores Heart Institute | Fax (440) 555-0191 | Received 2026-10-04 | Page 3 of 8
+Echocardiogram Report
+Study date: 2026-09-11 (inpatient, post-NSTEMI day 2).    Type: limited TTE.
+Patient: Dennis Kowalczyk.    Reader: C. Hoffmeyer, MD.
+Findings
+Left ventricle dilated, LVEDD 6.1 cm. Akinesis of the basal-to-mid inferior and inferolateral segments with hypokinesis of the anterior wall. <mark>Quantitative LVEF 31% (biplane Simpson).</mark>
+Mild-to-moderate ischemic mitral regurgitation. RV function preserved. LA mildly dilated. No LV thrombus.
+No pericardial effusion.
+Impression
+Ischemic cardiomyopathy with LVEF 31% by echocardiography. Regional wall-motion abnormalities in the RCA/LCx territory.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c15">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Gerald Fitzpatrick</span><span>cited page 3</span></div>
+<h3>How it was measured: echocardiography</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c15">
+<label><input type="radio" name="c15" value="yes"> Yes</label>
+<label><input type="radio" name="c15" value="partly"> Partly</label>
+<label><input type="radio" name="c15" value="no"> No</label>
+<label><input type="radio" name="c15" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 3 of 8
+Transthoracic Echocardiogram Report
+Study date: 2026-08-12.   Indication: cardiomyopathy, reassessment of LV function on therapy.
+Patient: Gerald Fitzpatrick    DOB: 1959-03-12    Sonographer: K. Yamada, RDCS.    Interpreting physician:
+R. Castellano, MD, FASE.
+Findings
+Left ventricle: moderately to severely dilated (LVIDd 6.3 cm, LVIDs 5.6 cm). Wall thickness normal. Global
+hypokinesis with no discrete regional wall motion abnormality. No LV thrombus on contrast-enhanced
+views.
+<mark>Left ventricular ejection fraction 28% by TTE (biplane method of discs, apical 4- and 2-chamber).</mark>
+Diastolic function: restrictive filling pattern, E/e&#x27; 17.
+Left atrium: moderately enlarged, LA volume index 44 mL/m2.
+Right ventricle: normal size, mildly reduced longitudinal function, TAPSE 15 mm.
+Valves: mild-to-moderate functional mitral regurgitation. Mild tricuspid regurgitation. Aortic valve trileaflet,
+no stenosis.
+Estimated RVSP 38 mmHg. IVC 2.0 cm with less than 50% collapse. No pericardial effusion.
+Impression
+1. Dilated left ventricle with severely reduced systolic function, LVEF 28%.
+2. Mild-to-moderate functional MR. 3. Elevated filling pressures. 4. No thrombus.
+Electronically signed 2026-08-12 16:41.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c16">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Gerald Fitzpatrick</span><span>cited page 2</span></div>
+<h3>NYHA class: III</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c16">
+<label><input type="radio" name="c16" value="yes"> Yes</label>
+<label><input type="radio" name="c16" value="partly"> Partly</label>
+<label><input type="radio" name="c16" value="no"> No</label>
+<label><input type="radio" name="c16" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 2 of 8
+Cardiology Consultation - Heart Failure Clinic
+Date of visit: 2026-09-16.   Patient: Gerald Fitzpatrick   Age/Sex: 67 M
+Referred by: Dr. L. Mbeki (PCP) for evaluation of primary-prevention ICD candidacy.
+Reason for visit
+Follow-up of dilated cardiomyopathy with chronic heart failure with reduced ejection fraction (HFrEF).
+History of present illness
+67-year-old man with a non-ischemic dilated cardiomyopathy, first recognized after an admission for decompensated heart failure earlier this year. He reports dyspnea after walking about one block on level ground or climbing one flight of stairs, two-pillow orthopnea, and ankle swelling by the end of the day. He is comfortable at rest. No syncope or presyncope. No palpitations, no ICD shocks (no device in place). Weight is stable on diuretic. He has not needed an ED visit or admission for HF since the spring. <mark>Symptom burden has been stable over the last 3 months: marked limitation of ordinary activity, comfortable at rest, consistent with NYHA functional class III.</mark>
+Cardiac history
+Ischemic evaluation: left heart catheterization 2026-07-21 without obstructive coronary disease (report on
+file). No myocardial infarction, CABG or PCI in the past 12 months, and none before that either. No stent.
+No history of sustained VT, VF or cardiac arrest.
+Past medical history
+Heart failure as above. Hypertension, long-standing. Chronic kidney disease stage 3a (baseline eGFR in
+the high 40s). Remote appendectomy. Cataract extraction OU 2021. Seasonal allergies. Former smoker,
+quit 2008, 10 pack-years. Alcohol: 1-2 beers on weekends; counseled. No illicit drug use.
+Exam
+BP 118/72, HR 70 regular, SpO2 97% RA, BMI 29. JVP about 8 cm. Lungs clear. S3 present, soft apical
+MR murmur. Trace bilateral ankle edema. Warm extremities.
+Assesment and plan
+Dilated cardiomyopathy, non-ischemic, symptomatic HFrEF, NYHA III, on guideline-directed therapy (see
+medication list). LVEF remains severely reduced on the latest echocardiogram (page 3). Candidate for
+primary-prevention ICD. Referred to EP for implantation. Continue current regimen, daily weights, 2 g
+sodium diet. Return in 6 weeks.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c17">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Gerald Fitzpatrick</span><span>cited page 2</span></div>
+<h3>The packet says there is none (recent heart attack, bypass, or stent)</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c17">
+<label><input type="radio" name="c17" value="yes"> Yes</label>
+<label><input type="radio" name="c17" value="partly"> Partly</label>
+<label><input type="radio" name="c17" value="no"> No</label>
+<label><input type="radio" name="c17" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 2 of 8
+Cardiology Consultation - Heart Failure Clinic
+Date of visit: 2026-09-16.   Patient: Gerald Fitzpatrick   Age/Sex: 67 M
+Referred by: Dr. L. Mbeki (PCP) for evaluation of primary-prevention ICD candidacy.
+Reason for visit
+Follow-up of dilated cardiomyopathy with chronic heart failure with reduced ejection fraction (HFrEF).
+History of present illness
+67-year-old man with a non-ischemic dilated cardiomyopathy, first recognized after an admission for decompensated heart failure earlier this year. He reports dyspnea after walking about one block on level ground or climbing one flight of stairs, two-pillow orthopnea, and ankle swelling by the end of the day. He is comfortable at rest. No syncope or presyncope. No palpitations, no ICD shocks (no device in place). Weight is stable on diuretic. He has not needed an ED visit or admission for HF since the spring. Symptom burden has been stable over the last 3 months: marked limitation of ordinary activity, comfortable at rest, consistent with NYHA functional class III.
+Cardiac history
+Ischemic evaluation: left heart catheterization 2026-07-21 without obstructive coronary disease (report on
+file). <mark>No myocardial infarction, CABG or PCI in the past 12 months, and none before that either. No stent.</mark>
+No history of sustained VT, VF or cardiac arrest.
+Past medical history
+Heart failure as above. Hypertension, long-standing. Chronic kidney disease stage 3a (baseline eGFR in
+the high 40s). Remote appendectomy. Cataract extraction OU 2021. Seasonal allergies. Former smoker,
+quit 2008, 10 pack-years. Alcohol: 1-2 beers on weekends; counseled. No illicit drug use.
+Exam
+BP 118/72, HR 70 regular, SpO2 97% RA, BMI 29. JVP about 8 cm. Lungs clear. S3 present, soft apical
+MR murmur. Trace bilateral ankle edema. Warm extremities.
+Assesment and plan
+Dilated cardiomyopathy, non-ischemic, symptomatic HFrEF, NYHA III, on guideline-directed therapy (see
+medication list). LVEF remains severely reduced on the latest echocardiogram (page 3). Candidate for
+primary-prevention ICD. Referred to EP for implantation. Continue current regimen, daily weights, 2 g
+sodium diet. Return in 6 weeks.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c18">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Raymond Okafor</span><span>cited page 3</span></div>
+<h3>How it was measured: echocardiography</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c18">
+<label><input type="radio" name="c18" value="yes"> Yes</label>
+<label><input type="radio" name="c18" value="partly"> Partly</label>
+<label><input type="radio" name="c18" value="no"> No</label>
+<label><input type="radio" name="c18" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 3 of 7
+Echocardiogram Report - Most Recent
+Study date: 2026-08-20.    <mark>Type: complete transthoracic echocardiogram with contrast (Definity).</mark>
+Patient: Raymond Okafor   DOB: 1954-01-30   Interpreting: A Nwosu, MD, FACC.
+Comparison: no prior study available for comparison at the time of this interpretation.
+Findings
+Left ventricle mildly dilated, LVIDd 5.6 cm. Mild global hypokinesis, worse in the inferolateral wall. Overall left ventricular systolic function is mildly reduced, LVEF 42% (biplane Simpson, contrast-enhanced).
+Normal LV wall thickness. Grade I diastolic dysfunction. Left atrium mildly dilated. RV normal size and function. Trivial MR and TR. No pericardial effusion. No thrombus.
+Impresion
+Mild LV dilatation with mildly reduced systolic function, LVEF 42%.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c19">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 8</span></div>
+<h3>The packet says there is none (conditions that rule out an icd)</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c19">
+<label><input type="radio" name="c19" value="yes"> Yes</label>
+<label><input type="radio" name="c19" value="partly"> Partly</label>
+<label><input type="radio" name="c19" value="no"> No</label>
+<label><input type="radio" name="c19" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 8 of 8
+Electrophysiology Surgeon Operative Plan
+Date: 2026-09-30.    Surgeon: Dr. Helen Abernathy, MD, cardiac electrophysiology.    Patient: Dennis
+Kowalczyk.
+Procedure
+Transvenous ICD (single chamber), CPT 33249.
+Indication
+<mark>Primary prevention, ischemic cardiomyopathy with LVEF 31%, NYHA class II.</mark>
+Expected stay
+2 midnights, telemetry and device interrogation, pocket check.
+Comorbidities
+Coronary artery disease, heart failure, type 2 diabetes, hypertension, hyperlipidemia.
+Status
+Clinically stable since discharge on 09-12. No other conditions limiting survival; no atrial fibrillation; no severe neurologic impairment.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c20">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 8</span></div>
+<h3>The packet says there is none (conditions that rule out an icd)</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c20">
+<label><input type="radio" name="c20" value="yes"> Yes</label>
+<label><input type="radio" name="c20" value="partly"> Partly</label>
+<label><input type="radio" name="c20" value="no"> No</label>
+<label><input type="radio" name="c20" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 8 of 8
+Electrophysiology Surgeon Operative Plan
+Date: 2026-09-30.    Surgeon: Dr. Helen Abernathy, MD, cardiac electrophysiology.    Patient: Dennis
+Kowalczyk.
+Procedure
+Transvenous ICD (single chamber), CPT 33249.
+Indication
+Primary prevention, ischemic cardiomyopathy with LVEF 31%, NYHA class II.
+Expected stay
+2 midnights, telemetry and device interrogation, pocket check.
+Comorbidities
+Coronary artery disease, heart failure, type 2 diabetes, hypertension, hyperlipidemia.
+Status
+<mark>Clinically stable since discharge on 09-12. No other conditions limiting survival; no atrial fibrillation; no severe neurologic impairment.</mark>
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c21">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Gerald Fitzpatrick</span><span>cited page 3</span></div>
+<h3>Expected stay: 2 midnights</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c21">
+<label><input type="radio" name="c21" value="yes"> Yes</label>
+<label><input type="radio" name="c21" value="partly"> Partly</label>
+<label><input type="radio" name="c21" value="no"> No</label>
+<label><input type="radio" name="c21" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 3 of 8
+Transthoracic Echocardiogram Report
+Study date: 2026-08-12.   Indication: cardiomyopathy, reassessment of LV function on therapy.
+Patient: Gerald Fitzpatrick    DOB: 1959-03-12    Sonographer: K. Yamada, RDCS.    Interpreting physician:
+R. Castellano, MD, FASE.
+Findings
+Left ventricle: moderately to severely dilated (LVIDd 6.3 cm, LVIDs 5.6 cm). Wall thickness normal. Global
+hypokinesis with no discrete regional wall motion abnormality. No LV thrombus on contrast-enhanced
+views.
+<mark>Left ventricular ejection fraction 28% by TTE (biplane method of discs, apical 4- and 2-chamber).</mark>
+Diastolic function: restrictive filling pattern, E/e&#x27; 17.
+Left atrium: moderately enlarged, LA volume index 44 mL/m2.
+Right ventricle: normal size, mildly reduced longitudinal function, TAPSE 15 mm.
+Valves: mild-to-moderate functional mitral regurgitation. Mild tricuspid regurgitation. Aortic valve trileaflet,
+no stenosis.
+Estimated RVSP 38 mmHg. IVC 2.0 cm with less than 50% collapse. No pericardial effusion.
+Impression
+1. Dilated left ventricle with severely reduced systolic function, LVEF 28%.
+2. Mild-to-moderate functional MR. 3. Elevated filling pressures. 4. No thrombus.
+Electronically signed 2026-08-12 16:41.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c22">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 8</span></div>
+<h3>Expected stay: 2 midnights</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c22">
+<label><input type="radio" name="c22" value="yes"> Yes</label>
+<label><input type="radio" name="c22" value="partly"> Partly</label>
+<label><input type="radio" name="c22" value="no"> No</label>
+<label><input type="radio" name="c22" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 8 of 8
+Electrophysiology Surgeon Operative Plan
+Date: 2026-09-30.    Surgeon: Dr. Helen Abernathy, MD, cardiac electrophysiology.    Patient: Dennis
+Kowalczyk.
+Procedure
+Transvenous ICD (single chamber), CPT 33249.
+Indication
+Primary prevention, ischemic cardiomyopathy with LVEF 31%, NYHA class II.
+Expected stay
+<mark>2 midnights, telemetry and device interrogation, pocket check.</mark>
+Comorbidities
+Coronary artery disease, heart failure, type 2 diabetes, hypertension, hyperlipidemia.
+Status
+Clinically stable since discharge on 09-12. No other conditions limiting survival; no atrial fibrillation; no severe neurologic impairment.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c23">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Raymond Okafor</span><span>cited page 5</span></div>
+<h3>Shared decision making: Documented</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c23">
+<label><input type="radio" name="c23" value="yes"> Yes</label>
+<label><input type="radio" name="c23" value="partly"> Partly</label>
+<label><input type="radio" name="c23" value="no"> No</label>
+<label><input type="radio" name="c23" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 5 of 7
+Shared Decision Making Visit - ICD
+Date: 2026-09-18.   Clinician: Dr. P. Venkataraman.   Patient: Raymond Okafor; wife present.
+<mark>Patient-facing evidence-based ICD decision aid (video and printed worksheet from the national heart failure
+decision-support program) was reviewed together at this visit.</mark> Benefits (lower risk of sudden cardiac death),
+risks (infection, shocks, lead failure, bleeding), alternatives (medical therapy alone, wearable defibrillation),
+and personal values were discussed for 30 minutes. The patient asked good questions and understood the
+content.
+The patient wishes to proceed. Decision made jointly with the clinician, before scheduling the implant.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c24">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Gerald Fitzpatrick</span><span>cited page 2</span></div>
+<h3>Months on heart failure medicines: 8 months</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c24">
+<label><input type="radio" name="c24" value="yes"> Yes</label>
+<label><input type="radio" name="c24" value="partly"> Partly</label>
+<label><input type="radio" name="c24" value="no"> No</label>
+<label><input type="radio" name="c24" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 2 of 8
+Cardiology Consultation - Heart Failure Clinic
+Date of visit: 2026-09-16.   Patient: Gerald Fitzpatrick   Age/Sex: 67 M
+Referred by: Dr. L. Mbeki (PCP) for evaluation of primary-prevention ICD candidacy.
+Reason for visit
+Follow-up of dilated cardiomyopathy with chronic heart failure with reduced ejection fraction (HFrEF).
+History of present illness
+67-year-old man with a non-ischemic dilated cardiomyopathy, first recognized after an admission for decompensated heart failure earlier this year. He reports dyspnea after walking about one block on level ground or climbing one flight of stairs, two-pillow orthopnea, and ankle swelling by the end of the day. He is comfortable at rest. No syncope or presyncope. No palpitations, no ICD shocks (no device in place). Weight is stable on diuretic. He has not needed an ED visit or admission for HF since the spring. <mark>Symptom burden has been stable over the last 3 months: marked limitation of ordinary activity, comfortable at rest, consistent with NYHA functional class III.</mark>
+Cardiac history
+Ischemic evaluation: left heart catheterization 2026-07-21 without obstructive coronary disease (report on
+file). No myocardial infarction, CABG or PCI in the past 12 months, and none before that either. No stent.
+No history of sustained VT, VF or cardiac arrest.
+Past medical history
+Heart failure as above. Hypertension, long-standing. Chronic kidney disease stage 3a (baseline eGFR in
+the high 40s). Remote appendectomy. Cataract extraction OU 2021. Seasonal allergies. Former smoker,
+quit 2008, 10 pack-years. Alcohol: 1-2 beers on weekends; counseled. No illicit drug use.
+Exam
+BP 118/72, HR 70 regular, SpO2 97% RA, BMI 29. JVP about 8 cm. Lungs clear. S3 present, soft apical
+MR murmur. Trace bilateral ankle edema. Warm extremities.
+Assesment and plan
+Dilated cardiomyopathy, non-ischemic, symptomatic HFrEF, NYHA III, on guideline-directed therapy (see
+medication list). LVEF remains severely reduced on the latest echocardiogram (page 3). Candidate for
+primary-prevention ICD. Referred to EP for implantation. Continue current regimen, daily weights, 2 g
+sodium diet. Return in 6 weeks.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c25">
+<div class="meta"><span>Bariatric surgery (Roux-en-Y gastric bypass)</span><span>Marcia Delgado-Finch</span><span>cited page 7</span></div>
+<h3>Expected stay: 2 midnights</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c25">
+<label><input type="radio" name="c25" value="yes"> Yes</label>
+<label><input type="radio" name="c25" value="partly"> Partly</label>
+<label><input type="radio" name="c25" value="no"> No</label>
+<label><input type="radio" name="c25" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Lakeview Bariatric &amp; Metabolic Surgery Center  |  Fax (937) 555-0161  |  Received 2026-10-04  |  Page 7 of 7
+Bariatric Surgeon Operative Plan
+Date: 2026-09-22.   Surgeon: Dr. Joel Hartmann, MD, bariatric surgery.   Patient: Marcia Delgado-Finch.
+Procedure
+Laparoscopic Roux-en-Y gastric bypass (CPT 43644). Five ports, 30 mL gastric pouch, 100 cm Roux limb,
+stapled gastrojejunostomy, leak test with methylene blue.
+Expected hospital course
+<mark>Expected length of stay: 2 midnights.</mark> Day 0 monitoring with CPAP, DVT prophylaxis, glucose management. Upper GI series post-op day 1 as needed. Discharge on post-operative day 2 if tolerating liquids.
+Comorbidities driving peri-operative risk
+Type 2 diabetes, hypertension, obstructive sleep apnea requiring CPAP.
+Readiness
+Dietitian-supervised program completed, psychological clearance obtained, patient educated, and consent
+discussion scheduled for admission day.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c26">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Raymond Okafor</span><span>cited page 6</span></div>
+<h3>Comorbidities: heart failure, hypertension, hyperlipidemia, chronic kidney disease stage 2, gout</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c26">
+<label><input type="radio" name="c26" value="yes"> Yes</label>
+<label><input type="radio" name="c26" value="partly"> Partly</label>
+<label><input type="radio" name="c26" value="no"> No</label>
+<label><input type="radio" name="c26" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 6 of 7
+Electrophysiology Surgeon Operative Plan
+Date: 2026-09-29.   Surgeon: Dr. Priya Venkataraman, MD, electrophysiology.   Patient: Raymond Okafor.
+Planned procedure
+Transvenous ICD implant, CPT 33249, left subclavian access.
+Indication as submitted
+Primary-prevention ICD for non-ischemic dilated cardiomyopathy, on a background of HFrEF, NYHA II. See
+imaging in this packet for the most current ventricular function.
+Hospital course
+Expected length of stay: 2 midnights for post-implant telemetry and device check.
+Comorbidities
+<mark>Heart failure, hypertension, hyperlipidemia, chronic kidney disease stage 2, gout.</mark>
+Condition
+Clinically stable, euvolemic, no conditions limiting survival, no severe neurologic impairment, no atrial
+fibrillation. No exclusion identified.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c27">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Raymond Okafor</span><span>cited page 2</span></div>
+<h3>NYHA class: II</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c27">
+<label><input type="radio" name="c27" value="yes"> Yes</label>
+<label><input type="radio" name="c27" value="partly"> Partly</label>
+<label><input type="radio" name="c27" value="no"> No</label>
+<label><input type="radio" name="c27" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 2 of 7
+Cardiology Consultation Note
+Date of service: 2026-09-09.   Patient: Raymond Okafor   Age: 72   Sex: M
+HPI
+72-year-old man with a non-ischemic dilated cardiomyopathy diagnosed last year. He was started on heart
+failure medications after the diagnosis. He walks his dog daily and can climb a flight of stairs; he notes
+slight breathlessness with brisk walking uphill but not with ordinary activity. No orthopnea. No syncope. No
+ICD discharges (no device). <mark>Symptoms put him in NYHA class II.</mark>
+Ischemic work-up and events
+Cardiac catheterization (see page 4) showed no obstructive coronary disease. He has not had a
+myocardial infarction, bypass surgery or stent at any time, certainly not within the last year.
+PMH
+Hypertension. Hyperlipidemia. Gout. Chronic kidney disease stage 2. Left rotator cuff repair 2017.
+Non-smoker. Occasional wine.
+Exam
+BP 122/76, HR 64, SpO2 98%, BMI 31. No JVD. Clear lungs. Regular rhythm, no gallop. No edema.
+Assessment and plan
+Non-ischemic dilated cardiomyopathy with HFrEF, NYHA II. His EF has improved on therapy. Continue GDMT. Discussed ICD candidacy with EP; formal shared decision making visit on 2026-09-18 (page 5).
+Surgical plan on page 6.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c28">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 8</span></div>
+<h3>Cause of heart failure: ischemic</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c28">
+<label><input type="radio" name="c28" value="yes"> Yes</label>
+<label><input type="radio" name="c28" value="partly"> Partly</label>
+<label><input type="radio" name="c28" value="no"> No</label>
+<label><input type="radio" name="c28" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 8 of 8
+Electrophysiology Surgeon Operative Plan
+Date: 2026-09-30.    Surgeon: Dr. Helen Abernathy, MD, cardiac electrophysiology.    Patient: Dennis
+Kowalczyk.
+Procedure
+Transvenous ICD (single chamber), CPT 33249.
+Indication
+<mark>Primary prevention, ischemic cardiomyopathy with LVEF 31%, NYHA class II.</mark>
+Expected stay
+2 midnights, telemetry and device interrogation, pocket check.
+Comorbidities
+Coronary artery disease, heart failure, type 2 diabetes, hypertension, hyperlipidemia.
+Status
+Clinically stable since discharge on 09-12. No other conditions limiting survival; no atrial fibrillation; no severe neurologic impairment.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c29">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Dennis Kowalczyk</span><span>cited page 3</span></div>
+<h3>How it was measured: echocardiography</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c29">
+<label><input type="radio" name="c29" value="yes"> Yes</label>
+<label><input type="radio" name="c29" value="partly"> Partly</label>
+<label><input type="radio" name="c29" value="no"> No</label>
+<label><input type="radio" name="c29" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX Erie Shores Heart Institute | Fax (440) 555-0191 | Received 2026-10-04 | Page 3 of 8
+Echocardiogram Report
+Study date: 2026-09-11 (inpatient, post-NSTEMI day 2).    Type: limited TTE.
+Patient: Dennis Kowalczyk.    Reader: C. Hoffmeyer, MD.
+Findings
+Left ventricle dilated, LVEDD 6.1 cm. Akinesis of the basal-to-mid inferior and inferolateral segments with hypokinesis of the anterior wall. <mark>Quantitative LVEF 31% (biplane Simpson).</mark>
+Mild-to-moderate ischemic mitral regurgitation. RV function preserved. LA mildly dilated. No LV thrombus.
+No pericardial effusion.
+Impression
+Ischemic cardiomyopathy with LVEF 31% by echocardiography. Regional wall-motion abnormalities in the RCA/LCx territory.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<section class="card" id="c30">
+<div class="meta"><span>Implantable cardioverter defibrillator (ICD)</span><span>Gerald Fitzpatrick</span><span>cited page 8</span></div>
+<h3>Expected stay: 2 midnights</h3>
+<div class="ask">Does this page support that claim?</div>
+<div class="opts" role="radiogroup" aria-label="Answer for c30">
+<label><input type="radio" name="c30" value="yes"> Yes</label>
+<label><input type="radio" name="c30" value="partly"> Partly</label>
+<label><input type="radio" name="c30" value="no"> No</label>
+<label><input type="radio" name="c30" value="unsure"> Can't tell</label></div>
+<details><summary>Show the page</summary><pre class="page">FAX  Heartland Cardiac Electrophysiology Associates  |  Fax (330) 555-0171  |  Received 2026-10-04  |  Page 8 of 8
+Electrophysiology Surgeon Operative Plan
+Date: 2026-09-30.   Surgeon: Dr. Anita Rao, MD, cardiac electrophysiology.
+Patient: Gerald Fitzpatrick.
+Planned procedure
+Insertion of a transvenous single-chamber ICD (CPT 33249), left subclavian approach under conscious
+sedation, with defibrillation testing per protocol. Pre-op: hold nothing; INR not applicable (no anticoagulant).
+Indication
+Primary prevention of sudden cardiac death in non-ischemic dilated cardiomyopathy with chronic systolic
+heart failure.
+Expected hospital course
+<mark>Anticipated inpatient stay: 2 midnights, for post-implant rhythm monitoring on telemetry, pocket and
+lead-position surveillance with a repeat chest film, device interrogation, and renal function and volume
+status monitoring given CKD and diuretic dosing.</mark> Discharge on post-op day 2 if device checks are normal.
+Comorbidities relevant to peri-procedural risk
+Chronic heart failure, hypertension, and CKD stage 3 (eGFR 48).
+Pre-procedure assessment
+Patient is clinically stable: euvolemic, NYHA III unchanged over 3 months, no admission since spring. No
+condition limiting life expectancy to under one year, no severe neurologic impairment, no atrial fibrillation
+(sinus rhythm on ECG), no active infection. No conditions that would rule out an ICD were identified.
+Made-up data for a software prototype. Not a real patient.</pre></details></section>
+<h3>Your answers</h3>
+<p class="lead">Press Copy, then paste the text into the chat. If copying is blocked, select the box below and copy by hand.</p>
+<textarea id="out" readonly placeholder="Your answers appear here"></textarea>
+</main>
+<script>
+const KEY="pa-audit-v1";let ans={};
+try{ans=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+function paint(){let n=0;document.querySelectorAll(".card").forEach(c=>{const v=ans[c.id];c.classList.toggle("done",!!v);if(v){n++;const r=c.querySelector('input[value="'+v+'"]');if(r)r.checked=true}});document.getElementById("n").textContent=n;
+ document.getElementById("out").value=JSON.stringify(ans)}
+document.addEventListener("change",e=>{if(e.target.type==="radio"){ans[e.target.name]=e.target.value;try{localStorage.setItem(KEY,JSON.stringify(ans))}catch(_){}paint()}});
+document.getElementById("copy").onclick=async()=>{const t=JSON.stringify(ans);try{await navigator.clipboard.writeText(t);document.getElementById("copy").textContent="Copied"}catch(e){document.getElementById("out").select();document.getElementById("copy").textContent="Select and copy below"}setTimeout(()=>document.getElementById("copy").textContent="Copy my answers",1800)};
+document.getElementById("reset").onclick=()=>{ans={};try{localStorage.removeItem(KEY)}catch(e){}document.querySelectorAll("input[type=radio]").forEach(r=>r.checked=false);paint()};
+paint();
+</script>

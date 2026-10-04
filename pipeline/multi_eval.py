@@ -20,6 +20,7 @@ from .procedures import library, defs_by_key
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 MANIFEST = os.path.join(ROOT, "evals", "multi_manifest.json")
+ADVERSARIAL = os.path.join(ROOT, "evals", "adversarial_manifest.json")  # written by a separate AI session, see docs/ADVERSARIAL_PACKET_PROMPT.md
 
 
 def _value_ok(kind, want, got):
@@ -59,16 +60,18 @@ def run_one(m):
     defs = defs_by_key(library()["procedures"][m["procedure"]])
     rows = []
     for key, gt in m["facts"].items():
+        if key not in defs:
+            continue  # an author may add a key we do not read; ignore it
         f = facts.get(key, {"status": "missing"})
         rows.append(dict(fact=key, truth=gt["truth"], expected=gt.get("value"), why=gt.get("why"), status=f["status"], got=f.get("value"),
                          page=f.get("page"), checked=bool(f.get("checked")), outcome=classify(defs[key]["kind"], gt["truth"], gt.get("value"), f["status"], f.get("value"))))
     return dict(file=m["file"], label=m["label"], member=m["member"], procedure=m["procedure"], note=m["note"], seconds=round(time.time() - t0, 1),
                 expected_action=m["expected_action"], actual_action=res["action"], action_matches=res["action"] == m["expected_action"],
-                extractor=facts.get("_extractor"), facts=rows)
+                extractor=facts.get("_extractor"), category=m.get("category"), facts=rows)
 
 
-def run_multi(workers=3):
-    manifest = json.load(open(MANIFEST, encoding="utf-8"))
+def run_multi(workers=3, manifest_path=MANIFEST):
+    manifest = json.load(open(manifest_path, encoding="utf-8"))
     with ThreadPoolExecutor(max_workers=workers) as pool:
         results = list(pool.map(run_one, manifest))
     allf = [f for r in results for f in r["facts"]]
@@ -83,4 +86,7 @@ def run_multi(workers=3):
         hallucination_rate=dict(count=len(halluc), total=len(guarded), pct=round(100 * len(halluc) / len(guarded), 1) if guarded else None),
         flagged_uncertain=dict(count=flagged, total=len(allf), pct=round(100 * flagged / len(allf), 1) if allf else None),
         wrong_values=sum(1 for f in allf if f["outcome"] == "wrong_value"),
+        by_category={c: dict(packets=len(rs), action_matches=sum(1 for r in rs if r["action_matches"]))
+                     for c in sorted({r["category"] for r in results if r.get("category")})
+                     for rs in [[r for r in results if r.get("category") == c]]},
         zero_denials=all(r["actual_action"] in ("approve", "pend", "escalate", "verify") for r in results))

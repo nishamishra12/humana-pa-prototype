@@ -1,0 +1,18 @@
+Recommendation matched the expected one: 9/9
+Found it when it was really there:       53/53 (100.0%)
+Claimed it when absent or ruled out:     0/13 (0.0%)
+Sent to the nurse as 'not sure':         0/66 (0.0%)
+Wrong values:                            0
+The system never denied:                 True
+
+PASS multi/icd1_complete_nonischemic.pdf expected=approve actual=approve (25.7s)
+PASS multi/icd2_missing_therapy_and_sdm.pdf expected=pend actual=pend (19.5s)
+PASS multi/icd3_conflicting_lvef.pdf expected=escalate actual=escalate (20.7s)
+PASS multi/icd4_scanned_noisy.pdf expected=approve actual=approve (78.4s)
+PASS multi/icd5_recent_mi.pdf expected=escalate actual=escalate (27.1s)
+PASS multi/bar1_complete.pdf expected=approve actual=approve (14.0s)
+PASS multi/bar2_missing_prior_treatment.pdf expected=pend actual=pend (9.0s)
+PASS multi/bar3_bmi_changed.pdf expected=escalate actual=escalate (11.4s)
+PASS multi/bar4_negated_comorbidity.pdf expected=escalate actual=escalate (10.5s)
+
+report saved: evals/reports/multi_20261004_0335.json

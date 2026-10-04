@@ -4,11 +4,12 @@ Costs real AI calls: about 9 packets x (3 reads + 1 check). Takes a few minutes.
 import os, sys, json, time
 from dotenv import load_dotenv
 load_dotenv(".env")
-from pipeline.multi_eval import run_multi
+from pipeline.multi_eval import run_multi, ADVERSARIAL
 
-out = run_multi()
+adv = "--adversarial" in sys.argv  # the hard packets written by a separate AI session
+out = run_multi(manifest_path=ADVERSARIAL) if adv else run_multi()
 os.makedirs("evals/reports", exist_ok=True)
-path = f"evals/reports/multi_{time.strftime('%Y%m%d_%H%M')}.json"
+path = f"evals/reports/{'adversarial' if adv else 'multi'}_{time.strftime('%Y%m%d_%H%M')}.json"
 json.dump(out, open(path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 cr, hr, fl = out["completeness_recall"], out["hallucination_rate"], out["flagged_uncertain"]
 print(f"Recommendation matched the expected one: {out['action_matches']}/{out['packets_total']}")
@@ -23,4 +24,8 @@ for r in out["results"]:
     for f in r["facts"]:
         if f["outcome"] != "correct":
             print(f"      {f['outcome']:18s} {f['fact']:32s} truth={f['truth']:8s} status={f['status']:8s} got={f['got']} expected={f['expected']}")
+if out.get("by_category"):
+    print("\nBy category (recommendation matched / packets):")
+    for c, v in out["by_category"].items():
+        print(f"  {c:28s} {v['action_matches']}/{v['packets']}")
 print("\nreport saved:", path)
