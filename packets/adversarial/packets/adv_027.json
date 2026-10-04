@@ -1,0 +1,126 @@
+{
+  "id": "adv_027",
+  "service": "bariatric",
+  "category": "conflict_dates",
+  "difficulty": "hard",
+  "why_hard": "A dietitian note on a later page says 'BMI 34.9, below the 35 threshold'. It is dated 09/03; the surgeon's BMI of 36.2 on an earlier page is dated 09/30 and is the current value.",
+  "member": {
+    "name": "Jerome A. Kessler",
+    "dob": "1962-08-14",
+    "age": 64,
+    "member_id": "MBR-87719",
+    "sex": "M"
+  },
+  "practice": "Prairie Rose Bariatric Surgery",
+  "planned_admit_date": "2026-11-18",
+  "pages": [
+    {
+      "title": "Surgical pre-op visit",
+      "lines": [
+        "PRAIRIE ROSE BARIATRIC SURGERY",
+        "Pre-operative visit   09/30/2026",
+        "Jerome A. Kessler   64M",
+        "",
+        "Vitals: Ht 70 in, Wt 252 lb, BMI 36.2, BP 144/86",
+        "Interval: started pre-op liquid diet in Aug, stopped 09/10 after 2 hypoglycemic episodes on glipizide; weight back up.",
+        "Problems: T2DM (A1c 8.3), HTN, hyperlipidemia, OSA - PSG pending? No - PSG 2024 negative.",
+        "A/P: proceed w/ RYGB. Endocrine adjusted glipizide.",
+        "Dr. Willa Brandt-Okonkwo"
+      ]
+    },
+    {
+      "title": "Supervised weight loss program records",
+      "lines": [
+        "PRAIRIE ROSE MEDICAL WEIGHT LOSS",
+        "Kessler, Jerome  -  Program 2025-09-15 to 2026-03-16",
+        "Supervised by: Imran Castellucci, MD",
+        "Monthly visits x7; 1,800 kcal plan; resistance + walking plan; phentermine-topiramate ER 11/2025-02/2026 (stopped: palpitations, insomnia).",
+        "Weight 258 -> 251 -> 256 lb.  Net -0.8%.",
+        "Outcome: did not meet goal. Unsuccessful."
+      ]
+    },
+    {
+      "title": "Primary care letter",
+      "lines": [
+        "HEARTLAND INTERNAL MEDICINE   08/11/2026",
+        "Re: Jerome Kessler",
+        "Problems: T2DM since 2012 (metformin, glipizide), HTN (lisinopril, HCTZ), hyperlipidemia.",
+        "Supportive of surgical weight loss.",
+        "Dr. Paloma Ruiz-Dahl"
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-BARIATRIC PSYCH   07/21/2026",
+        "Kessler, Jerome",
+        "No binge eating. No depression. Realistic goals. Cleared."
+      ]
+    },
+    {
+      "title": "Dietitian note",
+      "lines": [
+        "PRAIRIE ROSE NUTRITION - PRE-OP DIET CHECK",
+        "Visit date: 09/03/2026",
+        "Pt: Kessler, Jerome",
+        "Wt 243 lb  Ht 70 in  BMI 34.9",
+        "On liquid diet since 08/18, good adherence, down 9 lb.",
+        "NOTE: BMI now 34.9, below the 35 threshold for surgery. Flag to surgeon.",
+        "Plan: continue liquid diet; check sugars (on glipizide).",
+        "RD: Signe Halvorsen-Mbatha"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "PRAIRIE ROSE LAB   09/30/2026",
+        "A1c 8.3 H   Glucose 74",
+        "Cr 1.1   K 4.2",
+        "LDL 128 H   TG 240 H",
+        "Hgb 14.2"
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN - 10/01/2026",
+        "Kessler, Jerome A.   MBR-87719   CPT 43644   Admit 11/18/2026 inpatient",
+        "Expected stay: 2 midnights.",
+        "Factors: T2DM on sulfonylurea w/ recent hypoglycemia - inpatient glucose protocol; HTN; age 64.",
+        "W. Brandt-Okonkwo MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected stay: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes",
+        "hypertension",
+        "hyperlipidemia"
+      ],
+      "page": 4,
+      "why": "PCP letter; also page 2. OSA is negated (PSG 2024 negative) and is not included."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 36.2,
+      "page": 2,
+      "why": "Dietitian 09/03/2026: 34.9 (page 6). Surgical visit 09/30/2026: 36.2 (page 2). The later measurement wins, even though it is on the earlier page."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "Supervised program 2025-09-15 to 2026-03-16 with diet, exercise and phentermine-topiramate; net -0.8%; unsuccessful."
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "The current BMI is 36.2 (09/30), so rule 1 passes. T2DM documented, supervised program failed, 2 midnights with factors. Approve."
+}

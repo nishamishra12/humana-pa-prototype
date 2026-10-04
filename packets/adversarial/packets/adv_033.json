@@ -1,0 +1,112 @@
+{
+  "id": "adv_033",
+  "service": "bariatric",
+  "category": "hedged_language",
+  "difficulty": "hard",
+  "why_hard": "The surgeon's only LOS statement is '1-2 midnights depending on CPAP tolerance and glucose', which straddles the 2-midnight threshold.",
+  "member": {
+    "name": "Winston G. Afolabi",
+    "dob": "1964-10-18",
+    "age": 61,
+    "member_id": "MBR-69018",
+    "sex": "M"
+  },
+  "practice": "Highgate Metabolic Surgery Associates",
+  "planned_admit_date": "2026-11-04",
+  "pages": [
+    {
+      "title": "Supervised weight loss program records",
+      "lines": [
+        "HIGHGATE MEDICAL WEIGHT MANAGEMENT - PROGRAM SUMMARY",
+        "Afolabi, Winston G.   Dates: 12/02/2025 - 06/01/2026",
+        "Supervising physician: Lena Vasquez-Holt, MD",
+        "Monthly visits x7 with RD; 1,800 kcal; walking 30 min/day; phentermine 8 mg TID 01-03/2026 (stopped, BP rise).",
+        "Weight 311 -> 303 -> 309 lb (net -0.6%).",
+        "Outcome: not successful."
+      ]
+    },
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "HIGHGATE METABOLIC SURGERY ASSOCIATES",
+        "Consult 09/10/2026",
+        "Winston G. Afolabi, 61M",
+        "Ht 72 in   Wt 306 lb   BMI 41.5",
+        "PMH: T2DM (A1c 8.4) on insulin; OSA on CPAP (AHI 42), poor mask tolerance; HTN; CKD 2.",
+        "Plan: RYGB. Typical stay after bypass here is 1-2 nights.",
+        "Dr. Cordelia Nwachukwu-Berg"
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-BARIATRIC PSYCHOLOGY   08/14/2026",
+        "Afolabi, Winston",
+        "Cleared. No disordered eating."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "HIGHGATE LAB 09/08/2026",
+        "A1c 8.4 H",
+        "Cr 1.0  eGFR 78",
+        "Hgb 14.0"
+      ]
+    },
+    {
+      "title": "CPAP compliance download",
+      "lines": [
+        "DME CPAP DOWNLOAD   08/10/2026 - 09/08/2026",
+        "Afolabi, Winston",
+        "Usage >4h: 52% of nights. Avg use 3.6 h. Residual AHI 6.1. Large leak 18%.",
+        "Note: suboptimal adherence; mask refit scheduled."
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN   09/26/2026",
+        "Afolabi, Winston G.   MBR-69018",
+        "Laparoscopic RYGB, CPT 43644. Admit 11/04/2026, inpatient.",
+        "Anticipated LOS: 1-2 midnights depending on post-op CPAP tolerance and glucose control.",
+        "Factors: OSA w/ suboptimal CPAP adherence; insulin-requiring T2DM; HTN.",
+        "C. Nwachukwu-Berg MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": null,
+      "ambiguous": true,
+      "page": 7,
+      "why": "The plan says '1-2 midnights depending on post-op CPAP tolerance and glucose control' and the consult says 'typical stay ... 1-2 nights'. The expectation straddles the 2-midnight rule and there is no single number."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes on insulin",
+        "obstructive sleep apnea",
+        "hypertension",
+        "CKD stage 2"
+      ],
+      "page": 3,
+      "why": "Consult PMH."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 41.5,
+      "page": 3,
+      "why": "Consult 09/10/2026: BMI 41.5."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 2,
+      "why": "Supervised program 12/02/2025 to 06/01/2026 with diet, activity and phentermine; net -0.6%; not successful."
+    }
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rules 1 to 3 pass. Rule 4 depends on whether the surgeon expects at least 2 midnights, and the only statement is a 1-2 range. A person must settle it with the surgeon or by judging the documented risk factors. Verify."
+}

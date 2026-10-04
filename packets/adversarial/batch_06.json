@@ -1,0 +1,384 @@
+[
+{
+  "id": "adv_026",
+  "service": "bariatric",
+  "category": "negation",
+  "difficulty": "hard",
+  "why_hard": "The packet is full of 'sleep apnea', 'diabetes', 'hypertension' and 'fatty liver', but every one is ruled out. Her only conditions (hypothyroidism, migraine) are not obesity-related.",
+  "member": {"name": "Marguerite D. Langston", "dob": "1970-05-05", "age": 56, "member_id": "MBR-24489", "sex": "F"},
+  "practice": "Kingsbridge Bariatric Institute",
+  "planned_admit_date": "2026-11-05",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "KINGSBRIDGE BARIATRIC INSTITUTE",
+      "New patient consult   09/09/2026",
+      "Pt: Langston, Marguerite D.   56F",
+      "",
+      "Ht 66 in   Wt 231 lb   BMI 37.3   BP 118/74 (no antihypertensives)",
+      "",
+      "Weight hx: gained ~60 lb after hysterectomy 2014. Completed supervised program, did not lose (see records).",
+      "",
+      "Obesity-related comorbidity screen:",
+      " - OSA: ruled out, PSG 08/2026 AHI 3.2 (normal).",
+      " - Diabetes: none. A1c 5.4, fasting glucose 92.",
+      " - Hypertension: denies; normotensive on serial readings, never on meds.",
+      " - Dyslipidemia: negative, lipid panel wnl.",
+      " - NAFLD: no steatosis on RUQ US 08/2026, LFTs nl.",
+      " - GERD: denies reflux sx; EGD 08/2026 w/o esophagitis or hiatal hernia.",
+      "Other PMH: hypothyroidism (Hashimoto's) on levothyroxine; migraine without aura.",
+      "PSH: open total abdominal hysterectomy 2014; open ventral hernia repair w/ mesh 2017.",
+      "",
+      "Imp: obesity, BMI 37.3. Pt highly motivated for RYGB.",
+      "Plan: proceed with workup; submit for auth.",
+      "Dr. Theodora Vance-Okafor"
+    ]},
+    {"title": "Polysomnography report", "lines": [
+      "KINGSBRIDGE SLEEP DISORDERS CENTER",
+      "In-lab diagnostic polysomnogram   08/12/2026",
+      "Langston, Marguerite",
+      "Total sleep time 392 min. Sleep efficiency 86%.",
+      "AHI 3.2/h. RDI 5.0/h. Nadir SpO2 91%.",
+      "Snoring: mild, intermittent.",
+      "Impression: Study negative for obstructive sleep apnea. No PAP therapy indicated."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "KINGSBRIDGE LAB   08/20/2026",
+      "LANGSTON, MARGUERITE",
+      "HbA1c 5.4%   Fasting glucose 92",
+      "Total chol 182   LDL 104   HDL 58   TG 101",
+      "ALT 19   AST 21   Alk phos 70",
+      "TSH 2.4 (on levothyroxine)   Free T4 1.2",
+      "Cr 0.8   Hgb 13.4"
+    ]},
+    {"title": "Supervised weight management records", "lines": [
+      "KINGSBRIDGE MEDICAL WEIGHT MANAGEMENT",
+      "Program summary - Langston, Marguerite",
+      "Enrollment 12/01/2025 - completion 06/01/2026 (6 monthly MD visits + RD)",
+      "Supervising physician: Olu Bankole-Ferris, MD",
+      "Interventions: 1,400 kcal plan, food diary app, 150 min/wk activity, liraglutide 3.0 mg 01-04/2026 (stopped, pancreatitis concern: lipase 3x ULN w/ epigastric pain, resolved off drug).",
+      "Weights: 233 -> 228 -> 232 lb.  Net -0.4%.",
+      "Outcome: unsuccessful."
+    ]},
+    {"title": "Imaging and endoscopy summary", "lines": [
+      "KINGSBRIDGE DIAGNOSTICS",
+      "RUQ ultrasound 08/14/2026: normal liver echotexture, no steatosis, no gallstones.",
+      "EGD 08/19/2026: normal esophagus, no esophagitis, no Barrett's, no hiatal hernia. H. pylori biopsy negative.",
+      "UGI series: normal anatomy."
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-SURGICAL PSYCH EVAL   07/28/2026",
+      "Langston, Marguerite",
+      "No eating disorder. No mood disorder currently. Good understanding. Cleared."
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN - KINGSBRIDGE   09/23/2026",
+      "Langston, Marguerite D.   MBR-24489",
+      "Lap RYGB, CPT 43644. Admit 11/05/2026 inpatient.",
+      "Expected LOS: 2 midnights.",
+      "Factors: hostile abdomen (prior open TAH and open ventral hernia repair with mesh) w/ anticipated extensive adhesiolysis and higher risk of enterotomy - needs observation for leak; history of drug-induced pancreatitis.",
+      "T. Vance-Okafor MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["hypothyroidism", "migraine without aura"], "page": 2, "why": "These are the only conditions she has. OSA, diabetes, hypertension, dyslipidemia, NAFLD and GERD are each explicitly ruled out (pages 2, 3, 4, 6). Neither remaining condition is obesity-related."},
+    "bmi": {"truth": "present", "value": 37.3, "page": 2, "why": "Consult 09/09/2026: BMI 37.3."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 5, "why": "6-month supervised program 12/01/2025 to 06/01/2026 with diet, activity and liraglutide; net -0.4%; unsuccessful."}
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "BMI 37.3 passes rule 1. Rule 2 fails: there is no obesity-related comorbidity, because every candidate is explicitly ruled out. Rules 3 and 4 pass. All facts present, so escalate."
+},
+{
+  "id": "adv_027",
+  "service": "bariatric",
+  "category": "conflict_dates",
+  "difficulty": "hard",
+  "why_hard": "A dietitian note on a later page says 'BMI 34.9, below the 35 threshold'. It is dated 09/03; the surgeon's BMI of 36.2 on an earlier page is dated 09/30 and is the current value.",
+  "member": {"name": "Jerome A. Kessler", "dob": "1962-08-14", "age": 64, "member_id": "MBR-87719", "sex": "M"},
+  "practice": "Prairie Rose Bariatric Surgery",
+  "planned_admit_date": "2026-11-18",
+  "pages": [
+    {"title": "Surgical pre-op visit", "lines": [
+      "PRAIRIE ROSE BARIATRIC SURGERY",
+      "Pre-operative visit   09/30/2026",
+      "Jerome A. Kessler   64M",
+      "",
+      "Vitals: Ht 70 in, Wt 252 lb, BMI 36.2, BP 144/86",
+      "Interval: started pre-op liquid diet in Aug, stopped 09/10 after 2 hypoglycemic episodes on glipizide; weight back up.",
+      "Problems: T2DM (A1c 8.3), HTN, hyperlipidemia, OSA - PSG pending? No - PSG 2024 negative.",
+      "A/P: proceed w/ RYGB. Endocrine adjusted glipizide.",
+      "Dr. Willa Brandt-Okonkwo"
+    ]},
+    {"title": "Supervised weight loss program records", "lines": [
+      "PRAIRIE ROSE MEDICAL WEIGHT LOSS",
+      "Kessler, Jerome  -  Program 2025-09-15 to 2026-03-16",
+      "Supervised by: Imran Castellucci, MD",
+      "Monthly visits x7; 1,800 kcal plan; resistance + walking plan; phentermine-topiramate ER 11/2025-02/2026 (stopped: palpitations, insomnia).",
+      "Weight 258 -> 251 -> 256 lb.  Net -0.8%.",
+      "Outcome: did not meet goal. Unsuccessful."
+    ]},
+    {"title": "Primary care letter", "lines": [
+      "HEARTLAND INTERNAL MEDICINE   08/11/2026",
+      "Re: Jerome Kessler",
+      "Problems: T2DM since 2012 (metformin, glipizide), HTN (lisinopril, HCTZ), hyperlipidemia.",
+      "Supportive of surgical weight loss.",
+      "Dr. Paloma Ruiz-Dahl"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-BARIATRIC PSYCH   07/21/2026",
+      "Kessler, Jerome",
+      "No binge eating. No depression. Realistic goals. Cleared."
+    ]},
+    {"title": "Dietitian note", "lines": [
+      "PRAIRIE ROSE NUTRITION - PRE-OP DIET CHECK",
+      "Visit date: 09/03/2026",
+      "Pt: Kessler, Jerome",
+      "Wt 243 lb  Ht 70 in  BMI 34.9",
+      "On liquid diet since 08/18, good adherence, down 9 lb.",
+      "NOTE: BMI now 34.9, below the 35 threshold for surgery. Flag to surgeon.",
+      "Plan: continue liquid diet; check sugars (on glipizide).",
+      "RD: Signe Halvorsen-Mbatha"
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "PRAIRIE ROSE LAB   09/30/2026",
+      "A1c 8.3 H   Glucose 74",
+      "Cr 1.1   K 4.2",
+      "LDL 128 H   TG 240 H",
+      "Hgb 14.2"
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN - 10/01/2026",
+      "Kessler, Jerome A.   MBR-87719   CPT 43644   Admit 11/18/2026 inpatient",
+      "Expected stay: 2 midnights.",
+      "Factors: T2DM on sulfonylurea w/ recent hypoglycemia - inpatient glucose protocol; HTN; age 64.",
+      "W. Brandt-Okonkwo MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected stay: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "hypertension", "hyperlipidemia"], "page": 4, "why": "PCP letter; also page 2. OSA is negated (PSG 2024 negative) and is not included."},
+    "bmi": {"truth": "present", "value": 36.2, "page": 2, "why": "Dietitian 09/03/2026: 34.9 (page 6). Surgical visit 09/30/2026: 36.2 (page 2). The later measurement wins, even though it is on the earlier page."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Supervised program 2025-09-15 to 2026-03-16 with diet, exercise and phentermine-topiramate; net -0.8%; unsuccessful."}
+  },
+  "expected_action": "approve",
+  "action_reasoning": "The current BMI is 36.2 (09/30), so rule 1 passes. T2DM documented, supervised program failed, 2 midnights with factors. Approve."
+},
+{
+  "id": "adv_028",
+  "service": "bariatric",
+  "category": "conflict_dates",
+  "difficulty": "hard",
+  "why_hard": "The first page shows BMI 38.4 from April. After an illness-related weight loss, the current BMI is 34.1 on a later page dated 09/22, and the surgeon still proceeds.",
+  "member": {"name": "Annabel P. Gutierrez", "dob": "1975-12-01", "age": 50, "member_id": "MBR-19934", "sex": "F"},
+  "practice": "Northshore Weight Loss Surgery Center",
+  "planned_admit_date": "2026-11-11",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "NORTHSHORE WEIGHT LOSS SURGERY CENTER",
+      "Initial consult   04/10/2026",
+      "Annabel P. Gutierrez   50F",
+      "Ht 64 in   Wt 224 lb   BMI 38.4",
+      "PMH: T2DM (A1c 7.7), OSA on CPAP (AHI 31), PCOS, diverticulosis.",
+      "Weight history: failed supervised program 2025.",
+      "Plan: RYGB workup.",
+      "Dr. Henrik Oyelaran-Shaw"
+    ]},
+    {"title": "Supervised program records", "lines": [
+      "NORTHSHORE MEDICAL WEIGHT PROGRAM",
+      "Gutierrez, Annabel   03/03/2025 - 09/08/2025",
+      "Supervising MD: Ruth Achebe-Lind",
+      "6 monthly visits; 1,500 kcal; exercise log; semaglutide 05-08/2025 (stopped: gastroparesis-like sx).",
+      "Weight 226 -> 220 -> 227 lb. Net +0.4%.",
+      "Unsuccessful."
+    ]},
+    {"title": "Hospital discharge summary", "lines": [
+      "NORTHSHORE GENERAL - DISCHARGE SUMMARY",
+      "Admit 06/20/2026   Discharge 07/02/2026",
+      "Gutierrez, Annabel",
+      "Dx: perforated sigmoid diverticulitis w/ 6 cm pelvic abscess.",
+      "Course: IR drain, IV antibiotics, NPO x 6 days, PPN, slow diet advance. Poor PO intake.",
+      "Discharge weight 209 lb (admission 222 lb).",
+      "F/u colorectal surgery for interval sigmoidectomy discussion."
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "BEHAVIORAL HEALTH - PRE-BARIATRIC   05/14/2026",
+      "Gutierrez, Annabel",
+      "No eating disorder. Cleared."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "NORTHSHORE LAB   09/19/2026",
+      "A1c 6.9 H",
+      "Albumin 3.6",
+      "Cr 0.7",
+      "Hgb 11.8 L"
+    ]},
+    {"title": "Pre-operative surgical visit", "lines": [
+      "NORTHSHORE WEIGHT LOSS SURGERY CENTER",
+      "Pre-op visit   09/22/2026",
+      "Gutierrez, Annabel P.",
+      "Ht 64 in   Wt 198.6 lb   BMI 34.1",
+      "Interval: hospitalized 06-07/2026 for perforated diverticulitis, unintentional ~25 lb weight loss since April due to illness and poor intake. Appetite now back; I expect regain.",
+      "T2DM improved w/ weight loss (A1c 6.9). Still on CPAP.",
+      "A/P: proceed with RYGB as planned; weight loss was illness-related, not durable.",
+      "Expected LOS: 2 midnights - OSA on CPAP, T2DM, recent intra-abdominal sepsis w/ possible pelvic adhesions.",
+      "H. Oyelaran-Shaw MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights'."},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "obstructive sleep apnea on CPAP", "PCOS"], "page": 2, "why": "Initial consult PMH; T2DM and CPAP use confirmed on page 7."},
+    "bmi": {"truth": "present", "value": 34.1, "page": 7, "why": "Consult 04/10/2026: BMI 38.4 (page 2). Pre-op visit 09/22/2026: BMI 34.1 (page 7). The later measurement wins. The surgeon's expectation of regain does not change the measured value."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Supervised program 03/03 to 09/08/2025 with diet, exercise and semaglutide; net +0.4%; unsuccessful. The later weight loss came from illness, not treatment."}
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts present. Rule 1 fails: the current BMI is 34.1, under 35. Comorbidity, prior treatment and 2-midnight LOS pass. Escalate."
+},
+{
+  "id": "adv_029",
+  "service": "bariatric",
+  "category": "format_variants",
+  "difficulty": "hard",
+  "why_hard": "Only weight (270 lb) and height (5 ft 7 in) are given; no BMI is ever stated. The only BMI numbers in the packet are a goal (<30) and an ideal-weight figure.",
+  "member": {"name": "Cyrus B. Albright", "dob": "1969-09-09", "age": 57, "member_id": "MBR-50066", "sex": "M"},
+  "practice": "Evergreen Metabolic Surgery",
+  "planned_admit_date": "2026-11-12",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "EVERGREEN METABOLIC SURGERY",
+      "Consultation   09/16/2026",
+      "Cyrus B. Albright, 57M",
+      "",
+      "Vitals: weight 270 lb, height 5 ft 7 in, BP 146/92, HR 84, SpO2 95%.",
+      "",
+      "PMH: T2DM (2015) on insulin + metformin; HTN; severe OSA on CPAP; gout.",
+      "Weight hx: weight-cycled since 30s; completed medically supervised program 2025-2026 (records attached), no sustained loss.",
+      "",
+      "Assessment: severe obesity with T2DM, HTN, OSA. Good candidate for RYGB.",
+      "Goals: BMI <30 long-term; expected excess weight loss 60-70% at 18 months.",
+      "Dr. Lorraine Achterberg-Mensah"
+    ]},
+    {"title": "Supervised weight management summary", "lines": [
+      "EVERGREEN MEDICAL WEIGHT MANAGEMENT",
+      "Albright, Cyrus   Program: 10/06/2025 - 04/06/2026",
+      "Supervising: Benedikt Osei, MD",
+      "6 visits, RD counseling, 1,800 kcal meal replacement plan, exercise prescription; tirzepatide 11/2025-01/2026 (stopped: insurance denial and GI intolerance).",
+      "Weight 274 -> 266 -> 271 lb (net -1.1%).",
+      "Outcome: unsuccessful."
+    ]},
+    {"title": "Nutrition assessment", "lines": [
+      "PRE-OP NUTRITION ASSESSMENT   09/16/2026",
+      "Albright, Cyrus   RD: Fern Castellano",
+      "Anthropometrics: Wt 270 lb. Ht 67 in. IBW (Hamwi) 148 lb. Excess body weight 122 lb.",
+      "Target: lose ~73 lb (60% EBW) in first 12-18 mo.",
+      "Diet recall: frequent fast food, 2 regular sodas/day.",
+      "Education on post-op stages completed."
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-SURGICAL PSYCHOLOGY   08/27/2026",
+      "Albright, Cyrus",
+      "No eating disorder. Mild depressive sx, not interfering. Cleared."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "EVERGREEN LAB   09/12/2026",
+      "A1c 8.6 H",
+      "Uric acid 8.1 H",
+      "Cr 1.0, K 4.4",
+      "LDL 112, TG 260 H",
+      "Hgb 15.1"
+    ]},
+    {"title": "Sleep study summary", "lines": [
+      "EVERGREEN SLEEP CENTER",
+      "PSG 05/2024: AHI 44/h, severe OSA. APAP 8-16 cm H2O since 06/2024. Compliance 81%."
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN   09/30/2026",
+      "Albright, Cyrus B.   MBR-50066",
+      "Lap RYGB (CPT 43644). Admit 11/12/2026, inpatient.",
+      "Expected LOS: 2 midnights.",
+      "Factors: severe OSA (continuous oximetry), insulin-requiring T2DM, uncontrolled HTN (146/92).",
+      "L. Achterberg-Mensah MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes on insulin", "hypertension", "severe obstructive sleep apnea", "gout"], "page": 2, "why": "Consult PMH."},
+    "bmi": {"truth": "absent", "value": null, "page": null, "why": "No BMI for the patient is stated anywhere. Weight 270 lb and height 5 ft 7 in are given (they compute to about 42.3) but BMI itself is never written. 'BMI <30' is a goal, and IBW and excess weight are not BMI."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Supervised program 10/06/2025 to 04/06/2026 with meal replacement, exercise and tirzepatide; net -1.1%; unsuccessful."}
+  },
+  "expected_action": "pend",
+  "action_reasoning": "BMI is a needed fact and is not stated, so it is absent. Pend and ask for a documented BMI. Other rules would pass."
+},
+{
+  "id": "adv_030",
+  "service": "bariatric",
+  "category": "family_or_history_confusion",
+  "difficulty": "medium",
+  "why_hard": "Diabetes, hypertension and OSA appear only in the family history and an old resolved gestational diabetes. The patient's own qualifying comorbidities are NAFLD, knee osteoarthritis and dyslipidemia, which are easy to overlook.",
+  "member": {"name": "Shauna K. Whitford", "dob": "1980-03-27", "age": 46, "member_id": "MBR-92207", "sex": "F"},
+  "practice": "Lantern Hill Bariatric Program",
+  "planned_admit_date": "2026-11-17",
+  "pages": [
+    {"title": "History and physical", "lines": [
+      "LANTERN HILL BARIATRIC PROGRAM - H&P",
+      "Date 09/17/2026   Whitford, Shauna K.   46F",
+      "",
+      "FHx: Mother - T2DM, HTN, CKD. Father - HTN, MI at 58. Sister - OSA on CPAP. Maternal aunt - gastric bypass 2012.",
+      "",
+      "PMH: gestational diabetes 2009 (resolved postpartum; A1c normal since). Fatty liver dx 2025. Bilateral knee osteoarthritis. Hypertriglyceridemia on atorvastatin. Lumbar disc disease (on SSDI).",
+      "Pt has no personal history of diabetes or hypertension. STOP-BANG 2.",
+      "",
+      "Vitals: Ht 64 in, Wt 237.7 lb, BMI 40.8, BP 124/78.",
+      "",
+      "A/P: Obesity BMI 40.8 w/ NAFLD, knee OA, dyslipidemia. Candidate for RYGB.",
+      "Dr. Odile Ferreira-Nakamura"
+    ]},
+    {"title": "Abdominal ultrasound", "lines": [
+      "LANTERN HILL IMAGING   RUQ US   06/02/2026",
+      "Whitford, Shauna",
+      "Liver enlarged (19 cm), diffusely increased echogenicity c/w moderate hepatic steatosis. No focal lesion. Gallbladder normal.",
+      "Impression: hepatomegaly with moderate steatosis."
+    ]},
+    {"title": "Knee radiographs", "lines": [
+      "LANTERN HILL IMAGING   Bilateral knees, standing   04/11/2026",
+      "Joint space narrowing medial compartments, osteophytes; Kellgren-Lawrence grade 3 bilaterally.",
+      "Impression: moderate-severe bilateral knee osteoarthritis. Ortho note: TKA deferred until weight loss."
+    ]},
+    {"title": "Supervised weight loss records", "lines": [
+      "LANTERN HILL MEDICAL WEIGHT LOSS - SUMMARY",
+      "Whitford, Shauna   11/10/2025 - 05/11/2026",
+      "Supervising: Gideon Achterberg, DO",
+      "Monthly MD + RD visits x7. 1,500 kcal plan; aquatic exercise (knees); behavioral therapy; semaglutide 12/2025-05/2026, max 1 mg (stopped for persistent vomiting).",
+      "Weight 241 -> 233 -> 238 lb (net -1.2%).",
+      "Unsuccessful."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "LANTERN HILL LAB   09/10/2026",
+      "A1c 5.5   Fasting glucose 94",
+      "ALT 68 H   AST 52 H",
+      "TG 312 H   LDL 96   HDL 38 L",
+      "Cr 0.7   Hgb 12.8"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-BARIATRIC PSYCH EVAL   08/06/2026",
+      "Whitford, Shauna",
+      "Hx of depression, stable on bupropion. No eating disorder. Cleared."
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN   09/29/2026",
+      "Whitford, Shauna K.   MBR-92207",
+      "Laparoscopic RYGB (CPT 43644), admit 11/17/2026, inpatient.",
+      "Expected LOS: 2 midnights.",
+      "Factors: NAFLD w/ hepatomegaly (difficult left lobe retraction, post-op LFTs); severe knee OA limiting early ambulation, VTE risk; chronic lumbar pain w/ opioid-sparing pain plan.",
+      "O. Ferreira-Nakamura MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["NAFLD", "bilateral knee osteoarthritis", "dyslipidemia", "lumbar disc disease", "depression"], "page": 2, "why": "Patient's own PMH on page 2 (depression is on the psych eval, page 7). NAFLD, knee OA and dyslipidemia are standard obesity-related comorbidities. Family T2DM, HTN and OSA are excluded, the patient explicitly has no diabetes or hypertension, and the 2009 gestational diabetes resolved."},
+    "bmi": {"truth": "present", "value": 40.8, "page": 2, "why": "H&P 09/17/2026: BMI 40.8."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 5, "why": "Supervised program 11/10/2025 to 05/11/2026 with diet, exercise, behavioral therapy and semaglutide; net -1.2%; unsuccessful."}
+  },
+  "expected_action": "approve",
+  "action_reasoning": "BMI 40.8; obesity-related comorbidities documented (NAFLD with imaging, knee OA with imaging, dyslipidemia on a statin); supervised program failed; 2 midnights with factors. The family history adds nothing. Approve."
+}
+]

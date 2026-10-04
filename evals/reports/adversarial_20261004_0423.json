@@ -1,0 +1,4109 @@
+{
+ "results": [
+  {
+   "file": "adversarial/adv_001.pdf",
+   "label": "[temporal_trap] The NSTEMI was 38 days before today but 41 days before the planned implant, and the ischemic patient has only about 1 month of GDMT, which looks",
+   "member": "Dale R. Whitcombe",
+   "procedure": "icd",
+   "note": "Rule 1: ischemic. Rule 2: LVEF 30% (latest). Rule 3: echo. Rule 4: NYHA II. Rule 5: MI 41 days before implant, outside 40 days; no revascularization. Rule 6: not applicable (ischemic). Rule 7: SDM with decision aid 09/29. Rule 8: none. Rule 9: 2 midnights with documented DAPT, CKD and insulin factors. All met, so approve.",
+   "seconds": 27.1,
+   "expected_action": "approve",
+   "actual_action": "escalate",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "temporal_trap",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "Pre-admission plan states 'Expected length of stay: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "CKD stage 3b",
+      "type 2 diabetes on insulin",
+      "hypertension",
+      "dual antiplatelet therapy after recent NSTEMI"
+     ],
+     "why": "Pre-admission plan lists DAPT bleeding risk, CKD 3b and insulin-requiring DM2 as the LOS rationale; HTN is in the EP consult on page 2.",
+     "status": "found",
+     "got": [
+      "insulin-requiring DM2",
+      "CKD 3b",
+      "HTN",
+      "CAD (3-vessel, not revascularized)",
+      "HFrEF"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 30,
+     "why": "TTE 08/28/2026 (pages 2 and 3) shows 25%; TTE 10/01/2026 (page 4) shows 30%. The later measurement wins.",
+     "status": "found",
+     "got": 30,
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "Transthoracic echo, biplane Simpson.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "II",
+     "why": "EP consult assessment: 'NYHA class II'; repeated on page 8.",
+     "status": "found",
+     "got": "II",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "Ischemic cardiomyopathy after NSTEMI with severe 3-vessel CAD.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "NSTEMI on 2026-08-27 is 41 days before the planned implant on 2026-10-07, so it is outside the 40-day window (it is only 38 days before today, which is the trap). No PCI was done and CABG was not offered; no prior PCI or CABG.",
+     "status": "found",
+     "got": "NSTEMI on 08/27/2026, medically managed without PCI or CABG; ICD implant planned 10/07/2026 is beyond the 40-day post-MI waiting period but within the broader care episode",
+     "page": 3,
+     "checked": true,
+     "outcome": "false_positive"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 1.2,
+     "why": "All four HF GDMT drugs started 2026-08-30. That is 38 days (1.2 months) to the planned implant. Rule 6 applies only to non-ischemic cardiomyopathy, so this short duration does not block approval.",
+     "status": "missing",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "false_negative"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "Formal SDM visit on 2026-09-29 with an evidence-based ICD decision aid, before the implant.",
+     "status": "found",
+     "got": "SDM visit completed 09/29/2026 using ICD patient decision aid (booklet + video) with HF NP, patient elected to proceed with ICD",
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "Plan explicitly screens out cognitive impairment, illness limiting survival to under 1 year, and AF, and states he is clinically stable.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_002.pdf",
+   "label": "[temporal_trap] The pre-op note says 'no ACS in past year' and the MI was in 2023, but an elective LCx stent on 2026-07-20 is 87 days before the 2026-10-15 impl",
+   "member": "Gwendolyn Okafor-Reyes",
+   "procedure": "icd",
+   "note": "Every fact is present and clear. Rules 1 to 4 pass (ischemic, 28%, echo, NYHA III). Rule 5 fails: a stent placed 2026-07-20 is within 3 months of the 2026-10-15 implant. Rules 6 to 9 pass. One rule not met with complete facts, so escalate.",
+   "seconds": 41.6,
+   "expected_action": "escalate",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "temporal_trap",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Anticipated stay: 2 nights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "paroxysmal atrial fibrillation on apixaban",
+      "CKD stage 3a",
+      "dual antithrombotic therapy",
+      "hypothyroidism"
+     ],
+     "why": "Pre-procedure note lists apixaban plus clopidogrel, CKD 3a and PAF; levothyroxine on med list (page 6).",
+     "status": "found",
+     "got": [
+      "ischemic cardiomyopathy / CAD",
+      "paroxysmal atrial fibrillation (PAF)",
+      "chronic kidney disease stage 3a",
+      "heart failure with reduced ejection fraction"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 28,
+     "why": "TTE 09/14/2026: 28%. The 03/2025 value of 30% is older.",
+     "status": "found",
+     "got": 28,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "Transthoracic echo, biplane method of disks.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "III",
+     "why": "Office visit A/P: 'NYHA III'.",
+     "status": "found",
+     "got": "III",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "Ischemic CM after anterior STEMI 2023.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "present",
+     "expected": "PCI with drug-eluting stent to mid LCx on 2026-07-20",
+     "why": "Stent 2026-07-20 to planned implant 2026-10-15 is 87 days. Three months from 07/20 is 10/20, so the implant falls inside the 3-month window. The 'no ACS in past year' line is true but irrelevant because the stent was elective.",
+     "status": "none",
+     "got": "No MI within 40 days; PCI on 07/20/2026 is more than 3 months before planned ICD implant (10/15/2026)",
+     "page": 15,
+     "checked": true,
+     "outcome": "false_negative"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 43.4,
+     "why": "Metoprolol succinate and sacubitril-valsartan since 2023-03-02, about 43 months to the implant. Not decisive (ischemic).",
+     "status": "found",
+     "got": 36,
+     "page": 3,
+     "checked": false,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "Device clinic SDM visit on 2026-10-01 using a validated ICD decision aid.",
+     "status": "found",
+     "got": "SDM visit completed 10/01/2026 using validated ICD option grid/decision aid, patient chose ICD",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "Exclusions reviewed and none present; AF is explicitly rate controlled, so it is not a limiting condition.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_003.pdf",
+   "label": "[temporal_trap] Non-ischemic patient whose GDMT started 2026-07-12; that is 88 days (2.9 months) to the 2026-10-08 implant. Older non-HF drugs with 2018 and 202",
+   "member": "Russell K. Haverty",
+   "procedure": "icd",
+   "note": "All facts present. Rules 1 to 5 pass. Rule 6 fails: non-ischemic, and GDMT started 2026-07-12 gives under 3 months by the 2026-10-08 implant. Rules 7 to 9 pass. Escalate.",
+   "seconds": 29.8,
+   "expected_action": "escalate",
+   "actual_action": "verify",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "temporal_trap",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "EP H&P: 'Expected LOS 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "obstructive sleep apnea on CPAP",
+      "obesity BMI 36",
+      "CKD stage 3a",
+      "hypertension"
+     ],
+     "why": "EP H&P lists OSA, BMI 36 and CKD 3a; HTN in HF clinic note (page 2).",
+     "status": "found",
+     "got": [
+      "obstructive sleep apnea (OSA) on CPAP",
+      "hypertension (controlled)",
+      "chronic kidney disease stage 3a",
+      "obesity (BMI 36)",
+      "moderate functional mitral regurgitation",
+      "RV dysfunction (low-normal)"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 26,
+     "why": "CMR 07/11/2026 showed 24%; TTE 09/24/2026 shows 26%. The later one wins.",
+     "status": "found",
+     "got": 26,
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE with contrast, biplane.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "II",
+     "why": "HF clinic note: 'NYHA class II'.",
+     "status": "found",
+     "got": "II",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "non-ischemic",
+     "why": "Nonobstructive coronaries on cath, mid-wall LGE, labeled dilated NICM.",
+     "status": "found",
+     "got": "non-ischemic",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "'No prior MI, PCI or CABG.' Cath 07/10 had no intervention.",
+     "status": "none",
+     "got": null,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 2.9,
+     "why": "All four GDMT drugs started 2026-07-12. That is 88 days (2.9 months) to the 2026-10-08 implant and 84 days (2.8 months) to today. Under 3 months either way. Atorvastatin (2020), HCTZ and amlodipine (2018) are not HF GDMT.",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM encounter 2026-09-30 with an evidence-based ICD decision aid.",
+     "status": "found",
+     "got": "Shared decision-making visit completed 09/30/2026 using an evidence-based ICD decision aid prior to implant.",
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "Contraindication review: none identified.",
+     "status": "none",
+     "got": null,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_004.pdf",
+   "label": "[negation] A September chest pain admission is full of MI words ('ACS ruled out', 'troponin negative x3', 'no new infarct'), and the only real MI and CABG are f",
+   "member": "Marisol Quintanar-Bishop",
+   "procedure": "icd",
+   "note": "Ischemic; LVEF 31% by nuclear; NYHA III; no MI in 40 days (ruled out) and no revascularization since 2019; OMT not required for ischemic; SDM done; no limiting condition; 2 midnights with COPD, CKD and DM documented. Approve.",
+   "seconds": 38.6,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "negation",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "COPD GOLD 2",
+      "CKD stage 3a",
+      "type 2 diabetes"
+     ],
+     "why": "Listed as LOS factors on the admission plan.",
+     "status": "found",
+     "got": [
+      "COPD",
+      "CKD 3a",
+      "DM2 (diabetes mellitus type 2)",
+      "ischemic cardiomyopathy/HFrEF"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 31,
+     "why": "TTE 06/03/2026 33% (page 5); gated SPECT 09/13/2026 31% (page 3). The later one wins.",
+     "status": "found",
+     "got": 31,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "nuclear imaging",
+     "why": "Gated SPECT is nuclear imaging.",
+     "status": "found",
+     "got": "nuclear imaging",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "III",
+     "why": "EP consult: 'NYHA class III'.",
+     "status": "found",
+     "got": "III",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "ICM after inferior STEMI 2018 and CABG 2019.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "September admission: 'ACS ruled out', troponin negative x3, no new infarct. Last MI 2018 and CABG 01/2019, far outside the windows. Page 8 confirms no ACS or intervention since 2019.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 92.7,
+     "why": "Carvedilol, ACEi/ARNI and spironolactone since 2019-02-04. Not decisive (ischemic).",
+     "status": "found",
+     "got": 63,
+     "page": 11,
+     "checked": false,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM visit 2026-10-01 with an evidence-based ICD decision aid.",
+     "status": "found",
+     "got": "Shared decision making visit conducted 10/01/2026 using evidence-based ICD decision aid; patient demonstrated understanding and wished to proceed.",
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Contraindications: none', with MoCA 27/30, no malignancy, no AF, stable.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_005.pdf",
+   "label": "[negation] The packet says 'infarct', 'MI', 'troponin' and 'LAD plaque' many times, but every one is negated; the cardiomyopathy is non-ischemic, and GDMT start",
+   "member": "Benedict A. Thorvaldsen",
+   "procedure": "icd",
+   "note": "All facts present. Non-ischemic (rule 1 passes), LVEF 25% by echo, NYHA III, no recent MI or revascularization. Rule 6 fails: 2.4 months of GDMT is under 3. SDM done, no limiting condition, 2 midnights supported. Escalate.",
+   "seconds": 22.5,
+   "expected_action": "escalate",
+   "actual_action": "escalate",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "negation",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights'.",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes on insulin",
+      "obesity BMI 41",
+      "hypertension",
+      "CKD stage 3a"
+     ],
+     "why": "Listed as comorbid factors on the pre-admit form.",
+     "status": "found",
+     "got": [
+      "DM2 on insulin",
+      "obesity (BMI 41)",
+      "hypertension",
+      "CKD 3a"
+     ],
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 25,
+     "why": "CMR 08/07/2026 22% (page 3); TTE 09/30/2026 25% (page 5). The later one wins.",
+     "status": "found",
+     "got": 25,
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE biplane.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "III",
+     "why": "EP consult: 'NYHA III'.",
+     "status": "found",
+     "got": "III",
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "non-ischemic",
+     "why": "No significant CAD on cath, mid-wall LGE with no infarct pattern, troponin labeled 'not MI'. Every ischemic-sounding word is negated.",
+     "status": "found",
+     "got": "non-ischemic",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "Troponin rise explicitly 'not MI, no ACS'; no intervention at cath; page 8 says no MI, PCI or CABG ever.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 2.4,
+     "why": "GDMT started 2026-08-09. That is 73 days (2.4 months) to the 2026-10-21 implant and 1.8 months to today.",
+     "status": "found",
+     "got": 1.7,
+     "page": 7,
+     "checked": false,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/30/2026 with an evidence-based ICD decision aid.",
+     "status": "found",
+     "got": "Shared decision making visit completed 09/30/2026 with HF NP using a printed evidence-based ICD decision aid.",
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "Contraindication screen: none.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_006.pdf",
+   "label": "[conflict_dates] The newest LVEF (38% by cardiac MRI on 09/10) is on the first clinical page. Three later pages, including the surgeon's pre-op note, repeat the",
+   "member": "Odessa J. Pemberton",
+   "procedure": "icd",
+   "note": "All facts present and clear once the dates are compared. Rule 2 fails: the current LVEF is 38% (CMR 09/10), above 35%. Everything else passes. Escalate.",
+   "seconds": 22.7,
+   "expected_action": "escalate",
+   "actual_action": "verify",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "conflict_dates",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "osteoporosis with prior vertebral fracture and fall risk",
+      "chronic iron deficiency anemia"
+     ],
+     "why": "EP pre-op note lists osteoporosis/fall risk and anemia as LOS factors (plus lives alone).",
+     "status": "found",
+     "got": [
+      "osteoporosis with prior vertebral fracture and fall risk",
+      "chronic anemia",
+      "possible iron deficiency (low ferritin)"
+     ],
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 38,
+     "why": "TTE 05/18/2026: 32% (pages 3, 5, 7). CMR 09/10/2026: 38% (page 2). The CMR is later, so 38% is current. The 09/15 pre-op note quotes the older echo by date; it is not a new measurement.",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "cardiac MRI",
+     "why": "The current value comes from cardiac MRI.",
+     "status": "found",
+     "got": "cardiac MRI",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "II",
+     "why": "Consult: 'NYHA II'; repeated on page 7.",
+     "status": "found",
+     "got": "II",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "non-ischemic",
+     "why": "NICM with normal coronaries 10/2025 and no LGE.",
+     "status": "found",
+     "got": "non-ischemic",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "'No MI, PCI or CABG history.'",
+     "status": "none",
+     "got": null,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 11.9,
+     "why": "Entresto, metoprolol and spironolactone since 2025-11-03; 361 days, about 11.9 months to the implant.",
+     "status": "found",
+     "got": 10,
+     "page": 5,
+     "checked": false,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/04/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "Shared decision making visit on 09/04/2026 with NP Thornquist using an evidence-based ICD decision aid booklet, reviewed with patient and son.",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Contraindications: none'.",
+     "status": "none",
+     "got": null,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_007.pdf",
+   "label": "[conflict_dates] The first EF a reader sees is 40% with NYHA I (June note, on a later page). The current EF of 30% is in the last clinical document, and the cur",
+   "member": "Calvin O. Brightwater",
+   "procedure": "icd",
+   "note": "With the newer values (LVEF 30%, NYHA II) every rule passes: ischemic, echo, no recent event, SDM done, no limiting condition, 2 midnights supported. Approve.",
+   "seconds": 22.0,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "conflict_dates",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'LOS expected: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "chronic warfarin anticoagulation",
+      "CKD stage 3b",
+      "BPH with prior urinary retention"
+     ],
+     "why": "Listed reasons on the admission plan.",
+     "status": "found",
+     "got": [
+      "CKD stage 3b",
+      "BPH with prior urinary retention",
+      "history of LV apical thrombus (resolved, on anticoagulation)",
+      "mild mitral regurgitation"
+     ],
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 30,
+     "why": "TTE 03/15/2026: 40% (quoted in the 06/10 note, page 4). TTE 09/02/2026: 30% (page 7). The later one wins.",
+     "status": "found",
+     "got": 30,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE biplane.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "II",
+     "why": "06/10/2026 note says NYHA I (page 4); 09/22/2026 EP consult says NYHA II (page 2). The later one wins, even though it is on the earlier page.",
+     "status": "found",
+     "got": "II",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "ICM after anterior MI 2021 with LAD PCI.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "MI and PCI 05/2021; 'No ACS or new coronary intervention since 2021.'",
+     "status": "none",
+     "got": null,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 65,
+     "why": "Carvedilol and valsartan since 06/2021, about 65 months to the implant. Not decisive (ischemic).",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM visit 10/01/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "10/01/2026 SDM visit with PA-C Abdi Warsame using published evidence-based ICD decision aid; decision reached was ICD implantation.",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Limiting conditions checked: none.' The resolved LV thrombus is not a listed limiting condition.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_008.pdf",
+   "label": "[format_variants] EF appears as '0.27' and 'twenty-seven percent', and functional status appears only as 'ACC/AHA stage C' and 'CCS class II angina'. NYHA class",
+   "member": "Ignatius P. Delacroix",
+   "procedure": "icd",
+   "note": "NYHA class is a needed fact for rule 4 and is not documented; stage C and CCS II are different scales. One needed fact is absent, so pend and ask for the NYHA class. Every other rule would pass.",
+   "seconds": 19.3,
+   "expected_action": "pend",
+   "actual_action": "pend",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "format_variants",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'We anticipate two midnights in hospital after implant.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "CKD stage 3b",
+      "clopidogrel antiplatelet therapy",
+      "gout"
+     ],
+     "why": "Supporting factors on the admission plan.",
+     "status": "found",
+     "got": [
+      "CKD stage 3b",
+      "gout"
+     ],
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 27,
+     "why": "Echo 2026-09-08 'EF 0.27' (page 3) and 'twenty-seven percent' in the dictation (page 2) are the same value. The 08/2025 'EF 0.29' is older.",
+     "status": "found",
+     "got": 27,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "2D TTE, biplane method of disks.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "absent",
+     "expected": null,
+     "why": "No NYHA class appears anywhere. 'ACC/AHA stage C' is a heart failure stage, not a NYHA class. 'CCS class II' is an angina scale. A symptom description and a 6-minute walk distance are not a documented NYHA class.",
+     "status": "missing",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "Ischemic cardiomyopathy after 2020 MI with stent.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "MI and stent 03/2020; 'has not had any further cardiac events or procedures since that time.'",
+     "status": "none",
+     "got": null,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 79,
+     "why": "Bisoprolol, ACEi/ARNI and spironolactone since 04/2020, about 79 months to the implant. Not decisive (ischemic).",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/25/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "Shared Decision Making Visit - ICD, 09/25/2026, with NP Galina Petrosyan using evidence-based ICD decision aid",
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'None present.'",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_009.pdf",
+   "label": "[format_variants] The most recent echo gives LVEF as a visual range '~33-38%' that straddles the 35% cutoff. An older nuclear study shows a clean 30%.",
+   "member": "Henrietta L. Szabo",
+   "procedure": "icd",
+   "note": "Rule 2 depends on LVEF. The most recent LVEF is a range that crosses 35%, so a person must decide whether to accept it, use the older 30%, or ask for a quantitative study. All other facts are present and pass. Verify.",
+   "seconds": 21.2,
+   "expected_action": "verify",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "format_variants",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected length of stay: 2 midnights'.",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "frailty",
+      "paroxysmal atrial fibrillation on apixaban",
+      "CKD stage 3b",
+      "fall risk",
+      "hypothyroidism"
+     ],
+     "why": "Factors on the pre-admission plan; levothyroxine on the med list.",
+     "status": "found",
+     "got": [
+      "CKD stage 3b",
+      "paroxysmal atrial fibrillation",
+      "mild mitral regurgitation",
+      "mild aortic stenosis",
+      "frailty/fall risk",
+      "hypothyroidism"
+     ],
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": null,
+     "why": "Nuclear 04/20/2026: 30% (page 2). The more recent echo on 09/15/2026 gives only a visual range of ~33-38% (page 3), which straddles 35%. The later measurement is current, but it cannot say whether LVEF is at or below 35%. The consult's 'mid-30s' adds nothing.",
+     "status": "found",
+     "got": 35,
+     "page": 5,
+     "checked": false,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "The current measurement is a TTE (visual estimate).",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "III",
+     "why": "EP consult: 'NYHA class III'.",
+     "status": "found",
+     "got": "III",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "ICM after anterior MI 2017.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "'No MI or revascularization since 2017. Never had PCI or CABG.'",
+     "status": "none",
+     "got": null,
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 111,
+     "why": "Metoprolol and losartan since 2017 (month not given), about 9 years, roughly 111 months. Not decisive (ischemic).",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/29/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "Device Clinic Shared Decision-Making visit 09/29/2026 using evidence-based ICD decision aid, patient decided to proceed with ICD.",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'None identified'; AF is rate controlled.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_010.pdf",
+   "label": "[family_or_history_confusion] The family history includes a father with an MI at 52 and CABG, a brother with Brugada syndrome who has an ICD, and the patient's ",
+   "member": "Gordon W. Ashcombe",
+   "procedure": "icd",
+   "note": "Ischemic, LVEF 29% by echo, NYHA II, last MI and PCI in 2014, SDM done, no limiting condition, 2 midnights with COPD, CKD and DM. Family history does not change any rule. Approve.",
+   "seconds": 21.0,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "family_or_history_confusion",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Planned stay: 2 midnights (inpatient).'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "COPD",
+      "CKD stage 3a",
+      "type 2 diabetes"
+     ],
+     "why": "Patient's own conditions on the pre-admission plan. The father's MI and the brother's Brugada are family history, not the patient's comorbidities.",
+     "status": "found",
+     "got": [
+      "COPD",
+      "DM2",
+      "CKD 3a"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 29,
+     "why": "TTE 09/03/2026: 29%.",
+     "status": "found",
+     "got": 29,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE biplane Simpson.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "II",
+     "why": "H&P A/P: 'NYHA class II'.",
+     "status": "found",
+     "got": "II",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "Ischemic cardiomyopathy after 2014 anterior STEMI. Brugada was ruled out by procainamide challenge (page 4), so the request does not rest on an inherited rhythm disorder.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "Patient's MI and PCI were 03/2014; 'No ACS or repeat revascularization since 2014.' The father's MI at 52 is family history.",
+     "status": "none",
+     "got": null,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 151.9,
+     "why": "Carvedilol and ACEi since 2014-03-13. Not decisive (ischemic).",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/30/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "Shared decision making visit completed 09/30/2026 using an evidence-based ICD decision aid; patient chose ICD.",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Exclusions: ... None.'",
+     "status": "none",
+     "got": [],
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_011.pdf",
+   "label": "[family_or_history_confusion] The referral letter frames this as ischemic cardiomyopathy because of the father's MI. The patient's own record shows nonobstructi",
+   "member": "Desmond R. Achterberg",
+   "procedure": "icd",
+   "note": "Rule 1: the request rests on a prior cardiac arrest, so cardiomyopathy_type is 'other' and a physician must decide. All other facts are present (and would otherwise pass). Escalate.",
+   "seconds": 27.8,
+   "expected_action": "escalate",
+   "actual_action": "escalate",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "family_or_history_confusion",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected stay: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "severe obstructive sleep apnea on CPAP",
+      "obesity BMI 34",
+      "hypertension"
+     ],
+     "why": "Supporting factors on the pre-admission plan.",
+     "status": "found",
+     "got": [
+      "hypertension",
+      "obstructive sleep apnea",
+      "obesity"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 33,
+     "why": "CMR 03/11/2026 31%; TTE 09/12/2026 33%. The later one wins.",
+     "status": "found",
+     "got": 33,
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "3D TTE.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "II",
+     "why": "EP consult: 'NYHA class II'.",
+     "status": "found",
+     "got": "II",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "other",
+     "why": "EP states the indication is secondary prevention after a resuscitated VF arrest, with nonobstructive coronaries. Per the definitions, a request resting on prior cardiac arrest is 'other'. The PCP's 'suspect ischemic' rests on the father's history, not the patient's.",
+     "status": "found",
+     "got": "other",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "Cath 03/08/2026: no PCI; troponin rise 'no MI'; page 8 'No MI, PCI or CABG.'",
+     "status": "none",
+     "got": null,
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 7.3,
+     "why": "Metoprolol, ARNI and MRA since 2026-03-12, about 7.3 months to the implant.",
+     "status": "found",
+     "got": 6,
+     "page": 13,
+     "checked": false,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/24/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "Shared decision making visit conducted 09/24/2026 using evidence-based ICD decision aid (video + booklet); patient chose ICD, wife agrees.",
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Limiting conditions: none. Neuro intact' (no anoxic brain injury).",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_012.pdf",
+   "label": "[planned_vs_done] SDM is mentioned on three pages, but it is only scheduled (10/20/2026). The EP's brochure-and-discussion is not a formal SDM visit with a deci",
+   "member": "Philippa N. Carrow",
+   "procedure": "icd",
+   "note": "Rule 7 needs a documented SDM visit with a decision aid. It is only scheduled, so the fact is absent. Pend and ask for the SDM note after 10/20. All other rules pass.",
+   "seconds": 21.6,
+   "expected_action": "pend",
+   "actual_action": "verify",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "planned_vs_done",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Anticipated LOS: 2 midnights'.",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "prior sternotomy",
+      "CKD stage 3a",
+      "depression"
+     ],
+     "why": "Supporting factors on the admission plan.",
+     "status": "found",
+     "got": [
+      "CKD 3a",
+      "depression",
+      "prior sternotomy/CABG",
+      "heart failure"
+     ],
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 30,
+     "why": "Cardiac PET 08/26/2026: rest LVEF 30%.",
+     "status": "found",
+     "got": 30,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "nuclear imaging",
+     "why": "Rb-82 PET is nuclear imaging.",
+     "status": "found",
+     "got": "nuclear imaging",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "III",
+     "why": "EP consult: 'NYHA III'.",
+     "status": "found",
+     "got": "III",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "Post-NSTEMI, CABG, large anterior scar.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "NSTEMI 05/2022 and CABG 06/14/2022; 'No interval ACS. No PCI since CABG.'",
+     "status": "none",
+     "got": "No MI or revascularization within the disqualifying windows; CABG was in 2022, outside the 3-month window",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 51.9,
+     "why": "Carvedilol and ARNI since 2022-07-05. Not decisive (ischemic). Empagliflozin is only planned.",
+     "status": "found",
+     "got": 51,
+     "page": 7,
+     "checked": true,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "absent",
+     "expected": null,
+     "why": "The formal SDM visit with the decision aid is scheduled for 2026-10-20, which has not happened yet (today is 2026-10-04). The 09/21 brochure and verbal discussion is not a formal SDM visit with a decision tool.",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Limiting conditions: none'.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_013.pdf",
+   "label": "[hedged_language] The most recent note says 'EF likely improved' and 'possibly no longer meets criteria', but there is no new measurement. The last measured LVE",
+   "member": "Augustin F. Lemaire",
+   "procedure": "icd",
+   "note": "Hedged statements do not replace measurements. The last measured LVEF is 30% by echo, NYHA II, ischemic, no recent event, SDM done, no limiting condition, 2 midnights with documented factors. Approve.",
+   "seconds": 24.4,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "hedged_language",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "clopidogrel antiplatelet therapy",
+      "CKD stage 3a",
+      "bradycardia on beta blocker",
+      "BPH with prior urinary retention"
+     ],
+     "why": "Factors on the pre-admission plan.",
+     "status": "found",
+     "got": [
+      "CKD 3a",
+      "BPH",
+      "bradycardia",
+      "hearing loss"
+     ],
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 30,
+     "why": "The last measurement is TTE 08/19/2026: 30%. 'EF likely improved' (page 2) is a guess, not a measurement, and does not replace it.",
+     "status": "found",
+     "got": 30,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE biplane.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "II",
+     "why": "HF NP note 09/30: 'NYHA II'; same in EP consult.",
+     "status": "found",
+     "got": "II",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "ICM after NSTEMI and RCA PCI 2019.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "NSTEMI and PCI 11/2019; 'No ACS or revascularization since 2019.'",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 83.3,
+     "why": "Metoprolol, ACEi/ARNI and spironolactone since 2019-11-18. Not decisive (ischemic).",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/16/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "SDM - ICD visit on 09/16/2026 with PA-C Marcus Oyibo using an evidence-based ICD decision aid",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Limiting conditions: none'. The memory concern was checked: MoCA 26/30, no dementia (page 7).",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_014.pdf",
+   "label": "[hedged_language] The cause of the cardiomyopathy is never settled. One cardiologist favors ischemic and the EP favors non-ischemic, both hedged. GDMT is 2.6 mo",
+   "member": "Wilhelmina C. Asante",
+   "procedure": "icd",
+   "note": "If ischemic, rule 6 does not apply and every rule passes (approve). If non-ischemic, 2.6 months of GDMT fails rule 6 (escalate). The packet has two hedged, opposing opinions on etiology and no angiography. A person must settle the etiology. Verify.",
+   "seconds": 30.9,
+   "expected_action": "verify",
+   "actual_action": "verify",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "hedged_language",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "CKD stage 4",
+      "type 2 diabetes on insulin"
+     ],
+     "why": "Factors on the pre-admission plan.",
+     "status": "found",
+     "got": [
+      "diabetes mellitus type 2",
+      "chronic kidney disease stage 4",
+      "heart failure with reduced ejection fraction",
+      "functional mitral regurgitation"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 27,
+     "why": "SPECT 07/30/2026 29%; TTE 09/17/2026 27%. The later one wins.",
+     "status": "found",
+     "got": 27,
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE biplane Simpson.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "III",
+     "why": "EP consult: 'NYHA III'.",
+     "status": "found",
+     "got": "III",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": null,
+     "why": "General cardiology (09/10) 'favor ischemic ... cannot exclude non-ischemic'. EP (09/24) 'likely non-ischemic ... ischemic etiology not excluded'. The SPECT defect is 'attenuation vs small prior infarct'. No angiography. No document settles it.",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "'No known MI. No PCI or CABG ever.' Even a possible old silent infarct is not within 40 days.",
+     "status": "none",
+     "got": null,
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 2.6,
+     "why": "GDMT started 2026-08-01; 80 days (2.6 months) to the 2026-10-20 implant.",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/29/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "Shared decision making visit on 09/29/2026 with NP using evidence-based ICD decision aid booklet; decision to proceed.",
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Limiting conditions screened: none'.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_015.pdf",
+   "label": "[ambiguous_verify] Two clinicians saw the patient on the same day: the EP wrote NYHA II and the HF clinic wrote NYHA IV with rest dyspnea. The later pre-op note",
+   "member": "Cornelius T. Vandermeer",
+   "procedure": "icd",
+   "note": "Rule 4 turns on NYHA class, and the packet has two contradictory same-day assessments (II and IV). Neither is newer, so the 'later wins' rule cannot settle it. A person must decide (and should also check clinical stability). Verify.",
+   "seconds": 24.3,
+   "expected_action": "verify",
+   "actual_action": "verify",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "ambiguous_verify",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "CKD stage 3b",
+      "active diuretic titration",
+      "hyponatremia"
+     ],
+     "why": "Factors on the pre-admission plan.",
+     "status": "found",
+     "got": [
+      "CKD 3b",
+      "hyponatremia",
+      "acute on chronic HFrEF",
+      "mitral regurgitation",
+      "elevated pulmonary pressures (RVSP 48)"
+     ],
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 25,
+     "why": "TTE 09/05/2026: 25%.",
+     "status": "found",
+     "got": 25,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE biplane.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": null,
+     "why": "Same date, two assessments: EP consult 09/24 'NYHA class II' (page 2) and HF clinic 09/24 'NYHA class IV' with rest dyspnea and volume overload (page 4). Neither is later. The 10/01 note only cites the EP consult and is not a new assessment. Class II passes rule 4; class IV fails it.",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "ICM after anterior MI and CABG 2016.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "MI and CABG 03/2016; no events since.",
+     "status": "none",
+     "got": "No MI or revascularization since 2016 (CABG x3 in 03/2016, outside the 3-month window)",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 127,
+     "why": "Carvedilol and spironolactone since 2016, roughly 10.5 years. Not decisive (ischemic).",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/26/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "SDM visit conducted 09/26/2026 with PA-C Tobias Ferreira using an evidence-based ICD decision aid (booklet + video); patient chose ICD.",
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "Pre-admission plan states none, citing the EP consult. The HF clinic note's decompensation also raises a clinical-stability question, which a reviewer resolving the NYHA conflict would settle at the same time.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_016.pdf",
+   "label": "[ambiguous_verify] The EP calls the persistent AF 'rate control adequate by lenient criteria'. The Holter shows a mean of 104 bpm with 41% of the time above 110",
+   "member": "Rosalind M. Fairweather",
+   "procedure": "icd",
+   "note": "Every other rule passes (NICM with 13.8 months GDMT, LVEF 30% by echo, NYHA II, SDM done, 2 midnights). Rule 8 depends on whether the AF rate is poorly controlled, and the packet holds two defensible readings. A person must decide. Verify.",
+   "seconds": 32.3,
+   "expected_action": "verify",
+   "actual_action": "escalate",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "ambiguous_verify",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "persistent atrial fibrillation",
+      "apixaban anticoagulation",
+      "digoxin therapy"
+     ],
+     "why": "Factors on the pre-admission plan (plus age 78).",
+     "status": "found",
+     "got": [
+      "persistent atrial fibrillation",
+      "mitral regurgitation (moderate)",
+      "tricuspid regurgitation (moderate)"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 30,
+     "why": "TTE 09/03/2026: 30%.",
+     "status": "found",
+     "got": 30,
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE biplane.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "II",
+     "why": "EP consult and HF NP note both say NYHA II.",
+     "status": "found",
+     "got": "II",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "non-ischemic",
+     "why": "NICM with normal coronaries 08/2025.",
+     "status": "found",
+     "got": "non-ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "'No MI, PCI or CABG.'",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 13.8,
+     "why": "Metoprolol, ARNI and MRA since 2025-09-08, about 13.8 months to the implant.",
+     "status": "found",
+     "got": 14,
+     "page": 3,
+     "checked": false,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/24/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "SDM visit 09/24/2026 with PA-C Pilar Encinas using evidence-based ICD decision aid; decision to proceed with ICD.",
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "present",
+     "expected": null,
+     "why": "Brain damage, life-limiting illness and instability are ruled out (page 8). The open question is AF rate control: the EP calls it adequate by lenient criteria (page 2); the Holter shows mean 104 and 41% of time >110 (page 3); the HF NP on 09/28 records resting HR 108 and calls it borderline (page 5). Whether this is 'poorly controlled' is a clinical judgment.",
+     "status": "found",
+     "got": [
+      "atrial fibrillation with poorly controlled rate (disputed/borderline)"
+     ],
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_017.pdf",
+   "label": "[wrong_patient_or_copy_forward] The most recently dated document (the pre-op H&P) contains an imaging block copied forward from 11/2025 saying LVEF 25%. The cur",
+   "member": "Thaddeus J. Ellsworth",
+   "procedure": "icd",
+   "note": "All facts present. The current LVEF is 41% (09/09/2026), so rule 2 (35% or less) fails. Other rules pass. Escalate.",
+   "seconds": 19.4,
+   "expected_action": "escalate",
+   "actual_action": "escalate",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "wrong_patient_or_copy_forward",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights'.",
+     "status": "found",
+     "got": 2,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "obstructive sleep apnea on CPAP",
+      "type 2 diabetes on insulin",
+      "obesity BMI 39",
+      "hypertension"
+     ],
+     "why": "Pre-op H&P PMH and LOS line.",
+     "status": "found",
+     "got": [
+      "hypertension",
+      "type 2 diabetes mellitus",
+      "obstructive sleep apnea",
+      "obesity"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 41,
+     "why": "TTE 11/18/2025: 25% (page 5, and copied into the 09/28/2026 H&P on page 2). TTE 09/09/2026: 41% (page 4, also in HF note page 3). The later measurement wins. The H&P's 25% is a copied-forward old value, not a new measurement.",
+     "status": "found",
+     "got": 41,
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE biplane.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "II",
+     "why": "HF clinic 09/16/2026: NYHA II. The 'NYHA III' in the H&P sits in an HPI block labeled as carried forward from 11/2025.",
+     "status": "found",
+     "got": "II",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "non-ischemic",
+     "why": "NICM with normal coronaries.",
+     "status": "found",
+     "got": "non-ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "'No hx of MI, PCI or CABG.'",
+     "status": "none",
+     "got": null,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 11.8,
+     "why": "GDMT since 2025-10-24, about 11.8 months to the implant.",
+     "status": "found",
+     "got": 11,
+     "page": 11,
+     "checked": false,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/22/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "Shared decision making visit conducted 09/22/2026 with NP Bettina Saarinen using an evidence-based ICD decision aid (video); patient elected to proceed.",
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Limiting conditions: none'.",
+     "status": "none",
+     "got": null,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_018.pdf",
+   "label": "[missing_but_adjacent] The packet says 'maximally tolerated GDMT' many times and lists pharmacy last-fill dates, but never gives a GDMT start date or duration. ",
+   "member": "Lucinda Y. Brannigan",
+   "procedure": "icd",
+   "note": "Non-ischemic, so rule 6 needs months on GDMT. That fact is absent. Pend and ask for GDMT start dates. Everything else passes.",
+   "seconds": 17.3,
+   "expected_action": "pend",
+   "actual_action": "pend",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "missing_but_adjacent",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'LOS: 2 midnights expected.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "CKD stage 3a",
+      "hypothyroidism",
+      "moderate mitral regurgitation"
+     ],
+     "why": "Factors on the pre-admission plan.",
+     "status": "found",
+     "got": [
+      "CKD 3a",
+      "hypothyroidism",
+      "moderate mitral regurgitation with elevated filling pressures"
+     ],
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 24,
+     "why": "TTE 09/11/2026: 24%.",
+     "status": "found",
+     "got": 24,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE biplane Simpson.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "III",
+     "why": "HF note: 'NYHA III'; same in EP consult.",
+     "status": "found",
+     "got": "III",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "non-ischemic",
+     "why": "EP consult: non-ischemic; CCTA with CAC 0 and no stenosis.",
+     "status": "found",
+     "got": "non-ischemic",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "'No MI, PCI or CABG.'",
+     "status": "none",
+     "got": null,
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "absent",
+     "expected": null,
+     "why": "No start date or duration for any GDMT drug appears. 'Diagnosed earlier this year' and 'maximally tolerated GDMT' give no duration. The 09/12/2026 dates are last-fill dates, and claims before 08/2026 are explicitly unavailable.",
+     "status": "missing",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "correct"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/30/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "SDM visit on 09/30/2026 using evidence-based ICD decision aid; patient elected ICD.",
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Limiting conditions: none'.",
+     "status": "none",
+     "got": null,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_019.pdf",
+   "label": "[clean_control] Clean control: every fact is clearly documented and every rule is met; it measures over-flagging.",
+   "member": "Ambrose K. Teller",
+   "procedure": "icd",
+   "note": "Ischemic, LVEF 26% by echo, NYHA II, last event 2017, SDM done, no limiting condition, 2 midnights with documented factors. Approve.",
+   "seconds": 21.3,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "clean_control",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected length of stay: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes on insulin",
+      "COPD",
+      "CKD stage 3a"
+     ],
+     "why": "Supporting factors on the pre-admission plan.",
+     "status": "found",
+     "got": [
+      "ischemic cardiomyopathy",
+      "type 2 diabetes mellitus (insulin-requiring)",
+      "COPD",
+      "chronic kidney disease stage 3a"
+     ],
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 26,
+     "why": "TTE 09/09/2026: 26%.",
+     "status": "found",
+     "got": 26,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "echocardiography",
+     "why": "TTE biplane.",
+     "status": "found",
+     "got": "echocardiography",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "II",
+     "why": "'NYHA class II'.",
+     "status": "found",
+     "got": "II",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "ischemic",
+     "why": "ICM after anterior STEMI 2017.",
+     "status": "found",
+     "got": "ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "MI and PCI 09/2017; 'No further ACS or coronary procedures.'",
+     "status": "none",
+     "got": null,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 109.3,
+     "why": "Metoprolol, ACEi/ARNI and eplerenone since 2017-09-16.",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 09/30/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "Shared decision making visit completed 09/30/2026 using an evidence-based ICD decision aid, decision: ICD.",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Limiting conditions: none.'",
+     "status": "none",
+     "got": null,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_020.pdf",
+   "label": "[clean_control] Clean control for non-ischemic cardiomyopathy: GDMT is clearly over 3 months and every fact is plainly stated.",
+   "member": "Beatrix H. Lindqvist",
+   "procedure": "icd",
+   "note": "Non-ischemic with 9.7 months of GDMT, LVEF 29% by CMR, NYHA III, no MI or revascularization, SDM done, no limiting condition, 2 midnights with documented factors. Approve.",
+   "seconds": 18.8,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "clean_control",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected stay: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "severe obstructive sleep apnea on CPAP",
+      "obesity BMI 42",
+      "hypertension"
+     ],
+     "why": "Reasons on the EP pre-procedure note.",
+     "status": "found",
+     "got": [
+      "severe obstructive sleep apnea on CPAP",
+      "obesity (BMI 42)",
+      "hypertension",
+      "heart failure"
+     ],
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_percent",
+     "truth": "present",
+     "expected": 29,
+     "why": "CMR 09/18/2026: 29%.",
+     "status": "found",
+     "got": 29,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "lvef_method",
+     "truth": "present",
+     "expected": "cardiac MRI",
+     "why": "Cardiac MRI.",
+     "status": "found",
+     "got": "cardiac MRI",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "nyha_class",
+     "truth": "present",
+     "expected": "III",
+     "why": "'NYHA class III'.",
+     "status": "found",
+     "got": "III",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "cardiomyopathy_type",
+     "truth": "present",
+     "expected": "non-ischemic",
+     "why": "Normal coronaries, dilated non-ischemic CM, no LGE.",
+     "status": "found",
+     "got": "non-ischemic",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "recent_mi_revasc",
+     "truth": "negated",
+     "expected": null,
+     "why": "'No MI, PCI or CABG.'",
+     "status": "none",
+     "got": null,
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "optimal_medical_therapy_months",
+     "truth": "present",
+     "expected": 9.7,
+     "why": "All four GDMT drugs started 2026-01-06; about 9.7 months to the 2026-10-29 implant.",
+     "status": "found",
+     "got": 9,
+     "page": 3,
+     "checked": true,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "shared_decision_making",
+     "truth": "present",
+     "expected": null,
+     "why": "SDM 10/01/2026 with an evidence-based decision aid.",
+     "status": "found",
+     "got": "SDM visit 10/01/2026 with PA-C Yusuf Brennan-Achebe using evidence-based ICD decision aid",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "limiting_conditions",
+     "truth": "negated",
+     "expected": [],
+     "why": "'Limiting conditions: none'.",
+     "status": "none",
+     "got": null,
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_021.pdf",
+   "label": "[clean_control] Clean control: BMI, comorbidities, a failed supervised program and a 2-midnight plan are all clearly documented.",
+   "member": "Delphine R. Mattox",
+   "procedure": "bariatric",
+   "note": "BMI 44.2 (35 or higher), T2DM and OSA documented, supervised program failed, 2 midnights with documented factors. Approve.",
+   "seconds": 13.1,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "clean_control",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes on insulin",
+      "severe obstructive sleep apnea",
+      "hypertension",
+      "knee osteoarthritis"
+     ],
+     "why": "Consult assessment and PCP letter (page 7).",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus on insulin",
+      "severe obstructive sleep apnea on CPAP",
+      "hypertension",
+      "bilateral knee osteoarthritis"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 44.2,
+     "why": "Consult 09/24/2026: BMI 44.2.",
+     "status": "found",
+     "got": 44.2,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "6-month physician-supervised program 01/08 to 07/09/2026, with diet, activity, counseling and phentermine. Lost 2.1%; documented as unsuccessful.",
+     "status": "found",
+     "got": "6-month medically supervised weight management program (01/08/2026-07/09/2026): 7 monthly physician/dietitian visits, 1,400 kcal meal plan with food logs, activity goal 150 min/wk (achieved ~90 min/wk), behavioral counseling, phentermine 15 mg 02/05-04/20/2026 (stopped for BP elevation and palpitations); GLP-1 RA not added. Weight went from 268.0 lb to nadir 261.2 lb (05/2026) to final 262.4 lb, total loss 2.1%. Did not achieve 5% weight loss goal; medical management unsuccessful.",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_022.pdf",
+   "label": "[clean_control] Clean control with a lower BMI (38.9) and a GLP-1 trial inside the supervised program.",
+   "member": "Rupert E. Holloway",
+   "procedure": "bariatric",
+   "note": "BMI 38.9, T2DM, failed supervised program, 2 nights with documented factors. Approve.",
+   "seconds": 12.0,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "clean_control",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected stay: two nights.'",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes",
+      "hypertension",
+      "erosive GERD",
+      "hyperlipidemia"
+     ],
+     "why": "Consult PMH and impression.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus",
+      "hypertension",
+      "GERD with erosive esophagitis",
+      "hyperlipidemia"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 38.9,
+     "why": "Consult 09/29/2026: BMI 38.9.",
+     "status": "found",
+     "got": 38.9,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Physician-supervised program 10/06/2025 to 04/13/2026 with diet, exercise and semaglutide. Lost at most 3.1%, then regained; labeled unsuccessful.",
+     "status": "found",
+     "got": "Physician-supervised medical weight loss program 10/06/2025-04/13/2026 with 1,600 kcal diet, dietitian counseling, exercise/walking program, and semaglutide (titrated to 1 mg, started 11/03/2025) which was stopped 03/2026 due to persistent nausea/vomiting; max weight loss was only 9 lb (3.1%) by 02/2026, then regained, ending at -1.0% from start; program outcome deemed unsuccessful.",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_023.pdf",
+   "label": "[ambiguous_verify] On the same day, the surgeon's clinic recorded BMI 35.7 and the dietitian's clinic recorded BMI 34.6, on different scales and heights. One is",
+   "member": "Yolanda S. Pritchett",
+   "procedure": "bariatric",
+   "note": "Rule 1 depends on BMI, and the current BMI is two contradictory same-day values on either side of 35. A person must decide which measurement is valid. Other rules pass. Verify.",
+   "seconds": 13.9,
+   "expected_action": "verify",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "ambiguous_verify",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes",
+      "hypertension",
+      "knee osteoarthritis"
+     ],
+     "why": "Initial consult PMH; repeated on page 8.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus",
+      "hypertension",
+      "knee osteoarthritis"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": null,
+     "why": "Two BMIs on 09/18/2026: surgical clinic 35.7 (stadiometer height 64.5 in, 211.4 lb) and nutrition clinic 34.6 (reported height 65.0 in, 208.0 lb). Same date, so neither is later; one is above 35, one below. The 09/25 plan restates both and says 'not yet reconciled'. The 06/12 BMI of 36.9 is older.",
+     "status": "found",
+     "got": 35.7,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "6-month supervised program 09/2025 to 03/2026 with diet, exercise and topiramate. Lost 1.3%; labeled unsuccessful.",
+     "status": "found",
+     "got": "6-month supervised medical weight management program (09/2025-03/2026) with 1,500 kcal diet, food diary, walking 30 min 5x/wk, and topiramate 50mg (added 11/2025, stopped 02/2026 due to paresthesias and word-finding issues); weight went from 224 lb to 221 lb (-1.3%), considered unsuccessful.",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_024.pdf",
+   "label": "[ambiguous_verify] The supervised program's own discharge note calls the result 'SUCCESSFUL' (5.2% loss, goal met). The surgeon calls it a failure. The rule nee",
+   "member": "Oswaldo J. Treviño",
+   "procedure": "bariatric",
+   "note": "Rules 1, 2 and 4 pass. Rule 3 needs prior medical treatment to have been unsuccessful, and the program itself documents success while the surgeon documents failure. Two defensible readings, so a person must decide. Verify.",
+   "seconds": 11.1,
+   "expected_action": "verify",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "ambiguous_verify",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights'.",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "severe obstructive sleep apnea",
+      "hypertension",
+      "type 2 diabetes"
+     ],
+     "why": "Surgeon visit history; PSG page 4.",
+     "status": "found",
+     "got": [
+      "severe obstructive sleep apnea on CPAP",
+      "hypertension",
+      "type 2 diabetes mellitus"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 39.7,
+     "why": "09/28/2026: BMI 39.7.",
+     "status": "found",
+     "got": 39.7,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "The 6-month supervised program (01/12 to 07/13/2026) is documented. Its outcome conflicts: the program discharge note says 'Program goal MET. Outcome: SUCCESSFUL' (5.2% loss), while the surgeon says the patient 'has failed medically supervised weight loss'. The PCP says the weight loss was kept but plateaued. Whether this counts as unsuccessful is a judgment call.",
+     "status": "found",
+     "got": "Completed a 6-month medically supervised weight loss program (01/12/2026-07/13/2026) with diet, exercise, behavioral therapy, and optimized metformin; achieved 15 lb loss (-5.2% TBW), meeting the >=5% goal and deemed SUCCESSFUL, but patient regained most weight and still had BMI near 40 with uncontrolled diabetes (A1c 8.0).",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_025.pdf",
+   "label": "[temporal_trap] The plan says '2-day hospital course' and the coordinator form says '2 days', but the dates show admission 10/20 and discharge 10/21, which is 1",
+   "member": "Imogen V. Castellanos",
+   "procedure": "bariatric",
+   "note": "BMI, comorbidity and prior treatment pass. Rule 4 needs at least 2 midnights, but the dated plan is admit 10/20 and discharge 10/21, which is 1 midnight. All facts present, one rule not met. Escalate.",
+   "seconds": 11.2,
+   "expected_action": "escalate",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "temporal_trap",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 1,
+     "why": "Admit 10/20/2026 and discharge POD1 10/21/2026 is one midnight. The '2 days' (page 6) and 'Days requested: 2' (page 7) count calendar days, not midnights.",
+     "status": "found",
+     "got": 2,
+     "page": 11,
+     "checked": true,
+     "outcome": "wrong_value"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes",
+      "obstructive sleep apnea on CPAP",
+      "GERD",
+      "depression"
+     ],
+     "why": "Consult PMH.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus",
+      "obstructive sleep apnea",
+      "GERD",
+      "depression (stable)"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 42.6,
+     "why": "Consult 08/27/2026: BMI 42.6.",
+     "status": "found",
+     "got": 42.6,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 11/04/2025 to 05/05/2026 with diet, exercise, counseling and naltrexone-bupropion; net -0.4%; labeled unsuccessful.",
+     "status": "found",
+     "got": "6-month physician-supervised weight management program (11/04/2025-05/05/2026) with dietitian-guided 1,500 kcal diet, exercise, and naltrexone-bupropion (stopped due to insomnia/anxiety); weight went 244 -> 239 -> 243 lb, net -0.4%, deemed unsuccessful.",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_026.pdf",
+   "label": "[negation] The packet is full of 'sleep apnea', 'diabetes', 'hypertension' and 'fatty liver', but every one is ruled out. Her only conditions (hypothyroidism, m",
+   "member": "Marguerite D. Langston",
+   "procedure": "bariatric",
+   "note": "BMI 37.3 passes rule 1. Rule 2 fails: there is no obesity-related comorbidity, because every candidate is explicitly ruled out. Rules 3 and 4 pass. All facts present, so escalate.",
+   "seconds": 12.4,
+   "expected_action": "escalate",
+   "actual_action": "verify",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "negation",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "hypothyroidism",
+      "migraine without aura"
+     ],
+     "why": "These are the only conditions she has. OSA, diabetes, hypertension, dyslipidemia, NAFLD and GERD are each explicitly ruled out (pages 2, 3, 4, 6). Neither remaining condition is obesity-related.",
+     "status": "unsure",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "flagged_uncertain"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 37.3,
+     "why": "Consult 09/09/2026: BMI 37.3.",
+     "status": "found",
+     "got": 37.3,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "6-month supervised program 12/01/2025 to 06/01/2026 with diet, activity and liraglutide; net -0.4%; unsuccessful.",
+     "status": "found",
+     "got": "6-month supervised weight management program (12/01/2025-06/01/2026) with 1,400 kcal diet, food diary, 150 min/wk activity, and liraglutide 3.0mg (stopped due to pancreatitis concern); net weight change only -0.4% (233->228->232 lb); outcome unsuccessful.",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_027.pdf",
+   "label": "[conflict_dates] A dietitian note on a later page says 'BMI 34.9, below the 35 threshold'. It is dated 09/03; the surgeon's BMI of 36.2 on an earlier page is da",
+   "member": "Jerome A. Kessler",
+   "procedure": "bariatric",
+   "note": "The current BMI is 36.2 (09/30), so rule 1 passes. T2DM documented, supervised program failed, 2 midnights with factors. Approve.",
+   "seconds": 10.9,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "conflict_dates",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected stay: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes",
+      "hypertension",
+      "hyperlipidemia"
+     ],
+     "why": "PCP letter; also page 2. OSA is negated (PSG 2024 negative) and is not included.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus",
+      "hypertension",
+      "hyperlipidemia"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 36.2,
+     "why": "Dietitian 09/03/2026: 34.9 (page 6). Surgical visit 09/30/2026: 36.2 (page 2). The later measurement wins, even though it is on the earlier page.",
+     "status": "found",
+     "got": 36.2,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 2025-09-15 to 2026-03-16 with diet, exercise and phentermine-topiramate; net -0.8%; unsuccessful.",
+     "status": "found",
+     "got": "Six-month physician-supervised weight loss program (2025-09-15 to 2026-03-16) with monthly visits, 1,800 kcal diet, exercise plan, and phentermine-topiramate ER (stopped due to palpitations/insomnia); net weight change only -0.8%, deemed unsuccessful.",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_028.pdf",
+   "label": "[conflict_dates] The first page shows BMI 38.4 from April. After an illness-related weight loss, the current BMI is 34.1 on a later page dated 09/22, and the su",
+   "member": "Annabel P. Gutierrez",
+   "procedure": "bariatric",
+   "note": "All facts present. Rule 1 fails: the current BMI is 34.1, under 35. Comorbidity, prior treatment and 2-midnight LOS pass. Escalate.",
+   "seconds": 12.9,
+   "expected_action": "escalate",
+   "actual_action": "escalate",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "conflict_dates",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights'.",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes",
+      "obstructive sleep apnea on CPAP",
+      "PCOS"
+     ],
+     "why": "Initial consult PMH; T2DM and CPAP use confirmed on page 7.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus",
+      "obstructive sleep apnea on CPAP",
+      "PCOS",
+      "diverticulosis/history of perforated diverticulitis"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 34.1,
+     "why": "Consult 04/10/2026: BMI 38.4 (page 2). Pre-op visit 09/22/2026: BMI 34.1 (page 7). The later measurement wins. The surgeon's expectation of regain does not change the measured value.",
+     "status": "found",
+     "got": 34.1,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 03/03 to 09/08/2025 with diet, exercise and semaglutide; net +0.4%; unsuccessful. The later weight loss came from illness, not treatment.",
+     "status": "found",
+     "got": "Supervised medical weight loss program 03/03/2025-09/08/2025 with 6 monthly visits, 1,500 kcal diet, exercise log, and semaglutide (stopped due to gastroparesis-like symptoms); weight went from 226 to 220 to 227 lb, net +0.4%, deemed unsuccessful.",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_029.pdf",
+   "label": "[format_variants] Only weight (270 lb) and height (5 ft 7 in) are given; no BMI is ever stated. The only BMI numbers in the packet are a goal (<30) and an ideal",
+   "member": "Cyrus B. Albright",
+   "procedure": "bariatric",
+   "note": "BMI is a needed fact and is not stated, so it is absent. Pend and ask for a documented BMI. Other rules would pass.",
+   "seconds": 11.8,
+   "expected_action": "pend",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "format_variants",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes on insulin",
+      "hypertension",
+      "severe obstructive sleep apnea",
+      "gout"
+     ],
+     "why": "Consult PMH.",
+     "status": "found",
+     "got": [
+      "Type 2 diabetes mellitus (insulin-requiring)",
+      "Hypertension",
+      "Severe obstructive sleep apnea (on CPAP/APAP)",
+      "Gout"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "absent",
+     "expected": null,
+     "why": "No BMI for the patient is stated anywhere. Weight 270 lb and height 5 ft 7 in are given (they compute to about 42.3) but BMI itself is never written. 'BMI <30' is a goal, and IBW and excess weight are not BMI.",
+     "status": "found",
+     "got": 42.3,
+     "page": 3,
+     "checked": false,
+     "outcome": "false_positive"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 10/06/2025 to 04/06/2026 with meal replacement, exercise and tirzepatide; net -1.1%; unsuccessful.",
+     "status": "found",
+     "got": "Medically supervised weight management program 10/06/2025-04/06/2026 with 6 visits, RD counseling, 1,800 kcal meal replacement plan, exercise prescription, and tirzepatide (11/2025-01/2026, stopped due to insurance denial and GI intolerance); weight went 274 -> 266 -> 271 lb (net -1.1%); outcome unsuccessful with no sustained loss.",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_030.pdf",
+   "label": "[family_or_history_confusion] Diabetes, hypertension and OSA appear only in the family history and an old resolved gestational diabetes. The patient's own quali",
+   "member": "Shauna K. Whitford",
+   "procedure": "bariatric",
+   "note": "BMI 40.8; obesity-related comorbidities documented (NAFLD with imaging, knee OA with imaging, dyslipidemia on a statin); supervised program failed; 2 midnights with factors. The family history adds nothing. Approve.",
+   "seconds": 11.8,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "family_or_history_confusion",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 15,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "NAFLD",
+      "bilateral knee osteoarthritis",
+      "dyslipidemia",
+      "lumbar disc disease",
+      "depression"
+     ],
+     "why": "Patient's own PMH on page 2 (depression is on the psych eval, page 7). NAFLD, knee OA and dyslipidemia are standard obesity-related comorbidities. Family T2DM, HTN and OSA are excluded, the patient explicitly has no diabetes or hypertension, and the 2009 gestational diabetes resolved.",
+     "status": "found",
+     "got": [
+      "NAFLD/hepatic steatosis with hepatomegaly",
+      "bilateral knee osteoarthritis (Kellgren-Lawrence grade 3)",
+      "hypertriglyceridemia",
+      "depression (stable on bupropion)",
+      "lumbar disc disease"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 40.8,
+     "why": "H&P 09/17/2026: BMI 40.8.",
+     "status": "found",
+     "got": 40.8,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 11/10/2025 to 05/11/2026 with diet, exercise, behavioral therapy and semaglutide; net -1.2%; unsuccessful.",
+     "status": "found",
+     "got": "Monthly MD + RD visits x7 over 6 months (11/10/2025-05/11/2026) with 1,500 kcal diet plan, aquatic exercise, behavioral therapy, and semaglutide (max 1 mg, stopped for persistent vomiting); weight went 241 -> 233 -> 238 lb (net -1.2%). Unsuccessful.",
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_031.pdf",
+   "label": "[planned_vs_done] The supervised program is described in detail but starts in 11/2026, so it has not happened. The only past attempts are self-directed diets.",
+   "member": "Leopold N. Marchetti",
+   "procedure": "bariatric",
+   "note": "Rule 3 needs documented supervised medical treatment that failed. It is absent (only planned). Pend. Other rules pass.",
+   "seconds": 12.7,
+   "expected_action": "pend",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "planned_vs_done",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes on insulin",
+      "hypertension",
+      "severe obstructive sleep apnea",
+      "venous stasis"
+     ],
+     "why": "Consult PMH.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus (insulin-requiring, A1c 9.1)",
+      "hypertension",
+      "severe obstructive sleep apnea on CPAP",
+      "venous stasis/VTE risk"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 45.3,
+     "why": "Consult 09/21/2026: BMI 45.3.",
+     "status": "found",
+     "got": 45.3,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "absent",
+     "expected": null,
+     "why": "The supervised program is only planned (orientation 11/03/2026), and the intake note says 'No prior participation in a medically supervised program.' Keto, intermittent fasting and an app were self-directed. Office counseling is not a supervised program.",
+     "status": "found",
+     "got": "Patient self-directed attempts only (keto diet in 2023, intermittent fasting in 2024, weight-loss app), each resulting in 15-20 lb loss followed by regain; no formal medically supervised program completed to date. A 6-month medically supervised weight management program is scheduled to begin 11/2026, after the consultation and requested surgery date.",
+     "page": 3,
+     "checked": true,
+     "outcome": "false_positive"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_032.pdf",
+   "label": "[planned_vs_done] Length of stay is to be decided at a future anesthesia visit. Small numbers like '2-week' and 'POD 1' appear nearby, and a possible step-down ",
+   "member": "Esperanza M. Holcomb",
+   "procedure": "bariatric",
+   "note": "Rule 4 needs the expected number of midnights, and that is not yet decided. The fact is absent, so pend. Other rules pass.",
+   "seconds": 10.2,
+   "expected_action": "pend",
+   "actual_action": "pend",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "planned_vs_done",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "absent",
+     "expected": null,
+     "why": "The plan says LOS is 'to be determined at pre-anesthesia evaluation (11/09/2026)', which has not happened. No number of midnights is given anywhere. 'POD 1', '2 weeks' and '2-week liquid diet' are not LOS.",
+     "status": "implied",
+     "got": null,
+     "page": 15,
+     "checked": false,
+     "outcome": "false_positive"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes on insulin",
+      "very severe obstructive sleep apnea on BiPAP",
+      "hypertension",
+      "lymphedema"
+     ],
+     "why": "Consult PMH.",
+     "status": "found",
+     "got": [
+      "T2DM on insulin (A1c 8.8)",
+      "very severe OSA (AHI 71) on BiPAP",
+      "HTN",
+      "lymphedema",
+      "obesity hypoventilation features"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 48.2,
+     "why": "Consult 09/14/2026: BMI 48.2.",
+     "status": "found",
+     "got": 48.2,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "6-month supervised program 10/2025 to 04/2026 with diet, exercise, counseling and liraglutide; net -0.4%; unsuccessful.",
+     "status": "found",
+     "got": "6-month supervised weight management program (10/2025-04/2026, 6 visits) with 1,400 kcal diet, chair-based exercise, counseling, and liraglutide (stopped due to cholelithiasis); net weight change -0.4%, deemed unsuccessful.",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_033.pdf",
+   "label": "[hedged_language] The surgeon's only LOS statement is '1-2 midnights depending on CPAP tolerance and glucose', which straddles the 2-midnight threshold.",
+   "member": "Winston G. Afolabi",
+   "procedure": "bariatric",
+   "note": "Rules 1 to 3 pass. Rule 4 depends on whether the surgeon expects at least 2 midnights, and the only statement is a 1-2 range. A person must settle it with the surgeon or by judging the documented risk factors. Verify.",
+   "seconds": 11.0,
+   "expected_action": "verify",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "hedged_language",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": null,
+     "why": "The plan says '1-2 midnights depending on post-op CPAP tolerance and glucose control' and the consult says 'typical stay ... 1-2 nights'. The expectation straddles the 2-midnight rule and there is no single number.",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": false,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes on insulin",
+      "obstructive sleep apnea",
+      "hypertension",
+      "CKD stage 2"
+     ],
+     "why": "Consult PMH.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus (insulin-requiring)",
+      "obstructive sleep apnea on CPAP with poor adherence",
+      "hypertension",
+      "chronic kidney disease stage 2"
+     ],
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 41.5,
+     "why": "Consult 09/10/2026: BMI 41.5.",
+     "status": "found",
+     "got": 41.5,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 12/02/2025 to 06/01/2026 with diet, activity and phentermine; net -0.6%; not successful.",
+     "status": "found",
+     "got": "6-month physician-supervised weight management program (12/02/2025-06/01/2026) with monthly RD visits, 1,800 kcal diet, 30 min/day walking, and phentermine 8mg TID (stopped due to BP rise); weight went from 311 to 303 to 309 lb (net -0.6%); outcome documented as not successful.",
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_034.pdf",
+   "label": "[wrong_patient_or_copy_forward] The attached 6-month dietitian program records are for 'Tabitha L. Nunez' (different DOB and MRN), not the member 'Tabitha R. Nw",
+   "member": "Tabitha R. Nwosu",
+   "procedure": "bariatric",
+   "note": "Rule 3 needs documented failed supervised treatment for this member. The attached records are another patient's, so the fact is absent. Pend and ask for the member's own program records. Other rules pass.",
+   "seconds": 11.5,
+   "expected_action": "pend",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "wrong_patient_or_copy_forward",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes",
+      "hypertension",
+      "GERD"
+     ],
+     "why": "Consult PMH.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus",
+      "hypertension",
+      "GERD"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 43.5,
+     "why": "Consult 09/15/2026: BMI 43.5.",
+     "status": "found",
+     "got": 43.5,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "absent",
+     "expected": null,
+     "why": "The program records on pages 3 and 4 belong to a different patient (Tabitha L. Nunez, DOB 09/12/1971, MRN RB-77120). For the member there is only the surgeon's line 'has completed medically supervised weight loss (see attached)', with no dates, duration or result.",
+     "status": "found",
+     "got": "Completed a 6-month medically supervised weight loss program (11/03/2025-04/06/2026) with 1,500 kcal diet, food log, and walking 20 min/day; net result was a 2 lb weight gain, deemed unsuccessful, with referral to surgery.",
+     "page": 7,
+     "checked": true,
+     "outcome": "false_positive"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_035.pdf",
+   "label": "[wrong_patient_or_copy_forward] On the same date, the surgeon's plan says 2 midnights and the PA's templated H&P says 'discharge POD1, expected LOS 1 night'. Th",
+   "member": "Bartholomew S. Kearney",
+   "procedure": "bariatric",
+   "note": "BMI, comorbidity and prior treatment pass. Rule 4 depends on the expected stay, and two same-day documents give 2 midnights and 1 night. The template H&P may be stale, but a person must confirm. Verify.",
+   "seconds": 13.0,
+   "expected_action": "verify",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "wrong_patient_or_copy_forward",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": null,
+     "why": "Two documents dated 2026-09-28: the surgeon's plan says 'Expected LOS: 2 midnights' (page 4) and the PA's templated H&P says 'Expected LOS: 1 night', discharge POD1 (page 5). Same date, so neither is later, and they contradict.",
+     "status": "found",
+     "got": 2,
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes on insulin",
+      "obstructive sleep apnea on BiPAP",
+      "hypertension",
+      "atrial fibrillation on apixaban"
+     ],
+     "why": "Consult PMH.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus (insulin-requiring)",
+      "obstructive sleep apnea on BiPAP",
+      "hypertension",
+      "atrial fibrillation on apixaban"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 46.0,
+     "why": "Consult 09/09/2026: BMI 46.0. The H&P's BMI 48.9 is labeled as vitals from 03/12/2025 (copied forward) and is older.",
+     "status": "found",
+     "got": 46.0,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 09/2025 to 03/2026 with diet, exercise and counseling; net -0.6%; unsuccessful.",
+     "status": "found",
+     "got": "6-month supervised weight management program (09/2025-03/2026) with monthly visits, RD counseling, 1,800 kcal diet, and aquatic exercise (no anti-obesity medication due to cost); net weight change was only -0.6% (324 -> 318 -> 322 lb), deemed unsuccessful.",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_036.pdf",
+   "label": "[missing_but_adjacent] Weight management comes up everywhere: yearly PCP counseling, self-joined Weight Watchers, and a dietitian education visit. None of it is",
+   "member": "Clementine A. Bauer",
+   "procedure": "bariatric",
+   "note": "Rule 3 needs documented supervised medical treatment that failed. It is absent. Pend. Other rules pass.",
+   "seconds": 11.7,
+   "expected_action": "pend",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "missing_but_adjacent",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "hypertension",
+      "type 2 diabetes"
+     ],
+     "why": "Consult PMH.",
+     "status": "found",
+     "got": [
+      "hypertension",
+      "type 2 diabetes mellitus",
+      "prior knee replacement",
+      "VTE risk"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 41.9,
+     "why": "Consult 09/08/2026: BMI 41.9.",
+     "status": "found",
+     "got": 41.9,
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "absent",
+     "expected": null,
+     "why": "No supervised medical weight-loss program is documented. Yearly PCP counseling is advice, not a program. Weight Watchers 2019 was self-joined and commercial. The dietitian visit was one-time surgical education and states 'No weight-loss program enrollment'.",
+     "status": "found",
+     "got": "Patient tried Weight Watchers on her own in 2019 (lost 12 lb, regained), and was counseled on diet/exercise and Mediterranean diet/walking by PCP in 2024 and 2025; she declined medication management; a single pre-operative dietitian education visit occurred in 2026 but she was not enrolled in a structured weight-loss program.",
+     "page": 5,
+     "checked": true,
+     "outcome": "false_positive"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_037.pdf",
+   "label": "[missing_but_adjacent] The surgeon writes 'obesity-related comorbidities: see attached problem list', but the problem list is not in the packet, and no page nam",
+   "member": "Darnell P. Whitaker",
+   "procedure": "bariatric",
+   "note": "Rule 2 needs at least one documented obesity-related comorbidity. The comorbidities fact is absent (the referenced problem list is missing). Pend and ask for the problem list. Other rules pass.",
+   "seconds": 9.1,
+   "expected_action": "pend",
+   "actual_action": "pend",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "missing_but_adjacent",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "absent",
+     "expected": null,
+     "why": "No comorbidity is named on any page. The consult defers to a problem list that the index says is enclosed (page 2) but is not in the packet. The med list (cetirizine, vitamin D) and normal labs do not establish any comorbidity, and nothing explicitly says 'none'.",
+     "status": "missing",
+     "got": null,
+     "page": null,
+     "checked": false,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 52.4,
+     "why": "Consult 09/11/2026: BMI 52.4.",
+     "status": "found",
+     "got": 52.4,
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 01 to 07/2026 with diet, counseling, walking and phentermine; net -0.8%; unsuccessful.",
+     "status": "found",
+     "got": "6 monthly medically supervised visits (01/2026-07/2026) with 1,800 kcal diet plan, RD counseling, walking program, and phentermine (stopped due to palpitations 02-04/2026); net weight change -0.8% (359 -> 351 -> 356 lb), deemed unsuccessful.",
+     "page": 7,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_038.pdf",
+   "label": "[distractor_numbers] BMI-like numbers are everywhere: a program-start BMI of 39.1, a goal BMI of 30, a '35 lb' loss, a 'BMI >=35' criteria line, waist 44 in and",
+   "member": "Priscilla J. Abara",
+   "procedure": "bariatric",
+   "note": "Current BMI 37.4 (35 or higher), T2DM documented, supervised program failed, 2 midnights with factors. Approve.",
+   "seconds": 11.0,
+   "expected_action": "approve",
+   "actual_action": "approve",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "distractor_numbers",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.' The '1 JP drain for 24-48h' is not the LOS.",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes",
+      "hypertension",
+      "PCOS"
+     ],
+     "why": "Consult PMH.",
+     "status": "found",
+     "got": [
+      "Type 2 diabetes mellitus",
+      "Hypertension",
+      "PCOS"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 37.4,
+     "why": "Program start 02/09/2026: BMI 39.1 (page 3). Pre-op visit 09/26/2026: BMI 37.4 (page 6). The later one wins. 'BMI 30' is a goal; '>=35' and '>=40' are criteria text; 35 lb and 44 in are not BMI.",
+     "status": "found",
+     "got": 37.4,
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 02/09 to 08/10/2026 with diet, activity, behavioral group and topiramate; -3.1%; unsuccessful.",
+     "status": "found",
+     "got": "Supervised medical weight management program 02/09/2026-08/10/2026: monthly visits x7, 1,500 kcal diet, 10,000-step goal, behavioral group, topiramate 25-50mg (stopped due to cognitive slowing); end weight 214 lb (-3.1%), goal of 5% weight loss not reached; outcome unsuccessful.",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_039.pdf",
+   "label": "[distractor_numbers] The current BMI is 34.2, just under 35. Nearby numbers include a self-reported peak weight, a '35 lb weight-loss goal', a 35-question scree",
+   "member": "Maximilian O. Reyes",
+   "procedure": "bariatric",
+   "note": "All facts present. Rule 1 fails: the current BMI is 34.2, under 35. Comorbidity, prior treatment and LOS pass. Escalate.",
+   "seconds": 9.6,
+   "expected_action": "escalate",
+   "actual_action": "escalate",
+   "action_matches": true,
+   "extractor": "llm",
+   "category": "distractor_numbers",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes",
+      "obstructive sleep apnea on CPAP",
+      "hypertension"
+     ],
+     "why": "Initial consult PMH.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus",
+      "obstructive sleep apnea",
+      "hypertension"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": 34.2,
+     "why": "06/15/2026: BMI 34.8 (page 2). 09/23/2026: BMI 34.2 (page 6). The later one wins, and both are under 35. The peak weight (2019), the 35 lb goal and the 35-item questionnaire are not BMI.",
+     "status": "found",
+     "got": 34.2,
+     "page": 11,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 10/2025 to 04/2026 with diet, counseling and exercise; net -0.4%; unsuccessful.",
+     "status": "found",
+     "got": "6-month supervised medical weight management program (10/2025-04/2026) with 6 visits, RD counseling, 1,800 kcal diet, and exercise plan; GLP-1 RA declined by patient; weight went 231->227->230 lb (net -0.4%), deemed unsuccessful.",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  },
+  {
+   "file": "adversarial/adv_040.pdf",
+   "label": "[distractor_numbers] The latest note states BMI 36.2, but its own measured height (5 ft 6 in) and weight (211 lb) compute to 34.1. An earlier dietitian note use",
+   "member": "Gloria T. Hammersmith",
+   "procedure": "bariatric",
+   "note": "Rules 2 to 4 pass. Rule 1 depends on BMI. The latest stated BMI (36.2) contradicts the measured height and weight in the same note (34.1). This internal contradiction crosses the threshold and needs a person to settle it. Verify.",
+   "seconds": 10.8,
+   "expected_action": "verify",
+   "actual_action": "approve",
+   "action_matches": false,
+   "extractor": "llm",
+   "category": "distractor_numbers",
+   "facts": [
+    {
+     "fact": "expected_los_days",
+     "truth": "present",
+     "expected": 2,
+     "why": "'Expected LOS: 2 midnights.'",
+     "status": "found",
+     "got": 2,
+     "page": 13,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "comorbidities",
+     "truth": "present",
+     "expected": [
+      "type 2 diabetes",
+      "hypertension",
+      "osteopenia"
+     ],
+     "why": "PCP problem list; T2DM and HTN confirmed on page 5.",
+     "status": "found",
+     "got": [
+      "type 2 diabetes mellitus",
+      "hypertension",
+      "osteopenia"
+     ],
+     "page": 3,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "bmi",
+     "truth": "present",
+     "expected": null,
+     "why": "The most recent note (09/25/2026) states BMI 36.2, but its own measured height of 66 in and weight of 211 lb give 34.1. 36.2 matches a 64 in height, which is the patient's self-report on the 08/20 dietitian note (BMI 35.7). The stated BMI and its inputs fall on opposite sides of 35, so a person must confirm the true height and BMI.",
+     "status": "found",
+     "got": 36.2,
+     "page": 9,
+     "checked": true,
+     "outcome": "correct"
+    },
+    {
+     "fact": "prior_medical_treatment",
+     "truth": "present",
+     "expected": null,
+     "why": "Supervised program 07/2025 to 01/2026 with diet, exercise and orlistat; net -0.9%; unsuccessful.",
+     "status": "found",
+     "got": "6-month supervised weight management program (07/2025-01/2026) with 1,400 kcal diet, chair yoga and walking exercise, and orlistat (stopped after 3-4 months due to GI side effects); net weight change only -0.9%, deemed unsuccessful.",
+     "page": 5,
+     "checked": true,
+     "outcome": "correct"
+    }
+   ]
+  }
+ ],
+ "packets_total": 40,
+ "action_matches": 22,
+ "completeness_recall": {
+  "correct": 205,
+  "total": 233,
+  "pct": 88.0
+ },
+ "hallucination_rate": {
+  "count": 6,
+  "total": 47,
+  "pct": 12.8
+ },
+ "flagged_uncertain": {
+  "count": 14,
+  "total": 280,
+  "pct": 5.0
+ },
+ "wrong_values": 13,
+ "by_category": {
+  "ambiguous_verify": {
+   "packets": 4,
+   "action_matches": 1
+  },
+  "clean_control": {
+   "packets": 4,
+   "action_matches": 4
+  },
+  "conflict_dates": {
+   "packets": 4,
+   "action_matches": 3
+  },
+  "distractor_numbers": {
+   "packets": 3,
+   "action_matches": 2
+  },
+  "family_or_history_confusion": {
+   "packets": 3,
+   "action_matches": 3
+  },
+  "format_variants": {
+   "packets": 3,
+   "action_matches": 1
+  },
+  "hedged_language": {
+   "packets": 3,
+   "action_matches": 2
+  },
+  "missing_but_adjacent": {
+   "packets": 3,
+   "action_matches": 2
+  },
+  "negation": {
+   "packets": 3,
+   "action_matches": 2
+  },
+  "planned_vs_done": {
+   "packets": 3,
+   "action_matches": 1
+  },
+  "temporal_trap": {
+   "packets": 4,
+   "action_matches": 0
+  },
+  "wrong_patient_or_copy_forward": {
+   "packets": 3,
+   "action_matches": 1
+  }
+ },
+ "zero_denials": true
+}

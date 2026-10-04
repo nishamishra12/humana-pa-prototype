@@ -1,0 +1,109 @@
+Recommendation matched the expected one: 21/40
+Found it when it was really there:       202/233 (86.7%)
+Claimed it when absent or ruled out:     1/47 (2.1%)
+Sent to the nurse as 'not sure':         33/280 (11.8%)
+Wrong values:                            10
+The system never denied:                 True
+
+PASS adversarial/adv_001.pdf expected=approve actual=approve (29.7s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=1.2
+PASS adversarial/adv_002.pdf expected=escalate actual=escalate (34.1s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=43.5 expected=43.4
+PASS adversarial/adv_003.pdf expected=escalate actual=escalate (28.5s)
+FAIL adversarial/adv_004.pdf expected=approve actual=verify (25.5s)
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=None expected=92.7
+FAIL adversarial/adv_005.pdf expected=escalate actual=verify (18.3s)
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=non-ischemic
+FAIL adversarial/adv_006.pdf expected=escalate actual=verify (23.9s)
+      flagged_uncertain  lvef_percent                     truth=present  status=unsure   got=None expected=38
+      flagged_uncertain  lvef_method                      truth=present  status=unsure   got=None expected=cardiac MRI
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=11.8 expected=11.9
+FAIL adversarial/adv_007.pdf expected=approve actual=verify (25.4s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['CKD 3b', 'BPH with prior post-anesthesia urinary retention', 'chronic anticoagulation (warfarin)', 'LV apical thrombus (resolved)', 'mitral regurgitation'] expected=['chronic warfarin anticoagulation', 'CKD stage 3b', 'BPH with prior urinary retention']
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=None expected=65
+FAIL adversarial/adv_008.pdf expected=pend actual=verify (22.9s)
+      flagged_uncertain  nyha_class                       truth=absent   status=unsure   got=None expected=None
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=None expected=79
+PASS adversarial/adv_009.pdf expected=verify actual=verify (22.9s)
+      flagged_uncertain  lvef_percent                     truth=present  status=unsure   got=None expected=None
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=ischemic
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=111
+FAIL adversarial/adv_010.pdf expected=approve actual=verify (20.7s)
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=None expected=151.9
+FAIL adversarial/adv_011.pdf expected=escalate actual=verify (23.5s)
+      false_negative     cardiomyopathy_type              truth=present  status=other    got=other expected=other
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=7.4 expected=7.3
+FAIL adversarial/adv_012.pdf expected=pend actual=verify (20.2s)
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=52.0 expected=51.9
+FAIL adversarial/adv_013.pdf expected=approve actual=verify (30.6s)
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+PASS adversarial/adv_014.pdf expected=verify actual=verify (22.8s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['heart failure (HFrEF)', 'diabetes mellitus type 2', 'chronic kidney disease stage 4', 'functional mitral regurgitation'] expected=['CKD stage 4', 'type 2 diabetes on insulin']
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=None
+PASS adversarial/adv_015.pdf expected=verify actual=verify (24.3s)
+      flagged_uncertain  nyha_class                       truth=present  status=unsure   got=None expected=None
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=ischemic
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=127
+PASS adversarial/adv_016.pdf expected=verify actual=verify (24.6s)
+      flagged_uncertain  limiting_conditions              truth=present  status=unsure   got=None expected=None
+FAIL adversarial/adv_017.pdf expected=escalate actual=verify (19.3s)
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=non-ischemic
+PASS adversarial/adv_018.pdf expected=pend actual=pend (17.1s)
+FAIL adversarial/adv_019.pdf expected=approve actual=verify (24.2s)
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+FAIL adversarial/adv_020.pdf expected=approve actual=verify (20.1s)
+      flagged_uncertain  recent_mi_revasc                 truth=negated  status=unsure   got=None expected=None
+PASS adversarial/adv_021.pdf expected=approve actual=approve (14.0s)
+PASS adversarial/adv_022.pdf expected=approve actual=approve (14.4s)
+PASS adversarial/adv_023.pdf expected=verify actual=verify (14.5s)
+      flagged_uncertain  bmi                              truth=present  status=unsure   got=None expected=None
+FAIL adversarial/adv_024.pdf expected=verify actual=approve (11.8s)
+FAIL adversarial/adv_025.pdf expected=escalate actual=verify (12.6s)
+      flagged_uncertain  expected_los_days                truth=present  status=unsure   got=None expected=1
+FAIL adversarial/adv_026.pdf expected=escalate actual=verify (12.0s)
+      flagged_uncertain  comorbidities                    truth=present  status=unsure   got=None expected=['hypothyroidism', 'migraine without aura']
+FAIL adversarial/adv_027.pdf expected=approve actual=verify (14.4s)
+      flagged_uncertain  bmi                              truth=present  status=unsure   got=None expected=36.2
+FAIL adversarial/adv_028.pdf expected=escalate actual=verify (13.1s)
+      flagged_uncertain  bmi                              truth=present  status=unsure   got=None expected=34.1
+PASS adversarial/adv_029.pdf expected=pend actual=pend (12.4s)
+PASS adversarial/adv_030.pdf expected=approve actual=approve (14.3s)
+PASS adversarial/adv_031.pdf expected=pend actual=pend (8.9s)
+PASS adversarial/adv_032.pdf expected=pend actual=pend (11.7s)
+      implied_not_stated expected_los_days                truth=absent   status=implied  got=None expected=None
+PASS adversarial/adv_033.pdf expected=verify actual=verify (10.5s)
+      flagged_uncertain  expected_los_days                truth=present  status=unsure   got=None expected=None
+PASS adversarial/adv_034.pdf expected=pend actual=pend (7.4s)
+PASS adversarial/adv_035.pdf expected=verify actual=verify (13.9s)
+      flagged_uncertain  expected_los_days                truth=present  status=unsure   got=None expected=None
+FAIL adversarial/adv_036.pdf expected=pend actual=approve (13.0s)
+      false_positive     prior_medical_treatment          truth=absent   status=found    got=Patient was counseled on diet and exercise at annual visits (06/12/2024, 06/18/2025) and self-initiated Weight Watchers in 2019 with 12 lb loss then regain; she declined medication for weight management. No evidence of a sustained, supervised multi-month medical weight-loss program with no response. expected=None
+PASS adversarial/adv_037.pdf expected=pend actual=pend (10.2s)
+PASS adversarial/adv_038.pdf expected=approve actual=approve (14.5s)
+PASS adversarial/adv_039.pdf expected=escalate actual=escalate (10.9s)
+FAIL adversarial/adv_040.pdf expected=verify actual=approve (11.1s)
+
+By category (recommendation matched / packets):
+  ambiguous_verify             3/4
+  clean_control                2/4
+  conflict_dates               0/4
+  distractor_numbers           2/3
+  family_or_history_confusion  1/3
+  format_variants              2/3
+  hedged_language              2/3
+  missing_but_adjacent         2/3
+  negation                     0/3
+  planned_vs_done              2/3
+  temporal_trap                3/4
+  wrong_patient_or_copy_forward 2/3
+
+report saved: evals/reports/adversarial_20261004_0430.json

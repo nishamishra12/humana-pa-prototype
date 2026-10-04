@@ -1,0 +1,131 @@
+{
+  "id": "adv_023",
+  "service": "bariatric",
+  "category": "ambiguous_verify",
+  "difficulty": "hard",
+  "why_hard": "On the same day, the surgeon's clinic recorded BMI 35.7 and the dietitian's clinic recorded BMI 34.6, on different scales and heights. One is above 35 and one is below, so 'later wins' cannot settle it.",
+  "member": {
+    "name": "Yolanda S. Pritchett",
+    "dob": "1964-07-30",
+    "age": 62,
+    "member_id": "MBR-55302",
+    "sex": "F"
+  },
+  "practice": "Tidewater Metabolic & Bariatric Surgery",
+  "planned_admit_date": "2026-11-02",
+  "pages": [
+    {
+      "title": "Surgical clinic follow-up",
+      "lines": [
+        "TIDEWATER METABOLIC & BARIATRIC SURGERY",
+        "Pre-op follow-up   09/18/2026",
+        "Yolanda S. Pritchett   62F",
+        "",
+        "Vitals (surgical clinic): Ht 64.5 in (stadiometer), Wt 211.4 lb, BMI 35.7, BP 134/82.",
+        "Interval: on 2-wk pre-op liquid diet trial, down 10 lb since June.",
+        "A/P: obesity w/ T2DM and HTN. Continue toward RYGB.",
+        "Dr. Nkem Ballard-Soto"
+      ]
+    },
+    {
+      "title": "Dietitian visit",
+      "lines": [
+        "TIDEWATER NUTRITION SERVICES",
+        "Visit: 09/18/2026   Pt: Pritchett, Yolanda",
+        "RD: Colleen Mbeki-Hart, RD",
+        "",
+        "Anthropometrics (nutrition clinic scale): Ht 65.0 in (pt reported), Wt 208.0 lb, BMI 34.6.",
+        "Pt reports adherence to liquid diet 5/7 days.",
+        "Note: BMI today below 35. Surgeon aware?",
+        "Plan: continue protein shakes, RTC 2 wks."
+      ]
+    },
+    {
+      "title": "Initial surgical consultation",
+      "lines": [
+        "TIDEWATER BARIATRIC - INITIAL CONSULT",
+        "06/12/2026",
+        "Pritchett, Yolanda S.",
+        "Ht 65 in, Wt 222 lb, BMI 36.9.",
+        "PMH: T2DM (A1c 7.4) on metformin + dulaglutide (started 2024 by PCP), HTN on lisinopril, knee OA.",
+        "Prior attempts: see medical weight management records.",
+        "Plan: workup for RYGB."
+      ]
+    },
+    {
+      "title": "Medical weight management records",
+      "lines": [
+        "TIDEWATER MEDICAL WEIGHT MANAGEMENT - DISCHARGE SUMMARY",
+        "Pritchett, Yolanda   Program 09/2025 - 03/2026 (6 months)",
+        "Supervising clinician: Hollis Grandjean, NP (obesity medicine) w/ RD visits monthly",
+        "Plan: 1,500 kcal diet, food diary, walking 30 min 5x/wk, topiramate 50 mg (added 11/2025).",
+        "Start wt 224 lb -> end wt 221 lb (-1.3%). Topiramate stopped 02/2026 (paresthesias, word-finding).",
+        "Result: did not meet goal; considered unsuccessful. Referred for surgery."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "TIDEWATER LAB 09/10/2026",
+        "PRITCHETT Y",
+        "A1c 7.3 H",
+        "Cr 0.9, K 4.3",
+        "Hgb 13.0, Ferritin 62",
+        "Vit D 24 L"
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "BEHAVIORAL HEALTH PRE-SURGICAL EVAL   07/22/2026",
+        "Pritchett, Yolanda",
+        "No binge eating, no purging. No active depression. Cleared.",
+        "- T. Quinlan-Adair, LCSW / J. Mora, PhD"
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN / LEVEL OF CARE   09/25/2026",
+        "Pritchett, Yolanda S.   MBR-55302",
+        "Procedure: laparoscopic RYGB (CPT 43644). Admit 11/02/2026 inpatient.",
+        "BMI: 35.7 per surgical clinic 09/18; nutrition clinic scale same day read 34.6 (different scale and height). Not yet reconciled.",
+        "Expected LOS: 2 midnights. Factors: T2DM on GLP-1 RA + metformin (hold, glucose monitoring), HTN, age 62 with knee OA limiting early mobilization.",
+        "N. Ballard-Soto MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes",
+        "hypertension",
+        "knee osteoarthritis"
+      ],
+      "page": 4,
+      "why": "Initial consult PMH; repeated on page 8."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": null,
+      "ambiguous": true,
+      "page": 2,
+      "why": "Two BMIs on 09/18/2026: surgical clinic 35.7 (stadiometer height 64.5 in, 211.4 lb) and nutrition clinic 34.6 (reported height 65.0 in, 208.0 lb). Same date, so neither is later; one is above 35, one below. The 09/25 plan restates both and says 'not yet reconciled'. The 06/12 BMI of 36.9 is older."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 5,
+      "why": "6-month supervised program 09/2025 to 03/2026 with diet, exercise and topiramate. Lost 1.3%; labeled unsuccessful."
+    }
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rule 1 depends on BMI, and the current BMI is two contradictory same-day values on either side of 35. A person must decide which measurement is valid. Other rules pass. Verify."
+}

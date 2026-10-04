@@ -1,0 +1,112 @@
+{
+  "id": "adv_037",
+  "service": "bariatric",
+  "category": "missing_but_adjacent",
+  "difficulty": "medium",
+  "why_hard": "The surgeon writes 'obesity-related comorbidities: see attached problem list', but the problem list is not in the packet, and no page names any comorbidity.",
+  "member": {
+    "name": "Darnell P. Whitaker",
+    "dob": "1971-07-07",
+    "age": 55,
+    "member_id": "MBR-29963",
+    "sex": "M"
+  },
+  "practice": "Copperfield Bariatric Surgery",
+  "planned_admit_date": "2026-11-20",
+  "pages": [
+    {
+      "title": "Fax cover and attachment index",
+      "lines": [
+        "COPPERFIELD BARIATRIC SURGERY - CLINICAL ATTACHMENTS",
+        "Member: Darnell P. Whitaker   MBR-29963",
+        "Enclosed:",
+        " 1. Surgeon consultation",
+        " 2. Problem list (1 page)",
+        " 3. Medically supervised program records",
+        " 4. Psychological evaluation",
+        " 5. Labs",
+        " 6. Operative plan",
+        "Sent by: R. Mendez-Quill, auth coordinator  09/30/2026"
+      ]
+    },
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "COPPERFIELD BARIATRIC SURGERY",
+        "Consult  09/11/2026",
+        "Darnell P. Whitaker, 55M",
+        "Ht 69 in   Wt 354.9 lb   BMI 52.4",
+        "PMH: per problem list.",
+        "Obesity-related comorbidities: see attached problem list.",
+        "Meds: cetirizine 10 mg PRN, vitamin D3 2,000 IU daily.",
+        "Plan: RYGB.",
+        "Dr. Ingrid Fairbanks-Osei"
+      ]
+    },
+    {
+      "title": "Supervised program records",
+      "lines": [
+        "COPPERFIELD MEDICAL WEIGHT MANAGEMENT - SUMMARY",
+        "Whitaker, Darnell   01/2026 - 07/2026 (6 monthly visits)",
+        "Supervising MD: Paul Nakagawa-Brandt",
+        "1,800 kcal plan, RD counseling, walking program, phentermine 02-04/2026 (stopped, palpitations).",
+        "Weight 359 -> 351 -> 356 lb (net -0.8%). Unsuccessful."
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-BARIATRIC PSYCH   08/13/2026",
+        "Whitaker, Darnell",
+        "Binge eating disorder screened and ruled out. No depression. Cleared."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "COPPERFIELD LAB  09/09/2026",
+        "A1c 5.6   Glucose 98",
+        "Cr 1.0   ALT 30",
+        "TSH 1.7   Hgb 15.0"
+      ]
+    },
+    {
+      "title": "Operative plan",
+      "lines": [
+        "OPERATIVE PLAN  09/25/2026",
+        "Whitaker, Darnell P.   MBR-29963",
+        "Lap RYGB (CPT 43644), admit 11/20/2026, inpatient.",
+        "Expected LOS: 2 midnights. Factors: BMI 52.4 (super-obesity), anticipated difficult airway and positioning, longer operative time.",
+        "I. Fairbanks-Osei MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "absent",
+      "value": null,
+      "page": null,
+      "why": "No comorbidity is named on any page. The consult defers to a problem list that the index says is enclosed (page 2) but is not in the packet. The med list (cetirizine, vitamin D) and normal labs do not establish any comorbidity, and nothing explicitly says 'none'."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 52.4,
+      "page": 3,
+      "why": "Consult 09/11/2026: BMI 52.4."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 4,
+      "why": "Supervised program 01 to 07/2026 with diet, counseling, walking and phentermine; net -0.8%; unsuccessful."
+    }
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 2 needs at least one documented obesity-related comorbidity. The comorbidities fact is absent (the referenced problem list is missing). Pend and ask for the problem list. Other rules pass."
+}

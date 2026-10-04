@@ -1,0 +1,330 @@
+[
+{
+  "id": "adv_031",
+  "service": "bariatric",
+  "category": "planned_vs_done",
+  "difficulty": "medium",
+  "why_hard": "The supervised program is described in detail but starts in 11/2026, so it has not happened. The only past attempts are self-directed diets.",
+  "member": {"name": "Leopold N. Marchetti", "dob": "1961-06-30", "age": 65, "member_id": "MBR-34581", "sex": "M"},
+  "practice": "Sandstone Surgical Weight Loss",
+  "planned_admit_date": "2026-12-01",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "SANDSTONE SURGICAL WEIGHT LOSS",
+      "Consult   09/21/2026",
+      "Leopold N. Marchetti   65M",
+      "",
+      "Ht 69 in   Wt 306.8 lb   BMI 45.3",
+      "PMH: T2DM (A1c 9.1, insulin), HTN, severe OSA on CPAP, venous stasis.",
+      "Weight hx: tried keto (2023) and intermittent fasting (2024) on his own; used a weight-loss app. Lost 15-20 lb each time, regained.",
+      "",
+      "Plan: RYGB. Pt will enroll in our 6-month medically supervised weight management program starting 11/2026 to satisfy pre-op requirements; requesting OR date 12/01 to hold slot, will adjust if needed.",
+      "Dr. Rosalind Mbeki-Fournier"
+    ]},
+    {"title": "Program intake note", "lines": [
+      "SANDSTONE MEDICAL WEIGHT MANAGEMENT",
+      "Pre-enrollment phone screen   09/29/2026",
+      "Marchetti, Leopold",
+      "Eligible for program. Orientation scheduled 11/03/2026. Program will run 11/2026 - 05/2027: monthly MD visits, RD counseling, activity plan, pharmacotherapy as appropriate.",
+      "No prior participation in a medically supervised program.",
+      "- Intake coordinator J. Ferreira"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-SURGICAL PSYCH EVAL   09/10/2026",
+      "Marchetti, Leopold",
+      "No eating disorder, no substance use disorder. Cleared."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "SANDSTONE LAB  09/18/2026",
+      "A1c 9.1 H",
+      "Cr 1.1",
+      "LDL 102",
+      "Hgb 14.8"
+    ]},
+    {"title": "Primary care note", "lines": [
+      "RED MESA FAMILY MEDICINE   08/05/2026",
+      "Marchetti, Leopold",
+      "Discussed weight. Pt has tried several diets on his own. Counseled on portion control and walking. Referred to bariatric surgery. No formal program to date.",
+      "Dr. Ivo Castellanos-Reed"
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN   09/30/2026",
+      "Marchetti, Leopold N.   MBR-34581",
+      "Lap RYGB (CPT 43644). Requested admit 12/01/2026, inpatient.",
+      "Expected LOS: 2 midnights. Factors: severe OSA on CPAP; insulin-requiring T2DM w/ A1c 9.1; HTN; venous stasis w/ VTE risk.",
+      "R. Mbeki-Fournier MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes on insulin", "hypertension", "severe obstructive sleep apnea", "venous stasis"], "page": 2, "why": "Consult PMH."},
+    "bmi": {"truth": "present", "value": 45.3, "page": 2, "why": "Consult 09/21/2026: BMI 45.3."},
+    "prior_medical_treatment": {"truth": "absent", "value": null, "page": null, "why": "The supervised program is only planned (orientation 11/03/2026), and the intake note says 'No prior participation in a medically supervised program.' Keto, intermittent fasting and an app were self-directed. Office counseling is not a supervised program."}
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 3 needs documented supervised medical treatment that failed. It is absent (only planned). Pend. Other rules pass."
+},
+{
+  "id": "adv_032",
+  "service": "bariatric",
+  "category": "planned_vs_done",
+  "difficulty": "medium",
+  "why_hard": "Length of stay is to be decided at a future anesthesia visit. Small numbers like '2-week' and 'POD 1' appear nearby, and a possible step-down stay is mentioned.",
+  "member": {"name": "Esperanza M. Holcomb", "dob": "1967-01-14", "age": 59, "member_id": "MBR-77402", "sex": "F"},
+  "practice": "Clover Ridge Bariatric Center",
+  "planned_admit_date": "2026-11-23",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "CLOVER RIDGE BARIATRIC CENTER",
+      "Consultation 09/14/2026",
+      "Esperanza M. Holcomb, 59F",
+      "Ht 62 in   Wt 263.6 lb   BMI 48.2",
+      "PMH: T2DM on insulin (A1c 8.8), very severe OSA (AHI 71) on BiPAP, HTN, lymphedema.",
+      "Failed supervised program (records).",
+      "Plan: RYGB. 2-week pre-op liquid diet. Anesthesia pre-op eval given OSA severity.",
+      "Dr. Augusto Lindgren-Abara"
+    ]},
+    {"title": "Supervised weight management records", "lines": [
+      "CLOVER RIDGE MEDICAL WEIGHT MGMT - SUMMARY",
+      "Holcomb, Esperanza   10/2025 - 04/2026 (6 mo, 6 visits)",
+      "Supervising MD: Priya Okonedo-Shaw",
+      "1,400 kcal plan, chair-based exercise, counseling, liraglutide 11/2025-03/2026 (stopped: cholelithiasis sx).",
+      "Weight 266 -> 259 -> 265 lb (net -0.4%).",
+      "Unsuccessful."
+    ]},
+    {"title": "Sleep study report", "lines": [
+      "CLOVER RIDGE SLEEP LAB   PSG + titration 01/2025",
+      "Holcomb, Esperanza",
+      "AHI 71/h, nadir SpO2 68%. CPAP failed; BiPAP 18/12 effective.",
+      "Dx: very severe OSA w/ obesity hypoventilation features (HCO3 31)."
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "BEHAVIORAL HEALTH PRE-OP   08/20/2026",
+      "Holcomb, Esperanza",
+      "No eating disorder. Cleared."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "CLOVER RIDGE LAB   09/12/2026",
+      "A1c 8.8 H   HCO3 31 H",
+      "Cr 0.9   K 4.5",
+      "Hgb 12.0"
+    ]},
+    {"title": "Anesthesia referral", "lines": [
+      "CLOVER RIDGE - PRE-ANESTHESIA REFERRAL",
+      "09/14/2026   Holcomb, Esperanza",
+      "Reason: very severe OSA on BiPAP, possible OHS. Needs airway assessment and post-op disposition planning (floor vs step-down).",
+      "Appointment: pre-anesthesia clinic 11/09/2026.",
+      "Referring: A. Lindgren-Abara MD"
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN   09/28/2026",
+      "Holcomb, Esperanza M.   MBR-77402",
+      "Lap RYGB (CPT 43644). Admit 11/23/2026 inpatient.",
+      "Length of stay: to be determined at pre-anesthesia evaluation (11/09/2026), may need step-down monitoring.",
+      "Post-op: UGI study POD 1 per routine; clinic follow-up 2 weeks.",
+      "A. Lindgren-Abara MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "absent", "value": null, "page": null, "why": "The plan says LOS is 'to be determined at pre-anesthesia evaluation (11/09/2026)', which has not happened. No number of midnights is given anywhere. 'POD 1', '2 weeks' and '2-week liquid diet' are not LOS."},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes on insulin", "very severe obstructive sleep apnea on BiPAP", "hypertension", "lymphedema"], "page": 2, "why": "Consult PMH."},
+    "bmi": {"truth": "present", "value": 48.2, "page": 2, "why": "Consult 09/14/2026: BMI 48.2."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "6-month supervised program 10/2025 to 04/2026 with diet, exercise, counseling and liraglutide; net -0.4%; unsuccessful."}
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 4 needs the expected number of midnights, and that is not yet decided. The fact is absent, so pend. Other rules pass."
+},
+{
+  "id": "adv_033",
+  "service": "bariatric",
+  "category": "hedged_language",
+  "difficulty": "hard",
+  "why_hard": "The surgeon's only LOS statement is '1-2 midnights depending on CPAP tolerance and glucose', which straddles the 2-midnight threshold.",
+  "member": {"name": "Winston G. Afolabi", "dob": "1964-10-18", "age": 61, "member_id": "MBR-69018", "sex": "M"},
+  "practice": "Highgate Metabolic Surgery Associates",
+  "planned_admit_date": "2026-11-04",
+  "pages": [
+    {"title": "Supervised weight loss program records", "lines": [
+      "HIGHGATE MEDICAL WEIGHT MANAGEMENT - PROGRAM SUMMARY",
+      "Afolabi, Winston G.   Dates: 12/02/2025 - 06/01/2026",
+      "Supervising physician: Lena Vasquez-Holt, MD",
+      "Monthly visits x7 with RD; 1,800 kcal; walking 30 min/day; phentermine 8 mg TID 01-03/2026 (stopped, BP rise).",
+      "Weight 311 -> 303 -> 309 lb (net -0.6%).",
+      "Outcome: not successful."
+    ]},
+    {"title": "Bariatric surgery consultation", "lines": [
+      "HIGHGATE METABOLIC SURGERY ASSOCIATES",
+      "Consult 09/10/2026",
+      "Winston G. Afolabi, 61M",
+      "Ht 72 in   Wt 306 lb   BMI 41.5",
+      "PMH: T2DM (A1c 8.4) on insulin; OSA on CPAP (AHI 42), poor mask tolerance; HTN; CKD 2.",
+      "Plan: RYGB. Typical stay after bypass here is 1-2 nights.",
+      "Dr. Cordelia Nwachukwu-Berg"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-BARIATRIC PSYCHOLOGY   08/14/2026",
+      "Afolabi, Winston",
+      "Cleared. No disordered eating."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "HIGHGATE LAB 09/08/2026",
+      "A1c 8.4 H",
+      "Cr 1.0  eGFR 78",
+      "Hgb 14.0"
+    ]},
+    {"title": "CPAP compliance download", "lines": [
+      "DME CPAP DOWNLOAD   08/10/2026 - 09/08/2026",
+      "Afolabi, Winston",
+      "Usage >4h: 52% of nights. Avg use 3.6 h. Residual AHI 6.1. Large leak 18%.",
+      "Note: suboptimal adherence; mask refit scheduled."
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN   09/26/2026",
+      "Afolabi, Winston G.   MBR-69018",
+      "Laparoscopic RYGB, CPT 43644. Admit 11/04/2026, inpatient.",
+      "Anticipated LOS: 1-2 midnights depending on post-op CPAP tolerance and glucose control.",
+      "Factors: OSA w/ suboptimal CPAP adherence; insulin-requiring T2DM; HTN.",
+      "C. Nwachukwu-Berg MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": null, "ambiguous": true, "page": 7, "why": "The plan says '1-2 midnights depending on post-op CPAP tolerance and glucose control' and the consult says 'typical stay ... 1-2 nights'. The expectation straddles the 2-midnight rule and there is no single number."},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes on insulin", "obstructive sleep apnea", "hypertension", "CKD stage 2"], "page": 3, "why": "Consult PMH."},
+    "bmi": {"truth": "present", "value": 41.5, "page": 3, "why": "Consult 09/10/2026: BMI 41.5."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 2, "why": "Supervised program 12/02/2025 to 06/01/2026 with diet, activity and phentermine; net -0.6%; not successful."}
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rules 1 to 3 pass. Rule 4 depends on whether the surgeon expects at least 2 midnights, and the only statement is a 1-2 range. A person must settle it with the surgeon or by judging the documented risk factors. Verify."
+},
+{
+  "id": "adv_034",
+  "service": "bariatric",
+  "category": "wrong_patient_or_copy_forward",
+  "difficulty": "hard",
+  "why_hard": "The attached 6-month dietitian program records are for 'Tabitha L. Nunez' (different DOB and MRN), not the member 'Tabitha R. Nwosu'. The surgeon only says 'see attached'.",
+  "member": {"name": "Tabitha R. Nwosu", "dob": "1973-08-08", "age": 53, "member_id": "MBR-45526", "sex": "F"},
+  "practice": "Riverstone Bariatric Surgery Group",
+  "planned_admit_date": "2026-11-19",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "RIVERSTONE BARIATRIC SURGERY GROUP",
+      "Consult   09/15/2026",
+      "Patient: Nwosu, Tabitha R.   DOB 08/08/1973   MRN RB-80344",
+      "Ht 66 in   Wt 269.5 lb   BMI 43.5",
+      "PMH: T2DM (A1c 7.8) on metformin + empagliflozin; HTN; GERD.",
+      "Weight hx: has completed medically supervised weight loss (see attached dietitian records).",
+      "Plan: RYGB.",
+      "Dr. Malcolm Ostrowski-Eze"
+    ]},
+    {"title": "Dietitian program note (1 of 2)", "lines": [
+      "RIVERSTONE NUTRITION - MEDICALLY SUPERVISED WEIGHT LOSS",
+      "Patient: NUNEZ, TABITHA L.   DOB 09/12/1971   MRN RB-77120",
+      "Program start: 11/03/2025",
+      "Visits 11/03/2025, 12/01/2025, 01/05/2026: weights 251, 248, 246 lb.",
+      "1,500 kcal plan, food log, walking 20 min/day. Supervising MD: Aiyana Feldstein, MD.",
+      "RD: Bronwyn Castellanos, RD"
+    ]},
+    {"title": "Dietitian program note (2 of 2)", "lines": [
+      "RIVERSTONE NUTRITION - MEDICALLY SUPERVISED WEIGHT LOSS",
+      "Patient: NUNEZ, TABITHA L.   DOB 09/12/1971   MRN RB-77120",
+      "Visits 02/02, 03/02, 04/06/2026: weights 249, 252, 253 lb.",
+      "Program complete (6 months). Net +2 lb. Outcome: unsuccessful, refer to surgery.",
+      "RD: Bronwyn Castellanos, RD"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-BARIATRIC PSYCH EVAL   08/18/2026",
+      "Patient: Nwosu, Tabitha R.   DOB 08/08/1973",
+      "No eating disorder. Cleared."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "RIVERSTONE LAB   09/10/2026",
+      "NWOSU, TABITHA R   DOB 08/08/1973",
+      "A1c 7.8 H   Cr 0.8   Hgb 12.6"
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN   09/29/2026",
+      "Nwosu, Tabitha R.   MBR-45526",
+      "Lap RYGB (CPT 43644). Admit 11/19/2026 inpatient.",
+      "Expected LOS: 2 midnights. Factors: T2DM on SGLT2i (euglycemic DKA risk, needs inpatient glucose/ketone monitoring); HTN; GERD.",
+      "M. Ostrowski-Eze MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "hypertension", "GERD"], "page": 2, "why": "Consult PMH."},
+    "bmi": {"truth": "present", "value": 43.5, "page": 2, "why": "Consult 09/15/2026: BMI 43.5."},
+    "prior_medical_treatment": {"truth": "absent", "value": null, "page": null, "why": "The program records on pages 3 and 4 belong to a different patient (Tabitha L. Nunez, DOB 09/12/1971, MRN RB-77120). For the member there is only the surgeon's line 'has completed medically supervised weight loss (see attached)', with no dates, duration or result."}
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 3 needs documented failed supervised treatment for this member. The attached records are another patient's, so the fact is absent. Pend and ask for the member's own program records. Other rules pass."
+},
+{
+  "id": "adv_035",
+  "service": "bariatric",
+  "category": "wrong_patient_or_copy_forward",
+  "difficulty": "hard",
+  "why_hard": "On the same date, the surgeon's plan says 2 midnights and the PA's templated H&P says 'discharge POD1, expected LOS 1 night'. The H&P also carries a stale 2025 BMI.",
+  "member": {"name": "Bartholomew S. Kearney", "dob": "1958-12-05", "age": 67, "member_id": "MBR-83390", "sex": "M"},
+  "practice": "Glenwood Bariatric & Foregut Surgery",
+  "planned_admit_date": "2026-11-06",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "GLENWOOD BARIATRIC & FOREGUT SURGERY",
+      "Consult  09/09/2026",
+      "Bartholomew S. Kearney, 67M",
+      "Ht 70 in   Wt 320.6 lb   BMI 46.0",
+      "PMH: T2DM on insulin (A1c 8.9); OSA on BiPAP; HTN; AF on apixaban (rate controlled).",
+      "Failed supervised program 2025-2026.",
+      "Plan: RYGB.",
+      "Dr. Saoirse Adeyemi-Clarke"
+    ]},
+    {"title": "Supervised program summary", "lines": [
+      "GLENWOOD MEDICAL WEIGHT PROGRAM",
+      "Kearney, Bartholomew   09/2025 - 03/2026 (6 months)",
+      "Supervising: Rafael Lindqvist, MD",
+      "Monthly visits, RD counseling, 1,800 kcal, aquatic exercise, no anti-obesity med (cost).",
+      "Weight 324 -> 318 -> 322 lb (net -0.6%). Unsuccessful."
+    ]},
+    {"title": "Surgeon's operative plan", "lines": [
+      "GLENWOOD - SURGEON OPERATIVE PLAN",
+      "Date: 09/28/2026",
+      "Kearney, Bartholomew S.   MBR-83390",
+      "Procedure: laparoscopic RYGB (CPT 43644). Admit 11/06/2026, inpatient.",
+      "Expected LOS: 2 midnights.",
+      "Factors: OSA on BiPAP w/ continuous oximetry; insulin-requiring T2DM; AF on apixaban - held pre-op, restart and bleeding monitoring POD1-2.",
+      "S. Adeyemi-Clarke MD"
+    ]},
+    {"title": "Pre-admission history and physical", "lines": [
+      "[Template: Bariatric Pre-Admit H&P v3]",
+      "GLENWOOD BARIATRIC - PRE-ADMISSION H&P",
+      "Date: 09/28/2026   Pt: Kearney, Bartholomew S.",
+      "Author: Dmitri Halvorsen, PA-C",
+      "",
+      "Procedure: laparoscopic Roux-en-Y gastric bypass.",
+      "Vitals (03/12/2025): Wt 341 lb, BMI 48.9.",
+      "PMH: T2DM, OSA, HTN, AF.",
+      "Exam: obese, lungs clear, irregularly irregular rhythm, abd soft.",
+      "Disposition: anticipated discharge POD1. Expected LOS: 1 night.",
+      "VTE ppx: enoxaparin 40 BID + SCDs.",
+      "D. Halvorsen PA-C"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-BARIATRIC PSYCH   08/12/2026",
+      "Kearney, Bartholomew",
+      "Cleared."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "GLENWOOD LAB 09/20/2026",
+      "A1c 8.9 H  Cr 1.2  Hgb 13.9  INR 1.1"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": null, "ambiguous": true, "page": 4, "why": "Two documents dated 2026-09-28: the surgeon's plan says 'Expected LOS: 2 midnights' (page 4) and the PA's templated H&P says 'Expected LOS: 1 night', discharge POD1 (page 5). Same date, so neither is later, and they contradict."},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes on insulin", "obstructive sleep apnea on BiPAP", "hypertension", "atrial fibrillation on apixaban"], "page": 2, "why": "Consult PMH."},
+    "bmi": {"truth": "present", "value": 46.0, "page": 2, "why": "Consult 09/09/2026: BMI 46.0. The H&P's BMI 48.9 is labeled as vitals from 03/12/2025 (copied forward) and is older."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Supervised program 09/2025 to 03/2026 with diet, exercise and counseling; net -0.6%; unsuccessful."}
+  },
+  "expected_action": "verify",
+  "action_reasoning": "BMI, comorbidity and prior treatment pass. Rule 4 depends on the expected stay, and two same-day documents give 2 midnights and 1 night. The template H&P may be stale, but a person must confirm. Verify."
+}
+]

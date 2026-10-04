@@ -1,0 +1,126 @@
+{
+  "id": "adv_030",
+  "service": "bariatric",
+  "category": "family_or_history_confusion",
+  "difficulty": "medium",
+  "why_hard": "Diabetes, hypertension and OSA appear only in the family history and an old resolved gestational diabetes. The patient's own qualifying comorbidities are NAFLD, knee osteoarthritis and dyslipidemia, which are easy to overlook.",
+  "member": {
+    "name": "Shauna K. Whitford",
+    "dob": "1980-03-27",
+    "age": 46,
+    "member_id": "MBR-92207",
+    "sex": "F"
+  },
+  "practice": "Lantern Hill Bariatric Program",
+  "planned_admit_date": "2026-11-17",
+  "pages": [
+    {
+      "title": "History and physical",
+      "lines": [
+        "LANTERN HILL BARIATRIC PROGRAM - H&P",
+        "Date 09/17/2026   Whitford, Shauna K.   46F",
+        "",
+        "FHx: Mother - T2DM, HTN, CKD. Father - HTN, MI at 58. Sister - OSA on CPAP. Maternal aunt - gastric bypass 2012.",
+        "",
+        "PMH: gestational diabetes 2009 (resolved postpartum; A1c normal since). Fatty liver dx 2025. Bilateral knee osteoarthritis. Hypertriglyceridemia on atorvastatin. Lumbar disc disease (on SSDI).",
+        "Pt has no personal history of diabetes or hypertension. STOP-BANG 2.",
+        "",
+        "Vitals: Ht 64 in, Wt 237.7 lb, BMI 40.8, BP 124/78.",
+        "",
+        "A/P: Obesity BMI 40.8 w/ NAFLD, knee OA, dyslipidemia. Candidate for RYGB.",
+        "Dr. Odile Ferreira-Nakamura"
+      ]
+    },
+    {
+      "title": "Abdominal ultrasound",
+      "lines": [
+        "LANTERN HILL IMAGING   RUQ US   06/02/2026",
+        "Whitford, Shauna",
+        "Liver enlarged (19 cm), diffusely increased echogenicity c/w moderate hepatic steatosis. No focal lesion. Gallbladder normal.",
+        "Impression: hepatomegaly with moderate steatosis."
+      ]
+    },
+    {
+      "title": "Knee radiographs",
+      "lines": [
+        "LANTERN HILL IMAGING   Bilateral knees, standing   04/11/2026",
+        "Joint space narrowing medial compartments, osteophytes; Kellgren-Lawrence grade 3 bilaterally.",
+        "Impression: moderate-severe bilateral knee osteoarthritis. Ortho note: TKA deferred until weight loss."
+      ]
+    },
+    {
+      "title": "Supervised weight loss records",
+      "lines": [
+        "LANTERN HILL MEDICAL WEIGHT LOSS - SUMMARY",
+        "Whitford, Shauna   11/10/2025 - 05/11/2026",
+        "Supervising: Gideon Achterberg, DO",
+        "Monthly MD + RD visits x7. 1,500 kcal plan; aquatic exercise (knees); behavioral therapy; semaglutide 12/2025-05/2026, max 1 mg (stopped for persistent vomiting).",
+        "Weight 241 -> 233 -> 238 lb (net -1.2%).",
+        "Unsuccessful."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "LANTERN HILL LAB   09/10/2026",
+        "A1c 5.5   Fasting glucose 94",
+        "ALT 68 H   AST 52 H",
+        "TG 312 H   LDL 96   HDL 38 L",
+        "Cr 0.7   Hgb 12.8"
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-BARIATRIC PSYCH EVAL   08/06/2026",
+        "Whitford, Shauna",
+        "Hx of depression, stable on bupropion. No eating disorder. Cleared."
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN   09/29/2026",
+        "Whitford, Shauna K.   MBR-92207",
+        "Laparoscopic RYGB (CPT 43644), admit 11/17/2026, inpatient.",
+        "Expected LOS: 2 midnights.",
+        "Factors: NAFLD w/ hepatomegaly (difficult left lobe retraction, post-op LFTs); severe knee OA limiting early ambulation, VTE risk; chronic lumbar pain w/ opioid-sparing pain plan.",
+        "O. Ferreira-Nakamura MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "NAFLD",
+        "bilateral knee osteoarthritis",
+        "dyslipidemia",
+        "lumbar disc disease",
+        "depression"
+      ],
+      "page": 2,
+      "why": "Patient's own PMH on page 2 (depression is on the psych eval, page 7). NAFLD, knee OA and dyslipidemia are standard obesity-related comorbidities. Family T2DM, HTN and OSA are excluded, the patient explicitly has no diabetes or hypertension, and the 2009 gestational diabetes resolved."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 40.8,
+      "page": 2,
+      "why": "H&P 09/17/2026: BMI 40.8."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 5,
+      "why": "Supervised program 11/10/2025 to 05/11/2026 with diet, exercise, behavioral therapy and semaglutide; net -1.2%; unsuccessful."
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "BMI 40.8; obesity-related comorbidities documented (NAFLD with imaging, knee OA with imaging, dyslipidemia on a statin); supervised program failed; 2 midnights with factors. The family history adds nothing. Approve."
+}

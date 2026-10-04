@@ -1,0 +1,119 @@
+{
+  "id": "adv_035",
+  "service": "bariatric",
+  "category": "wrong_patient_or_copy_forward",
+  "difficulty": "hard",
+  "why_hard": "On the same date, the surgeon's plan says 2 midnights and the PA's templated H&P says 'discharge POD1, expected LOS 1 night'. The H&P also carries a stale 2025 BMI.",
+  "member": {
+    "name": "Bartholomew S. Kearney",
+    "dob": "1958-12-05",
+    "age": 67,
+    "member_id": "MBR-83390",
+    "sex": "M"
+  },
+  "practice": "Glenwood Bariatric & Foregut Surgery",
+  "planned_admit_date": "2026-11-06",
+  "pages": [
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "GLENWOOD BARIATRIC & FOREGUT SURGERY",
+        "Consult  09/09/2026",
+        "Bartholomew S. Kearney, 67M",
+        "Ht 70 in   Wt 320.6 lb   BMI 46.0",
+        "PMH: T2DM on insulin (A1c 8.9); OSA on BiPAP; HTN; AF on apixaban (rate controlled).",
+        "Failed supervised program 2025-2026.",
+        "Plan: RYGB.",
+        "Dr. Saoirse Adeyemi-Clarke"
+      ]
+    },
+    {
+      "title": "Supervised program summary",
+      "lines": [
+        "GLENWOOD MEDICAL WEIGHT PROGRAM",
+        "Kearney, Bartholomew   09/2025 - 03/2026 (6 months)",
+        "Supervising: Rafael Lindqvist, MD",
+        "Monthly visits, RD counseling, 1,800 kcal, aquatic exercise, no anti-obesity med (cost).",
+        "Weight 324 -> 318 -> 322 lb (net -0.6%). Unsuccessful."
+      ]
+    },
+    {
+      "title": "Surgeon's operative plan",
+      "lines": [
+        "GLENWOOD - SURGEON OPERATIVE PLAN",
+        "Date: 09/28/2026",
+        "Kearney, Bartholomew S.   MBR-83390",
+        "Procedure: laparoscopic RYGB (CPT 43644). Admit 11/06/2026, inpatient.",
+        "Expected LOS: 2 midnights.",
+        "Factors: OSA on BiPAP w/ continuous oximetry; insulin-requiring T2DM; AF on apixaban - held pre-op, restart and bleeding monitoring POD1-2.",
+        "S. Adeyemi-Clarke MD"
+      ]
+    },
+    {
+      "title": "Pre-admission history and physical",
+      "lines": [
+        "[Template: Bariatric Pre-Admit H&P v3]",
+        "GLENWOOD BARIATRIC - PRE-ADMISSION H&P",
+        "Date: 09/28/2026   Pt: Kearney, Bartholomew S.",
+        "Author: Dmitri Halvorsen, PA-C",
+        "",
+        "Procedure: laparoscopic Roux-en-Y gastric bypass.",
+        "Vitals (03/12/2025): Wt 341 lb, BMI 48.9.",
+        "PMH: T2DM, OSA, HTN, AF.",
+        "Exam: obese, lungs clear, irregularly irregular rhythm, abd soft.",
+        "Disposition: anticipated discharge POD1. Expected LOS: 1 night.",
+        "VTE ppx: enoxaparin 40 BID + SCDs.",
+        "D. Halvorsen PA-C"
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-BARIATRIC PSYCH   08/12/2026",
+        "Kearney, Bartholomew",
+        "Cleared."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "GLENWOOD LAB 09/20/2026",
+        "A1c 8.9 H  Cr 1.2  Hgb 13.9  INR 1.1"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": null,
+      "ambiguous": true,
+      "page": 4,
+      "why": "Two documents dated 2026-09-28: the surgeon's plan says 'Expected LOS: 2 midnights' (page 4) and the PA's templated H&P says 'Expected LOS: 1 night', discharge POD1 (page 5). Same date, so neither is later, and they contradict."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes on insulin",
+        "obstructive sleep apnea on BiPAP",
+        "hypertension",
+        "atrial fibrillation on apixaban"
+      ],
+      "page": 2,
+      "why": "Consult PMH."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 46.0,
+      "page": 2,
+      "why": "Consult 09/09/2026: BMI 46.0. The H&P's BMI 48.9 is labeled as vitals from 03/12/2025 (copied forward) and is older."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "Supervised program 09/2025 to 03/2026 with diet, exercise and counseling; net -0.6%; unsuccessful."
+    }
+  },
+  "expected_action": "verify",
+  "action_reasoning": "BMI, comorbidity and prior treatment pass. Rule 4 depends on the expected stay, and two same-day documents give 2 midnights and 1 night. The template H&P may be stale, but a person must confirm. Verify."
+}

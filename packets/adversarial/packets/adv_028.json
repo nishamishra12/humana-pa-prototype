@@ -1,0 +1,118 @@
+{
+  "id": "adv_028",
+  "service": "bariatric",
+  "category": "conflict_dates",
+  "difficulty": "hard",
+  "why_hard": "The first page shows BMI 38.4 from April. After an illness-related weight loss, the current BMI is 34.1 on a later page dated 09/22, and the surgeon still proceeds.",
+  "member": {
+    "name": "Annabel P. Gutierrez",
+    "dob": "1975-12-01",
+    "age": 50,
+    "member_id": "MBR-19934",
+    "sex": "F"
+  },
+  "practice": "Northshore Weight Loss Surgery Center",
+  "planned_admit_date": "2026-11-11",
+  "pages": [
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "NORTHSHORE WEIGHT LOSS SURGERY CENTER",
+        "Initial consult   04/10/2026",
+        "Annabel P. Gutierrez   50F",
+        "Ht 64 in   Wt 224 lb   BMI 38.4",
+        "PMH: T2DM (A1c 7.7), OSA on CPAP (AHI 31), PCOS, diverticulosis.",
+        "Weight history: failed supervised program 2025.",
+        "Plan: RYGB workup.",
+        "Dr. Henrik Oyelaran-Shaw"
+      ]
+    },
+    {
+      "title": "Supervised program records",
+      "lines": [
+        "NORTHSHORE MEDICAL WEIGHT PROGRAM",
+        "Gutierrez, Annabel   03/03/2025 - 09/08/2025",
+        "Supervising MD: Ruth Achebe-Lind",
+        "6 monthly visits; 1,500 kcal; exercise log; semaglutide 05-08/2025 (stopped: gastroparesis-like sx).",
+        "Weight 226 -> 220 -> 227 lb. Net +0.4%.",
+        "Unsuccessful."
+      ]
+    },
+    {
+      "title": "Hospital discharge summary",
+      "lines": [
+        "NORTHSHORE GENERAL - DISCHARGE SUMMARY",
+        "Admit 06/20/2026   Discharge 07/02/2026",
+        "Gutierrez, Annabel",
+        "Dx: perforated sigmoid diverticulitis w/ 6 cm pelvic abscess.",
+        "Course: IR drain, IV antibiotics, NPO x 6 days, PPN, slow diet advance. Poor PO intake.",
+        "Discharge weight 209 lb (admission 222 lb).",
+        "F/u colorectal surgery for interval sigmoidectomy discussion."
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "BEHAVIORAL HEALTH - PRE-BARIATRIC   05/14/2026",
+        "Gutierrez, Annabel",
+        "No eating disorder. Cleared."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "NORTHSHORE LAB   09/19/2026",
+        "A1c 6.9 H",
+        "Albumin 3.6",
+        "Cr 0.7",
+        "Hgb 11.8 L"
+      ]
+    },
+    {
+      "title": "Pre-operative surgical visit",
+      "lines": [
+        "NORTHSHORE WEIGHT LOSS SURGERY CENTER",
+        "Pre-op visit   09/22/2026",
+        "Gutierrez, Annabel P.",
+        "Ht 64 in   Wt 198.6 lb   BMI 34.1",
+        "Interval: hospitalized 06-07/2026 for perforated diverticulitis, unintentional ~25 lb weight loss since April due to illness and poor intake. Appetite now back; I expect regain.",
+        "T2DM improved w/ weight loss (A1c 6.9). Still on CPAP.",
+        "A/P: proceed with RYGB as planned; weight loss was illness-related, not durable.",
+        "Expected LOS: 2 midnights - OSA on CPAP, T2DM, recent intra-abdominal sepsis w/ possible pelvic adhesions.",
+        "H. Oyelaran-Shaw MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected LOS: 2 midnights'."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes",
+        "obstructive sleep apnea on CPAP",
+        "PCOS"
+      ],
+      "page": 2,
+      "why": "Initial consult PMH; T2DM and CPAP use confirmed on page 7."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 34.1,
+      "page": 7,
+      "why": "Consult 04/10/2026: BMI 38.4 (page 2). Pre-op visit 09/22/2026: BMI 34.1 (page 7). The later measurement wins. The surgeon's expectation of regain does not change the measured value."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "Supervised program 03/03 to 09/08/2025 with diet, exercise and semaglutide; net +0.4%; unsuccessful. The later weight loss came from illness, not treatment."
+    }
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts present. Rule 1 fails: the current BMI is 34.1, under 35. Comorbidity, prior treatment and 2-midnight LOS pass. Escalate."
+}

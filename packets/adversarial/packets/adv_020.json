@@ -1,0 +1,160 @@
+{
+  "id": "adv_020",
+  "service": "icd",
+  "category": "clean_control",
+  "difficulty": "easy",
+  "why_hard": "Clean control for non-ischemic cardiomyopathy: GDMT is clearly over 3 months and every fact is plainly stated.",
+  "member": {
+    "name": "Beatrix H. Lindqvist",
+    "dob": "1958-08-23",
+    "age": 68,
+    "member_id": "MBR-67741",
+    "sex": "F"
+  },
+  "practice": "Coldwater Heart Failure & Rhythm",
+  "planned_admit_date": "2026-10-29",
+  "pages": [
+    {
+      "title": "Heart failure clinic note",
+      "lines": [
+        "COLDWATER HEART FAILURE & RHYTHM",
+        "HF clinic visit 09/22/2026",
+        "Beatrix Lindqvist  68F",
+        "",
+        "Background: admitted 12/28/2025 w/ new HF. Cath 12/30/2025: normal coronary arteries. Dx dilated non-ischemic cardiomyopathy. GDMT started 01/06/2026 and titrated to target/tolerated doses by 04/2026.",
+        "Now: DOE walking half a block or one flight. No rest symptoms. No syncope.",
+        "NYHA class III.",
+        "CMR 09/18/2026: LVEF 29% despite ~9 months of GDMT.",
+        "Plan: primary prevention ICD referral; SDM.",
+        "Signed: Halvard Nakashima, MD"
+      ]
+    },
+    {
+      "title": "Cardiac MRI report",
+      "lines": [
+        "COLDWATER IMAGING - CARDIAC MRI",
+        "Exam date: 09/18/2026",
+        "LINDQVIST, BEATRIX H",
+        "LVEDVi 128 mL/m2.  LVEF 29%.  RVEF 47%.",
+        "LGE: none.  No edema.",
+        "Impression: Dilated non-ischemic cardiomyopathy, LVEF 29%, no scar."
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "LINDQVIST, BEATRIX - MEDICATION LIST - 09/22/2026",
+        "sacubitril/valsartan 97/103 mg BID  - start 01/06/2026",
+        "carvedilol 25 mg BID               - start 01/06/2026",
+        "spironolactone 25 mg daily         - start 01/06/2026",
+        "dapagliflozin 10 mg daily          - start 01/06/2026",
+        "furosemide 20 mg daily             - start 12/2025",
+        "chlorthalidone                     - stopped 12/2025"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "SDM VISIT - ICD",
+        "Date: 10/01/2026",
+        "Beatrix Lindqvist, with partner",
+        "Clinician: Yusuf Brennan-Achebe, PA-C",
+        "Decision aid: evidence-based ICD decision aid (interactive online version completed in clinic).",
+        "Discussed absolute benefit, complications, shocks, deactivation, alternatives.",
+        "Decision: ICD.",
+        "Y. Brennan-Achebe PA-C"
+      ]
+    },
+    {
+      "title": "EP pre-procedure note",
+      "lines": [
+        "COLDWATER EP - PRE-PROCEDURE NOTE",
+        "10/02/2026",
+        "Patient: Beatrix H. Lindqvist   MBR-67741",
+        "Procedure: single-chamber ICD (CPT 33249), admit 10/29/2026, inpatient.",
+        "Indication: NICM, LVEF 29% (CMR 9/18), NYHA III, GDMT since 01/06/2026.",
+        "No MI, PCI or CABG.",
+        "Expected stay: 2 midnights. Reasons: severe OSA on CPAP; BMI 42 w/ difficult airway; HTN.",
+        "Limiting conditions: none (no dementia, no terminal illness, no AF, stable).",
+        "Dr. Mireille Achterberg-Lui"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "COLDWATER LAB  09/23/2026",
+        "Na 140  K 4.4  Cr 0.9  eGFR 70",
+        "Hgb 13.1  INR 1.0",
+        "NT-proBNP 890"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 6,
+      "why": "'Expected stay: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "severe obstructive sleep apnea on CPAP",
+        "obesity BMI 42",
+        "hypertension"
+      ],
+      "page": 6,
+      "why": "Reasons on the EP pre-procedure note."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 29,
+      "page": 3,
+      "why": "CMR 09/18/2026: 29%."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "cardiac MRI",
+      "page": 3,
+      "why": "Cardiac MRI."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "III",
+      "page": 2,
+      "why": "'NYHA class III'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "non-ischemic",
+      "page": 2,
+      "why": "Normal coronaries, dilated non-ischemic CM, no LGE."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 6,
+      "why": "'No MI, PCI or CABG.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 9.7,
+      "page": 4,
+      "why": "All four GDMT drugs started 2026-01-06; about 9.7 months to the 2026-10-29 implant."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 5,
+      "why": "SDM 10/01/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 6,
+      "why": "'Limiting conditions: none'."
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "Non-ischemic with 9.7 months of GDMT, LVEF 29% by CMR, NYHA III, no MI or revascularization, SDM done, no limiting condition, 2 midnights with documented factors. Approve."
+}

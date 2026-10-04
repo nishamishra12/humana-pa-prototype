@@ -1,0 +1,181 @@
+{
+  "id": "adv_011",
+  "service": "icd",
+  "category": "family_or_history_confusion",
+  "difficulty": "hard",
+  "why_hard": "The referral letter frames this as ischemic cardiomyopathy because of the father's MI. The patient's own record shows nonobstructive coronaries and a resuscitated VF arrest, so the ICD is for secondary prevention.",
+  "member": {
+    "name": "Desmond R. Achterberg",
+    "dob": "1966-03-08",
+    "age": 60,
+    "member_id": "MBR-90031",
+    "sex": "M"
+  },
+  "practice": "Harborview Electrophysiology Partners",
+  "planned_admit_date": "2026-10-22",
+  "pages": [
+    {
+      "title": "PCP referral letter",
+      "lines": [
+        "TIDELINE FAMILY MEDICINE",
+        "08/20/2026",
+        "To: Harborview Electrophysiology Partners",
+        "Re: Desmond Achterberg, DOB 03/08/1966",
+        "",
+        "Dear colleagues,",
+        "I am referring Mr. Achterberg for ICD consideration. He has a cardiomyopathy with EF in the low 30s and a very strong family history of premature coronary disease - his father had an MI at 49 and later died of ischemic cardiomyopathy, and a paternal uncle had CABG at 55. I suspect ischemic cardiomyopathy. He has been wearing a LifeVest since the spring.",
+        "He also has HTN, OSA on CPAP, and obesity (BMI 34).",
+        "Thank you for seeing him.",
+        "Corinne Vasquez-Albee, DO"
+      ]
+    },
+    {
+      "title": "EP consultation",
+      "lines": [
+        "HARBORVIEW ELECTROPHYSIOLOGY PARTNERS",
+        "Consultation   09/17/2026",
+        "Pt: Achterberg, Desmond R.   60M",
+        "",
+        "HPI: On 03/08/2026 pt collapsed while on a treadmill at his gym. Bystander CPR, AED analyzed VF and delivered 1 shock with ROSC. Emergent cath that day showed nonobstructive CAD, no culprit, no intervention. Troponin peak attributed to arrest/CPR, no MI. CMR 03/11: LVEF 31%, patchy mid-wall LGE, no myocarditis by T2. No reversible cause found (K, Mg normal, no drugs, no QT prolongation). Neurologically intact on discharge, no anoxic injury. Discharged 03/14 with wearable defibrillator and GDMT. No WCD shocks since.",
+        "Now: mild DOE on hills and stairs. NYHA class II. No syncope.",
+        "",
+        "FHx: father MI at 49 and died of ischemic CM; paternal uncle CABG. No family SCD.",
+        "",
+        "Data: TTE 09/12/26 LVEF 33%.",
+        "",
+        "Assessment: Resuscitated VF arrest without reversible cause, with persistent LV dysfunction. Coronaries nonobstructive - not ischemic CM despite family history.",
+        "Indication: SECONDARY prevention ICD (survivor of VF cardiac arrest).",
+        "Plan: transvenous single-chamber ICD; SDM visit; admit.",
+        "Signed: Ingrid Halloran-Obi, MD"
+      ]
+    },
+    {
+      "title": "Cardiac catheterization report",
+      "lines": [
+        "HARBORVIEW MEDICAL CENTER - EMERGENT CARDIAC CATH",
+        "Date: 03/08/2026   Pt: ACHTERBERG, DESMOND  (post-arrest, intubated)",
+        "LM: normal. LAD: 30% mid. LCx: 20% OM1. RCA: minor irregularities.",
+        "No thrombus, no culprit. LVEDP 22.",
+        "Conclusion: Nonobstructive CAD. No PCI performed.",
+        "Operator: K. Sandoval, MD"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "HARBORVIEW ECHO LAB   09/12/2026",
+        "ACHTERBERG, DESMOND R",
+        "LVEF (3D): 33%",
+        "LVIDd 6.0. Global hypokinesis, no regional WMA.",
+        "RV normal. No significant valve disease.",
+        "Compared to CMR 03/2026 (31%): no meaningful change.",
+        "Read by: A. Fontaine, MD"
+      ]
+    },
+    {
+      "title": "Shared decision making visit",
+      "lines": [
+        "Harborview EP - Shared Decision Making Encounter",
+        "09/24/2026   Desmond Achterberg (wife present)",
+        "Clinician: Lars Nygaard, PA-C",
+        "Tool: evidence-based ICD decision aid (video + booklet).",
+        "We reviewed recurrence risk after VF arrest, how the ICD treats VF, risks of implant, inappropriate shocks, driving rules, and that the LifeVest is not a long-term option.",
+        "Patient chose ICD; wife agrees.",
+        "L. Nygaard PA-C"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Achterberg, Desmond - Medication list 09/17/2026",
+        "metoprolol succinate 100 mg daily    start 03/12/2026",
+        "sacubitril/valsartan 49/51 BID       start 03/12/2026",
+        "spironolactone 25 mg daily           start 03/12/2026",
+        "empagliflozin 10 mg daily            start 04/2026",
+        "atorvastatin 40 mg daily             start 2021",
+        "amlodipine                           stopped 03/2026"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "HARBORVIEW EP - PRE-ADMISSION PLAN   10/01/2026",
+        "Patient: Desmond R. Achterberg   MBR-90031",
+        "Procedure: ICD (CPT 33249)   Admit: 10/22/2026 inpatient",
+        "Expected stay: 2 midnights.",
+        "Supporting factors: severe OSA (AHI 46) on CPAP - post-sedation monitoring; obesity BMI 34 w/ difficult airway history; HTN; transition off WCD requires telemetry until device check POD1.",
+        "Limiting conditions: none. Neuro intact, no terminal illness, sinus rhythm (no AF), clinically stable.",
+        "No MI, PCI or CABG.",
+        "I. Halloran-Obi MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected stay: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "severe obstructive sleep apnea on CPAP",
+        "obesity BMI 34",
+        "hypertension"
+      ],
+      "page": 8,
+      "why": "Supporting factors on the pre-admission plan."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 33,
+      "page": 5,
+      "why": "CMR 03/11/2026 31%; TTE 09/12/2026 33%. The later one wins."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 5,
+      "why": "3D TTE."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "II",
+      "page": 3,
+      "why": "EP consult: 'NYHA class II'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "other",
+      "page": 3,
+      "why": "EP states the indication is secondary prevention after a resuscitated VF arrest, with nonobstructive coronaries. Per the definitions, a request resting on prior cardiac arrest is 'other'. The PCP's 'suspect ischemic' rests on the father's history, not the patient's."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 4,
+      "why": "Cath 03/08/2026: no PCI; troponin rise 'no MI'; page 8 'No MI, PCI or CABG.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 7.3,
+      "page": 7,
+      "why": "Metoprolol, ARNI and MRA since 2026-03-12, about 7.3 months to the implant."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 6,
+      "why": "SDM 09/24/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "'Limiting conditions: none. Neuro intact' (no anoxic brain injury)."
+    }
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "Rule 1: the request rests on a prior cardiac arrest, so cardiomyopathy_type is 'other' and a physician must decide. All other facts are present (and would otherwise pass). Escalate."
+}

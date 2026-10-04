@@ -1,0 +1,110 @@
+{
+  "id": "adv_034",
+  "service": "bariatric",
+  "category": "wrong_patient_or_copy_forward",
+  "difficulty": "hard",
+  "why_hard": "The attached 6-month dietitian program records are for 'Tabitha L. Nunez' (different DOB and MRN), not the member 'Tabitha R. Nwosu'. The surgeon only says 'see attached'.",
+  "member": {
+    "name": "Tabitha R. Nwosu",
+    "dob": "1973-08-08",
+    "age": 53,
+    "member_id": "MBR-45526",
+    "sex": "F"
+  },
+  "practice": "Riverstone Bariatric Surgery Group",
+  "planned_admit_date": "2026-11-19",
+  "pages": [
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "RIVERSTONE BARIATRIC SURGERY GROUP",
+        "Consult   09/15/2026",
+        "Patient: Nwosu, Tabitha R.   DOB 08/08/1973   MRN RB-80344",
+        "Ht 66 in   Wt 269.5 lb   BMI 43.5",
+        "PMH: T2DM (A1c 7.8) on metformin + empagliflozin; HTN; GERD.",
+        "Weight hx: has completed medically supervised weight loss (see attached dietitian records).",
+        "Plan: RYGB.",
+        "Dr. Malcolm Ostrowski-Eze"
+      ]
+    },
+    {
+      "title": "Dietitian program note (1 of 2)",
+      "lines": [
+        "RIVERSTONE NUTRITION - MEDICALLY SUPERVISED WEIGHT LOSS",
+        "Patient: NUNEZ, TABITHA L.   DOB 09/12/1971   MRN RB-77120",
+        "Program start: 11/03/2025",
+        "Visits 11/03/2025, 12/01/2025, 01/05/2026: weights 251, 248, 246 lb.",
+        "1,500 kcal plan, food log, walking 20 min/day. Supervising MD: Aiyana Feldstein, MD.",
+        "RD: Bronwyn Castellanos, RD"
+      ]
+    },
+    {
+      "title": "Dietitian program note (2 of 2)",
+      "lines": [
+        "RIVERSTONE NUTRITION - MEDICALLY SUPERVISED WEIGHT LOSS",
+        "Patient: NUNEZ, TABITHA L.   DOB 09/12/1971   MRN RB-77120",
+        "Visits 02/02, 03/02, 04/06/2026: weights 249, 252, 253 lb.",
+        "Program complete (6 months). Net +2 lb. Outcome: unsuccessful, refer to surgery.",
+        "RD: Bronwyn Castellanos, RD"
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-BARIATRIC PSYCH EVAL   08/18/2026",
+        "Patient: Nwosu, Tabitha R.   DOB 08/08/1973",
+        "No eating disorder. Cleared."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "RIVERSTONE LAB   09/10/2026",
+        "NWOSU, TABITHA R   DOB 08/08/1973",
+        "A1c 7.8 H   Cr 0.8   Hgb 12.6"
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN   09/29/2026",
+        "Nwosu, Tabitha R.   MBR-45526",
+        "Lap RYGB (CPT 43644). Admit 11/19/2026 inpatient.",
+        "Expected LOS: 2 midnights. Factors: T2DM on SGLT2i (euglycemic DKA risk, needs inpatient glucose/ketone monitoring); HTN; GERD.",
+        "M. Ostrowski-Eze MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes",
+        "hypertension",
+        "GERD"
+      ],
+      "page": 2,
+      "why": "Consult PMH."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 43.5,
+      "page": 2,
+      "why": "Consult 09/15/2026: BMI 43.5."
+    },
+    "prior_medical_treatment": {
+      "truth": "absent",
+      "value": null,
+      "page": null,
+      "why": "The program records on pages 3 and 4 belong to a different patient (Tabitha L. Nunez, DOB 09/12/1971, MRN RB-77120). For the member there is only the surgeon's line 'has completed medically supervised weight loss (see attached)', with no dates, duration or result."
+    }
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 3 needs documented failed supervised treatment for this member. The attached records are another patient's, so the fact is absent. Pend and ask for the member's own program records. Other rules pass."
+}

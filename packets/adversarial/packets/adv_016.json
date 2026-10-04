@@ -1,0 +1,181 @@
+{
+  "id": "adv_016",
+  "service": "icd",
+  "category": "ambiguous_verify",
+  "difficulty": "hard",
+  "why_hard": "The EP calls the persistent AF 'rate control adequate by lenient criteria'. The Holter shows a mean of 104 bpm with 41% of the time above 110, and the HF NP calls it borderline and defers. Whether this is 'AF with a poorly controlled rate' needs a person.",
+  "member": {
+    "name": "Rosalind M. Fairweather",
+    "dob": "1948-09-14",
+    "age": 78,
+    "member_id": "MBR-13357",
+    "sex": "F"
+  },
+  "practice": "Ashgrove Heart Rhythm",
+  "planned_admit_date": "2026-11-02",
+  "pages": [
+    {
+      "title": "EP consultation",
+      "lines": [
+        "ASHGROVE HEART RHYTHM",
+        "EP Consultation - 09/21/2026",
+        "Pt: Fairweather, Rosalind M.   78F",
+        "",
+        "HPI: NICM dx 08/2025 (cath 08/2025 normal coronaries). On GDMT since 09/2025. Persistent AF since 2024, rate control strategy, failed DCCV x2 (2024, 2025). Dyspnea w/ moderate exertion, walks 2-3 blocks. No syncope.",
+        "",
+        "Data: TTE 09/03/26 LVEF 30%. Holter 09/08-09/10 reviewed.",
+        "",
+        "A/P:",
+        "1. NICM, LVEF 30%, NYHA II -> primary prevention ICD.",
+        "2. Persistent AF - lenient rate control strategy is acceptable for her (target resting HR <110). Rate control adequate by lenient criteria. No change to AV nodal agents.",
+        "3. Will need SDM.",
+        "Dr. Maren Ostrowski-Vale"
+      ]
+    },
+    {
+      "title": "Holter monitor report",
+      "lines": [
+        "ASHGROVE CARDIAC MONITORING - 48-HOUR HOLTER",
+        "Hookup: 09/08/2026 09:12   Duration: 47 h 51 min",
+        "Patient: FAIRWEATHER, ROSALIND",
+        "",
+        "Rhythm: atrial fibrillation 100% of recording.",
+        "Ventricular rate: min 71 bpm, mean 104 bpm, max 152 bpm (during walking, diary entry 'groceries').",
+        "Time with ventricular rate >110 bpm: 41%. Time >130 bpm: 9%.",
+        "Nocturnal mean 88 bpm.",
+        "Ventricular ectopy: PVCs 1.2%, 3 runs NSVT (max 5 beats).",
+        "Pauses: none >2.5 s.",
+        "Interpretation: Persistent AF with mean ventricular rate 104 bpm; rates frequently above 110 at rest and with activity. Short runs of NSVT.",
+        "Read: H. Yildirim, MD"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "ASHGROVE ECHO   09/03/2026",
+        "Fairweather, Rosalind",
+        "Rhythm during study: AF, HR 98-112",
+        "LVEF 30% (biplane, averaged over 5 beats)",
+        "Global HK, LV mildly dilated. Severe LA enlargement. Mod MR, mod TR.",
+        "Impression: LVEF 30%."
+      ]
+    },
+    {
+      "title": "Heart failure NP note",
+      "lines": [
+        "ASHGROVE HF CLINIC - follow-up   09/28/2026",
+        "Rosalind Fairweather",
+        "BP 112/70, HR 108 irregularly irregular at rest (seated 5 min).",
+        "A: NICM, NYHA II. Persistent AF - rate control borderline; Holter mean 104 with 41% >110. Not sure this counts as adequately controlled for device implant. Defer to EP re: whether to adjust AV nodal therapy before implant. No med change today.",
+        "Plan: keep implant date for now.",
+        "K. Abernethy-Soto, NP"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "SDM - ICD - 09/24/2026",
+        "Rosalind Fairweather + son (HCPOA)",
+        "Clinician: Pilar Encinas, PA-C",
+        "Decision aid: evidence-based ICD decision aid (large-print).",
+        "Covered benefit, harm, shocks (including inappropriate shocks in AF with fast rates), deactivation, alternatives.",
+        "Decision: proceed with ICD.",
+        "P. Encinas PA-C"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Fairweather, Rosalind - meds 09/28/2026",
+        "metoprolol succinate 100 mg daily ... since 09/08/2025",
+        "sacubitril/valsartan 24/26 BID ...... since 09/08/2025",
+        "spironolactone 12.5 mg .............. since 09/08/2025",
+        "empagliflozin 10 mg ................. since 11/2025",
+        "digoxin 0.125 mg daily .............. since 2024",
+        "apixaban 2.5 mg BID ................. since 2024",
+        "furosemide 20 mg daily"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "PRE-ADMISSION PLAN - ICD   10/01/2026",
+        "Fairweather, Rosalind M.   MBR-13357   CPT 33249   Admit 11/02/2026",
+        "Expected LOS: 2 midnights.",
+        "Factors: age 78; apixaban interruption/restart w/ pocket surveillance; persistent AF on telemetry; digoxin level and K/Mg monitoring.",
+        "AF: persistent, rate control strategy per EP (see consult).",
+        "No dementia; no terminal illness. No MI, PCI or CABG.",
+        "M. Ostrowski-Vale MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "persistent atrial fibrillation",
+        "apixaban anticoagulation",
+        "digoxin therapy"
+      ],
+      "page": 8,
+      "why": "Factors on the pre-admission plan (plus age 78)."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 30,
+      "page": 4,
+      "why": "TTE 09/03/2026: 30%."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 4,
+      "why": "TTE biplane."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "II",
+      "page": 2,
+      "why": "EP consult and HF NP note both say NYHA II."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "non-ischemic",
+      "page": 2,
+      "why": "NICM with normal coronaries 08/2025."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 8,
+      "why": "'No MI, PCI or CABG.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 13.8,
+      "page": 7,
+      "why": "Metoprolol, ARNI and MRA since 2025-09-08, about 13.8 months to the implant."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 6,
+      "why": "SDM 09/24/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "present",
+      "value": null,
+      "ambiguous": true,
+      "page": 3,
+      "why": "Brain damage, life-limiting illness and instability are ruled out (page 8). The open question is AF rate control: the EP calls it adequate by lenient criteria (page 2); the Holter shows mean 104 and 41% of time >110 (page 3); the HF NP on 09/28 records resting HR 108 and calls it borderline (page 5). Whether this is 'poorly controlled' is a clinical judgment."
+    }
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Every other rule passes (NICM with 13.8 months GDMT, LVEF 30% by echo, NYHA II, SDM done, 2 midnights). Rule 8 depends on whether the AF rate is poorly controlled, and the packet holds two defensible readings. A person must decide. Verify."
+}

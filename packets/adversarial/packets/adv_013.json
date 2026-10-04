@@ -1,0 +1,180 @@
+{
+  "id": "adv_013",
+  "service": "icd",
+  "category": "hedged_language",
+  "difficulty": "hard",
+  "why_hard": "The most recent note says 'EF likely improved' and 'possibly no longer meets criteria', but there is no new measurement. The last measured LVEF is still 30%.",
+  "member": {
+    "name": "Augustin F. Lemaire",
+    "dob": "1951-12-12",
+    "age": 74,
+    "member_id": "MBR-22648",
+    "sex": "M"
+  },
+  "practice": "Pine Crest Cardiovascular Associates",
+  "planned_admit_date": "2026-10-28",
+  "pages": [
+    {
+      "title": "Heart failure NP follow-up",
+      "lines": [
+        "PINE CREST CARDIOVASCULAR ASSOCIATES - HF Clinic",
+        "Follow-up  09/30/2026",
+        "Augustin Lemaire  74M",
+        "",
+        "Feels better than in August. Doing his garden, still has to stop after carrying bags up the stairs. No orthopnea. Wt down 4 lb.",
+        "BP 104/62, HR 58.",
+        "",
+        "A/P:",
+        "- ICM, HFrEF. NYHA II.",
+        "- EF likely improved given clinical improvement and uptitration; we have not repeated the echo. Possibly he no longer meets ICD criteria if EF has recovered, but no new imaging to say so. Will defer to EP.",
+        "- Cont GDMT.",
+        "Noor Baptiste, NP"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "PINE CREST ECHO",
+        "Date of study: 08/19/2026",
+        "LEMAIRE, AUGUSTIN F",
+        "LVEF: 30% (biplane)",
+        "Inferior and inferoseptal AK; mild global HK otherwise.",
+        "LVIDd 5.9. Mild MR. RV nl.",
+        "Impression: LVEF 30%, unchanged vs 01/2026 (30%).",
+        "Read: G. Hollister-Ng, MD"
+      ]
+    },
+    {
+      "title": "EP consultation",
+      "lines": [
+        "Pine Crest EP - Consultation 09/09/2026",
+        "Pt: Lemaire, Augustin F.",
+        "Hx: NSTEMI 11/2019 w/ PCI to RCA 11/2019. ICM. No events since.",
+        "Sx: DOE at 2-3 blocks; NYHA II.",
+        "Imaging: TTE 08/19/26 LVEF 30%; TTE 01/2026 LVEF 30%.",
+        "Imp: ICM, LVEF persistently <=35% for >6 yrs on GDMT. Primary prevention ICD indicated.",
+        "Plan: SDM then implant.",
+        "Signed: Delphine Arsenault, MD"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "SDM - ICD   09/16/2026",
+        "Pt: Augustin Lemaire   Daughter (Celine) present",
+        "Clinician: Marcus Oyibo, PA-C",
+        "Decision aid: evidence-based ICD decision aid (French-language booklet at pt request).",
+        "Covered absolute benefit, risks, shocks, deactivation, option to repeat echo first and defer.",
+        "Pt prefers to proceed now rather than wait for repeat imaging.",
+        "M. Oyibo PA-C"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Lemaire, Augustin  -  Meds  -  09/30/2026",
+        "metoprolol succinate 150 mg daily   since 11/18/2019 (titrated 08/2026)",
+        "sacubitril/valsartan 97/103 BID     since 06/2021",
+        "lisinopril                          11/18/2019 - 06/2021 (changed to ARNI)",
+        "spironolactone 25 mg                since 11/18/2019",
+        "empagliflozin 10 mg                 since 2023",
+        "clopidogrel 75 mg                   since 11/2019",
+        "rosuvastatin 20 mg",
+        "tamsulosin 0.4 mg"
+      ]
+    },
+    {
+      "title": "PCP visit note",
+      "lines": [
+        "ELMWOOD PRIMARY CARE   09/02/2026",
+        "Lemaire, Augustin F.  annual wellness visit",
+        "Daughter wonders about memory - misplacing keys. MoCA today 26/30 (normal range). No dementia. Independent in all ADLs/IADLs, manages own meds and finances.",
+        "Other: BPH stable, CKD 3a (Cr 1.4), mild hearing loss.",
+        "Cancer screening up to date, no malignancy.",
+        "Hye-jin Calloway, MD"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "PRE-ADMISSION PLAN - EP LAB   10/01/2026",
+        "Patient: Lemaire, Augustin F.   MBR-22648   CPT 33249   Admit 10/28/2026",
+        "Proceed based on most recent measured LVEF (TTE 08/19/2026: 30%). No repeat imaging planned prior to implant.",
+        "Expected LOS: 2 midnights.",
+        "Factors: clopidogrel continued (prior RCA stent) - pocket hematoma risk; CKD 3a; bradycardia on high-dose BB (HR 58) - device check and telemetry overnight; BPH w/ prior retention.",
+        "Limiting conditions: none (cognition normal by MoCA, no terminal illness, no AF, stable).",
+        "No ACS or revascularization since 2019.",
+        "D. Arsenault MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "clopidogrel antiplatelet therapy",
+        "CKD stage 3a",
+        "bradycardia on beta blocker",
+        "BPH with prior urinary retention"
+      ],
+      "page": 8,
+      "why": "Factors on the pre-admission plan."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 30,
+      "page": 3,
+      "why": "The last measurement is TTE 08/19/2026: 30%. 'EF likely improved' (page 2) is a guess, not a measurement, and does not replace it."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 3,
+      "why": "TTE biplane."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "II",
+      "page": 2,
+      "why": "HF NP note 09/30: 'NYHA II'; same in EP consult."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 4,
+      "why": "ICM after NSTEMI and RCA PCI 2019."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 8,
+      "why": "NSTEMI and PCI 11/2019; 'No ACS or revascularization since 2019.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 83.3,
+      "page": 6,
+      "why": "Metoprolol, ACEi/ARNI and spironolactone since 2019-11-18. Not decisive (ischemic)."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 5,
+      "why": "SDM 09/16/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "'Limiting conditions: none'. The memory concern was checked: MoCA 26/30, no dementia (page 7)."
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "Hedged statements do not replace measurements. The last measured LVEF is 30% by echo, NYHA II, ischemic, no recent event, SDM done, no limiting condition, 2 midnights with documented factors. Approve."
+}

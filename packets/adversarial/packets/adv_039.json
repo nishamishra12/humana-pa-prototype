@@ -1,0 +1,113 @@
+{
+  "id": "adv_039",
+  "service": "bariatric",
+  "category": "distractor_numbers",
+  "difficulty": "hard",
+  "why_hard": "The current BMI is 34.2, just under 35. Nearby numbers include a self-reported peak weight, a '35 lb weight-loss goal', a 35-question screening tool and STOP-BANG 5, and the surgeon never says BMI is under 35.",
+  "member": {
+    "name": "Maximilian O. Reyes",
+    "dob": "1965-05-25",
+    "age": 61,
+    "member_id": "MBR-60379",
+    "sex": "M"
+  },
+  "practice": "Cobalt Coast Surgical Weight Center",
+  "planned_admit_date": "2026-11-30",
+  "pages": [
+    {
+      "title": "Initial bariatric consultation",
+      "lines": [
+        "COBALT COAST SURGICAL WEIGHT CENTER",
+        "Initial consult  06/15/2026",
+        "Maximilian O. Reyes, 61M",
+        "Ht 68 in  Wt 229 lb  BMI 34.8",
+        "Self-reported peak weight 262 lb (2019).",
+        "PMH: T2DM (A1c 7.5) on metformin + glipizide; OSA (AHI 27) on CPAP; HTN.",
+        "STOP-BANG 5 (pre-dx). Neck 17.5 in. Waist 41 in.",
+        "Goal: 35 lb weight loss in first year, diabetes remission.",
+        "Plan: workup for RYGB.",
+        "Dr. Josefina Albrecht-Nwosu"
+      ]
+    },
+    {
+      "title": "Supervised program records",
+      "lines": [
+        "COBALT COAST MEDICAL WEIGHT PROGRAM",
+        "Reyes, Maximilian   10/2025 - 04/2026",
+        "Supervising: Anders Mokoena, MD",
+        "6 visits, RD counseling, 1,800 kcal, exercise plan. GLP-1 RA declined by pt (needle aversion).",
+        "Weight 231 -> 227 -> 230 lb (net -0.4%). Unsuccessful."
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-SURGICAL PSYCH  07/30/2026",
+        "Reyes, Maximilian",
+        "35-item eating questionnaire: no binge pattern. Cleared."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "COBALT COAST LAB  09/18/2026",
+        "A1c 7.5 H   Glucose 148 H",
+        "Cr 1.0   K 4.1",
+        "Hgb 14.7"
+      ]
+    },
+    {
+      "title": "Pre-operative surgical visit",
+      "lines": [
+        "COBALT COAST - PRE-OP VISIT",
+        "09/23/2026   Reyes, Maximilian O.",
+        "Vitals: Ht 68 in   Wt 225 lb   BMI 34.2   BP 132/80",
+        "Interval: compliant w/ CPAP. Diabetes unchanged.",
+        "A/P: proceed with RYGB. Diabetes is the primary indication.",
+        "J. Albrecht-Nwosu MD"
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN  09/29/2026",
+        "Reyes, Maximilian O.   MBR-60379",
+        "Lap RYGB (CPT 43644). Admit 11/30/2026, inpatient.",
+        "Expected LOS: 2 midnights. Factors: OSA on CPAP; T2DM on sulfonylurea (hypoglycemia risk); HTN.",
+        "J. Albrecht-Nwosu MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes",
+        "obstructive sleep apnea on CPAP",
+        "hypertension"
+      ],
+      "page": 2,
+      "why": "Initial consult PMH."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 34.2,
+      "page": 6,
+      "why": "06/15/2026: BMI 34.8 (page 2). 09/23/2026: BMI 34.2 (page 6). The later one wins, and both are under 35. The peak weight (2019), the 35 lb goal and the 35-item questionnaire are not BMI."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "Supervised program 10/2025 to 04/2026 with diet, counseling and exercise; net -0.4%; unsuccessful."
+    }
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts present. Rule 1 fails: the current BMI is 34.2, under 35. Comorbidity, prior treatment and LOS pass. Escalate."
+}

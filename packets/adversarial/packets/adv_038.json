@@ -1,0 +1,118 @@
+{
+  "id": "adv_038",
+  "service": "bariatric",
+  "category": "distractor_numbers",
+  "difficulty": "hard",
+  "why_hard": "BMI-like numbers are everywhere: a program-start BMI of 39.1, a goal BMI of 30, a '35 lb' loss, a 'BMI >=35' criteria line, waist 44 in and BP 142/88. The current BMI of 37.4 is in the last clinical note.",
+  "member": {
+    "name": "Priscilla J. Abara",
+    "dob": "1976-02-02",
+    "age": 50,
+    "member_id": "MBR-58841",
+    "sex": "F"
+  },
+  "practice": "Stillwater Bariatric Specialists",
+  "planned_admit_date": "2026-11-24",
+  "pages": [
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "STILLWATER BARIATRIC SPECIALISTS",
+        "Consult  09/02/2026",
+        "Priscilla J. Abara, 50F",
+        "",
+        "Weight hx: lost 35 lb on her own in 2023, regained 41 lb by 2025. Then our supervised program (2026, see records).",
+        "PMH: T2DM (A1c 6.8 on metformin), HTN (BP today 142/88 on losartan), PCOS.",
+        "Waist 44 in. Neck 15 in.",
+        "",
+        "Program criteria reviewed with pt: BMI >=35 with obesity-related comorbidity, or >=40 alone.",
+        "Long-term goal: BMI 30; expected 60% excess weight loss at 1 yr.",
+        "Plan: RYGB. 35-min visit, >50% counseling.",
+        "Dr. Cassius Moreno-Achebe"
+      ]
+    },
+    {
+      "title": "Supervised program records",
+      "lines": [
+        "STILLWATER MEDICAL WEIGHT MANAGEMENT",
+        "Abara, Priscilla   02/09/2026 - 08/10/2026",
+        "Supervising MD: Hilde Oyenuga",
+        "Start: Ht 63 in, Wt 220.8 lb, BMI 39.1.",
+        "Monthly visits x7; 1,500 kcal; 10,000-step goal; behavioral group; topiramate 25-50 mg 03-06/2026 (stopped, cognitive slowing).",
+        "End weight 214 lb (-3.1%). Goal 5% not reached.",
+        "Outcome: unsuccessful."
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-BARIATRIC PSYCH  08/27/2026",
+        "Abara, Priscilla",
+        "No eating disorder. Cleared. Session 60 min."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "STILLWATER LAB  09/20/2026",
+        "A1c 6.8 H   Glucose 131 H",
+        "LDL 135 H   TG 188 H",
+        "Cr 0.7   Hgb 12.4   Vit D 18 L"
+      ]
+    },
+    {
+      "title": "Pre-operative visit",
+      "lines": [
+        "STILLWATER BARIATRIC - PRE-OP VISIT",
+        "09/26/2026   Abara, Priscilla J.",
+        "Ht 63 in   Wt 211.2 lb   BMI 37.4   BP 136/84",
+        "Interval: on pre-op diet, down 3 lb.",
+        "Cleared for surgery pending auth.",
+        "C. Moreno-Achebe MD"
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN  09/30/2026",
+        "Abara, Priscilla J.   MBR-58841",
+        "Lap RYGB (CPT 43644). Admit 11/24/2026, inpatient.",
+        "Expected LOS: 2 midnights.",
+        "Factors: T2DM (glucose monitoring, metformin hold); HTN on ARB (hypotension risk w/ reduced intake); 1 JP drain planned for 24-48h.",
+        "C. Moreno-Achebe MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected LOS: 2 midnights.' The '1 JP drain for 24-48h' is not the LOS."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes",
+        "hypertension",
+        "PCOS"
+      ],
+      "page": 2,
+      "why": "Consult PMH."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 37.4,
+      "page": 6,
+      "why": "Program start 02/09/2026: BMI 39.1 (page 3). Pre-op visit 09/26/2026: BMI 37.4 (page 6). The later one wins. 'BMI 30' is a goal; '>=35' and '>=40' are criteria text; 35 lb and 44 in are not BMI."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "Supervised program 02/09 to 08/10/2026 with diet, activity, behavioral group and topiramate; -3.1%; unsuccessful."
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "Current BMI 37.4 (35 or higher), T2DM documented, supervised program failed, 2 midnights with factors. Approve."
+}

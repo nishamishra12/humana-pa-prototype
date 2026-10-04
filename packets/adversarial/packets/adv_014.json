@@ -1,0 +1,182 @@
+{
+  "id": "adv_014",
+  "service": "icd",
+  "category": "hedged_language",
+  "difficulty": "hard",
+  "why_hard": "The cause of the cardiomyopathy is never settled. One cardiologist favors ischemic and the EP favors non-ischemic, both hedged. GDMT is 2.6 months, so the answer flips on etiology.",
+  "member": {
+    "name": "Wilhelmina C. Asante",
+    "dob": "1960-06-06",
+    "age": 66,
+    "member_id": "MBR-58172",
+    "sex": "F"
+  },
+  "practice": "Clearwater Heart & Vascular",
+  "planned_admit_date": "2026-10-20",
+  "pages": [
+    {
+      "title": "General cardiology note",
+      "lines": [
+        "CLEARWATER HEART & VASCULAR",
+        "Office note 09/10/2026   Provider: Jonas Whitfield, MD",
+        "Pt: Asante, Wilhelmina C.  66F",
+        "",
+        "HFrEF dx 07/2026 (presented w/ edema/DOE). Long-standing DM2 and CKD 4 (eGFR 24).",
+        "Ischemic eval: invasive angiography deferred due to CKD 4 and contrast risk; pt also prefers to avoid cath. SPECT 07/30 w/ small fixed inferior defect, read as attenuation vs prior silent infarct.",
+        "",
+        "Impression: Cardiomyopathy, etiology undetermined. I favor ischemic given long-standing diabetes and the fixed inferior defect, but cannot exclude a non-ischemic process.",
+        "GDMT started 08/01, tolerating.",
+        "Refer to EP re ICD.",
+        "J. Whitfield MD"
+      ]
+    },
+    {
+      "title": "Nuclear stress test report",
+      "lines": [
+        "CLEARWATER NUCLEAR CARDIOLOGY",
+        "Regadenoson SPECT   07/30/2026",
+        "ASANTE, WILHELMINA",
+        "Perfusion: small, mild-intensity fixed defect of the basal inferior wall. Breast and diaphragmatic attenuation present; attenuation-corrected images partially normalize the defect.",
+        "No reversible defects.",
+        "Gated LVEF 29% (limited, irregular gating).",
+        "Impression: 1) Small fixed basal inferior defect - attenuation artifact vs small prior infarct; cannot exclude. 2) No ischemia. 3) Reduced LVEF.",
+        "Read: R. Castellano-Byrd, MD"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "CLEARWATER ECHO LAB",
+        "Date: 09/17/2026",
+        "Asante, Wilhelmina C.",
+        "LVEF 27% (biplane Simpson).",
+        "Global hypokinesis without clear regional pattern. LV dilated (LVIDd 6.3).",
+        "Mod functional MR. RV mildly reduced.",
+        "Impression: severe global LV dysfunction, LVEF 27%."
+      ]
+    },
+    {
+      "title": "EP consultation",
+      "lines": [
+        "CLEARWATER HEART & VASCULAR - ELECTROPHYSIOLOGY",
+        "Consult 09/24/2026",
+        "Pt: Wilhelmina Asante",
+        "",
+        "Sx: SOB walking room to room on bad days, usually half a block; no rest dyspnea. NYHA III.",
+        "Echo 9/17: LVEF 27%, global HK, no regional WMA.",
+        "No known MI. No PCI or CABG ever.",
+        "",
+        "Assessment: Cardiomyopathy, likely non-ischemic given global pattern on echo; however ischemic etiology is not excluded without angiography (deferred for CKD 4).",
+        "On GDMT since 08/01/2026.",
+        "Plan: pt and family want ICD before winter travel. SDM visit, then implant 10/20.",
+        "Y. Mbatha-Rowe, MD"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Asante, Wilhelmina - Current meds - 09/24/2026",
+        "carvedilol 6.25 mg BID ........ start 08/01/2026",
+        "valsartan 40 mg BID ........... start 08/01/2026 (ARNI not used - CKD 4/K)",
+        "dapagliflozin 10 mg ........... start 08/01/2026",
+        "hydralazine 25 mg TID ......... start 08/01/2026",
+        "isosorbide dinitrate 20 TID ... start 08/01/2026",
+        "torsemide 20 mg daily ......... start 07/2026",
+        "insulin detemir 22 u qHS ...... 2012",
+        "atorvastatin 40 ............... 2015"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "Clearwater Device Clinic - SHARED DECISION MAKING (ICD)",
+        "Date: 09/29/2026",
+        "Patient: Wilhelmina Asante, with son",
+        "Facilitator: Precious Dube, NP",
+        "Decision aid: evidence-based ICD decision aid (booklet), reviewed fully.",
+        "Discussed that ICD benefit may be smaller with CKD 4; shocks; infection; dialysis-access considerations for venous anatomy; deactivation.",
+        "Decision: proceed.",
+        "P. Dube NP"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "PRE-ADMISSION PLAN   10/02/2026",
+        "Asante, Wilhelmina C.   MBR-58172   CPT 33249   Admit 10/20/2026",
+        "Expected LOS: 2 midnights.",
+        "Factors: CKD 4 (eGFR 24) - nephrology to follow, no contrast, daily BMP; insulin-requiring DM2 - glucose mgmt while NPO; preservation of L arm veins for future AV access (R-sided implant).",
+        "Limiting conditions screened: none (no dementia, no terminal illness, no AF, stable).",
+        "Y. Mbatha-Rowe MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "CKD stage 4",
+        "type 2 diabetes on insulin"
+      ],
+      "page": 8,
+      "why": "Factors on the pre-admission plan."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 27,
+      "page": 4,
+      "why": "SPECT 07/30/2026 29%; TTE 09/17/2026 27%. The later one wins."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 4,
+      "why": "TTE biplane Simpson."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "III",
+      "page": 5,
+      "why": "EP consult: 'NYHA III'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": null,
+      "ambiguous": true,
+      "page": 5,
+      "why": "General cardiology (09/10) 'favor ischemic ... cannot exclude non-ischemic'. EP (09/24) 'likely non-ischemic ... ischemic etiology not excluded'. The SPECT defect is 'attenuation vs small prior infarct'. No angiography. No document settles it."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 5,
+      "why": "'No known MI. No PCI or CABG ever.' Even a possible old silent infarct is not within 40 days."
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 2.6,
+      "page": 6,
+      "why": "GDMT started 2026-08-01; 80 days (2.6 months) to the 2026-10-20 implant."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 7,
+      "why": "SDM 09/29/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "'Limiting conditions screened: none'."
+    }
+  },
+  "expected_action": "verify",
+  "action_reasoning": "If ischemic, rule 6 does not apply and every rule passes (approve). If non-ischemic, 2.6 months of GDMT fails rule 6 (escalate). The packet has two hedged, opposing opinions on etiology and no angiography. A person must settle the etiology. Verify."
+}

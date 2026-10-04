@@ -1,0 +1,102 @@
+[extract] unreadable AI reply, attempt 1 (JSONDecodeError: Expecting ',' delimiter: line 1 column 376 (char 375))
+[extract] unreadable AI reply, attempt 1 (JSONDecodeError: Expecting ',' delimiter: line 1 column 778 (char 777))
+[extract] unreadable AI reply, attempt 1 (ValueError: unreadable answer for expected_los_days)
+[extract] unreadable AI reply, attempt 1 (JSONDecodeError: Expecting ',' delimiter: line 1 column 473 (char 472))
+Recommendation matched the expected one: 22/40
+Found it when it was really there:       205/233 (88.0%)
+Claimed it when absent or ruled out:     6/47 (12.8%)
+Sent to the nurse as 'not sure':         14/280 (5.0%)
+Wrong values:                            13
+The system never denied:                 True
+
+FAIL adversarial/adv_001.pdf expected=approve actual=escalate (27.1s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['insulin-requiring DM2', 'CKD 3b', 'HTN', 'CAD (3-vessel, not revascularized)', 'HFrEF'] expected=['CKD stage 3b', 'type 2 diabetes on insulin', 'hypertension', 'dual antiplatelet therapy after recent NSTEMI']
+      false_positive     recent_mi_revasc                 truth=negated  status=found    got=NSTEMI on 08/27/2026, medically managed without PCI or CABG; ICD implant planned 10/07/2026 is beyond the 40-day post-MI waiting period but within the broader care episode expected=None
+      false_negative     optimal_medical_therapy_months   truth=present  status=missing  got=None expected=1.2
+FAIL adversarial/adv_002.pdf expected=escalate actual=approve (41.6s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['ischemic cardiomyopathy / CAD', 'paroxysmal atrial fibrillation (PAF)', 'chronic kidney disease stage 3a', 'heart failure with reduced ejection fraction'] expected=['paroxysmal atrial fibrillation on apixaban', 'CKD stage 3a', 'dual antithrombotic therapy', 'hypothyroidism']
+      false_negative     recent_mi_revasc                 truth=present  status=none     got=No MI within 40 days; PCI on 07/20/2026 is more than 3 months before planned ICD implant (10/15/2026) expected=PCI with drug-eluting stent to mid LCx on 2026-07-20
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=36 expected=43.4
+FAIL adversarial/adv_003.pdf expected=escalate actual=verify (29.8s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=2.9
+PASS adversarial/adv_004.pdf expected=approve actual=approve (38.6s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=63 expected=92.7
+PASS adversarial/adv_005.pdf expected=escalate actual=escalate (22.5s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=1.7 expected=2.4
+FAIL adversarial/adv_006.pdf expected=escalate actual=verify (22.7s)
+      flagged_uncertain  lvef_percent                     truth=present  status=unsure   got=None expected=38
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=10 expected=11.9
+PASS adversarial/adv_007.pdf expected=approve actual=approve (22.0s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=65
+PASS adversarial/adv_008.pdf expected=pend actual=pend (19.3s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=79
+FAIL adversarial/adv_009.pdf expected=verify actual=approve (21.2s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=111
+PASS adversarial/adv_010.pdf expected=approve actual=approve (21.0s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=151.9
+PASS adversarial/adv_011.pdf expected=escalate actual=escalate (27.8s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=6 expected=7.3
+FAIL adversarial/adv_012.pdf expected=pend actual=verify (21.6s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=51 expected=51.9
+      flagged_uncertain  shared_decision_making           truth=absent   status=unsure   got=None expected=None
+PASS adversarial/adv_013.pdf expected=approve actual=approve (24.4s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=83.3
+PASS adversarial/adv_014.pdf expected=verify actual=verify (30.9s)
+      wrong_value        comorbidities                    truth=present  status=found    got=['diabetes mellitus type 2', 'chronic kidney disease stage 4', 'heart failure with reduced ejection fraction', 'functional mitral regurgitation'] expected=['CKD stage 4', 'type 2 diabetes on insulin']
+      flagged_uncertain  cardiomyopathy_type              truth=present  status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=2.6
+PASS adversarial/adv_015.pdf expected=verify actual=verify (24.3s)
+      flagged_uncertain  nyha_class                       truth=present  status=unsure   got=None expected=None
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=127
+FAIL adversarial/adv_016.pdf expected=verify actual=escalate (32.3s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=14 expected=13.8
+PASS adversarial/adv_017.pdf expected=escalate actual=escalate (19.4s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=11 expected=11.8
+PASS adversarial/adv_018.pdf expected=pend actual=pend (17.3s)
+PASS adversarial/adv_019.pdf expected=approve actual=approve (21.3s)
+      flagged_uncertain  optimal_medical_therapy_months   truth=present  status=unsure   got=None expected=109.3
+PASS adversarial/adv_020.pdf expected=approve actual=approve (18.8s)
+      wrong_value        optimal_medical_therapy_months   truth=present  status=found    got=9 expected=9.7
+PASS adversarial/adv_021.pdf expected=approve actual=approve (13.1s)
+PASS adversarial/adv_022.pdf expected=approve actual=approve (12.0s)
+FAIL adversarial/adv_023.pdf expected=verify actual=approve (13.9s)
+FAIL adversarial/adv_024.pdf expected=verify actual=approve (11.1s)
+FAIL adversarial/adv_025.pdf expected=escalate actual=approve (11.2s)
+      wrong_value        expected_los_days                truth=present  status=found    got=2 expected=1
+FAIL adversarial/adv_026.pdf expected=escalate actual=verify (12.4s)
+      flagged_uncertain  comorbidities                    truth=present  status=unsure   got=None expected=['hypothyroidism', 'migraine without aura']
+PASS adversarial/adv_027.pdf expected=approve actual=approve (10.9s)
+PASS adversarial/adv_028.pdf expected=escalate actual=escalate (12.9s)
+FAIL adversarial/adv_029.pdf expected=pend actual=approve (11.8s)
+      false_positive     bmi                              truth=absent   status=found    got=42.3 expected=None
+PASS adversarial/adv_030.pdf expected=approve actual=approve (11.8s)
+FAIL adversarial/adv_031.pdf expected=pend actual=approve (12.7s)
+      false_positive     prior_medical_treatment          truth=absent   status=found    got=Patient self-directed attempts only (keto diet in 2023, intermittent fasting in 2024, weight-loss app), each resulting in 15-20 lb loss followed by regain; no formal medically supervised program completed to date. A 6-month medically supervised weight management program is scheduled to begin 11/2026, after the consultation and requested surgery date. expected=None
+PASS adversarial/adv_032.pdf expected=pend actual=pend (10.2s)
+      false_positive     expected_los_days                truth=absent   status=implied  got=None expected=None
+FAIL adversarial/adv_033.pdf expected=verify actual=approve (11.0s)
+FAIL adversarial/adv_034.pdf expected=pend actual=approve (11.5s)
+      false_positive     prior_medical_treatment          truth=absent   status=found    got=Completed a 6-month medically supervised weight loss program (11/03/2025-04/06/2026) with 1,500 kcal diet, food log, and walking 20 min/day; net result was a 2 lb weight gain, deemed unsuccessful, with referral to surgery. expected=None
+FAIL adversarial/adv_035.pdf expected=verify actual=approve (13.0s)
+FAIL adversarial/adv_036.pdf expected=pend actual=approve (11.7s)
+      false_positive     prior_medical_treatment          truth=absent   status=found    got=Patient tried Weight Watchers on her own in 2019 (lost 12 lb, regained), and was counseled on diet/exercise and Mediterranean diet/walking by PCP in 2024 and 2025; she declined medication management; a single pre-operative dietitian education visit occurred in 2026 but she was not enrolled in a structured weight-loss program. expected=None
+PASS adversarial/adv_037.pdf expected=pend actual=pend (9.1s)
+PASS adversarial/adv_038.pdf expected=approve actual=approve (11.0s)
+PASS adversarial/adv_039.pdf expected=escalate actual=escalate (9.6s)
+FAIL adversarial/adv_040.pdf expected=verify actual=approve (10.8s)
+
+By category (recommendation matched / packets):
+  ambiguous_verify             1/4
+  clean_control                4/4
+  conflict_dates               3/4
+  distractor_numbers           2/3
+  family_or_history_confusion  3/3
+  format_variants              1/3
+  hedged_language              2/3
+  missing_but_adjacent         2/3
+  negation                     2/3
+  planned_vs_done              1/3
+  temporal_trap                0/4
+  wrong_patient_or_copy_forward 1/3
+
+report saved: evals/reports/adversarial_20261004_0423.json

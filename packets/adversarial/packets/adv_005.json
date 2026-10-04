@@ -1,0 +1,181 @@
+{
+  "id": "adv_005",
+  "service": "icd",
+  "category": "negation",
+  "difficulty": "hard",
+  "why_hard": "The packet says 'infarct', 'MI', 'troponin' and 'LAD plaque' many times, but every one is negated; the cardiomyopathy is non-ischemic, and GDMT started 2026-08-09 is only 2.4 months by the implant.",
+  "member": {
+    "name": "Benedict A. Thorvaldsen",
+    "dob": "1961-12-30",
+    "age": 64,
+    "member_id": "MBR-71206",
+    "sex": "M"
+  },
+  "practice": "Northgate Heart Associates",
+  "planned_admit_date": "2026-10-21",
+  "pages": [
+    {
+      "title": "Cardiac catheterization report",
+      "lines": [
+        "NORTHGATE MEDICAL CENTER  -  CARDIAC CATHETERIZATION",
+        "Date: 08/06/2026   Pt: Thorvaldsen, Benedict A.   64 M",
+        "Indication: new cardiomyopathy, LVEF ~20% on TTE, r/o ischemic etiology",
+        "",
+        "Coronary angiography:",
+        "  LM: normal",
+        "  LAD: 20% proximal plaque, otherwise smooth",
+        "  LCx: normal",
+        "  RCA: dominant, luminal irregularities <20%",
+        "LV gram not performed (Cr).",
+        "",
+        "Conclusion: No angiographically significant CAD. No culprit lesion. Findings do not support an ischemic etiology. No intervention.",
+        "Operator: F. Okonjo, MD"
+      ]
+    },
+    {
+      "title": "Cardiac MRI report",
+      "lines": [
+        "Northgate Imaging - CARDIAC MRI WITH/WITHOUT GADOLINIUM",
+        "Exam: 08/07/2026   Patient: THORVALDSEN, BENEDICT",
+        "",
+        "LVEDVi 142 mL/m2. LVEF 22%. RVEF 41%.",
+        "Late gadolinium enhancement: linear mid-wall LGE in basal-mid septum. No subendocardial or transmural LGE; negative for infarct pattern in any coronary territory.",
+        "T2: no edema. No findings of myocarditis, sarcoid, or amyloid.",
+        "",
+        "Impression: Dilated non-ischemic cardiomyopathy with septal mid-wall fibrosis. No evidence of prior MI."
+      ]
+    },
+    {
+      "title": "Hospital discharge summary",
+      "lines": [
+        "Northgate Medical Center - DISCHARGE SUMMARY",
+        "Admission: 08/05/2026   Discharge: 08/09/2026",
+        "Thorvaldsen, Benedict A.",
+        "",
+        "Dx: new HFrEF, NICM. Type 2 demand-related troponin elevation (hs-TnT 38->41->39, flat) - not MI, no ACS.",
+        "Pt denies any prior MI or chest pain. No Q waves on ECG.",
+        "Diuresed 6 L. Cath and CMR as reported.",
+        "GDMT started on day of discharge (08/09/2026): sacubitril/valsartan 24/26 BID, carvedilol 3.125 BID, spironolactone 12.5 daily, empagliflozin 10 daily. Lisinopril for HTN was stopped on admission and not resumed.",
+        "Follow-up: HF clinic 1 wk, EP referral."
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "NORTHGATE HEART ASSOCIATES - TTE",
+        "Study date 09/30/2026",
+        "Thorvaldsen, Benedict   DOB 12/30/1961",
+        "LVEF 25% (biplane). Global HK. LVIDd 6.8.",
+        "RV normal. Mild MR. No thrombus.",
+        "Impression: Severe LV dysfunction, minimal change from 08/2026 CMR (22%)."
+      ]
+    },
+    {
+      "title": "EP consultation",
+      "lines": [
+        "Northgate Heart Associates - EP CONSULT",
+        "09/30/2026     Ref: HF clinic",
+        "Benedict Thorvaldsen, 64M",
+        "",
+        "HPI: NICM dx'd 08/2026. On GDMT since that admission, titrating. Short of breath doing yard work and walking a few blocks. Denies syncope. Denies chest pain. No family hx of SCD. Daughter is moving him to her home out of state in November and he wants the device placed before the move.",
+        "",
+        "Assessment: NICM, LVEF 25%, NYHA III.",
+        "Comment: guideline preference is a longer GDMT period before ICD for NICM; pt informed. Pt and family prefer to proceed; will request auth.",
+        "Plan: SDM completed today with HF NP (separate note). Book ICD 10/21.",
+        "R. Lindahl-Moss, MD"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "SDM - ICD   09/30/2026   Northgate HF clinic",
+        "Pt: Benedict Thorvaldsen   Daughter present by video",
+        "NP: Yvette Marchand, AGACNP",
+        "Used evidence-based ICD decision aid (printed version), walked through benefit/harm pictograms, shock experience, infection, battery changes, deactivation. Discussed waiting for EF recovery on GDMT as an option and wearable defibrillator as a bridge.",
+        "Pt chooses ICD now. Understanding confirmed with teach-back.",
+        "Y. Marchand NP"
+      ]
+    },
+    {
+      "title": "Admission plan",
+      "lines": [
+        "PRE-ADMIT FORM - EP LAB",
+        "Pt: Thorvaldsen, Benedict A.   Admit 10/21/2026  Inpatient   CPT 33249",
+        "Expected LOS: 2 midnights",
+        "Comorbid factors: DM2 on insulin (A1c 9.0), BMI 41, HTN, CKD 3a w/ contrast for venogram.",
+        "Contraindication screen: cognitively intact, no terminal dx, sinus rhythm (no AF), stable as outpatient - none.",
+        "No history of MI, PCI or CABG.",
+        "Signed R. Lindahl-Moss MD 10/01/2026"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected LOS: 2 midnights'."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes on insulin",
+        "obesity BMI 41",
+        "hypertension",
+        "CKD stage 3a"
+      ],
+      "page": 8,
+      "why": "Listed as comorbid factors on the pre-admit form."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 25,
+      "page": 5,
+      "why": "CMR 08/07/2026 22% (page 3); TTE 09/30/2026 25% (page 5). The later one wins."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 5,
+      "why": "TTE biplane."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "III",
+      "page": 6,
+      "why": "EP consult: 'NYHA III'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "non-ischemic",
+      "page": 3,
+      "why": "No significant CAD on cath, mid-wall LGE with no infarct pattern, troponin labeled 'not MI'. Every ischemic-sounding word is negated."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 4,
+      "why": "Troponin rise explicitly 'not MI, no ACS'; no intervention at cath; page 8 says no MI, PCI or CABG ever."
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 2.4,
+      "page": 4,
+      "why": "GDMT started 2026-08-09. That is 73 days (2.4 months) to the 2026-10-21 implant and 1.8 months to today."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 7,
+      "why": "SDM 09/30/2026 with an evidence-based ICD decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "Contraindication screen: none."
+    }
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts present. Non-ischemic (rule 1 passes), LVEF 25% by echo, NYHA III, no recent MI or revascularization. Rule 6 fails: 2.4 months of GDMT is under 3. SDM done, no limiting condition, 2 midnights supported. Escalate."
+}

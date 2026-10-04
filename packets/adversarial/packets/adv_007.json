@@ -1,0 +1,189 @@
+{
+  "id": "adv_007",
+  "service": "icd",
+  "category": "conflict_dates",
+  "difficulty": "hard",
+  "why_hard": "The first EF a reader sees is 40% with NYHA I (June note, on a later page). The current EF of 30% is in the last clinical document, and the current NYHA II is on the first page.",
+  "member": {
+    "name": "Calvin O. Brightwater",
+    "dob": "1954-01-25",
+    "age": 72,
+    "member_id": "MBR-82265",
+    "sex": "M"
+  },
+  "practice": "Summit Ridge Heart Institute",
+  "planned_admit_date": "2026-11-04",
+  "pages": [
+    {
+      "title": "EP consultation",
+      "lines": [
+        "SUMMIT RIDGE HEART INSTITUTE - Electrophysiology",
+        "Consult date 09/22/2026",
+        "Calvin O. Brightwater  DOB 01/25/1954",
+        "Reason: ICD evaluation - EF decline on recent echo",
+        "",
+        "HPI: 72M w/ ICM (anterior MI 05/2021 tx'd w/ LAD PCI). Was doing well in spring. Over the summer more DOE: now gets winded after about 2 blocks or one flight, okay with ADLs. No rest symptoms. No syncope. Wife reports no snoring change. No ACS or new coronary intervention since 2021.",
+        "",
+        "Exam: BP 126/72, HR 64. Lungs clear. Trace ankle edema.",
+        "Data reviewed: TTE 09/02/2026 (report in chart). ECG SR, QRS 112.",
+        "",
+        "Impression: ICM w/ progressive LV dysfunction. Current functional class: NYHA II.",
+        "Plan: primary prevention ICD if SDM supports. Pt will need inpatient stay, see plan.",
+        "Dr. Leona Farquharson"
+      ]
+    },
+    {
+      "title": "Shared decision making visit",
+      "lines": [
+        "Summit Ridge HF Program  |  SDM VISIT  |  10/01/2026",
+        "Calvin Brightwater + wife Dolores",
+        "Clinician: Abdi Warsame, PA-C",
+        "",
+        "Structured shared decision making for ICD per program protocol.",
+        "Decision aid used: published ICD decision aid (evidence-based), video + worksheet.",
+        "Pt top values: avoid sudden death, keep driving. Discussed 6-month driving restriction after shocks.",
+        "Decision: ICD. Pt and wife signed worksheet.",
+        "A. Warsame PA-C"
+      ]
+    },
+    {
+      "title": "Heart failure clinic note (prior)",
+      "lines": [
+        "Summit Ridge HF Clinic - Follow-up",
+        "Date: 06/10/2026",
+        "Pt: Brightwater, Calvin",
+        "",
+        "S: Doing well. Walking 30 min daily w/o sx. No orthopnea.",
+        "O: BP 130/74, HR 62.",
+        "Data: TTE 03/15/2026 - LVEF 40%, anterior HK.",
+        "A: ICM, HFmrEF, NYHA I. Stable.",
+        "P: Continue current GDMT. Repeat echo in 3 mo. No ICD indication at this EF.",
+        "M. Odom, NP"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "MEDICATIONS - Brightwater, Calvin O. - as of 09/22/2026",
+        "carvedilol 25 mg BID ............. started 06/2021",
+        "valsartan 160 mg BID ............. started 06/2021",
+        "eplerenone 25 mg daily ........... started 09/2021",
+        "dapagliflozin 10 mg .............. started 03/2023",
+        "aspirin 81 mg daily .............. 2021",
+        "atorvastatin 80 mg ............... 2021",
+        "tamsulosin 0.4 mg qHS ............ 2019",
+        "warfarin per INR clinic .......... 2024 (LV apical thrombus 2024, resolved; anticoag continued per cards)"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "Summit Ridge Lab  -  09/24/2026",
+        "Brightwater, Calvin",
+        "Na 136 | K 4.8 | Cr 1.6 H | eGFR 44 L",
+        "Hgb 13.2 | Plt 180",
+        "INR 2.6 (on warfarin)",
+        "NT-proBNP 1,980 H",
+        "A1c 6.1"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "SUMMIT RIDGE HEART INSTITUTE - ECHOCARDIOGRAPHY",
+        "Date of exam: 09/02/2026",
+        "Patient: BRIGHTWATER, CALVIN O.",
+        "Reason: surveillance, ICM",
+        "",
+        "LVEF (biplane): 30%",
+        "LV moderately dilated (LVIDd 6.2). Akinesis of the apex and distal anterior wall, hypokinesis of the anteroseptum. No thrombus visualized.",
+        "Mod MR. RVSP 38.",
+        "",
+        "Conclusion: Interval decline in LV function, LVEF now 30% (03/15/2026: 40%).",
+        "Read: P. Galloway, MD"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "EP SCHEDULING AND ADMISSION PLAN",
+        "Date 10/02/2026   Brightwater, Calvin O.   MBR-82265",
+        "Procedure: ICD, CPT 33249   Admit 11/04/2026 inpatient",
+        "",
+        "LOS expected: 2 midnights.",
+        "Reasons: chronic warfarin, uninterrupted strategy (INR target 2-2.5), pocket hematoma surveillance; CKD 3b (eGFR 44); BPH w/ prior post-anesthesia urinary retention requiring catheter.",
+        "",
+        "Limiting conditions checked: none (cognition intact, no malignancy, sinus rhythm/no AF, stable).",
+        "L. Farquharson MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'LOS expected: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "chronic warfarin anticoagulation",
+        "CKD stage 3b",
+        "BPH with prior urinary retention"
+      ],
+      "page": 8,
+      "why": "Listed reasons on the admission plan."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 30,
+      "page": 7,
+      "why": "TTE 03/15/2026: 40% (quoted in the 06/10 note, page 4). TTE 09/02/2026: 30% (page 7). The later one wins."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 7,
+      "why": "TTE biplane."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "II",
+      "page": 2,
+      "why": "06/10/2026 note says NYHA I (page 4); 09/22/2026 EP consult says NYHA II (page 2). The later one wins, even though it is on the earlier page."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 2,
+      "why": "ICM after anterior MI 2021 with LAD PCI."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 2,
+      "why": "MI and PCI 05/2021; 'No ACS or new coronary intervention since 2021.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 65,
+      "page": 5,
+      "why": "Carvedilol and valsartan since 06/2021, about 65 months to the implant. Not decisive (ischemic)."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "SDM visit 10/01/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "'Limiting conditions checked: none.' The resolved LV thrombus is not a listed limiting condition."
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "With the newer values (LVEF 30%, NYHA II) every rule passes: ischemic, echo, no recent event, SDM done, no limiting condition, 2 midnights supported. Approve."
+}

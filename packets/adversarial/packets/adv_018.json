@@ -1,0 +1,176 @@
+{
+  "id": "adv_018",
+  "service": "icd",
+  "category": "missing_but_adjacent",
+  "difficulty": "medium",
+  "why_hard": "The packet says 'maximally tolerated GDMT' many times and lists pharmacy last-fill dates, but never gives a GDMT start date or duration. For a non-ischemic patient that duration is required.",
+  "member": {
+    "name": "Lucinda Y. Brannigan",
+    "dob": "1955-01-09",
+    "age": 71,
+    "member_id": "MBR-26605",
+    "sex": "F"
+  },
+  "practice": "Silver Creek Heart Clinic",
+  "planned_admit_date": "2026-11-05",
+  "pages": [
+    {
+      "title": "Heart failure clinic note",
+      "lines": [
+        "SILVER CREEK HEART CLINIC - HF",
+        "Date: 09/15/2026",
+        "Pt: Brannigan, Lucinda Y.   71F   New to our practice (moved from out of state)",
+        "",
+        "HPI: NICM diagnosed earlier this year by her prior cardiologist. Records partially received. On maximally tolerated GDMT, tolerating well; no orthostasis. SOB walking about 1 block or 1 flight; okay at rest. NYHA III. Denies syncope, chest pain.",
+        "",
+        "Plan: TTE done 9/11 (EF 24%). Coronary CTA to confirm nonischemic etiology. Continue GDMT unchanged. EP referral.",
+        "Sven Adeyemi-Holt, MD"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "SILVER CREEK ECHO LAB",
+        "Date of study: 09/11/2026",
+        "BRANNIGAN, LUCINDA Y",
+        "Comparison: no prior study in our system.",
+        "LVEF 24% (biplane Simpson).",
+        "Dilated LV, global HK. Mod MR. RV mildly reduced.",
+        "Impression: Severe global LV dysfunction."
+      ]
+    },
+    {
+      "title": "Pharmacy medication history",
+      "lines": [
+        "PHARMACY FILL HISTORY (PBM claims)   pulled 09/15/2026",
+        "Member: BRANNIGAN, LUCINDA",
+        "",
+        "Drug | Qty/Days | Last fill | Prescriber",
+        "ENTRESTO 49-51MG TAB | 60/30 | 09/12/2026 | Adeyemi-Holt",
+        "CARVEDILOL 12.5MG TAB | 60/30 | 09/12/2026 | Adeyemi-Holt",
+        "SPIRONOLACTONE 25MG TAB | 30/30 | 09/12/2026 | Adeyemi-Holt",
+        "FARXIGA 10MG TAB | 30/30 | 09/12/2026 | Adeyemi-Holt",
+        "FUROSEMIDE 20MG TAB | 30/30 | 09/12/2026 | Adeyemi-Holt",
+        "LEVOTHYROXINE 88MCG | 90/90 | 08/02/2026 | (outside)",
+        "",
+        "Note: claims history before 08/2026 under prior plan, not available."
+      ]
+    },
+    {
+      "title": "EP consultation",
+      "lines": [
+        "SILVER CREEK HEART CLINIC - ELECTROPHYSIOLOGY",
+        "Consult 09/25/2026",
+        "Lucinda Brannigan, 71F",
+        "",
+        "Cardiomyopathy: non-ischemic. Coronary CTA 09/18/2026: CAC score 0, no coronary stenosis.",
+        "LVEF 24% on TTE 9/11. NYHA III.",
+        "GDMT: on ARNI, BB, MRA, SGLT2i - per HF clinic, optimized.",
+        "No MI, PCI or CABG.",
+        "Plan: primary prevention ICD after SDM; dual-chamber not needed.",
+        "Nadia Ferreira-Quist, MD"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "SDM VISIT - ICD   09/30/2026",
+        "Pt: Lucinda Brannigan, with husband",
+        "Clinician: Owen Takahashi-Reid, NP",
+        "Tool: evidence-based ICD decision aid (paper).",
+        "Discussed benefits, risks, shocks, deactivation, alternatives incl. waiting.",
+        "Pt elects ICD.",
+        "O. Takahashi-Reid NP"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "SILVER CREEK LAB   09/16/2026",
+        "Na 138  K 4.9  Cr 1.2  eGFR 47",
+        "TSH 2.8",
+        "Hgb 12.4   INR 1.0",
+        "NT-proBNP 2,040"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "PRE-ADMISSION PLAN   10/02/2026",
+        "Brannigan, Lucinda Y.  MBR-26605  CPT 33249  Admit 11/05/2026",
+        "LOS: 2 midnights expected.",
+        "Factors: CKD 3a; hypothyroidism; moderate MR w/ elevated filling pressures needing post-procedure volume assessment; lives alone, rural (90 min from hospital).",
+        "Limiting conditions: none (cognitively intact, no terminal illness, sinus rhythm, stable).",
+        "N. Ferreira-Quist MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'LOS: 2 midnights expected.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "CKD stage 3a",
+        "hypothyroidism",
+        "moderate mitral regurgitation"
+      ],
+      "page": 8,
+      "why": "Factors on the pre-admission plan."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 24,
+      "page": 3,
+      "why": "TTE 09/11/2026: 24%."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 3,
+      "why": "TTE biplane Simpson."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "III",
+      "page": 2,
+      "why": "HF note: 'NYHA III'; same in EP consult."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "non-ischemic",
+      "page": 5,
+      "why": "EP consult: non-ischemic; CCTA with CAC 0 and no stenosis."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 5,
+      "why": "'No MI, PCI or CABG.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "absent",
+      "value": null,
+      "page": null,
+      "why": "No start date or duration for any GDMT drug appears. 'Diagnosed earlier this year' and 'maximally tolerated GDMT' give no duration. The 09/12/2026 dates are last-fill dates, and claims before 08/2026 are explicitly unavailable."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 6,
+      "why": "SDM 09/30/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "'Limiting conditions: none'."
+    }
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Non-ischemic, so rule 6 needs months on GDMT. That fact is absent. Pend and ask for GDMT start dates. Everything else passes."
+}

@@ -1,0 +1,197 @@
+{
+  "id": "adv_004",
+  "service": "icd",
+  "category": "negation",
+  "difficulty": "hard",
+  "why_hard": "A September chest pain admission is full of MI words ('ACS ruled out', 'troponin negative x3', 'no new infarct'), and the only real MI and CABG are from 2018 and 2019.",
+  "member": {
+    "name": "Marisol Quintanar-Bishop",
+    "dob": "1950-08-09",
+    "age": 76,
+    "member_id": "MBR-28854",
+    "sex": "F"
+  },
+  "practice": "Bayfront Cardiac Electrophysiology",
+  "planned_admit_date": "2026-10-26",
+  "pages": [
+    {
+      "title": "Hospital discharge summary",
+      "lines": [
+        "BAYFRONT COMMUNITY HOSPITAL",
+        "Discharge Summary   Adm 09/12/2026  D/C 09/14/2026",
+        "Patient: QUINTANAR-BISHOP, MARISOL   76F",
+        "",
+        "Admitting complaint: chest pressure x 2h at rest.",
+        "Final dx: Chest pain, noncardiac (likely musculoskeletal). ACS ruled out.",
+        "",
+        "Course: hs-TnI 6 -> 7 -> 6 ng/L (negative x3, 0/1/3h). Serial ECGs w/o acute ST-T change, old inferior Qs unchanged. Tele 48h: sinus, negative for AF/flutter, no NSVT. Regadenoson SPECT 09/13: no reversible ischemia, fixed inferior scar (see report). No evidence of new infarct. Not a candidate for repeat revascularization - no ischemic territory.",
+        "Pain reproducible w/ palpation L costochondral junction, resolved w/ acetaminophen.",
+        "",
+        "PMH: inferior STEMI 2018, CABG x3 01/2019, ICM/HFrEF, COPD, DM2, CKD 3a.",
+        "D/C to home. F/u EP 1-2 wks re ICD."
+      ]
+    },
+    {
+      "title": "Nuclear stress test report",
+      "lines": [
+        "BAYFRONT NUCLEAR CARDIOLOGY",
+        "Regadenoson Tc-99m sestamibi SPECT w/ gating   09/13/2026",
+        "Pt: Quintanar-Bishop, M.   DOB 08/09/1950",
+        "",
+        "Stress: regadenoson 0.4 mg. No chest pain. ECG: no ischemic changes.",
+        "Perfusion: medium size severe fixed defect basal-mid inferior and inferoseptal walls consistent w/ prior infarct. No reversible defects.",
+        "Gated: LVEDV 168 mL, LVESV 116 mL. Post-stress LVEF 31%. Global HK, inferior AK.",
+        "TID ratio 1.02 (nl).",
+        "",
+        "Impression: 1) Negative for inducible ischemia. 2) Old inferior infarct. 3) LVEF 31% by gated SPECT.",
+        "Read: H. Castellano, MD"
+      ]
+    },
+    {
+      "title": "EP consultation",
+      "lines": [
+        "Bayfront Cardiac Electrophysiology - New Pt Consult",
+        "DOS 09/23/2026",
+        "Pt: Marisol Quintanar-Bishop  76 F",
+        "",
+        "HPI: Ref'd for primary prevention ICD. ICM after inferior STEMI (2018), CABG x3 (LIMA-LAD, SVG-OM, SVG-PDA) 01/2019. Recent obs admit for chest pain 09/12, MI ruled out. Gets SOB walking 1 block or up 1 flight, has to stop halfway. Denies syncope, denies palpitations, denies rest dyspnea or orthopnea.",
+        "Social: retired teacher, lives w/ husband, independent ADLs.",
+        "",
+        "Studies: TTE 06/03/26 LVEF 33%. Gated SPECT 09/13/26 LVEF 31%.",
+        "ECG: SR 72, QRS 104, old inferior Qs. No Brugada pattern.",
+        "",
+        "Imp: ICM, HFrEF, NYHA class III, LVEF <=35% on 2 studies. >7 yrs from CABG, >8 yrs from MI. Meets criteria pending SDM.",
+        "Plan: SDM visit, then schedule single-chamber ICD. Will admit given COPD + CKD.",
+        "Signed: A. Brennan-Toure, MD"
+      ]
+    },
+    {
+      "title": "Echocardiogram (prior)",
+      "lines": [
+        "BAYFRONT HEART - ECHO",
+        "Date of study: 06/03/2026",
+        "Patient Quintanar-Bishop, Marisol",
+        "",
+        "LVEF (Simpson's biplane): 33%",
+        "LV mildly dilated, inferior/inferoseptal AK, others HK",
+        "No LV thrombus. Mild MR, mild AR.",
+        "RVSP 32. IVC normal w/ resp variation.",
+        "Conclusion: Moderate-severe LV dysfunction, unchanged from 2025."
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Home Medication List - Quintanar-Bishop, Marisol - updated 09/23/2026",
+        "",
+        "carvedilol 12.5 mg BID (since 02/04/2019)",
+        "sacubitril/valsartan 49/51 mg BID (since 07/2021; lisinopril 02/04/2019-07/2021)",
+        "spironolactone 25 mg daily (since 02/04/2019)",
+        "empagliflozin 10 mg daily (since 2022)",
+        "aspirin 81 mg daily",
+        "atorvastatin 40 mg daily",
+        "metformin 1000 mg BID",
+        "tiotropium inh daily; albuterol MDI prn",
+        "furosemide 20 mg daily"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "HF/Device Clinic - Shared Decision Making Visit",
+        "10/01/2026",
+        "Patient: Marisol Quintanar-Bishop. Husband present.",
+        "By: Kenji Halvorsen, NP",
+        "",
+        "Reason: required SDM prior to primary prevention ICD.",
+        "Decision tool: evidence-based ICD decision aid (Spanish-language version per pt preference) reviewed with pt and husband.",
+        "Pt able to state the purpose of the ICD (prevent sudden death, not improve breathing), risks, and that the device can be turned off later.",
+        "Outcome: wishes to proceed.",
+        "K. Halvorsen NP"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "BAYFRONT CARDIAC EP - PROCEDURE SCHEDULING / ADMISSION PLAN",
+        "Date: 10/02/2026",
+        "Pt: Quintanar-Bishop, Marisol   Procedure: ICD implant, CPT 33249   Admit date: 10/26/2026",
+        "",
+        "Level of care: inpatient. Expected LOS: 2 midnights.",
+        "Why: COPD GOLD 2 w/ baseline O2 sat 92% RA, at risk for post-sedation hypoventilation; CKD 3a (Cr 1.5); DM2 on metformin (hold 48h for contrast venogram), glucose mgmt.",
+        "",
+        "Contraindications: none. MoCA 27/30 (no dementia). No malignancy. No AF. Stable, euvolemic.",
+        "No ACS or coronary intervention since CABG 2019.",
+        "A. Brennan-Toure MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "COPD GOLD 2",
+        "CKD stage 3a",
+        "type 2 diabetes"
+      ],
+      "page": 8,
+      "why": "Listed as LOS factors on the admission plan."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 31,
+      "page": 3,
+      "why": "TTE 06/03/2026 33% (page 5); gated SPECT 09/13/2026 31% (page 3). The later one wins."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "nuclear imaging",
+      "page": 3,
+      "why": "Gated SPECT is nuclear imaging."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "III",
+      "page": 4,
+      "why": "EP consult: 'NYHA class III'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 4,
+      "why": "ICM after inferior STEMI 2018 and CABG 2019."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 2,
+      "why": "September admission: 'ACS ruled out', troponin negative x3, no new infarct. Last MI 2018 and CABG 01/2019, far outside the windows. Page 8 confirms no ACS or intervention since 2019."
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 92.7,
+      "page": 6,
+      "why": "Carvedilol, ACEi/ARNI and spironolactone since 2019-02-04. Not decisive (ischemic)."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 7,
+      "why": "SDM visit 2026-10-01 with an evidence-based ICD decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "'Contraindications: none', with MoCA 27/30, no malignancy, no AF, stable."
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "Ischemic; LVEF 31% by nuclear; NYHA III; no MI in 40 days (ruled out) and no revascularization since 2019; OMT not required for ischemic; SDM done; no limiting condition; 2 midnights with COPD, CKD and DM documented. Approve."
+}

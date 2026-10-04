@@ -1,0 +1,114 @@
+{
+  "id": "adv_031",
+  "service": "bariatric",
+  "category": "planned_vs_done",
+  "difficulty": "medium",
+  "why_hard": "The supervised program is described in detail but starts in 11/2026, so it has not happened. The only past attempts are self-directed diets.",
+  "member": {
+    "name": "Leopold N. Marchetti",
+    "dob": "1961-06-30",
+    "age": 65,
+    "member_id": "MBR-34581",
+    "sex": "M"
+  },
+  "practice": "Sandstone Surgical Weight Loss",
+  "planned_admit_date": "2026-12-01",
+  "pages": [
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "SANDSTONE SURGICAL WEIGHT LOSS",
+        "Consult   09/21/2026",
+        "Leopold N. Marchetti   65M",
+        "",
+        "Ht 69 in   Wt 306.8 lb   BMI 45.3",
+        "PMH: T2DM (A1c 9.1, insulin), HTN, severe OSA on CPAP, venous stasis.",
+        "Weight hx: tried keto (2023) and intermittent fasting (2024) on his own; used a weight-loss app. Lost 15-20 lb each time, regained.",
+        "",
+        "Plan: RYGB. Pt will enroll in our 6-month medically supervised weight management program starting 11/2026 to satisfy pre-op requirements; requesting OR date 12/01 to hold slot, will adjust if needed.",
+        "Dr. Rosalind Mbeki-Fournier"
+      ]
+    },
+    {
+      "title": "Program intake note",
+      "lines": [
+        "SANDSTONE MEDICAL WEIGHT MANAGEMENT",
+        "Pre-enrollment phone screen   09/29/2026",
+        "Marchetti, Leopold",
+        "Eligible for program. Orientation scheduled 11/03/2026. Program will run 11/2026 - 05/2027: monthly MD visits, RD counseling, activity plan, pharmacotherapy as appropriate.",
+        "No prior participation in a medically supervised program.",
+        "- Intake coordinator J. Ferreira"
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-SURGICAL PSYCH EVAL   09/10/2026",
+        "Marchetti, Leopold",
+        "No eating disorder, no substance use disorder. Cleared."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "SANDSTONE LAB  09/18/2026",
+        "A1c 9.1 H",
+        "Cr 1.1",
+        "LDL 102",
+        "Hgb 14.8"
+      ]
+    },
+    {
+      "title": "Primary care note",
+      "lines": [
+        "RED MESA FAMILY MEDICINE   08/05/2026",
+        "Marchetti, Leopold",
+        "Discussed weight. Pt has tried several diets on his own. Counseled on portion control and walking. Referred to bariatric surgery. No formal program to date.",
+        "Dr. Ivo Castellanos-Reed"
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN   09/30/2026",
+        "Marchetti, Leopold N.   MBR-34581",
+        "Lap RYGB (CPT 43644). Requested admit 12/01/2026, inpatient.",
+        "Expected LOS: 2 midnights. Factors: severe OSA on CPAP; insulin-requiring T2DM w/ A1c 9.1; HTN; venous stasis w/ VTE risk.",
+        "R. Mbeki-Fournier MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes on insulin",
+        "hypertension",
+        "severe obstructive sleep apnea",
+        "venous stasis"
+      ],
+      "page": 2,
+      "why": "Consult PMH."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 45.3,
+      "page": 2,
+      "why": "Consult 09/21/2026: BMI 45.3."
+    },
+    "prior_medical_treatment": {
+      "truth": "absent",
+      "value": null,
+      "page": null,
+      "why": "The supervised program is only planned (orientation 11/03/2026), and the intake note says 'No prior participation in a medically supervised program.' Keto, intermittent fasting and an app were self-directed. Office counseling is not a supervised program."
+    }
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 3 needs documented supervised medical treatment that failed. It is absent (only planned). Pend. Other rules pass."
+}

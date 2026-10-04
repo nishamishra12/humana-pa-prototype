@@ -1,0 +1,197 @@
+{
+  "id": "adv_006",
+  "service": "icd",
+  "category": "conflict_dates",
+  "difficulty": "hard",
+  "why_hard": "The newest LVEF (38% by cardiac MRI on 09/10) is on the first clinical page. Three later pages, including the surgeon's pre-op note, repeat the older 32% echo value.",
+  "member": {
+    "name": "Odessa J. Pemberton",
+    "dob": "1956-04-17",
+    "age": 70,
+    "member_id": "MBR-30418",
+    "sex": "F"
+  },
+  "practice": "Riverbend Cardiology & Imaging",
+  "planned_admit_date": "2026-10-29",
+  "pages": [
+    {
+      "title": "Cardiac MRI report",
+      "lines": [
+        "RIVERBEND IMAGING CENTER",
+        "CARDIAC MRI (CMR) - FUNCTION, PERFUSION-FREE, LGE",
+        "Exam date: 09/10/2026      Pt: Pemberton, Odessa J.   DOB 04/17/1956",
+        "Referring: N. Castellanos, MD   Indication: NICM, tissue characterization pre-ICD",
+        "",
+        "Volumes/function (SSFP, short-axis stack):",
+        "LVEDV 182 mL (i 101 mL/m2)  LVESV 113 mL  LVSV 69 mL",
+        "LVEF 38%",
+        "RVEF 49%",
+        "",
+        "LGE: no myocardial late enhancement.",
+        "Other: mild biatrial enlargement, trivial MR.",
+        "",
+        "IMPRESSION:",
+        "1. Mildly dilated LV with mildly-moderately reduced systolic function, LVEF 38%.",
+        "2. No scar/fibrosis.",
+        "3. Compared with TTE 05/18/2026 (LVEF 32%), LV function appears improved, though modalities differ.",
+        "Dictated: S. Achebe-Larkin, MD 09/11/2026"
+      ]
+    },
+    {
+      "title": "Cardiology consultation",
+      "lines": [
+        "RIVERBEND CARDIOLOGY - CONSULT",
+        "Date: 09/02/2026",
+        "Odessa Pemberton, 70F, ref'd by PCP for ICD consideration",
+        "",
+        "HPI: NICM dx 10/2025 after presenting w/ DOE. Cath 10/2025 normal coronaries. On GDMT since 11/2025. Now walks 1/2 mile w/ mild dyspnea, limited on stairs. No syncope. Some fatigue.",
+        "",
+        "Data: TTE 05/18/26: LVEF 32%.",
+        "",
+        "A/P: NICM, NYHA II, LVEF 32% after >6 mo GDMT -> meets criteria for primary prevention ICD.",
+        "- Order CMR for scar assessment prior to implant.",
+        "- SDM visit.",
+        "- Refer to Dr. Ibsen (EP) for implant.",
+        "N. Castellanos, MD"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "SHARED DECISION MAKING - IMPLANTABLE DEFIBRILLATOR",
+        "Encounter date: 09/04/2026",
+        "Patient: Odessa Pemberton",
+        "Clinician: Bea Thornquist, NP (Riverbend HF program)",
+        "",
+        "Decision aid: evidence-based ICD decision aid, booklet version, reviewed in full with patient and son.",
+        "Topics: benefit for SCD prevention, shock risk, complications, living with device, deactivation, option of waiting for further recovery on meds.",
+        "Pt would like to proceed if testing confirms she still qualifies.",
+        "B. Thornquist NP"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "Riverbend Cardiology - Echo Lab",
+        "Date: 05/18/2026",
+        "Pemberton, Odessa J",
+        "",
+        "LVEF (biplane): 32%",
+        "LVIDd 5.8 cm. Diffuse hypokinesis.",
+        "Grade I DD. Mild MR. Normal RV.",
+        "Impression: moderately reduced LV function, LVEF 32%. Prior 10/2025: 25%.",
+        "Read by: J. Pruett, MD"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Pemberton, Odessa J - Medication Profile - printed 09/15/2026",
+        "",
+        "Entresto 49-51 mg BID         Start 11/03/2025",
+        "Metoprolol succinate 100 mg   Start 11/03/2025",
+        "Spironolactone 25 mg          Start 11/03/2025",
+        "Jardiance 10 mg               Start 12/2025",
+        "Furosemide 20 mg PRN          Start 11/2025",
+        "Alendronate 70 mg weekly      Start 2021",
+        "Calcium/vit D                 OTC"
+      ]
+    },
+    {
+      "title": "EP pre-operative note",
+      "lines": [
+        "RIVERBEND CARDIOLOGY - ELECTROPHYSIOLOGY",
+        "Pre-operative note   09/15/2026",
+        "Patient: PEMBERTON, ODESSA J   MBR-30418",
+        "Surgeon: Gunnar Ibsen, MD",
+        "",
+        "Procedure: single chamber ICD (CPT 33249), elective inpatient, admit 10/29/2026.",
+        "Indication: NICM, LVEF 32% (TTE 5/18/26), NYHA II, GDMT since 11/2025, SDM completed 09/04.",
+        "No MI, PCI or CABG history.",
+        "",
+        "Expected LOS: 2 midnights. Factors: osteoporosis with prior vertebral fx and fall risk, chronic anemia (Hgb 10.4) needing post-op Hgb check, lives alone and needs PT eval before d/c.",
+        "",
+        "Contraindications: none - no dementia, no life-limiting illness, no AF, clinically stable.",
+        "G. Ibsen MD"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "RIVERBEND LAB SERVICES   09/12/2026",
+        "PEMBERTON, ODESSA",
+        "Na 139  K 4.5  Cr 0.9  eGFR 66",
+        "Hgb 10.4 L  MCV 81 L  Ferritin 22 L",
+        "Plt 251   INR 1.0",
+        "NT-proBNP 610 H"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "osteoporosis with prior vertebral fracture and fall risk",
+        "chronic iron deficiency anemia"
+      ],
+      "page": 7,
+      "why": "EP pre-op note lists osteoporosis/fall risk and anemia as LOS factors (plus lives alone)."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 38,
+      "page": 2,
+      "why": "TTE 05/18/2026: 32% (pages 3, 5, 7). CMR 09/10/2026: 38% (page 2). The CMR is later, so 38% is current. The 09/15 pre-op note quotes the older echo by date; it is not a new measurement."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "cardiac MRI",
+      "page": 2,
+      "why": "The current value comes from cardiac MRI."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "II",
+      "page": 3,
+      "why": "Consult: 'NYHA II'; repeated on page 7."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "non-ischemic",
+      "page": 3,
+      "why": "NICM with normal coronaries 10/2025 and no LGE."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 7,
+      "why": "'No MI, PCI or CABG history.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 11.9,
+      "page": 6,
+      "why": "Entresto, metoprolol and spironolactone since 2025-11-03; 361 days, about 11.9 months to the implant."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 4,
+      "why": "SDM 09/04/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 7,
+      "why": "'Contraindications: none'."
+    }
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts present and clear once the dates are compared. Rule 2 fails: the current LVEF is 38% (CMR 09/10), above 35%. Everything else passes. Escalate."
+}

@@ -1,0 +1,331 @@
+[
+{
+  "id": "adv_036",
+  "service": "bariatric",
+  "category": "missing_but_adjacent",
+  "difficulty": "medium",
+  "why_hard": "Weight management comes up everywhere: yearly PCP counseling, self-joined Weight Watchers, and a dietitian education visit. None of it is a supervised medical weight-loss program with a duration and result.",
+  "member": {"name": "Clementine A. Bauer", "dob": "1963-04-23", "age": 63, "member_id": "MBR-11847", "sex": "F"},
+  "practice": "Juniper Hills Weight Loss Surgery",
+  "planned_admit_date": "2026-11-13",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "JUNIPER HILLS WEIGHT LOSS SURGERY",
+      "Consult  09/08/2026",
+      "Clementine A. Bauer   63F",
+      "Ht 65 in   Wt 251.8 lb   BMI 41.9",
+      "PMH: HTN (2010), T2DM (2019, metformin), L knee replacement 2022.",
+      "Weight hx: has been unable to lose weight despite years of dieting and physician counseling.",
+      "Plan: RYGB.",
+      "Dr. Eamon Achterberg-Silva"
+    ]},
+    {"title": "Primary care notes (excerpts)", "lines": [
+      "MEADOWBROOK PRIMARY CARE - Bauer, Clementine A.",
+      "",
+      "06/12/2024 annual: BMI elevated. Counseled on diet and exercise, handout given. Pt says she did Weight Watchers on her own in 2019 - lost 12 lb, regained.",
+      "",
+      "06/18/2025 annual: weight up 6 lb. Discussed weight management; advised Mediterranean diet and walking. Pt not interested in meds.",
+      "",
+      "06/10/2026 annual: weight management discussed again. Pt now interested in surgery. Referral placed.",
+      "",
+      "Signed: Natalia Brzezinski, MD"
+    ]},
+    {"title": "Dietitian education visit", "lines": [
+      "JUNIPER HILLS NUTRITION",
+      "Pre-operative nutrition education (single visit)   08/21/2026",
+      "Bauer, Clementine",
+      "Reviewed post-RYGB diet stages, protein targets, vitamins. Pt understands.",
+      "Weight today 252 lb. No weight-loss program enrollment at this time.",
+      "RD: Tamsin Okeke-Larsen"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-BARIATRIC PSYCH   08/04/2026",
+      "Bauer, Clementine",
+      "No eating disorder. Cleared."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "JUNIPER HILLS LAB  09/02/2026",
+      "A1c 7.2 H  Cr 0.9  LDL 118  Hgb 12.7"
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN  09/24/2026",
+      "Bauer, Clementine A.   MBR-11847",
+      "Lap RYGB (CPT 43644). Admit 11/13/2026, inpatient.",
+      "Expected LOS: 2 midnights. Factors: T2DM, HTN, age 63 with prior knee arthroplasty and VTE risk.",
+      "E. Achterberg-Silva MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["hypertension", "type 2 diabetes"], "page": 2, "why": "Consult PMH."},
+    "bmi": {"truth": "present", "value": 41.9, "page": 2, "why": "Consult 09/08/2026: BMI 41.9."},
+    "prior_medical_treatment": {"truth": "absent", "value": null, "page": null, "why": "No supervised medical weight-loss program is documented. Yearly PCP counseling is advice, not a program. Weight Watchers 2019 was self-joined and commercial. The dietitian visit was one-time surgical education and states 'No weight-loss program enrollment'."}
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 3 needs documented supervised medical treatment that failed. It is absent. Pend. Other rules pass."
+},
+{
+  "id": "adv_037",
+  "service": "bariatric",
+  "category": "missing_but_adjacent",
+  "difficulty": "medium",
+  "why_hard": "The surgeon writes 'obesity-related comorbidities: see attached problem list', but the problem list is not in the packet, and no page names any comorbidity.",
+  "member": {"name": "Darnell P. Whitaker", "dob": "1971-07-07", "age": 55, "member_id": "MBR-29963", "sex": "M"},
+  "practice": "Copperfield Bariatric Surgery",
+  "planned_admit_date": "2026-11-20",
+  "pages": [
+    {"title": "Fax cover and attachment index", "lines": [
+      "COPPERFIELD BARIATRIC SURGERY - CLINICAL ATTACHMENTS",
+      "Member: Darnell P. Whitaker   MBR-29963",
+      "Enclosed:",
+      " 1. Surgeon consultation",
+      " 2. Problem list (1 page)",
+      " 3. Medically supervised program records",
+      " 4. Psychological evaluation",
+      " 5. Labs",
+      " 6. Operative plan",
+      "Sent by: R. Mendez-Quill, auth coordinator  09/30/2026"
+    ]},
+    {"title": "Bariatric surgery consultation", "lines": [
+      "COPPERFIELD BARIATRIC SURGERY",
+      "Consult  09/11/2026",
+      "Darnell P. Whitaker, 55M",
+      "Ht 69 in   Wt 354.9 lb   BMI 52.4",
+      "PMH: per problem list.",
+      "Obesity-related comorbidities: see attached problem list.",
+      "Meds: cetirizine 10 mg PRN, vitamin D3 2,000 IU daily.",
+      "Plan: RYGB.",
+      "Dr. Ingrid Fairbanks-Osei"
+    ]},
+    {"title": "Supervised program records", "lines": [
+      "COPPERFIELD MEDICAL WEIGHT MANAGEMENT - SUMMARY",
+      "Whitaker, Darnell   01/2026 - 07/2026 (6 monthly visits)",
+      "Supervising MD: Paul Nakagawa-Brandt",
+      "1,800 kcal plan, RD counseling, walking program, phentermine 02-04/2026 (stopped, palpitations).",
+      "Weight 359 -> 351 -> 356 lb (net -0.8%). Unsuccessful."
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-BARIATRIC PSYCH   08/13/2026",
+      "Whitaker, Darnell",
+      "Binge eating disorder screened and ruled out. No depression. Cleared."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "COPPERFIELD LAB  09/09/2026",
+      "A1c 5.6   Glucose 98",
+      "Cr 1.0   ALT 30",
+      "TSH 1.7   Hgb 15.0"
+    ]},
+    {"title": "Operative plan", "lines": [
+      "OPERATIVE PLAN  09/25/2026",
+      "Whitaker, Darnell P.   MBR-29963",
+      "Lap RYGB (CPT 43644), admit 11/20/2026, inpatient.",
+      "Expected LOS: 2 midnights. Factors: BMI 52.4 (super-obesity), anticipated difficult airway and positioning, longer operative time.",
+      "I. Fairbanks-Osei MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "absent", "value": null, "page": null, "why": "No comorbidity is named on any page. The consult defers to a problem list that the index says is enclosed (page 2) but is not in the packet. The med list (cetirizine, vitamin D) and normal labs do not establish any comorbidity, and nothing explicitly says 'none'."},
+    "bmi": {"truth": "present", "value": 52.4, "page": 3, "why": "Consult 09/11/2026: BMI 52.4."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 4, "why": "Supervised program 01 to 07/2026 with diet, counseling, walking and phentermine; net -0.8%; unsuccessful."}
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 2 needs at least one documented obesity-related comorbidity. The comorbidities fact is absent (the referenced problem list is missing). Pend and ask for the problem list. Other rules pass."
+},
+{
+  "id": "adv_038",
+  "service": "bariatric",
+  "category": "distractor_numbers",
+  "difficulty": "hard",
+  "why_hard": "BMI-like numbers are everywhere: a program-start BMI of 39.1, a goal BMI of 30, a '35 lb' loss, a 'BMI >=35' criteria line, waist 44 in and BP 142/88. The current BMI of 37.4 is in the last clinical note.",
+  "member": {"name": "Priscilla J. Abara", "dob": "1976-02-02", "age": 50, "member_id": "MBR-58841", "sex": "F"},
+  "practice": "Stillwater Bariatric Specialists",
+  "planned_admit_date": "2026-11-24",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "STILLWATER BARIATRIC SPECIALISTS",
+      "Consult  09/02/2026",
+      "Priscilla J. Abara, 50F",
+      "",
+      "Weight hx: lost 35 lb on her own in 2023, regained 41 lb by 2025. Then our supervised program (2026, see records).",
+      "PMH: T2DM (A1c 6.8 on metformin), HTN (BP today 142/88 on losartan), PCOS.",
+      "Waist 44 in. Neck 15 in.",
+      "",
+      "Program criteria reviewed with pt: BMI >=35 with obesity-related comorbidity, or >=40 alone.",
+      "Long-term goal: BMI 30; expected 60% excess weight loss at 1 yr.",
+      "Plan: RYGB. 35-min visit, >50% counseling.",
+      "Dr. Cassius Moreno-Achebe"
+    ]},
+    {"title": "Supervised program records", "lines": [
+      "STILLWATER MEDICAL WEIGHT MANAGEMENT",
+      "Abara, Priscilla   02/09/2026 - 08/10/2026",
+      "Supervising MD: Hilde Oyenuga",
+      "Start: Ht 63 in, Wt 220.8 lb, BMI 39.1.",
+      "Monthly visits x7; 1,500 kcal; 10,000-step goal; behavioral group; topiramate 25-50 mg 03-06/2026 (stopped, cognitive slowing).",
+      "End weight 214 lb (-3.1%). Goal 5% not reached.",
+      "Outcome: unsuccessful."
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-BARIATRIC PSYCH  08/27/2026",
+      "Abara, Priscilla",
+      "No eating disorder. Cleared. Session 60 min."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "STILLWATER LAB  09/20/2026",
+      "A1c 6.8 H   Glucose 131 H",
+      "LDL 135 H   TG 188 H",
+      "Cr 0.7   Hgb 12.4   Vit D 18 L"
+    ]},
+    {"title": "Pre-operative visit", "lines": [
+      "STILLWATER BARIATRIC - PRE-OP VISIT",
+      "09/26/2026   Abara, Priscilla J.",
+      "Ht 63 in   Wt 211.2 lb   BMI 37.4   BP 136/84",
+      "Interval: on pre-op diet, down 3 lb.",
+      "Cleared for surgery pending auth.",
+      "C. Moreno-Achebe MD"
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN  09/30/2026",
+      "Abara, Priscilla J.   MBR-58841",
+      "Lap RYGB (CPT 43644). Admit 11/24/2026, inpatient.",
+      "Expected LOS: 2 midnights.",
+      "Factors: T2DM (glucose monitoring, metformin hold); HTN on ARB (hypotension risk w/ reduced intake); 1 JP drain planned for 24-48h.",
+      "C. Moreno-Achebe MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights.' The '1 JP drain for 24-48h' is not the LOS."},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "hypertension", "PCOS"], "page": 2, "why": "Consult PMH."},
+    "bmi": {"truth": "present", "value": 37.4, "page": 6, "why": "Program start 02/09/2026: BMI 39.1 (page 3). Pre-op visit 09/26/2026: BMI 37.4 (page 6). The later one wins. 'BMI 30' is a goal; '>=35' and '>=40' are criteria text; 35 lb and 44 in are not BMI."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Supervised program 02/09 to 08/10/2026 with diet, activity, behavioral group and topiramate; -3.1%; unsuccessful."}
+  },
+  "expected_action": "approve",
+  "action_reasoning": "Current BMI 37.4 (35 or higher), T2DM documented, supervised program failed, 2 midnights with factors. Approve."
+},
+{
+  "id": "adv_039",
+  "service": "bariatric",
+  "category": "distractor_numbers",
+  "difficulty": "hard",
+  "why_hard": "The current BMI is 34.2, just under 35. Nearby numbers include a self-reported peak weight, a '35 lb weight-loss goal', a 35-question screening tool and STOP-BANG 5, and the surgeon never says BMI is under 35.",
+  "member": {"name": "Maximilian O. Reyes", "dob": "1965-05-25", "age": 61, "member_id": "MBR-60379", "sex": "M"},
+  "practice": "Cobalt Coast Surgical Weight Center",
+  "planned_admit_date": "2026-11-30",
+  "pages": [
+    {"title": "Initial bariatric consultation", "lines": [
+      "COBALT COAST SURGICAL WEIGHT CENTER",
+      "Initial consult  06/15/2026",
+      "Maximilian O. Reyes, 61M",
+      "Ht 68 in  Wt 229 lb  BMI 34.8",
+      "Self-reported peak weight 262 lb (2019).",
+      "PMH: T2DM (A1c 7.5) on metformin + glipizide; OSA (AHI 27) on CPAP; HTN.",
+      "STOP-BANG 5 (pre-dx). Neck 17.5 in. Waist 41 in.",
+      "Goal: 35 lb weight loss in first year, diabetes remission.",
+      "Plan: workup for RYGB.",
+      "Dr. Josefina Albrecht-Nwosu"
+    ]},
+    {"title": "Supervised program records", "lines": [
+      "COBALT COAST MEDICAL WEIGHT PROGRAM",
+      "Reyes, Maximilian   10/2025 - 04/2026",
+      "Supervising: Anders Mokoena, MD",
+      "6 visits, RD counseling, 1,800 kcal, exercise plan. GLP-1 RA declined by pt (needle aversion).",
+      "Weight 231 -> 227 -> 230 lb (net -0.4%). Unsuccessful."
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-SURGICAL PSYCH  07/30/2026",
+      "Reyes, Maximilian",
+      "35-item eating questionnaire: no binge pattern. Cleared."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "COBALT COAST LAB  09/18/2026",
+      "A1c 7.5 H   Glucose 148 H",
+      "Cr 1.0   K 4.1",
+      "Hgb 14.7"
+    ]},
+    {"title": "Pre-operative surgical visit", "lines": [
+      "COBALT COAST - PRE-OP VISIT",
+      "09/23/2026   Reyes, Maximilian O.",
+      "Vitals: Ht 68 in   Wt 225 lb   BMI 34.2   BP 132/80",
+      "Interval: compliant w/ CPAP. Diabetes unchanged.",
+      "A/P: proceed with RYGB. Diabetes is the primary indication.",
+      "J. Albrecht-Nwosu MD"
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN  09/29/2026",
+      "Reyes, Maximilian O.   MBR-60379",
+      "Lap RYGB (CPT 43644). Admit 11/30/2026, inpatient.",
+      "Expected LOS: 2 midnights. Factors: OSA on CPAP; T2DM on sulfonylurea (hypoglycemia risk); HTN.",
+      "J. Albrecht-Nwosu MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "obstructive sleep apnea on CPAP", "hypertension"], "page": 2, "why": "Initial consult PMH."},
+    "bmi": {"truth": "present", "value": 34.2, "page": 6, "why": "06/15/2026: BMI 34.8 (page 2). 09/23/2026: BMI 34.2 (page 6). The later one wins, and both are under 35. The peak weight (2019), the 35 lb goal and the 35-item questionnaire are not BMI."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Supervised program 10/2025 to 04/2026 with diet, counseling and exercise; net -0.4%; unsuccessful."}
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts present. Rule 1 fails: the current BMI is 34.2, under 35. Comorbidity, prior treatment and LOS pass. Escalate."
+},
+{
+  "id": "adv_040",
+  "service": "bariatric",
+  "category": "distractor_numbers",
+  "difficulty": "hard",
+  "why_hard": "The latest note states BMI 36.2, but its own measured height (5 ft 6 in) and weight (211 lb) compute to 34.1. An earlier dietitian note used a self-reported 64 in height. The stated BMI and its inputs contradict each other across the 35 line.",
+  "member": {"name": "Gloria T. Hammersmith", "dob": "1960-09-19", "age": 66, "member_id": "MBR-14478", "sex": "F"},
+  "practice": "Bellwether Bariatric Surgery",
+  "planned_admit_date": "2026-11-16",
+  "pages": [
+    {"title": "Primary care note", "lines": [
+      "ORCHARD STREET PRIMARY CARE  03/18/2026",
+      "Hammersmith, Gloria T.",
+      "Wt 214 lb. Ht 5 ft 6 in (stated).",
+      "Problems: T2DM (A1c 7.9) on metformin + sitagliptin; HTN on amlodipine; osteopenia.",
+      "Referred to bariatric surgery after failed program.",
+      "Dr. Wendell Asante-Burke"
+    ]},
+    {"title": "Supervised program records", "lines": [
+      "BELLWETHER MEDICAL WEIGHT MANAGEMENT",
+      "Hammersmith, Gloria   07/2025 - 01/2026",
+      "Supervising MD: Rhea Castellano-Moss",
+      "6 monthly visits; 1,400 kcal; chair yoga + walking; orlistat 09-12/2025 (stopped, GI side effects).",
+      "Weight 218 -> 212 -> 216 lb (net -0.9%). Unsuccessful."
+    ]},
+    {"title": "Dietitian assessment", "lines": [
+      "BELLWETHER NUTRITION  08/20/2026",
+      "Hammersmith, Gloria",
+      "Ht 64 in (stated by pt)   Wt 208 lb   BMI 35.7",
+      "Protein intake low. Education provided."
+    ]},
+    {"title": "Surgical pre-op visit", "lines": [
+      "BELLWETHER BARIATRIC SURGERY - PRE-OP VISIT",
+      "09/25/2026   Hammersmith, Gloria T.",
+      "Vitals: Wt 211 lb   Ht 5 ft 6 in (measured, stadiometer)   BMI 36.2   BP 138/82   Pulse 76",
+      "Labs reviewed: A1c 7.6, LDL 102.",
+      "A/P: T2DM, HTN. Proceed with RYGB.",
+      "Dr. Ottoline Fairweather-Ng"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-BARIATRIC PSYCH  08/12/2026",
+      "Hammersmith, Gloria",
+      "Cleared."
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN  09/29/2026",
+      "Hammersmith, Gloria T.   MBR-14478",
+      "Lap RYGB (CPT 43644). Admit 11/16/2026, inpatient.",
+      "Expected LOS: 2 midnights. Factors: age 66; T2DM (glucose monitoring); HTN; osteopenia w/ fall precautions.",
+      "O. Fairweather-Ng MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "hypertension", "osteopenia"], "page": 2, "why": "PCP problem list; T2DM and HTN confirmed on page 5."},
+    "bmi": {"truth": "present", "value": null, "ambiguous": true, "page": 5, "why": "The most recent note (09/25/2026) states BMI 36.2, but its own measured height of 66 in and weight of 211 lb give 34.1. 36.2 matches a 64 in height, which is the patient's self-report on the 08/20 dietitian note (BMI 35.7). The stated BMI and its inputs fall on opposite sides of 35, so a person must confirm the true height and BMI."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Supervised program 07/2025 to 01/2026 with diet, exercise and orlistat; net -0.9%; unsuccessful."}
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rules 2 to 4 pass. Rule 1 depends on BMI. The latest stated BMI (36.2) contradicts the measured height and weight in the same note (34.1). This internal contradiction crosses the threshold and needs a person to settle it. Verify."
+}
+]

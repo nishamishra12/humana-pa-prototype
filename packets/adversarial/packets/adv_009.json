@@ -1,0 +1,179 @@
+{
+  "id": "adv_009",
+  "service": "icd",
+  "category": "format_variants",
+  "difficulty": "hard",
+  "why_hard": "The most recent echo gives LVEF as a visual range '~33-38%' that straddles the 35% cutoff. An older nuclear study shows a clean 30%.",
+  "member": {
+    "name": "Henrietta L. Szabo",
+    "dob": "1949-05-02",
+    "age": 77,
+    "member_id": "MBR-15586",
+    "sex": "F"
+  },
+  "practice": "Lakeshore Heart Rhythm Associates",
+  "planned_admit_date": "2026-10-30",
+  "pages": [
+    {
+      "title": "Nuclear perfusion study (prior)",
+      "lines": [
+        "LAKESHORE HEART - NUCLEAR LAB",
+        "Exam date: 04/20/2026",
+        "Patient: Szabo, Henrietta L.   DOB 05/02/1949",
+        "Protocol: 1-day rest/stress Tc-99m, Lexiscan",
+        "",
+        "Findings: large fixed defect anterior/apical, no reversible ischemia.",
+        "Gated LVEF: 30%. EDV 141, ESV 99.",
+        "Impression: prior anterior MI, no ischemia, LVEF 30%."
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "LAKESHORE HEART RHYTHM ASSOCIATES - ECHO",
+        "Study date: 09/15/2026",
+        "Patient: SZABO, HENRIETTA L",
+        "Image quality: poor. Apical windows foreshortened. Contrast offered, declined by pt (prior reaction).",
+        "",
+        "LV: mildly dilated. Apical akinesis, anterior hypokinesis.",
+        "LVEF: ~33-38% (visual estimate; biplane not performed due to poor endocardial definition).",
+        "RV: normal. Valves: mild MR, mild AS (mean grad 12).",
+        "",
+        "Impression: Moderately reduced LV systolic function, visually estimated LVEF ~33-38%. Possible mild improvement vs 04/2026 nuclear study, limited by image quality.",
+        "Reader: C. Nakamura-Holt, MD"
+      ]
+    },
+    {
+      "title": "EP consultation",
+      "lines": [
+        "Lakeshore Heart Rhythm Associates",
+        "EP CONSULT 09/25/2026",
+        "77F, anterior MI 2017 (thrombolysed, no PCI), ICM.",
+        "Recent studies: SPECT 4/2026 EF 30%, TTE 9/2026 EF in the mid-30s.",
+        "Symptoms: SOB w/ 1 block or light housework, no rest sx. NYHA class III.",
+        "No MI or revascularization since 2017. Never had PCI or CABG.",
+        "Assessment: ICM, primary prevention ICD candidate.",
+        "Plan: SDM, admit for implant (anticoag mgmt).",
+        "B. Oyelowo, MD"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "Device Clinic   Shared Decision-Making   09/29/2026",
+        "Henrietta Szabo + niece (HCPOA)",
+        "Facilitator: Mirela Dragan, RN, CCDS",
+        "Decision aid used: evidence-based ICD decision aid (large-print booklet).",
+        "Discussed benefits/risks, shocks, deactivation, alternatives. Pt asked about effect on her pacemaker-less status and MRI - answered.",
+        "Pt decision: proceed with ICD.",
+        "M. Dragan RN"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Szabo, Henrietta - Med List 09/25/2026",
+        "metoprolol succinate 50 mg daily (2017-)",
+        "losartan 50 mg daily (2017-)",
+        "spironolactone 12.5 mg daily (2018-)",
+        "apixaban 2.5 mg BID (2023-, PAF)",
+        "atorvastatin 40 mg (2017-)",
+        "levothyroxine 75 mcg",
+        "furosemide 20 mg"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "LAKESHORE LAB 09/26/2026  SZABO H",
+        "Na 137 K 4.9 Cr 1.3 eGFR 41",
+        "Hgb 11.9 Plt 166",
+        "TSH 3.4",
+        "NT-proBNP 1,450"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "ICD PRE-ADMISSION PLAN   10/01/2026",
+        "Szabo, Henrietta L   MBR-15586   Admit 10/30/2026   CPT 33249",
+        "Expected length of stay: 2 midnights",
+        "Factors: age 77 w/ frailty (gait aid), apixaban for PAF w/ bridging/restart plan, CKD 3b, moderate fall risk.",
+        "PAF: in sinus, last AF episode 2025, rate controlled when present.",
+        "Limiting conditions: none identified (no dementia - MoCA 26; no terminal illness; stable).",
+        "B. Oyelowo MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected length of stay: 2 midnights'."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "frailty",
+        "paroxysmal atrial fibrillation on apixaban",
+        "CKD stage 3b",
+        "fall risk",
+        "hypothyroidism"
+      ],
+      "page": 8,
+      "why": "Factors on the pre-admission plan; levothyroxine on the med list."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": null,
+      "ambiguous": true,
+      "page": 3,
+      "why": "Nuclear 04/20/2026: 30% (page 2). The more recent echo on 09/15/2026 gives only a visual range of ~33-38% (page 3), which straddles 35%. The later measurement is current, but it cannot say whether LVEF is at or below 35%. The consult's 'mid-30s' adds nothing."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 3,
+      "why": "The current measurement is a TTE (visual estimate)."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "III",
+      "page": 4,
+      "why": "EP consult: 'NYHA class III'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 4,
+      "why": "ICM after anterior MI 2017."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 4,
+      "why": "'No MI or revascularization since 2017. Never had PCI or CABG.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 111,
+      "page": 6,
+      "why": "Metoprolol and losartan since 2017 (month not given), about 9 years, roughly 111 months. Not decisive (ischemic)."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 5,
+      "why": "SDM 09/29/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "'None identified'; AF is rate controlled."
+    }
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rule 2 depends on LVEF. The most recent LVEF is a range that crosses 35%, so a person must decide whether to accept it, use the older 30%, or ask for a quantitative study. All other facts are present and pass. Verify."
+}

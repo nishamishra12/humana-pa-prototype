@@ -1,0 +1,139 @@
+{
+  "id": "adv_026",
+  "service": "bariatric",
+  "category": "negation",
+  "difficulty": "hard",
+  "why_hard": "The packet is full of 'sleep apnea', 'diabetes', 'hypertension' and 'fatty liver', but every one is ruled out. Her only conditions (hypothyroidism, migraine) are not obesity-related.",
+  "member": {
+    "name": "Marguerite D. Langston",
+    "dob": "1970-05-05",
+    "age": 56,
+    "member_id": "MBR-24489",
+    "sex": "F"
+  },
+  "practice": "Kingsbridge Bariatric Institute",
+  "planned_admit_date": "2026-11-05",
+  "pages": [
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "KINGSBRIDGE BARIATRIC INSTITUTE",
+        "New patient consult   09/09/2026",
+        "Pt: Langston, Marguerite D.   56F",
+        "",
+        "Ht 66 in   Wt 231 lb   BMI 37.3   BP 118/74 (no antihypertensives)",
+        "",
+        "Weight hx: gained ~60 lb after hysterectomy 2014. Completed supervised program, did not lose (see records).",
+        "",
+        "Obesity-related comorbidity screen:",
+        " - OSA: ruled out, PSG 08/2026 AHI 3.2 (normal).",
+        " - Diabetes: none. A1c 5.4, fasting glucose 92.",
+        " - Hypertension: denies; normotensive on serial readings, never on meds.",
+        " - Dyslipidemia: negative, lipid panel wnl.",
+        " - NAFLD: no steatosis on RUQ US 08/2026, LFTs nl.",
+        " - GERD: denies reflux sx; EGD 08/2026 w/o esophagitis or hiatal hernia.",
+        "Other PMH: hypothyroidism (Hashimoto's) on levothyroxine; migraine without aura.",
+        "PSH: open total abdominal hysterectomy 2014; open ventral hernia repair w/ mesh 2017.",
+        "",
+        "Imp: obesity, BMI 37.3. Pt highly motivated for RYGB.",
+        "Plan: proceed with workup; submit for auth.",
+        "Dr. Theodora Vance-Okafor"
+      ]
+    },
+    {
+      "title": "Polysomnography report",
+      "lines": [
+        "KINGSBRIDGE SLEEP DISORDERS CENTER",
+        "In-lab diagnostic polysomnogram   08/12/2026",
+        "Langston, Marguerite",
+        "Total sleep time 392 min. Sleep efficiency 86%.",
+        "AHI 3.2/h. RDI 5.0/h. Nadir SpO2 91%.",
+        "Snoring: mild, intermittent.",
+        "Impression: Study negative for obstructive sleep apnea. No PAP therapy indicated."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "KINGSBRIDGE LAB   08/20/2026",
+        "LANGSTON, MARGUERITE",
+        "HbA1c 5.4%   Fasting glucose 92",
+        "Total chol 182   LDL 104   HDL 58   TG 101",
+        "ALT 19   AST 21   Alk phos 70",
+        "TSH 2.4 (on levothyroxine)   Free T4 1.2",
+        "Cr 0.8   Hgb 13.4"
+      ]
+    },
+    {
+      "title": "Supervised weight management records",
+      "lines": [
+        "KINGSBRIDGE MEDICAL WEIGHT MANAGEMENT",
+        "Program summary - Langston, Marguerite",
+        "Enrollment 12/01/2025 - completion 06/01/2026 (6 monthly MD visits + RD)",
+        "Supervising physician: Olu Bankole-Ferris, MD",
+        "Interventions: 1,400 kcal plan, food diary app, 150 min/wk activity, liraglutide 3.0 mg 01-04/2026 (stopped, pancreatitis concern: lipase 3x ULN w/ epigastric pain, resolved off drug).",
+        "Weights: 233 -> 228 -> 232 lb.  Net -0.4%.",
+        "Outcome: unsuccessful."
+      ]
+    },
+    {
+      "title": "Imaging and endoscopy summary",
+      "lines": [
+        "KINGSBRIDGE DIAGNOSTICS",
+        "RUQ ultrasound 08/14/2026: normal liver echotexture, no steatosis, no gallstones.",
+        "EGD 08/19/2026: normal esophagus, no esophagitis, no Barrett's, no hiatal hernia. H. pylori biopsy negative.",
+        "UGI series: normal anatomy."
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-SURGICAL PSYCH EVAL   07/28/2026",
+        "Langston, Marguerite",
+        "No eating disorder. No mood disorder currently. Good understanding. Cleared."
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN - KINGSBRIDGE   09/23/2026",
+        "Langston, Marguerite D.   MBR-24489",
+        "Lap RYGB, CPT 43644. Admit 11/05/2026 inpatient.",
+        "Expected LOS: 2 midnights.",
+        "Factors: hostile abdomen (prior open TAH and open ventral hernia repair with mesh) w/ anticipated extensive adhesiolysis and higher risk of enterotomy - needs observation for leak; history of drug-induced pancreatitis.",
+        "T. Vance-Okafor MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "hypothyroidism",
+        "migraine without aura"
+      ],
+      "page": 2,
+      "why": "These are the only conditions she has. OSA, diabetes, hypertension, dyslipidemia, NAFLD and GERD are each explicitly ruled out (pages 2, 3, 4, 6). Neither remaining condition is obesity-related."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 37.3,
+      "page": 2,
+      "why": "Consult 09/09/2026: BMI 37.3."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 5,
+      "why": "6-month supervised program 12/01/2025 to 06/01/2026 with diet, activity and liraglutide; net -0.4%; unsuccessful."
+    }
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "BMI 37.3 passes rule 1. Rule 2 fails: there is no obesity-related comorbidity, because every candidate is explicitly ruled out. Rules 3 and 4 pass. All facts present, so escalate."
+}

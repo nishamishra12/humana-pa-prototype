@@ -1,0 +1,122 @@
+{
+  "id": "adv_032",
+  "service": "bariatric",
+  "category": "planned_vs_done",
+  "difficulty": "medium",
+  "why_hard": "Length of stay is to be decided at a future anesthesia visit. Small numbers like '2-week' and 'POD 1' appear nearby, and a possible step-down stay is mentioned.",
+  "member": {
+    "name": "Esperanza M. Holcomb",
+    "dob": "1967-01-14",
+    "age": 59,
+    "member_id": "MBR-77402",
+    "sex": "F"
+  },
+  "practice": "Clover Ridge Bariatric Center",
+  "planned_admit_date": "2026-11-23",
+  "pages": [
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "CLOVER RIDGE BARIATRIC CENTER",
+        "Consultation 09/14/2026",
+        "Esperanza M. Holcomb, 59F",
+        "Ht 62 in   Wt 263.6 lb   BMI 48.2",
+        "PMH: T2DM on insulin (A1c 8.8), very severe OSA (AHI 71) on BiPAP, HTN, lymphedema.",
+        "Failed supervised program (records).",
+        "Plan: RYGB. 2-week pre-op liquid diet. Anesthesia pre-op eval given OSA severity.",
+        "Dr. Augusto Lindgren-Abara"
+      ]
+    },
+    {
+      "title": "Supervised weight management records",
+      "lines": [
+        "CLOVER RIDGE MEDICAL WEIGHT MGMT - SUMMARY",
+        "Holcomb, Esperanza   10/2025 - 04/2026 (6 mo, 6 visits)",
+        "Supervising MD: Priya Okonedo-Shaw",
+        "1,400 kcal plan, chair-based exercise, counseling, liraglutide 11/2025-03/2026 (stopped: cholelithiasis sx).",
+        "Weight 266 -> 259 -> 265 lb (net -0.4%).",
+        "Unsuccessful."
+      ]
+    },
+    {
+      "title": "Sleep study report",
+      "lines": [
+        "CLOVER RIDGE SLEEP LAB   PSG + titration 01/2025",
+        "Holcomb, Esperanza",
+        "AHI 71/h, nadir SpO2 68%. CPAP failed; BiPAP 18/12 effective.",
+        "Dx: very severe OSA w/ obesity hypoventilation features (HCO3 31)."
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "BEHAVIORAL HEALTH PRE-OP   08/20/2026",
+        "Holcomb, Esperanza",
+        "No eating disorder. Cleared."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "CLOVER RIDGE LAB   09/12/2026",
+        "A1c 8.8 H   HCO3 31 H",
+        "Cr 0.9   K 4.5",
+        "Hgb 12.0"
+      ]
+    },
+    {
+      "title": "Anesthesia referral",
+      "lines": [
+        "CLOVER RIDGE - PRE-ANESTHESIA REFERRAL",
+        "09/14/2026   Holcomb, Esperanza",
+        "Reason: very severe OSA on BiPAP, possible OHS. Needs airway assessment and post-op disposition planning (floor vs step-down).",
+        "Appointment: pre-anesthesia clinic 11/09/2026.",
+        "Referring: A. Lindgren-Abara MD"
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN   09/28/2026",
+        "Holcomb, Esperanza M.   MBR-77402",
+        "Lap RYGB (CPT 43644). Admit 11/23/2026 inpatient.",
+        "Length of stay: to be determined at pre-anesthesia evaluation (11/09/2026), may need step-down monitoring.",
+        "Post-op: UGI study POD 1 per routine; clinic follow-up 2 weeks.",
+        "A. Lindgren-Abara MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "absent",
+      "value": null,
+      "page": null,
+      "why": "The plan says LOS is 'to be determined at pre-anesthesia evaluation (11/09/2026)', which has not happened. No number of midnights is given anywhere. 'POD 1', '2 weeks' and '2-week liquid diet' are not LOS."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes on insulin",
+        "very severe obstructive sleep apnea on BiPAP",
+        "hypertension",
+        "lymphedema"
+      ],
+      "page": 2,
+      "why": "Consult PMH."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 48.2,
+      "page": 2,
+      "why": "Consult 09/14/2026: BMI 48.2."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "6-month supervised program 10/2025 to 04/2026 with diet, exercise, counseling and liraglutide; net -0.4%; unsuccessful."
+    }
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 4 needs the expected number of midnights, and that is not yet decided. The fact is absent, so pend. Other rules pass."
+}

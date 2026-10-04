@@ -1,0 +1,124 @@
+{
+  "id": "adv_022",
+  "service": "bariatric",
+  "category": "clean_control",
+  "difficulty": "easy",
+  "why_hard": "Clean control with a lower BMI (38.9) and a GLP-1 trial inside the supervised program.",
+  "member": {
+    "name": "Rupert E. Holloway",
+    "dob": "1959-10-02",
+    "age": 67,
+    "member_id": "MBR-41893",
+    "sex": "M"
+  },
+  "practice": "Fairmont Center for Weight Loss Surgery",
+  "planned_admit_date": "2026-11-16",
+  "pages": [
+    {
+      "title": "Bariatric surgeon consultation",
+      "lines": [
+        "FAIRMONT CENTER FOR WEIGHT LOSS SURGERY",
+        "Consultation 09/29/2026",
+        "Rupert E. Holloway   67M",
+        "",
+        "Weight hx: gradual gain after retiring. Tried our medical program last year w/ semaglutide; lost a little, could not tolerate the medication, regained.",
+        "PMH: T2DM (2016), HTN, GERD w/ LA grade B esophagitis on EGD 2025, hyperlipidemia.",
+        "Meds: metformin, glipizide, losartan, pantoprazole, atorvastatin.",
+        "",
+        "Ht 71 in, Wt 279 lb, BMI 38.9.",
+        "",
+        "Impression: obesity BMI 38.9 w/ T2DM (A1c 7.9), HTN, erosive GERD. RYGB preferred over sleeve given GERD.",
+        "Plan: RYGB.",
+        "Dr. Tobias Engstrom-Reyes"
+      ]
+    },
+    {
+      "title": "Medical weight loss program records",
+      "lines": [
+        "FAIRMONT MEDICAL WEIGHT LOSS - PHYSICIAN-SUPERVISED PROGRAM",
+        "Patient: Holloway, Rupert   Program dates: 10/06/2025 - 04/13/2026",
+        "Supervising: Grace Oduya, MD, DABOM",
+        "",
+        "Visit log (weight, lb): 10/06 286 | 11/03 284 | 12/08 281 | 01/12 279 | 02/09 277 | 03/09 280 | 04/13 283",
+        "Medication: semaglutide weekly started 11/03/2025, titrated to 1 mg; stopped 03/2026 for persistent nausea/vomiting.",
+        "Diet: 1,600 kcal plan, dietitian counseling each visit. Exercise: walking program.",
+        "Result: max loss 9 lb (3.1%) by 02/2026, then regained; 04/13/2026 weight 283 lb (-1.0% from start).",
+        "Program outcome: unsuccessful; refer to bariatric surgery.",
+        "G. Oduya MD"
+      ]
+    },
+    {
+      "title": "Nutrition evaluation",
+      "lines": [
+        "PRE-OP NUTRITION ASSESSMENT   09/15/2026",
+        "Holloway, Rupert   RD: Marta Jovanovic, RD, LD",
+        "Diet recall: large portions at dinner, sugary drinks 2/day (reduced to 1).",
+        "Education: post-RYGB diet stages, protein goal 60-80 g, supplements.",
+        "Cleared from nutrition standpoint."
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PSYCHOLOGY CLEARANCE   08/28/2026",
+        "Rupert Holloway",
+        "No eating disorder. No substance use. Realistic expectations. Wife supportive.",
+        "Cleared. - Dr. Amara Kingsley-Pratt, PhD"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "FAIRMONT LAB 09/26/2026  HOLLOWAY R",
+        "A1c 7.9 H   Glucose 162 H",
+        "LDL 98   TG 210 H",
+        "Cr 1.0   ALT 41",
+        "Hgb 14.6"
+      ]
+    },
+    {
+      "title": "Surgical plan and level of care",
+      "lines": [
+        "OPERATIVE PLAN - 10/01/2026",
+        "Holloway, Rupert E.   MBR-41893",
+        "Procedure: laparoscopic RYGB, CPT 43644. Admit 11/16/2026, inpatient.",
+        "Expected stay: two nights.",
+        "Why: age 67 w/ T2DM on sulfonylurea (hypoglycemia risk as intake drops), HTN requiring med adjustment, and erosive GERD.",
+        "T. Engstrom-Reyes MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected stay: two nights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes",
+        "hypertension",
+        "erosive GERD",
+        "hyperlipidemia"
+      ],
+      "page": 2,
+      "why": "Consult PMH and impression."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 38.9,
+      "page": 2,
+      "why": "Consult 09/29/2026: BMI 38.9."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "Physician-supervised program 10/06/2025 to 04/13/2026 with diet, exercise and semaglutide. Lost at most 3.1%, then regained; labeled unsuccessful."
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "BMI 38.9, T2DM, failed supervised program, 2 nights with documented factors. Approve."
+}

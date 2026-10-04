@@ -1,0 +1,118 @@
+{
+  "id": "adv_024",
+  "service": "bariatric",
+  "category": "ambiguous_verify",
+  "difficulty": "hard",
+  "why_hard": "The supervised program's own discharge note calls the result 'SUCCESSFUL' (5.2% loss, goal met). The surgeon calls it a failure. The rule needs the patient to have been unsuccessful.",
+  "member": {
+    "name": "Oswaldo J. Treviño",
+    "dob": "1968-02-19",
+    "age": 58,
+    "member_id": "MBR-38467",
+    "sex": "M"
+  },
+  "practice": "Mesa Verde Bariatric Associates",
+  "planned_admit_date": "2026-11-10",
+  "pages": [
+    {
+      "title": "Bariatric surgeon visit",
+      "lines": [
+        "MESA VERDE BARIATRIC ASSOCIATES",
+        "Pre-op visit  09/28/2026",
+        "Oswaldo J. Treviño, 58M",
+        "",
+        "Ht 70 in   Wt 277 lb   BMI 39.7",
+        "",
+        "Hx: severe OSA (on CPAP), HTN, T2DM (A1c 8.0). Has failed medically supervised weight loss: completed 6-mo program this year, still BMI near 40 with uncontrolled diabetes.",
+        "",
+        "Plan: RYGB. Pre-op labs ok.",
+        "Dr. Lucinda Arroyo-Platt"
+      ]
+    },
+    {
+      "title": "Supervised weight loss program discharge note",
+      "lines": [
+        "MESA VERDE MEDICAL WEIGHT MANAGEMENT",
+        "Program Discharge Note   07/20/2026",
+        "Participant: Treviño, Oswaldo",
+        "Supervising physician: Ezra Lindahl, MD; RD: Pooja Marchetti, RD",
+        "",
+        "Program dates: 01/12/2026 - 07/13/2026 (6 months, 7 visits)",
+        "Interventions: 1,800 kcal plan, weekly food logs, group behavioral class, walking 150 min/wk, metformin dose optimized.",
+        "Weight: 290.0 lb -> 275.0 lb (-15 lb, -5.2% TBW).",
+        "Program goal (>=5% total body weight loss): MET.",
+        "Outcome: SUCCESSFUL. Graduated to maintenance phase. Pt continues to pursue surgical consultation for additional weight loss.",
+        "E. Lindahl MD"
+      ]
+    },
+    {
+      "title": "Sleep study report",
+      "lines": [
+        "MESA VERDE SLEEP LAB  -  PSG  02/03/2025",
+        "Treviño, Oswaldo   AHI 52/h, severe OSA. CPAP 14 cm H2O.",
+        "Compliance 2026: 78% nights >4h."
+      ]
+    },
+    {
+      "title": "Primary care note",
+      "lines": [
+        "SAGEBRUSH FAMILY CLINIC   08/14/2026",
+        "Treviño, Oswaldo",
+        "Weight 276 lb. A1c 8.0 despite metformin 1000 BID + empagliflozin. BP 142/90 on 2 agents.",
+        "Pt kept off most of the weight lost in the spring program but plateaued. Supports surgery.",
+        "Dr. Maya Ostrander"
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-SURGICAL PSYCHOLOGY EVAL   08/25/2026",
+        "Treviño, Oswaldo   Evaluator: B. Hargreaves, PsyD",
+        "No eating disorder. Mild anxiety, managed. Strong family support. Cleared."
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN   09/30/2026",
+        "Treviño, Oswaldo J.   MBR-38467",
+        "Lap RYGB, CPT 43644. Admit 11/10/2026, inpatient.",
+        "Expected LOS: 2 midnights - severe OSA on CPAP needing continuous oximetry; T2DM w/ insulin sliding scale; HTN.",
+        "L. Arroyo-Platt MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected LOS: 2 midnights'."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "severe obstructive sleep apnea",
+        "hypertension",
+        "type 2 diabetes"
+      ],
+      "page": 2,
+      "why": "Surgeon visit history; PSG page 4."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 39.7,
+      "page": 2,
+      "why": "09/28/2026: BMI 39.7."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "ambiguous": true,
+      "page": 3,
+      "why": "The 6-month supervised program (01/12 to 07/13/2026) is documented. Its outcome conflicts: the program discharge note says 'Program goal MET. Outcome: SUCCESSFUL' (5.2% loss), while the surgeon says the patient 'has failed medically supervised weight loss'. The PCP says the weight loss was kept but plateaued. Whether this counts as unsuccessful is a judgment call."
+    }
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rules 1, 2 and 4 pass. Rule 3 needs prior medical treatment to have been unsuccessful, and the program itself documents success while the surgeon documents failure. Two defensible readings, so a person must decide. Verify."
+}

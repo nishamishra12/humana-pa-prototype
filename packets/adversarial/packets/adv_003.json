@@ -1,0 +1,205 @@
+{
+  "id": "adv_003",
+  "service": "icd",
+  "category": "temporal_trap",
+  "difficulty": "hard",
+  "why_hard": "Non-ischemic patient whose GDMT started 2026-07-12; that is 88 days (2.9 months) to the 2026-10-08 implant. Older non-HF drugs with 2018 and 2020 start dates sit in the same med list.",
+  "member": {
+    "name": "Russell K. Haverty",
+    "dob": "1959-02-14",
+    "age": 67,
+    "member_id": "MBR-63390",
+    "sex": "M"
+  },
+  "practice": "Ironwood Heart Failure & Device Clinic",
+  "planned_admit_date": "2026-10-08",
+  "pages": [
+    {
+      "title": "Heart failure clinic note",
+      "lines": [
+        "IRONWOOD HEART FAILURE & DEVICE CLINIC",
+        "Patient: Haverty, Russell K.     Visit: 09/24/2026     Provider: Elena Szymanski, MD",
+        "",
+        "Subjective:",
+        "67M w/ NICM dx'd during 07/2026 admission (new onset HF, nonobstructive cors, LGE pattern c/w NICM). Feels better than July. Can walk ~2 blocks on flat before stopping, more SOB on hills. No PND. Using CPAP nightly. Wt stable. No dizziness on current doses.",
+        "",
+        "Objective: BP 108/70, HR 66, Wt 247 lb (BMI 36). JVP not elevated. No edema.",
+        "TTE today: LVEF 26% (see report).",
+        "",
+        "Assessment / Plan:",
+        "# HFrEF, NICM - NYHA class II. GDMT: ARNI, BB, MRA, SGLT2i all at tolerated doses since discharge. LVEF persistently <=35% on today's echo.",
+        "   -> Referred to EP (Dr. Kowalczyk) for primary prevention ICD; pt wants to proceed and EP has a date in early Oct.",
+        "   -> SDM visit with decision aid to be completed before implant.",
+        "# OSA - on CPAP, compliant.",
+        "# HTN - controlled; amlodipine stopped in July when ARNI started.",
+        "# CKD 3a - Cr 1.4.",
+        "",
+        "E. Szymanski MD"
+      ]
+    },
+    {
+      "title": "Hospital discharge summary",
+      "lines": [
+        "ST. ADALBERT MEDICAL CENTER",
+        "DISCHARGE SUMMARY   Admitted 07/09/2026   Discharged 07/12/2026",
+        "Pt: Haverty, Russell   67 M",
+        "",
+        "Dx: Acute decompensated HF w/ reduced EF, new onset. Cardiomyopathy, non-ischemic.",
+        "",
+        "Course: Presented w/ 2 wks progressive DOE, orthopnea, 15 lb wt gain. BNP 3,900. Diuresed IV furosemide, net -7 L.",
+        "LHC 07/10: nonobstructive CAD (RCA 30%, LAD luminal irregularities). No intervention. No prior MI hx.",
+        "CMR 07/11: LVEF 24%, LVEDV index 138 mL/m2, mid-wall septal LGE; no subendocardial or transmural LGE. Pattern consistent with dilated NICM.",
+        "",
+        "Meds at discharge (new): sacubitril-valsartan, metoprolol succinate, spironolactone, dapagliflozin - all initiated 07/12/2026 at discharge after diuresis complete. Amlodipine discontinued.",
+        "F/u HF clinic 1 wk."
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "Ironwood Heart - Noninvasive Lab",
+        "TTE   Date: 09/24/2026   Pt: HAVERTY, RUSSELL K   DOB 02/14/1959",
+        "Quality: technically difficult (body habitus), contrast used.",
+        "",
+        "LV EF (biplane, contrast): 26%",
+        "LVIDd 6.6 cm, global hypokinesis, no regional pattern",
+        "RV mildly dilated, fxn low-normal",
+        "Mod functional MR",
+        "No pericardial effusion",
+        "",
+        "Impression: Severe global LV dysfunction, LVEF 26% (CMR 07/11/26: 24%).",
+        "Reader: B. Afolayan, MD"
+      ]
+    },
+    {
+      "title": "Medication list with start dates",
+      "lines": [
+        "Current Medications   Haverty, Russell K.   as of 09/24/2026",
+        "",
+        "atorvastatin 20 mg daily            started 03/15/2020",
+        "sacubitril/valsartan 49/51 mg BID   started 07/12/2026  (titrated 08/09)",
+        "metoprolol succinate 50 mg daily    started 07/12/2026  (titrated 08/23)",
+        "spironolactone 25 mg daily          started 07/12/2026",
+        "dapagliflozin 10 mg daily           started 07/12/2026",
+        "furosemide 20 mg daily              started 07/12/2026",
+        "hydrochlorothiazide 12.5 mg         02/2018 - stopped 07/09/2026",
+        "amlodipine 10 mg daily              06/2018 - stopped 07/12/2026",
+        "",
+        "Allergies: NKDA"
+      ]
+    },
+    {
+      "title": "Shared decision making visit",
+      "lines": [
+        "Ironwood Heart Failure & Device Clinic",
+        "ENCOUNTER: Shared decision-making, ICD     09/30/2026",
+        "Pt: Russell Haverty (alone, wife on phone)",
+        "Clinician: Daniel Oyelaran, RN, MSN, CHFN",
+        "",
+        "Used an evidence-based ICD decision aid (online interactive version, completed in clinic on tablet, printout attached).",
+        "Discussed: chance of benefit vs no ICD, shocks (appropriate/inappropriate), procedure risks, device replacement, end-of-life deactivation, wearable defib as interim alternative.",
+        "Pt verbalizes understanding. Most important to him: returning to work part-time as a machinist.",
+        "Pt prefers ICD. Questions answered.",
+        "D. Oyelaran RN"
+      ]
+    },
+    {
+      "title": "EP pre-procedure H&P",
+      "lines": [
+        "EP PRE-PROCEDURE H&P",
+        "Date: 10/01/2026   Patient: Russell K. Haverty   Admit: 10/08/2026 (inpatient)",
+        "Operator: Tomasz Kowalczyk, MD",
+        "",
+        "Procedure: single chamber transvenous ICD, CPT 33249.",
+        "Indication: Primary prevention. NICM, LVEF 26% (TTE 9/24), NYHA II, on GDMT since July hospitalization.",
+        "No prior MI, PCI or CABG.",
+        "",
+        "Expected LOS 2 midnights. Reasons: severe OSA requiring CPAP monitoring after sedation; BMI 36 with prior difficult IV access; CKD 3a requiring post-procedure BMP.",
+        "",
+        "Contraindication review: no dementia, no cancer or other condition limiting life expectancy to under a year, no AF, hemodynamically stable outpatient. None identified.",
+        "T. Kowalczyk MD"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "IRONWOOD LAB  - collected 09/24/2026",
+        "HAVERTY, RUSSELL",
+        "Sodium 137 | Potassium 4.7 | Chloride 101 | CO2 26",
+        "BUN 22 | Creatinine 1.4 (H) | eGFR 54 (L)",
+        "Hemoglobin 14.1 | Platelets 232",
+        "NT-proBNP 1,104 (H)",
+        "INR 1.0"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "EP H&P: 'Expected LOS 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "obstructive sleep apnea on CPAP",
+        "obesity BMI 36",
+        "CKD stage 3a",
+        "hypertension"
+      ],
+      "page": 7,
+      "why": "EP H&P lists OSA, BMI 36 and CKD 3a; HTN in HF clinic note (page 2)."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 26,
+      "page": 4,
+      "why": "CMR 07/11/2026 showed 24%; TTE 09/24/2026 shows 26%. The later one wins."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 4,
+      "why": "TTE with contrast, biplane."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "II",
+      "page": 2,
+      "why": "HF clinic note: 'NYHA class II'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "non-ischemic",
+      "page": 3,
+      "why": "Nonobstructive coronaries on cath, mid-wall LGE, labeled dilated NICM."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 7,
+      "why": "'No prior MI, PCI or CABG.' Cath 07/10 had no intervention."
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 2.9,
+      "page": 5,
+      "why": "All four GDMT drugs started 2026-07-12. That is 88 days (2.9 months) to the 2026-10-08 implant and 84 days (2.8 months) to today. Under 3 months either way. Atorvastatin (2020), HCTZ and amlodipine (2018) are not HF GDMT."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 6,
+      "why": "SDM encounter 2026-09-30 with an evidence-based ICD decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 7,
+      "why": "Contraindication review: none identified."
+    }
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts present. Rules 1 to 5 pass. Rule 6 fails: non-ischemic, and GDMT started 2026-07-12 gives under 3 months by the 2026-10-08 implant. Rules 7 to 9 pass. Escalate."
+}

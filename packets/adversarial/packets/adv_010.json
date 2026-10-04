@@ -1,0 +1,187 @@
+{
+  "id": "adv_010",
+  "service": "icd",
+  "category": "family_or_history_confusion",
+  "difficulty": "medium",
+  "why_hard": "The family history includes a father with an MI at 52 and CABG, a brother with Brugada syndrome who has an ICD, and the patient's own 2014 PCI. None of these is recent or the patient's rhythm diagnosis.",
+  "member": {
+    "name": "Gordon W. Ashcombe",
+    "dob": "1957-07-19",
+    "age": 69,
+    "member_id": "MBR-64412",
+    "sex": "M"
+  },
+  "practice": "Meridian Valley Cardiology",
+  "planned_admit_date": "2026-11-09",
+  "pages": [
+    {
+      "title": "History and physical",
+      "lines": [
+        "MERIDIAN VALLEY CARDIOLOGY - H&P",
+        "DOS: 09/16/2026   Ashcombe, Gordon W.   69 M",
+        "",
+        "CC: ICD eval",
+        "",
+        "PMH:",
+        "- Anterior STEMI 03/2014 -> PCI/DES to prox LAD 03/11/2014",
+        "- Ischemic cardiomyopathy",
+        "- COPD (former smoker 40 pk-yr, quit 2014)",
+        "- DM2, diet + metformin",
+        "- CKD 3a",
+        "",
+        "FHx: Father - MI at 52, CABG at 60, died 71. Mother - DM2, d. 84. Brother (63) - Brugada syndrome, has ICD since 2019. Sister healthy.",
+        "",
+        "SHx: retired electrician. Lives w/ wife. EtOH rare.",
+        "",
+        "ROS: + DOE (1-2 blocks), - CP, - syncope, - palpitations, - orthopnea.",
+        "",
+        "Exam: BP 118/70, HR 66. Mild expiratory wheeze. No edema.",
+        "",
+        "A/P: ICM, NYHA class II, LVEF 29% (TTE 09/03). No ACS or repeat revascularization since 2014. Brugada evaluation completed given brother's dx (see EP note) - negative. Refer for primary prevention ICD.",
+        "W. Pritchard-Lowe, MD"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "Meridian Valley Cardiology - TTE",
+        "Date: 09/03/2026   Patient: ASHCOMBE, GORDON",
+        "",
+        "LVEF 29% (biplane Simpson)",
+        "Anterior, anteroseptal and apical akinesis, thinned/scarred.",
+        "LVIDd 6.0.  Mild MR.  RVSP 30.",
+        "Impression: Severe ischemic LV dysfunction, LVEF 29%."
+      ]
+    },
+    {
+      "title": "EP note - Brugada evaluation",
+      "lines": [
+        "MERIDIAN VALLEY - ELECTROPHYSIOLOGY",
+        "Procainamide challenge   08/18/2026",
+        "Indication: brother with Brugada syndrome; screen pt before device planning",
+        "Baseline ECG with high precordial leads (V1-V2 at 2nd/3rd ICS): no type 1 pattern.",
+        "Procainamide 10 mg/kg IV: no coved ST elevation, no type 1 pattern. QRS 104 -> 116.",
+        "Result: NEGATIVE for Brugada pattern.",
+        "Conclusion: patient does not have Brugada syndrome. ICD indication, if any, is based on his ischemic cardiomyopathy.",
+        "E. Svensson-Achar, MD"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "SDM VISIT - ICD - Meridian Valley Device Clinic",
+        "Date 09/30/2026",
+        "Gordon Ashcombe, wife present",
+        "Clinician: Harriet Moyo, NP",
+        "Decision aid: evidence-based ICD decision aid, reviewed (paper + video).",
+        "Pt has seen his brother's device and shocks; we separated his brother's situation (inherited rhythm disorder) from his own (scar-related risk).",
+        "Risks/benefits/alternatives reviewed. Pt chooses ICD.",
+        "H. Moyo NP"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Ashcombe, Gordon W. - Current meds (09/16/2026)",
+        "",
+        "carvedilol 25 mg BID ............... 03/13/2014",
+        "sacubitril/valsartan 49/51 BID ..... 05/2020 (lisinopril 03/13/2014-05/2020)",
+        "spironolactone 25 mg ............... 2015",
+        "dapagliflozin 10 mg ................ 2022",
+        "aspirin 81 mg ...................... 2014",
+        "atorvastatin 80 mg ................. 2014",
+        "metformin 500 mg BID ............... 2018",
+        "budesonide/formoterol inh BID ...... 2019"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "MV LAB  09/17/2026  ASHCOMBE G",
+        "Cr 1.4  eGFR 53  K 4.6  Na 139",
+        "A1c 6.9",
+        "Hgb 14.4  Plt 210",
+        "NT-proBNP 920"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "PRE-ADMISSION / LEVEL OF CARE - EP",
+        "10/02/2026   Ashcombe, Gordon   CPT 33249   Admit 11/09/2026",
+        "Planned stay: 2 midnights (inpatient).",
+        "Factors: COPD w/ wheeze, risk of post-sedation bronchospasm/hypoxia; CKD 3a w/ contrast; DM2.",
+        "Exclusions: cognitively intact; no illness limiting survival <1 yr; no AF; clinically stable. None.",
+        "E. Svensson-Achar MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Planned stay: 2 midnights (inpatient).'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "COPD",
+        "CKD stage 3a",
+        "type 2 diabetes"
+      ],
+      "page": 8,
+      "why": "Patient's own conditions on the pre-admission plan. The father's MI and the brother's Brugada are family history, not the patient's comorbidities."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 29,
+      "page": 3,
+      "why": "TTE 09/03/2026: 29%."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 3,
+      "why": "TTE biplane Simpson."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "II",
+      "page": 2,
+      "why": "H&P A/P: 'NYHA class II'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 2,
+      "why": "Ischemic cardiomyopathy after 2014 anterior STEMI. Brugada was ruled out by procainamide challenge (page 4), so the request does not rest on an inherited rhythm disorder."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 2,
+      "why": "Patient's MI and PCI were 03/2014; 'No ACS or repeat revascularization since 2014.' The father's MI at 52 is family history."
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 151.9,
+      "page": 6,
+      "why": "Carvedilol and ACEi since 2014-03-13. Not decisive (ischemic)."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 5,
+      "why": "SDM 09/30/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "'Exclusions: ... None.'"
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "Ischemic, LVEF 29% by echo, NYHA II, last MI and PCI in 2014, SDM done, no limiting condition, 2 midnights with COPD, CKD and DM. Family history does not change any rule. Approve."
+}

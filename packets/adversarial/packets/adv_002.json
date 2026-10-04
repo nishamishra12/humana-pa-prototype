@@ -1,0 +1,208 @@
+{
+  "id": "adv_002",
+  "service": "icd",
+  "category": "temporal_trap",
+  "difficulty": "hard",
+  "why_hard": "The pre-op note says 'no ACS in past year' and the MI was in 2023, but an elective LCx stent on 2026-07-20 is 87 days before the 2026-10-15 implant, inside the 3-month window.",
+  "member": {
+    "name": "Gwendolyn Okafor-Reyes",
+    "dob": "1952-11-03",
+    "age": 73,
+    "member_id": "MBR-57731",
+    "sex": "F"
+  },
+  "practice": "Cedar Hollow Cardiovascular Group",
+  "planned_admit_date": "2026-10-15",
+  "pages": [
+    {
+      "title": "Cardiology office visit",
+      "lines": [
+        "CEDAR HOLLOW CARDIOVASCULAR GROUP",
+        "Office Visit 09/29/2026  |  Okafor-Reyes, Gwendolyn  |  DOB 11/03/1952",
+        "Provider: Marcus T. Delahaye, MD",
+        "",
+        "CC: f/u ischemic CM, ICD discussion",
+        "",
+        "HPI: 73F with anterior STEMI 02/2023 s/p LAD stent, ischemic CM, PAF on apixaban, CKD 3a. Had exertional angina over the spring (CCS III), now resolved after staged PCI this summer. Main issue now is dyspnea - walks to mailbox and has to rest, can't do her laundry downstairs without stopping. No rest sx, no orthopnea. Denies syncope. Palpitations rare.",
+        "",
+        "Vitals: BP 112/64  HR 68 irregular? -> ECG SR w/ PACs  Wt 152 lb",
+        "Exam: JVP 7 cm, lungs clear, no edema.",
+        "",
+        "Imaging: TTE 09/14/26 LVEF 28%, anterior/apical AK.",
+        "",
+        "A/P:",
+        "1. ICM, HFrEF, NYHA III. On GDMT >3 yrs, at max tolerated doses. Refer EP for primary prevention ICD.",
+        "2. CAD - no angina post PCI. DAPT -> clopidogrel + apixaban (no ASA) per triple-therapy avoidance protocol.",
+        "3. PAF - rate controlled, HR 60s-70s on metoprolol, CHA2DS2-VASc 5, cont apixaban.",
+        "4. CKD 3a - stable.",
+        "RTC 3 mo.",
+        "M. Delahaye MD"
+      ]
+    },
+    {
+      "title": "Transthoracic echocardiogram",
+      "lines": [
+        "Cedar Hollow Imaging Center - Echocardiography Report",
+        "Exam date: 09/14/2026   Patient: OKAFOR-REYES, GWENDOLYN   Age 73   F",
+        "Rhythm: sinus",
+        "",
+        "LV: dilated (LVIDd 5.9 cm). Akinetic mid-distal anterior wall, anteroseptum and apex. Remaining segments hypokinetic.",
+        "LVEF by biplane method of disks: 28 %",
+        "RV: normal size, mildly reduced fxn (TAPSE 1.6).",
+        "Valves: mild-mod MR, mild TR. Est RVSP 41 mmHg.",
+        "No apical thrombus with contrast.",
+        "",
+        "Conclusion: Severe LV systolic dysfunction, LVEF 28%. Compared with 03/2025 (LVEF 30%), no significant change.",
+        "Interpreting physician: A. Rasmussen-Cole, MD"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "Cedar Hollow Cardiovascular Group - Device Clinic",
+        "SDM visit for ICD   Date of encounter: 10/01/2026",
+        "Patient: Gwendolyn Okafor-Reyes   Present: patient, daughter (Ngozi)",
+        "Facilitator: Trina Beaulieu, PA-C",
+        "",
+        "Decision aid: validated ICD option grid / decision aid (printed, plain-language version), reviewed line by line.",
+        "Discussed benefit in absolute terms (approx 7 of 100 people avoid sudden death over 5 yrs), risks: infection, lead problems, inappropriate shocks, psychological impact, deactivation options.",
+        "Patient's priorities: independence, staying out of hospital. Daughter asked about MRI compatibility - answered.",
+        "Patient chose ICD. Understands she may decline at any time.",
+        "Decision aid copy scanned to chart.",
+        "T. Beaulieu PA-C"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "Quest-style outpatient panel   Collected: 09/25/2026",
+        "OKAFOR-REYES, G   F  73y",
+        "",
+        "BMP: Na 140, K 4.4, Cl 104, HCO3 25, BUN 24, Cr 1.3 H, eGFR 42 L, Glu 101",
+        "CBC: WBC 6.1, Hgb 11.6 L, Hct 35.2, Plt 188",
+        "Coags: PT 13.0, INR 1.1 (on apixaban, last dose prior evening)",
+        "NT-proBNP: 2,240 H",
+        "Lipids: LDL 54, HDL 48, TG 110"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "ACTIVE MEDICATIONS (printed 09/29/2026)",
+        "",
+        "- metoprolol succinate 100 mg PO daily ........ since 03/02/2023",
+        "- sacubitril-valsartan 49/51 mg PO BID ........ since 03/02/2023 (switched from losartan)",
+        "- spironolactone 12.5 mg PO daily ............. since 05/2023",
+        "- dapagliflozin 10 mg PO daily ................ since 01/2024",
+        "- apixaban 5 mg PO BID ........................ since 2024 (PAF)",
+        "- clopidogrel 75 mg PO daily .................. since 07/20/2026",
+        "- rosuvastatin 40 mg PO daily ................. since 2023",
+        "- furosemide 40 mg PO daily ................... since 2023",
+        "- levothyroxine 50 mcg daily .................. long-standing",
+        "",
+        "Discontinued: aspirin 81 mg (stopped 08/20/2026, on OAC + P2Y12)"
+      ]
+    },
+    {
+      "title": "Cardiac catheterization and PCI report",
+      "lines": [
+        "CEDAR HOLLOW REGIONAL MEDICAL CENTER - CARDIAC CATH LAB",
+        "Procedure date: 07/20/2026   Patient: Okafor-Reyes, Gwendolyn   MRN CH-0081174",
+        "Operator: L. Fenwick, MD   Access: R radial 6F",
+        "",
+        "Indication: staged elective PCI; CCS class III angina, positive stress test, known mid LCx stenosis.",
+        "Findings: LM nl. LAD - patent prior stent (2023), mild ISR <30%. LCx - mid 85% focal. RCA - nondominant, mild irregularities.",
+        "Intervention: Successful PCI of mid LCx with 3.0 x 18 mm drug-eluting stent. 0% residual, TIMI 3.",
+        "Complications: none. Biomarkers post: not elevated.",
+        "Plan: clopidogrel 75 daily x 6-12 mo with apixaban, stop ASA after 30 days."
+      ]
+    },
+    {
+      "title": "Pre-admission plan for device implant",
+      "lines": [
+        "EP PRE-PROCEDURE NOTE",
+        "10/02/2026   Okafor-Reyes, Gwendolyn   MBR-57731",
+        "Surgeon: Hollis Varga, MD (EP)",
+        "",
+        "Procedure: dual-chamber ICD (CPT 33249). Elective inpatient admission 10/15/2026.",
+        "Indication: ICM, LVEF 28% by TTE, NYHA III despite >3 yrs GDMT. SDM completed (see device clinic note).",
+        "No ACS in past year. Coronary hx per cardiology records.",
+        "",
+        "Anticipated stay: 2 nights.",
+        "Supporting factors: apixaban held 48h pre-op w/ need for monitored restart and pocket checks while on clopidogrel; CKD 3a (eGFR 42) w/ planned post-procedure labs; PAF w/ risk of perioperative rapid AF on telemetry.",
+        "",
+        "Exclusions reviewed: cognition intact, no terminal illness, AF rate controlled (HR 60s-70s), clinically stable. None present.",
+        "H. Varga MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Anticipated stay: 2 nights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "paroxysmal atrial fibrillation on apixaban",
+        "CKD stage 3a",
+        "dual antithrombotic therapy",
+        "hypothyroidism"
+      ],
+      "page": 8,
+      "why": "Pre-procedure note lists apixaban plus clopidogrel, CKD 3a and PAF; levothyroxine on med list (page 6)."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 28,
+      "page": 3,
+      "why": "TTE 09/14/2026: 28%. The 03/2025 value of 30% is older."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 3,
+      "why": "Transthoracic echo, biplane method of disks."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "III",
+      "page": 2,
+      "why": "Office visit A/P: 'NYHA III'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 2,
+      "why": "Ischemic CM after anterior STEMI 2023."
+    },
+    "recent_mi_revasc": {
+      "truth": "present",
+      "value": "PCI with drug-eluting stent to mid LCx on 2026-07-20",
+      "page": 7,
+      "why": "Stent 2026-07-20 to planned implant 2026-10-15 is 87 days. Three months from 07/20 is 10/20, so the implant falls inside the 3-month window. The 'no ACS in past year' line is true but irrelevant because the stent was elective."
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 43.4,
+      "page": 6,
+      "why": "Metoprolol succinate and sacubitril-valsartan since 2023-03-02, about 43 months to the implant. Not decisive (ischemic)."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 4,
+      "why": "Device clinic SDM visit on 2026-10-01 using a validated ICD decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "Exclusions reviewed and none present; AF is explicitly rate controlled, so it is not a limiting condition."
+    }
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "Every fact is present and clear. Rules 1 to 4 pass (ischemic, 28%, echo, NYHA III). Rule 5 fails: a stent placed 2026-07-20 is within 3 months of the 2026-10-15 implant. Rules 6 to 9 pass. One rule not met with complete facts, so escalate."
+}

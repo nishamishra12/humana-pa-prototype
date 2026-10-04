@@ -1,0 +1,110 @@
+{
+  "id": "adv_040",
+  "service": "bariatric",
+  "category": "distractor_numbers",
+  "difficulty": "hard",
+  "why_hard": "The latest note states BMI 36.2, but its own measured height (5 ft 6 in) and weight (211 lb) compute to 34.1. An earlier dietitian note used a self-reported 64 in height. The stated BMI and its inputs contradict each other across the 35 line.",
+  "member": {
+    "name": "Gloria T. Hammersmith",
+    "dob": "1960-09-19",
+    "age": 66,
+    "member_id": "MBR-14478",
+    "sex": "F"
+  },
+  "practice": "Bellwether Bariatric Surgery",
+  "planned_admit_date": "2026-11-16",
+  "pages": [
+    {
+      "title": "Primary care note",
+      "lines": [
+        "ORCHARD STREET PRIMARY CARE  03/18/2026",
+        "Hammersmith, Gloria T.",
+        "Wt 214 lb. Ht 5 ft 6 in (stated).",
+        "Problems: T2DM (A1c 7.9) on metformin + sitagliptin; HTN on amlodipine; osteopenia.",
+        "Referred to bariatric surgery after failed program.",
+        "Dr. Wendell Asante-Burke"
+      ]
+    },
+    {
+      "title": "Supervised program records",
+      "lines": [
+        "BELLWETHER MEDICAL WEIGHT MANAGEMENT",
+        "Hammersmith, Gloria   07/2025 - 01/2026",
+        "Supervising MD: Rhea Castellano-Moss",
+        "6 monthly visits; 1,400 kcal; chair yoga + walking; orlistat 09-12/2025 (stopped, GI side effects).",
+        "Weight 218 -> 212 -> 216 lb (net -0.9%). Unsuccessful."
+      ]
+    },
+    {
+      "title": "Dietitian assessment",
+      "lines": [
+        "BELLWETHER NUTRITION  08/20/2026",
+        "Hammersmith, Gloria",
+        "Ht 64 in (stated by pt)   Wt 208 lb   BMI 35.7",
+        "Protein intake low. Education provided."
+      ]
+    },
+    {
+      "title": "Surgical pre-op visit",
+      "lines": [
+        "BELLWETHER BARIATRIC SURGERY - PRE-OP VISIT",
+        "09/25/2026   Hammersmith, Gloria T.",
+        "Vitals: Wt 211 lb   Ht 5 ft 6 in (measured, stadiometer)   BMI 36.2   BP 138/82   Pulse 76",
+        "Labs reviewed: A1c 7.6, LDL 102.",
+        "A/P: T2DM, HTN. Proceed with RYGB.",
+        "Dr. Ottoline Fairweather-Ng"
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-BARIATRIC PSYCH  08/12/2026",
+        "Hammersmith, Gloria",
+        "Cleared."
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN  09/29/2026",
+        "Hammersmith, Gloria T.   MBR-14478",
+        "Lap RYGB (CPT 43644). Admit 11/16/2026, inpatient.",
+        "Expected LOS: 2 midnights. Factors: age 66; T2DM (glucose monitoring); HTN; osteopenia w/ fall precautions.",
+        "O. Fairweather-Ng MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes",
+        "hypertension",
+        "osteopenia"
+      ],
+      "page": 2,
+      "why": "PCP problem list; T2DM and HTN confirmed on page 5."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": null,
+      "ambiguous": true,
+      "page": 5,
+      "why": "The most recent note (09/25/2026) states BMI 36.2, but its own measured height of 66 in and weight of 211 lb give 34.1. 36.2 matches a 64 in height, which is the patient's self-report on the 08/20 dietitian note (BMI 35.7). The stated BMI and its inputs fall on opposite sides of 35, so a person must confirm the true height and BMI."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "Supervised program 07/2025 to 01/2026 with diet, exercise and orlistat; net -0.9%; unsuccessful."
+    }
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rules 2 to 4 pass. Rule 1 depends on BMI. The latest stated BMI (36.2) contradicts the measured height and weight in the same note (34.1). This internal contradiction crosses the threshold and needs a person to settle it. Verify."
+}

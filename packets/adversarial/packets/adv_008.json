@@ -1,0 +1,195 @@
+{
+  "id": "adv_008",
+  "service": "icd",
+  "category": "format_variants",
+  "difficulty": "hard",
+  "why_hard": "EF appears as '0.27' and 'twenty-seven percent', and functional status appears only as 'ACC/AHA stage C' and 'CCS class II angina'. NYHA class is never stated.",
+  "member": {
+    "name": "Ignatius P. Delacroix",
+    "dob": "1958-09-30",
+    "age": 68,
+    "member_id": "MBR-49927",
+    "sex": "M"
+  },
+  "practice": "Westfield Cardiac Rhythm Center",
+  "planned_admit_date": "2026-11-12",
+  "pages": [
+    {
+      "title": "Cardiology consultation (dictated)",
+      "lines": [
+        "WESTFIELD CARDIAC RHYTHM CENTER",
+        "Consultation - dictated, transcribed 09/18/2026",
+        "RE: Delacroix, Ignatius P.   DOB 09/30/1958",
+        "",
+        "Mr. Delacroix is a sixty-seven-year-old gentleman, seen today at the request of Dr. Haugen for consideration of a defibrillator. He had an inferolateral myocardial infarction in March of 2020 treated with a stent to the circumflex. He has not had any further cardiac events or procedures since that time.",
+        "",
+        "His echocardiogram from earlier this month shows an ejection fraction of twenty-seven percent, which is not much different from last year.",
+        "",
+        "Functionally, he tells me he gets short of breath after one flight of stairs and has to pause when walking his dog more than a block or so. He has occasional exertional chest tightness, Canadian Cardiovascular Society class II, relieved by rest. No rest symptoms. No syncope.",
+        "",
+        "IMPRESSION: Ischemic cardiomyopathy, ACC/AHA stage C heart failure with reduced ejection fraction. Stable angina CCS class II. He has been on guideline-directed therapy for several years.",
+        "",
+        "RECOMMENDATION: Primary prevention ICD is reasonable. He will meet with our nurse practitioner for a formal shared decision-making visit.",
+        "",
+        "Dictated by Siobhan Mercer-Aho, MD. D: 09/17/2026 T: 09/18/2026"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "WESTFIELD ECHO LAB",
+        "DATE: 2026-09-08",
+        "NAME: DELACROIX, IGNATIUS",
+        "",
+        "2D/Doppler TTE",
+        "LV EF (biplane MOD): 0.27",
+        "LV EDV 205 mL / ESV 150 mL",
+        "WMA: inferolateral AK, inferior HK",
+        "RV TAPSE 17 mm",
+        "MR mild",
+        "E/e' 16",
+        "",
+        "SUMMARY: Severe LV systolic dysfunction (EF 0.27). Prior 08/2025 EF 0.29.",
+        "MD: Haruki Bellweather"
+      ]
+    },
+    {
+      "title": "Six-minute walk test",
+      "lines": [
+        "Cardiac Rehab / Exercise Lab   Six-Minute Walk Test",
+        "Date: 09/18/2026   Pt: Delacroix, I.",
+        "Distance: 310 m (predicted 520 m)",
+        "Borg dyspnea at end: 5/10. Borg fatigue 4/10.",
+        "SpO2 96% -> 94%. HR 68 -> 101.",
+        "Stopped once at 4 min for 20 s (dyspnea).",
+        "Tech: L. Faraday, EP"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Medication List - Delacroix, Ignatius P. - printed 09/18/2026",
+        "",
+        "1. Bisoprolol 10 mg daily - since 04/2020",
+        "2. Sacubitril/valsartan 97/103 mg BID - since 01/2022 (previously ramipril 04/2020-01/2022)",
+        "3. Spironolactone 25 mg daily - since 04/2020",
+        "4. Empagliflozin 10 mg daily - since 06/2022",
+        "5. Clopidogrel 75 mg daily - since 03/2020",
+        "6. Rosuvastatin 20 mg daily",
+        "7. Isosorbide mononitrate 30 mg daily",
+        "8. Nitroglycerin 0.4 mg SL PRN",
+        "9. Allopurinol 100 mg daily"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "WESTFIELD CARDIAC RHYTHM CENTER",
+        "Shared Decision Making Visit - ICD     Date: 09/25/2026",
+        "Patient: Ignatius Delacroix   With: partner (Rhys)",
+        "NP: Galina Petrosyan, FNP-C",
+        "",
+        "Decision aid: evidence-based ICD decision aid, reviewed in its entirety (paper).",
+        "Content covered: what an ICD is, likely benefit in his situation, shocks, infection, lead problems, battery replacement, turning the device off later in life, choosing no ICD.",
+        "Pt summary in own words: 'it's a safety net, not a cure.'",
+        "Choice: ICD.",
+        "G. Petrosyan FNP-C"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "WESTFIELD REGIONAL LAB  - 09/20/2026",
+        "DELACROIX, IGNATIUS",
+        "Na 141, K 4.3, BUN 30, Cr 1.7 (H), eGFR 43",
+        "Uric acid 6.2",
+        "Hgb 13.8, Plt 199",
+        "BNP 488 (H)",
+        "INR 1.0"
+      ]
+    },
+    {
+      "title": "Surgeon's admission plan",
+      "lines": [
+        "PRE-ADMISSION PLAN - ICD",
+        "Date: 10/01/2026",
+        "Patient: Delacroix, Ignatius P.  /  Admit 11/12/2026 inpatient  /  CPT 33249",
+        "Operator: S. Mercer-Aho MD",
+        "",
+        "We anticipate two midnights in hospital after implant.",
+        "Supporting factors: CKD stage 3b (eGFR 43) w/ contrast venography; clopidogrel continued uninterrupted (pocket hematoma surveillance); gout w/ recent flare risk w/ diuretic adjustment.",
+        "",
+        "Screen for limiting conditions: no cognitive impairment, no terminal illness, no atrial fibrillation, clinically stable. None present.",
+        "S. Mercer-Aho MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'We anticipate two midnights in hospital after implant.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "CKD stage 3b",
+        "clopidogrel antiplatelet therapy",
+        "gout"
+      ],
+      "page": 8,
+      "why": "Supporting factors on the admission plan."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 27,
+      "page": 3,
+      "why": "Echo 2026-09-08 'EF 0.27' (page 3) and 'twenty-seven percent' in the dictation (page 2) are the same value. The 08/2025 'EF 0.29' is older."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 3,
+      "why": "2D TTE, biplane method of disks."
+    },
+    "nyha_class": {
+      "truth": "absent",
+      "value": null,
+      "page": null,
+      "why": "No NYHA class appears anywhere. 'ACC/AHA stage C' is a heart failure stage, not a NYHA class. 'CCS class II' is an angina scale. A symptom description and a 6-minute walk distance are not a documented NYHA class."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 2,
+      "why": "Ischemic cardiomyopathy after 2020 MI with stent."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 2,
+      "why": "MI and stent 03/2020; 'has not had any further cardiac events or procedures since that time.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 79,
+      "page": 5,
+      "why": "Bisoprolol, ACEi/ARNI and spironolactone since 04/2020, about 79 months to the implant. Not decisive (ischemic)."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 6,
+      "why": "SDM 09/25/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "'None present.'"
+    }
+  },
+  "expected_action": "pend",
+  "action_reasoning": "NYHA class is a needed fact for rule 4 and is not documented; stage C and CCS II are different scales. One needed fact is absent, so pend and ask for the NYHA class. Every other rule would pass."
+}

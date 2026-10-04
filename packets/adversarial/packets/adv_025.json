@@ -1,0 +1,119 @@
+{
+  "id": "adv_025",
+  "service": "bariatric",
+  "category": "temporal_trap",
+  "difficulty": "hard",
+  "why_hard": "The plan says '2-day hospital course' and the coordinator form says '2 days', but the dates show admission 10/20 and discharge 10/21, which is 1 midnight.",
+  "member": {
+    "name": "Imogen V. Castellanos",
+    "dob": "1966-11-21",
+    "age": 59,
+    "member_id": "MBR-61025",
+    "sex": "F"
+  },
+  "practice": "Brookside Surgical Weight Management",
+  "planned_admit_date": "2026-10-20",
+  "pages": [
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "BROOKSIDE SURGICAL WEIGHT MANAGEMENT",
+        "Consult 08/27/2026",
+        "Imogen V. Castellanos, 59F",
+        "Ht 63 in   Wt 240.5 lb   BMI 42.6",
+        "PMH: T2DM (A1c 7.6, metformin + sitagliptin), OSA on CPAP (AHI 29), GERD, depression (stable on sertraline).",
+        "Weight hx: lifelong; completed 6-mo supervised program 2025-2026 without success (records attached).",
+        "Plan: RYGB on ERAS pathway.",
+        "Dr. Felix Amundsen-Oduya"
+      ]
+    },
+    {
+      "title": "Supervised program records",
+      "lines": [
+        "BROOKSIDE MEDICAL WEIGHT PROGRAM - SUMMARY",
+        "Castellanos, Imogen   Dates: 11/04/2025 - 05/05/2026",
+        "Supervising MD: Hana Petrakis, MD",
+        "6 monthly visits: dietitian-guided 1,500 kcal plan, exercise prescription, behavioral counseling, naltrexone-bupropion 12/2025-03/2026 (stopped, insomnia/anxiety).",
+        "Weight 244 -> 239 -> 243 lb. Net -0.4%.",
+        "Assessment: medical weight management unsuccessful."
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "BEHAVIORAL MEDICINE - PRE-BARIATRIC   07/30/2026",
+        "Castellanos, Imogen",
+        "Depression in remission on sertraline. No eating disorder. Cleared for surgery."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "BROOKSIDE LAB   09/03/2026",
+        "A1c 7.6 H, glucose 151 H",
+        "Cr 0.7, K 4.0",
+        "Hgb 12.2, ferritin 30",
+        "TSH 2.2"
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "BROOKSIDE - OPERATIVE PLAN / ERAS PATHWAY",
+        "Date: 09/24/2026",
+        "Patient: Castellanos, Imogen V.   MBR-61025",
+        "Procedure: laparoscopic Roux-en-Y gastric bypass, CPT 43644.",
+        "Pre-op: 2-day clear liquid diet before surgery; CPAP to hospital.",
+        "",
+        "Anticipated hospital course: 2 days. Admit day of surgery 10/20/2026; discharge home POD1 (10/21/2026) if tolerating stage 2 liquids, pain controlled on oral meds, ambulating.",
+        "Inpatient monitoring overnight for OSA (continuous oximetry) and glucose checks q6h.",
+        "F. Amundsen-Oduya MD"
+      ]
+    },
+    {
+      "title": "Authorization coordinator worksheet",
+      "lines": [
+        "BROOKSIDE - PRIOR AUTH WORKSHEET (internal)",
+        "Prepared 09/25/2026 by S. Whitcombe-Lee, auth coordinator",
+        "Member: Imogen Castellanos   MBR-61025",
+        "CPT 43644   Dx E66.01, E11.9, G47.33",
+        "Setting: inpatient   Days requested: 2",
+        "DOS 10/20/2026",
+        "Attachments: consult, program records, psych, labs, op plan."
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 1,
+      "page": 6,
+      "why": "Admit 10/20/2026 and discharge POD1 10/21/2026 is one midnight. The '2 days' (page 6) and 'Days requested: 2' (page 7) count calendar days, not midnights."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes",
+        "obstructive sleep apnea on CPAP",
+        "GERD",
+        "depression"
+      ],
+      "page": 2,
+      "why": "Consult PMH."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 42.6,
+      "page": 2,
+      "why": "Consult 08/27/2026: BMI 42.6."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "Supervised program 11/04/2025 to 05/05/2026 with diet, exercise, counseling and naltrexone-bupropion; net -0.4%; labeled unsuccessful."
+    }
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "BMI, comorbidity and prior treatment pass. Rule 4 needs at least 2 midnights, but the dated plan is admit 10/20 and discharge 10/21, which is 1 midnight. All facts present, one rule not met. Escalate."
+}

@@ -1,0 +1,381 @@
+[
+{
+  "id": "adv_021",
+  "service": "bariatric",
+  "category": "clean_control",
+  "difficulty": "easy",
+  "why_hard": "Clean control: BMI, comorbidities, a failed supervised program and a 2-midnight plan are all clearly documented.",
+  "member": {"name": "Delphine R. Mattox", "dob": "1972-04-11", "age": 54, "member_id": "MBR-70218", "sex": "F"},
+  "practice": "Bluebonnet Bariatric & Metabolic Surgery",
+  "planned_admit_date": "2026-11-09",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "BLUEBONNET BARIATRIC & METABOLIC SURGERY",
+      "Surgical consult   09/24/2026",
+      "Patient: Mattox, Delphine R.   DOB 04/11/1972",
+      "",
+      "HPI: 54F w/ severe obesity since her 20s, T2DM on insulin, severe OSA on CPAP, HTN. Completed our 6-month medically supervised weight management program (01-07/2026) without meaningful loss. Interested in RYGB for diabetes control.",
+      "",
+      "Vitals: Ht 65 in   Wt 265.6 lb   BMI 44.2 kg/m2   BP 138/84",
+      "",
+      "Assessment: Class III obesity, BMI 44.2, w/ T2DM (A1c 8.1 on insulin), severe OSA, HTN.",
+      "Plan: laparoscopic Roux-en-Y gastric bypass. Psych and nutrition clearance obtained. Will schedule.",
+      "Signed: Anneliese Fortier-Kwan, MD, FACS"
+    ]},
+    {"title": "Medically supervised weight management program summary", "lines": [
+      "BLUEBONNET MEDICAL WEIGHT MANAGEMENT PROGRAM",
+      "Program summary letter   07/15/2026",
+      "Participant: Delphine Mattox",
+      "Supervising physician: Kofi Ampofo, MD (Obesity Medicine)",
+      "",
+      "Enrolled 01/08/2026, final visit 07/09/2026: 7 monthly physician/dietitian visits, all attended.",
+      "Interventions: 1,400 kcal meal plan with food logs; activity goal 150 min/wk (achieved ~90 min/wk due to knee pain); behavioral counseling; phentermine 15 mg 02/05-04/20/2026, stopped for BP elevation and palpitations. GLP-1 RA not added (already on insulin; pt declined injectable add-on, cost).",
+      "",
+      "Weights: start 268.0 lb -> nadir 261.2 lb (05/2026) -> final 262.4 lb. Total loss 2.1%.",
+      "Outcome: did not achieve 5% weight loss goal. Medical management unsuccessful. Referred to bariatric surgery.",
+      "K. Ampofo MD"
+    ]},
+    {"title": "Polysomnography summary", "lines": [
+      "BLUEBONNET SLEEP CENTER - Diagnostic PSG",
+      "Study date: 03/14/2025   Mattox, Delphine",
+      "AHI 38/h (severe). Nadir SpO2 79%.",
+      "CPAP titration: optimal 12 cm H2O.",
+      "Dx: severe obstructive sleep apnea. On CPAP since 04/2025, compliance 86% of nights >4h (09/2026 download)."
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-BARIATRIC PSYCHOLOGICAL EVALUATION",
+      "08/19/2026   Mattox, Delphine R.",
+      "Evaluator: Rosa Lindqvist-Owens, PsyD",
+      "No current eating disorder; no binge eating. Mild depression in remission, no SI. Good support (husband, sister). Understands post-op diet and lifelong supplementation.",
+      "Recommendation: psychologically cleared for bariatric surgery."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "BLUEBONNET LAB   09/22/2026",
+      "MATTOX, DELPHINE",
+      "HbA1c 8.1% (H)   Glucose 182 (H)",
+      "Cr 0.8   eGFR 88   K 4.1",
+      "ALT 34   AST 29",
+      "Hgb 12.9   Ferritin 48   B12 512   Vit D 21 (L)",
+      "TSH 1.9"
+    ]},
+    {"title": "Primary care letter", "lines": [
+      "WILLOW BEND PRIMARY CARE",
+      "09/02/2026",
+      "Re: Delphine Mattox",
+      "Active problems: T2DM since 2014, on insulin glargine 46 u + metformin; HTN on lisinopril 20 + amlodipine 5; severe OSA on CPAP; bilateral knee OA.",
+      "I support bariatric surgery. Her diabetes has worsened despite medication changes.",
+      "Ines Delacourt, MD"
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "BLUEBONNET BARIATRIC - OPERATIVE PLAN / LEVEL OF CARE",
+      "Date: 09/30/2026",
+      "Patient: Mattox, Delphine R.   MBR-70218",
+      "Procedure: laparoscopic Roux-en-Y gastric bypass (CPT 43644). Admit 11/09/2026, inpatient.",
+      "Expected LOS: 2 midnights.",
+      "Rationale: severe OSA requiring CPAP and continuous pulse oximetry post-op; insulin-requiring T2DM needing insulin dose reduction and glucose monitoring as diet advances; HTN med adjustment.",
+      "A. Fortier-Kwan MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes on insulin", "severe obstructive sleep apnea", "hypertension", "knee osteoarthritis"], "page": 2, "why": "Consult assessment and PCP letter (page 7)."},
+    "bmi": {"truth": "present", "value": 44.2, "page": 2, "why": "Consult 09/24/2026: BMI 44.2."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "6-month physician-supervised program 01/08 to 07/09/2026, with diet, activity, counseling and phentermine. Lost 2.1%; documented as unsuccessful."}
+  },
+  "expected_action": "approve",
+  "action_reasoning": "BMI 44.2 (35 or higher), T2DM and OSA documented, supervised program failed, 2 midnights with documented factors. Approve."
+},
+{
+  "id": "adv_022",
+  "service": "bariatric",
+  "category": "clean_control",
+  "difficulty": "easy",
+  "why_hard": "Clean control with a lower BMI (38.9) and a GLP-1 trial inside the supervised program.",
+  "member": {"name": "Rupert E. Holloway", "dob": "1959-10-02", "age": 67, "member_id": "MBR-41893", "sex": "M"},
+  "practice": "Fairmont Center for Weight Loss Surgery",
+  "planned_admit_date": "2026-11-16",
+  "pages": [
+    {"title": "Bariatric surgeon consultation", "lines": [
+      "FAIRMONT CENTER FOR WEIGHT LOSS SURGERY",
+      "Consultation 09/29/2026",
+      "Rupert E. Holloway   67M",
+      "",
+      "Weight hx: gradual gain after retiring. Tried our medical program last year w/ semaglutide; lost a little, could not tolerate the medication, regained.",
+      "PMH: T2DM (2016), HTN, GERD w/ LA grade B esophagitis on EGD 2025, hyperlipidemia.",
+      "Meds: metformin, glipizide, losartan, pantoprazole, atorvastatin.",
+      "",
+      "Ht 71 in, Wt 279 lb, BMI 38.9.",
+      "",
+      "Impression: obesity BMI 38.9 w/ T2DM (A1c 7.9), HTN, erosive GERD. RYGB preferred over sleeve given GERD.",
+      "Plan: RYGB.",
+      "Dr. Tobias Engstrom-Reyes"
+    ]},
+    {"title": "Medical weight loss program records", "lines": [
+      "FAIRMONT MEDICAL WEIGHT LOSS - PHYSICIAN-SUPERVISED PROGRAM",
+      "Patient: Holloway, Rupert   Program dates: 10/06/2025 - 04/13/2026",
+      "Supervising: Grace Oduya, MD, DABOM",
+      "",
+      "Visit log (weight, lb): 10/06 286 | 11/03 284 | 12/08 281 | 01/12 279 | 02/09 277 | 03/09 280 | 04/13 283",
+      "Medication: semaglutide weekly started 11/03/2025, titrated to 1 mg; stopped 03/2026 for persistent nausea/vomiting.",
+      "Diet: 1,600 kcal plan, dietitian counseling each visit. Exercise: walking program.",
+      "Result: max loss 9 lb (3.1%) by 02/2026, then regained; 04/13/2026 weight 283 lb (-1.0% from start).",
+      "Program outcome: unsuccessful; refer to bariatric surgery.",
+      "G. Oduya MD"
+    ]},
+    {"title": "Nutrition evaluation", "lines": [
+      "PRE-OP NUTRITION ASSESSMENT   09/15/2026",
+      "Holloway, Rupert   RD: Marta Jovanovic, RD, LD",
+      "Diet recall: large portions at dinner, sugary drinks 2/day (reduced to 1).",
+      "Education: post-RYGB diet stages, protein goal 60-80 g, supplements.",
+      "Cleared from nutrition standpoint."
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PSYCHOLOGY CLEARANCE   08/28/2026",
+      "Rupert Holloway",
+      "No eating disorder. No substance use. Realistic expectations. Wife supportive.",
+      "Cleared. - Dr. Amara Kingsley-Pratt, PhD"
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "FAIRMONT LAB 09/26/2026  HOLLOWAY R",
+      "A1c 7.9 H   Glucose 162 H",
+      "LDL 98   TG 210 H",
+      "Cr 1.0   ALT 41",
+      "Hgb 14.6"
+    ]},
+    {"title": "Surgical plan and level of care", "lines": [
+      "OPERATIVE PLAN - 10/01/2026",
+      "Holloway, Rupert E.   MBR-41893",
+      "Procedure: laparoscopic RYGB, CPT 43644. Admit 11/16/2026, inpatient.",
+      "Expected stay: two nights.",
+      "Why: age 67 w/ T2DM on sulfonylurea (hypoglycemia risk as intake drops), HTN requiring med adjustment, and erosive GERD.",
+      "T. Engstrom-Reyes MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected stay: two nights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "hypertension", "erosive GERD", "hyperlipidemia"], "page": 2, "why": "Consult PMH and impression."},
+    "bmi": {"truth": "present", "value": 38.9, "page": 2, "why": "Consult 09/29/2026: BMI 38.9."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Physician-supervised program 10/06/2025 to 04/13/2026 with diet, exercise and semaglutide. Lost at most 3.1%, then regained; labeled unsuccessful."}
+  },
+  "expected_action": "approve",
+  "action_reasoning": "BMI 38.9, T2DM, failed supervised program, 2 nights with documented factors. Approve."
+},
+{
+  "id": "adv_023",
+  "service": "bariatric",
+  "category": "ambiguous_verify",
+  "difficulty": "hard",
+  "why_hard": "On the same day, the surgeon's clinic recorded BMI 35.7 and the dietitian's clinic recorded BMI 34.6, on different scales and heights. One is above 35 and one is below, so 'later wins' cannot settle it.",
+  "member": {"name": "Yolanda S. Pritchett", "dob": "1964-07-30", "age": 62, "member_id": "MBR-55302", "sex": "F"},
+  "practice": "Tidewater Metabolic & Bariatric Surgery",
+  "planned_admit_date": "2026-11-02",
+  "pages": [
+    {"title": "Surgical clinic follow-up", "lines": [
+      "TIDEWATER METABOLIC & BARIATRIC SURGERY",
+      "Pre-op follow-up   09/18/2026",
+      "Yolanda S. Pritchett   62F",
+      "",
+      "Vitals (surgical clinic): Ht 64.5 in (stadiometer), Wt 211.4 lb, BMI 35.7, BP 134/82.",
+      "Interval: on 2-wk pre-op liquid diet trial, down 10 lb since June.",
+      "A/P: obesity w/ T2DM and HTN. Continue toward RYGB.",
+      "Dr. Nkem Ballard-Soto"
+    ]},
+    {"title": "Dietitian visit", "lines": [
+      "TIDEWATER NUTRITION SERVICES",
+      "Visit: 09/18/2026   Pt: Pritchett, Yolanda",
+      "RD: Colleen Mbeki-Hart, RD",
+      "",
+      "Anthropometrics (nutrition clinic scale): Ht 65.0 in (pt reported), Wt 208.0 lb, BMI 34.6.",
+      "Pt reports adherence to liquid diet 5/7 days.",
+      "Note: BMI today below 35. Surgeon aware?",
+      "Plan: continue protein shakes, RTC 2 wks."
+    ]},
+    {"title": "Initial surgical consultation", "lines": [
+      "TIDEWATER BARIATRIC - INITIAL CONSULT",
+      "06/12/2026",
+      "Pritchett, Yolanda S.",
+      "Ht 65 in, Wt 222 lb, BMI 36.9.",
+      "PMH: T2DM (A1c 7.4) on metformin + dulaglutide (started 2024 by PCP), HTN on lisinopril, knee OA.",
+      "Prior attempts: see medical weight management records.",
+      "Plan: workup for RYGB."
+    ]},
+    {"title": "Medical weight management records", "lines": [
+      "TIDEWATER MEDICAL WEIGHT MANAGEMENT - DISCHARGE SUMMARY",
+      "Pritchett, Yolanda   Program 09/2025 - 03/2026 (6 months)",
+      "Supervising clinician: Hollis Grandjean, NP (obesity medicine) w/ RD visits monthly",
+      "Plan: 1,500 kcal diet, food diary, walking 30 min 5x/wk, topiramate 50 mg (added 11/2025).",
+      "Start wt 224 lb -> end wt 221 lb (-1.3%). Topiramate stopped 02/2026 (paresthesias, word-finding).",
+      "Result: did not meet goal; considered unsuccessful. Referred for surgery."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "TIDEWATER LAB 09/10/2026",
+      "PRITCHETT Y",
+      "A1c 7.3 H",
+      "Cr 0.9, K 4.3",
+      "Hgb 13.0, Ferritin 62",
+      "Vit D 24 L"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "BEHAVIORAL HEALTH PRE-SURGICAL EVAL   07/22/2026",
+      "Pritchett, Yolanda",
+      "No binge eating, no purging. No active depression. Cleared.",
+      "- T. Quinlan-Adair, LCSW / J. Mora, PhD"
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN / LEVEL OF CARE   09/25/2026",
+      "Pritchett, Yolanda S.   MBR-55302",
+      "Procedure: laparoscopic RYGB (CPT 43644). Admit 11/02/2026 inpatient.",
+      "BMI: 35.7 per surgical clinic 09/18; nutrition clinic scale same day read 34.6 (different scale and height). Not yet reconciled.",
+      "Expected LOS: 2 midnights. Factors: T2DM on GLP-1 RA + metformin (hold, glucose monitoring), HTN, age 62 with knee OA limiting early mobilization.",
+      "N. Ballard-Soto MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "hypertension", "knee osteoarthritis"], "page": 4, "why": "Initial consult PMH; repeated on page 8."},
+    "bmi": {"truth": "present", "value": null, "ambiguous": true, "page": 2, "why": "Two BMIs on 09/18/2026: surgical clinic 35.7 (stadiometer height 64.5 in, 211.4 lb) and nutrition clinic 34.6 (reported height 65.0 in, 208.0 lb). Same date, so neither is later; one is above 35, one below. The 09/25 plan restates both and says 'not yet reconciled'. The 06/12 BMI of 36.9 is older."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 5, "why": "6-month supervised program 09/2025 to 03/2026 with diet, exercise and topiramate. Lost 1.3%; labeled unsuccessful."}
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rule 1 depends on BMI, and the current BMI is two contradictory same-day values on either side of 35. A person must decide which measurement is valid. Other rules pass. Verify."
+},
+{
+  "id": "adv_024",
+  "service": "bariatric",
+  "category": "ambiguous_verify",
+  "difficulty": "hard",
+  "why_hard": "The supervised program's own discharge note calls the result 'SUCCESSFUL' (5.2% loss, goal met). The surgeon calls it a failure. The rule needs the patient to have been unsuccessful.",
+  "member": {"name": "Oswaldo J. Treviño", "dob": "1968-02-19", "age": 58, "member_id": "MBR-38467", "sex": "M"},
+  "practice": "Mesa Verde Bariatric Associates",
+  "planned_admit_date": "2026-11-10",
+  "pages": [
+    {"title": "Bariatric surgeon visit", "lines": [
+      "MESA VERDE BARIATRIC ASSOCIATES",
+      "Pre-op visit  09/28/2026",
+      "Oswaldo J. Treviño, 58M",
+      "",
+      "Ht 70 in   Wt 277 lb   BMI 39.7",
+      "",
+      "Hx: severe OSA (on CPAP), HTN, T2DM (A1c 8.0). Has failed medically supervised weight loss: completed 6-mo program this year, still BMI near 40 with uncontrolled diabetes.",
+      "",
+      "Plan: RYGB. Pre-op labs ok.",
+      "Dr. Lucinda Arroyo-Platt"
+    ]},
+    {"title": "Supervised weight loss program discharge note", "lines": [
+      "MESA VERDE MEDICAL WEIGHT MANAGEMENT",
+      "Program Discharge Note   07/20/2026",
+      "Participant: Treviño, Oswaldo",
+      "Supervising physician: Ezra Lindahl, MD; RD: Pooja Marchetti, RD",
+      "",
+      "Program dates: 01/12/2026 - 07/13/2026 (6 months, 7 visits)",
+      "Interventions: 1,800 kcal plan, weekly food logs, group behavioral class, walking 150 min/wk, metformin dose optimized.",
+      "Weight: 290.0 lb -> 275.0 lb (-15 lb, -5.2% TBW).",
+      "Program goal (>=5% total body weight loss): MET.",
+      "Outcome: SUCCESSFUL. Graduated to maintenance phase. Pt continues to pursue surgical consultation for additional weight loss.",
+      "E. Lindahl MD"
+    ]},
+    {"title": "Sleep study report", "lines": [
+      "MESA VERDE SLEEP LAB  -  PSG  02/03/2025",
+      "Treviño, Oswaldo   AHI 52/h, severe OSA. CPAP 14 cm H2O.",
+      "Compliance 2026: 78% nights >4h."
+    ]},
+    {"title": "Primary care note", "lines": [
+      "SAGEBRUSH FAMILY CLINIC   08/14/2026",
+      "Treviño, Oswaldo",
+      "Weight 276 lb. A1c 8.0 despite metformin 1000 BID + empagliflozin. BP 142/90 on 2 agents.",
+      "Pt kept off most of the weight lost in the spring program but plateaued. Supports surgery.",
+      "Dr. Maya Ostrander"
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "PRE-SURGICAL PSYCHOLOGY EVAL   08/25/2026",
+      "Treviño, Oswaldo   Evaluator: B. Hargreaves, PsyD",
+      "No eating disorder. Mild anxiety, managed. Strong family support. Cleared."
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "OPERATIVE PLAN   09/30/2026",
+      "Treviño, Oswaldo J.   MBR-38467",
+      "Lap RYGB, CPT 43644. Admit 11/10/2026, inpatient.",
+      "Expected LOS: 2 midnights - severe OSA on CPAP needing continuous oximetry; T2DM w/ insulin sliding scale; HTN.",
+      "L. Arroyo-Platt MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 7, "why": "'Expected LOS: 2 midnights'."},
+    "comorbidities": {"truth": "present", "value": ["severe obstructive sleep apnea", "hypertension", "type 2 diabetes"], "page": 2, "why": "Surgeon visit history; PSG page 4."},
+    "bmi": {"truth": "present", "value": 39.7, "page": 2, "why": "09/28/2026: BMI 39.7."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "ambiguous": true, "page": 3, "why": "The 6-month supervised program (01/12 to 07/13/2026) is documented. Its outcome conflicts: the program discharge note says 'Program goal MET. Outcome: SUCCESSFUL' (5.2% loss), while the surgeon says the patient 'has failed medically supervised weight loss'. The PCP says the weight loss was kept but plateaued. Whether this counts as unsuccessful is a judgment call."}
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rules 1, 2 and 4 pass. Rule 3 needs prior medical treatment to have been unsuccessful, and the program itself documents success while the surgeon documents failure. Two defensible readings, so a person must decide. Verify."
+},
+{
+  "id": "adv_025",
+  "service": "bariatric",
+  "category": "temporal_trap",
+  "difficulty": "hard",
+  "why_hard": "The plan says '2-day hospital course' and the coordinator form says '2 days', but the dates show admission 10/20 and discharge 10/21, which is 1 midnight.",
+  "member": {"name": "Imogen V. Castellanos", "dob": "1966-11-21", "age": 59, "member_id": "MBR-61025", "sex": "F"},
+  "practice": "Brookside Surgical Weight Management",
+  "planned_admit_date": "2026-10-20",
+  "pages": [
+    {"title": "Bariatric surgery consultation", "lines": [
+      "BROOKSIDE SURGICAL WEIGHT MANAGEMENT",
+      "Consult 08/27/2026",
+      "Imogen V. Castellanos, 59F",
+      "Ht 63 in   Wt 240.5 lb   BMI 42.6",
+      "PMH: T2DM (A1c 7.6, metformin + sitagliptin), OSA on CPAP (AHI 29), GERD, depression (stable on sertraline).",
+      "Weight hx: lifelong; completed 6-mo supervised program 2025-2026 without success (records attached).",
+      "Plan: RYGB on ERAS pathway.",
+      "Dr. Felix Amundsen-Oduya"
+    ]},
+    {"title": "Supervised program records", "lines": [
+      "BROOKSIDE MEDICAL WEIGHT PROGRAM - SUMMARY",
+      "Castellanos, Imogen   Dates: 11/04/2025 - 05/05/2026",
+      "Supervising MD: Hana Petrakis, MD",
+      "6 monthly visits: dietitian-guided 1,500 kcal plan, exercise prescription, behavioral counseling, naltrexone-bupropion 12/2025-03/2026 (stopped, insomnia/anxiety).",
+      "Weight 244 -> 239 -> 243 lb. Net -0.4%.",
+      "Assessment: medical weight management unsuccessful."
+    ]},
+    {"title": "Psychological evaluation", "lines": [
+      "BEHAVIORAL MEDICINE - PRE-BARIATRIC   07/30/2026",
+      "Castellanos, Imogen",
+      "Depression in remission on sertraline. No eating disorder. Cleared for surgery."
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "BROOKSIDE LAB   09/03/2026",
+      "A1c 7.6 H, glucose 151 H",
+      "Cr 0.7, K 4.0",
+      "Hgb 12.2, ferritin 30",
+      "TSH 2.2"
+    ]},
+    {"title": "Surgical plan", "lines": [
+      "BROOKSIDE - OPERATIVE PLAN / ERAS PATHWAY",
+      "Date: 09/24/2026",
+      "Patient: Castellanos, Imogen V.   MBR-61025",
+      "Procedure: laparoscopic Roux-en-Y gastric bypass, CPT 43644.",
+      "Pre-op: 2-day clear liquid diet before surgery; CPAP to hospital.",
+      "",
+      "Anticipated hospital course: 2 days. Admit day of surgery 10/20/2026; discharge home POD1 (10/21/2026) if tolerating stage 2 liquids, pain controlled on oral meds, ambulating.",
+      "Inpatient monitoring overnight for OSA (continuous oximetry) and glucose checks q6h.",
+      "F. Amundsen-Oduya MD"
+    ]},
+    {"title": "Authorization coordinator worksheet", "lines": [
+      "BROOKSIDE - PRIOR AUTH WORKSHEET (internal)",
+      "Prepared 09/25/2026 by S. Whitcombe-Lee, auth coordinator",
+      "Member: Imogen Castellanos   MBR-61025",
+      "CPT 43644   Dx E66.01, E11.9, G47.33",
+      "Setting: inpatient   Days requested: 2",
+      "DOS 10/20/2026",
+      "Attachments: consult, program records, psych, labs, op plan."
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 1, "page": 6, "why": "Admit 10/20/2026 and discharge POD1 10/21/2026 is one midnight. The '2 days' (page 6) and 'Days requested: 2' (page 7) count calendar days, not midnights."},
+    "comorbidities": {"truth": "present", "value": ["type 2 diabetes", "obstructive sleep apnea on CPAP", "GERD", "depression"], "page": 2, "why": "Consult PMH."},
+    "bmi": {"truth": "present", "value": 42.6, "page": 2, "why": "Consult 08/27/2026: BMI 42.6."},
+    "prior_medical_treatment": {"truth": "present", "value": null, "page": 3, "why": "Supervised program 11/04/2025 to 05/05/2026 with diet, exercise, counseling and naltrexone-bupropion; net -0.4%; labeled unsuccessful."}
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "BMI, comorbidity and prior treatment pass. Rule 4 needs at least 2 midnights, but the dated plan is admit 10/20 and discharge 10/21, which is 1 midnight. All facts present, one rule not met. Escalate."
+}
+]

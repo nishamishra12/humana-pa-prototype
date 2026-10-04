@@ -1,0 +1,181 @@
+{
+  "id": "adv_012",
+  "service": "icd",
+  "category": "planned_vs_done",
+  "difficulty": "medium",
+  "why_hard": "SDM is mentioned on three pages, but it is only scheduled (10/20/2026). The EP's brochure-and-discussion is not a formal SDM visit with a decision aid.",
+  "member": {
+    "name": "Philippa N. Carrow",
+    "dob": "1953-10-27",
+    "age": 72,
+    "member_id": "MBR-37709",
+    "sex": "F"
+  },
+  "practice": "Granite Bay Heart Center",
+  "planned_admit_date": "2026-11-03",
+  "pages": [
+    {
+      "title": "EP consultation",
+      "lines": [
+        "GRANITE BAY HEART CENTER - ELECTROPHYSIOLOGY CONSULT",
+        "Date of service: 09/21/2026",
+        "Patient: CARROW, PHILIPPA N.   DOB 10/27/1953",
+        "",
+        "72F, NSTEMI 05/2022 -> CABG x4 06/14/2022. Persistent LV dysfunction despite revasc + GDMT. Recent cardiac PET: LVEF 30%, large anterior scar, minimal viable myocardium.",
+        "Symptoms: walks to end of block and must rest; bathing tires her. No rest symptoms. NYHA III. No syncope.",
+        "No interval ACS. No PCI since CABG.",
+        "",
+        "Discussion: I explained the ICD, the procedure, and the main risks and benefits. Gave her our device brochure. She is leaning toward proceeding.",
+        "",
+        "Plan:",
+        "1. Formal SDM visit with HF NP using the ICD decision aid - scheduled 10/20/2026.",
+        "2. Tentatively book ICD 11/03/2026 pending SDM + auth.",
+        "3. Continue GDMT. Consider adding SGLT2i.",
+        "Dr. Ruairi Fennimore, MD"
+      ]
+    },
+    {
+      "title": "Cardiac PET report",
+      "lines": [
+        "GRANITE BAY IMAGING - CARDIAC PET/CT (Rb-82 perfusion + FDG viability)",
+        "Exam date: 08/26/2026",
+        "Pt: Carrow, Philippa",
+        "",
+        "Rest/stress perfusion: large severe fixed defect LAD territory; no reversible ischemia.",
+        "FDG: matched defect - scar, no significant hibernating myocardium.",
+        "Gated LVEF: rest 30%, stress 31%.",
+        "Impression: Large anterior infarct, nonviable. LVEF 30%."
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Carrow, Philippa N.  Medication Reconciliation 09/21/2026",
+        "",
+        "- carvedilol 12.5 mg BID (start 07/05/2022)",
+        "- sacubitril/valsartan 24/26 BID (start 07/05/2022)",
+        "- eplerenone 25 mg daily (start 09/2022)",
+        "- aspirin 81 mg daily",
+        "- atorvastatin 80 mg daily",
+        "- furosemide 40 mg daily",
+        "- sertraline 50 mg daily",
+        "Planned: empagliflozin 10 mg - to start at 10/20 visit."
+      ]
+    },
+    {
+      "title": "Heart failure clinic telephone note",
+      "lines": [
+        "GRANITE BAY HF CLINIC - TELEPHONE ENCOUNTER",
+        "09/28/2026  14:05",
+        "Spoke w/ pt. Confirmed appointment 10/20/2026 10:00 w/ Moira Tash, NP for ICD shared decision-making visit; decision aid will be reviewed at that visit. Pt asked to bring daughter.",
+        "Will also start empagliflozin at that visit if BMP ok.",
+        "- C. Penhaligon, RN"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "GRANITE BAY LAB   09/22/2026",
+        "CARROW, PHILIPPA",
+        "Na 136  K 4.7  BUN 26  Cr 1.2  eGFR 47",
+        "Hgb 12.0  Plt 241  INR 1.1",
+        "NT-proBNP 1,780"
+      ]
+    },
+    {
+      "title": "Cardiac surgery operative summary (2022)",
+      "lines": [
+        "GRANITE BAY MEDICAL CENTER - CARDIOTHORACIC SURGERY",
+        "Operative summary   Date of surgery: 06/14/2022",
+        "Procedure: CABG x4 (LIMA-LAD, SVG-D1, SVG-OM1, SVG-PDA)",
+        "Indication: NSTEMI 05/2022, 3-vessel CAD, LVEF 30%",
+        "Uncomplicated course, discharged POD 6.",
+        "Surgeon: T. Okwuosa, MD"
+      ]
+    },
+    {
+      "title": "Admission plan",
+      "lines": [
+        "GRANITE BAY HEART CENTER - ICD ADMISSION PLAN",
+        "Prepared: 10/01/2026",
+        "Patient: Philippa N. Carrow  /  MBR-37709  /  CPT 33249",
+        "Admit: 11/03/2026 (inpatient)",
+        "",
+        "Anticipated LOS: 2 midnights",
+        "Supporting factors: prior sternotomy w/ L subclavian venous anatomy uncertain, may need contrast venogram; CKD 3a; depression on SSRI w/ procedural anxiety requiring deeper sedation and monitoring.",
+        "",
+        "SDM: scheduled 10/20/2026 (prior to implant).",
+        "Limiting conditions: none - cognitively intact, no illness limiting survival <1 yr, no AF, stable.",
+        "R. Fennimore MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Anticipated LOS: 2 midnights'."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "prior sternotomy",
+        "CKD stage 3a",
+        "depression"
+      ],
+      "page": 8,
+      "why": "Supporting factors on the admission plan."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 30,
+      "page": 3,
+      "why": "Cardiac PET 08/26/2026: rest LVEF 30%."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "nuclear imaging",
+      "page": 3,
+      "why": "Rb-82 PET is nuclear imaging."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "III",
+      "page": 2,
+      "why": "EP consult: 'NYHA III'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 2,
+      "why": "Post-NSTEMI, CABG, large anterior scar."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 2,
+      "why": "NSTEMI 05/2022 and CABG 06/14/2022; 'No interval ACS. No PCI since CABG.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 51.9,
+      "page": 4,
+      "why": "Carvedilol and ARNI since 2022-07-05. Not decisive (ischemic). Empagliflozin is only planned."
+    },
+    "shared_decision_making": {
+      "truth": "absent",
+      "value": null,
+      "page": null,
+      "why": "The formal SDM visit with the decision aid is scheduled for 2026-10-20, which has not happened yet (today is 2026-10-04). The 09/21 brochure and verbal discussion is not a formal SDM visit with a decision tool."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "'Limiting conditions: none'."
+    }
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 7 needs a documented SDM visit with a decision aid. It is only scheduled, so the fact is absent. Pend and ask for the SDM note after 10/20. All other rules pass."
+}

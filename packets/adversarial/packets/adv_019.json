@@ -1,0 +1,162 @@
+{
+  "id": "adv_019",
+  "service": "icd",
+  "category": "clean_control",
+  "difficulty": "easy",
+  "why_hard": "Clean control: every fact is clearly documented and every rule is met; it measures over-flagging.",
+  "member": {
+    "name": "Ambrose K. Teller",
+    "dob": "1953-03-03",
+    "age": 73,
+    "member_id": "MBR-33120",
+    "sex": "M"
+  },
+  "practice": "Oakmont Cardiac Electrophysiology",
+  "planned_admit_date": "2026-10-26",
+  "pages": [
+    {
+      "title": "EP consultation",
+      "lines": [
+        "OAKMONT CARDIAC ELECTROPHYSIOLOGY",
+        "New consult 09/17/2026",
+        "Ambrose K. Teller, 73M",
+        "",
+        "History: anterior STEMI 09/2017, primary PCI to proximal LAD 09/14/2017. Ischemic cardiomyopathy since. No further ACS or coronary procedures.",
+        "Symptoms: dyspnea climbing 2 flights or walking briskly; normal pace on flat is fine. NYHA class II. No syncope. No palpitations.",
+        "Exam: BP 118/68, HR 62, lungs with scattered wheeze, no edema.",
+        "Data: TTE 09/09/2026 LVEF 26%. ECG SR, QRS 108.",
+        "Assessment: ICM, LVEF 26%, NYHA II, long-term GDMT. Primary prevention ICD indicated.",
+        "Plan: SDM; single chamber ICD; inpatient stay given comorbidities.",
+        "Dr. Ifeoma Strand"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "OAKMONT HEART - ECHO",
+        "09/09/2026   TELLER, AMBROSE K",
+        "LVEF 26% (biplane Simpson's)",
+        "Anterior, anteroseptal, apical akinesis; LV dilated (LVIDd 6.4).",
+        "Mild MR. RV normal. No thrombus.",
+        "Impression: Severe ischemic LV dysfunction, LVEF 26%."
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Teller, Ambrose - medications - 09/17/2026",
+        "metoprolol succinate 100 mg daily ...... started 09/16/2017",
+        "sacubitril/valsartan 97/103 BID ........ started 03/2020 (enalapril 09/16/2017-03/2020)",
+        "eplerenone 50 mg daily ................. started 09/16/2017",
+        "empagliflozin 10 mg .................... started 2022",
+        "aspirin 81 mg, atorvastatin 80 mg ...... 2017",
+        "insulin glargine 30 u qHS .............. 2019",
+        "tiotropium inhaler ..................... 2021"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "OAKMONT EP - SHARED DECISION MAKING VISIT (ICD)",
+        "Date: 09/30/2026",
+        "Patient: Ambrose Teller, with wife",
+        "Clinician: Lucia Vrabel, NP",
+        "Decision aid: evidence-based ICD decision aid (booklet and video).",
+        "Reviewed: sudden death risk, expected benefit, implant risks, shocks, battery/lead revisions, driving, deactivation, no-ICD option.",
+        "Pt teach-back appropriate. Decision: ICD.",
+        "L. Vrabel NP"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "OAKMONT LAB   09/18/2026",
+        "Na 139, K 4.5, Cr 1.3, eGFR 56",
+        "A1c 7.8",
+        "Hgb 13.5, Plt 205, INR 1.0",
+        "NT-proBNP 1,320"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "OAKMONT EP - PRE-ADMISSION PLAN",
+        "Date 10/01/2026   Patient: Teller, Ambrose K.   MBR-33120",
+        "Procedure: single-chamber ICD, CPT 33249. Admit 10/26/2026, inpatient.",
+        "Expected length of stay: 2 midnights.",
+        "Supporting factors: insulin-requiring DM2 (A1c 7.8) needing perioperative insulin protocol; COPD on tiotropium w/ risk of hypoventilation after sedation; CKD 3a.",
+        "Limiting conditions: none. Cognition intact, no life-limiting illness, no AF, clinically stable.",
+        "No MI or revascularization since 2017.",
+        "I. Strand MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected length of stay: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes on insulin",
+        "COPD",
+        "CKD stage 3a"
+      ],
+      "page": 7,
+      "why": "Supporting factors on the pre-admission plan."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 26,
+      "page": 3,
+      "why": "TTE 09/09/2026: 26%."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 3,
+      "why": "TTE biplane."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "II",
+      "page": 2,
+      "why": "'NYHA class II'."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 2,
+      "why": "ICM after anterior STEMI 2017."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 2,
+      "why": "MI and PCI 09/2017; 'No further ACS or coronary procedures.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 109.3,
+      "page": 4,
+      "why": "Metoprolol, ACEi/ARNI and eplerenone since 2017-09-16."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 5,
+      "why": "SDM 09/30/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 7,
+      "why": "'Limiting conditions: none.'"
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "Ischemic, LVEF 26% by echo, NYHA II, last event 2017, SDM done, no limiting condition, 2 midnights with documented factors. Approve."
+}

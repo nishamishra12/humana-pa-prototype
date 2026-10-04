@@ -1,0 +1,174 @@
+{
+  "id": "adv_015",
+  "service": "icd",
+  "category": "ambiguous_verify",
+  "difficulty": "hard",
+  "why_hard": "Two clinicians saw the patient on the same day: the EP wrote NYHA II and the HF clinic wrote NYHA IV with rest dyspnea. The later pre-op note only repeats the EP's class.",
+  "member": {
+    "name": "Cornelius T. Vandermeer",
+    "dob": "1956-02-29",
+    "age": 70,
+    "member_id": "MBR-46290",
+    "sex": "M"
+  },
+  "practice": "Highland Park Cardiology",
+  "planned_admit_date": "2026-10-27",
+  "pages": [
+    {
+      "title": "EP consultation",
+      "lines": [
+        "HIGHLAND PARK CARDIOLOGY - EP",
+        "Consult date: 09/24/2026",
+        "Pt: VANDERMEER, CORNELIUS T.  70M",
+        "",
+        "Hx: anterior MI + CABG x3 03/2016. ICM. No events since 2016.",
+        "Today: reports SOB w/ moderate exertion (yard work, 2 flights). Denies orthopnea. Denies syncope.",
+        "Exam: comfortable, no JVD noted, trace edema.",
+        "LVEF 25% (TTE 9/5).",
+        "Assessment: ICM, NYHA class II. Primary prevention ICD indicated.",
+        "Plan: SDM, book implant.",
+        "Dr. Ansel Prokopenko"
+      ]
+    },
+    {
+      "title": "Echocardiogram report",
+      "lines": [
+        "Highland Park Echo   09/05/2026",
+        "Vandermeer, Cornelius",
+        "LVEF 25% by biplane.",
+        "Anterior/apical AK. LV dilated. Mod MR. RVSP 48.",
+        "IVC 2.3 cm, <50% collapse.",
+        "Impression: severe LV dysfunction, elevated filling pressures."
+      ]
+    },
+    {
+      "title": "Heart failure clinic note",
+      "lines": [
+        "HIGHLAND PARK HEART FAILURE CLINIC",
+        "Visit date: 09/24/2026   Provider: Shira Galanis-Wood, NP",
+        "Pt: Cornelius Vandermeer",
+        "",
+        "S: Wife called in this AM - worse SOB x 10 days. Now SOB at rest sitting in chair, sleeping in recliner, 3-pillow orthopnea, PND twice this week. Wt up 9 lb.",
+        "O: BP 98/60, HR 92, SpO2 93% RA. JVP 14 cm. Bibasilar crackles. 3+ pitting edema to knees.",
+        "A: Acute on chronic HFrEF, ICM. NYHA class IV symptoms today.",
+        "P: Torsemide 20 -> 40 BID, metolazone 2.5 x 2 doses, BMP 48h, RTC 1 wk. ED precautions given. Discussed with EP - ICD timing to be reviewed.",
+        "S. Galanis-Wood NP"
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Vandermeer, C. - medication list 09/24/2026",
+        "carvedilol 12.5 BID (2016)",
+        "sacubitril/valsartan 49/51 BID (2019)",
+        "spironolactone 25 daily (2016)",
+        "empagliflozin 10 daily (2022)",
+        "torsemide 40 mg BID (increased 09/24/2026)",
+        "metolazone 2.5 mg x2 doses (09/2026)",
+        "aspirin 81, atorvastatin 80"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "SDM VISIT FOR ICD - 09/26/2026",
+        "Patient: Cornelius Vandermeer + wife",
+        "Clinician: Tobias Ferreira, PA-C",
+        "Decision aid: evidence-based ICD decision aid (booklet + video).",
+        "Reviewed risks, benefits, shocks, deactivation, alternatives.",
+        "Pt chooses ICD.",
+        "T. Ferreira PA-C"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "Highland Park Lab   09/26/2026",
+        "Na 133 L  K 3.6  BUN 38 H  Cr 1.7 H  eGFR 41",
+        "NT-proBNP 6,850 H (prior 2,100 in 06/2026)",
+        "Hgb 12.6  INR 1.0"
+      ]
+    },
+    {
+      "title": "Pre-admission plan",
+      "lines": [
+        "PRE-ADMISSION / PROCEDURE PLAN   10/01/2026",
+        "Vandermeer, Cornelius T.   MBR-46290   CPT 33249   Admit 10/27/2026",
+        "Indication: ICM, LVEF 25%, NYHA II (per EP consult 9/24), SDM done 9/26.",
+        "Expected LOS: 2 midnights. Factors: CKD 3b, active diuretic titration with electrolyte monitoring, hyponatremia.",
+        "Limiting conditions: none documented; clinically stable per EP consult.",
+        "No MI or revascularization since 2016.",
+        "A. Prokopenko MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "CKD stage 3b",
+        "active diuretic titration",
+        "hyponatremia"
+      ],
+      "page": 8,
+      "why": "Factors on the pre-admission plan."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 25,
+      "page": 3,
+      "why": "TTE 09/05/2026: 25%."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 3,
+      "why": "TTE biplane."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": null,
+      "ambiguous": true,
+      "page": 4,
+      "why": "Same date, two assessments: EP consult 09/24 'NYHA class II' (page 2) and HF clinic 09/24 'NYHA class IV' with rest dyspnea and volume overload (page 4). Neither is later. The 10/01 note only cites the EP consult and is not a new assessment. Class II passes rule 4; class IV fails it."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 2,
+      "why": "ICM after anterior MI and CABG 2016."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 8,
+      "why": "MI and CABG 03/2016; no events since."
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 127,
+      "page": 5,
+      "why": "Carvedilol and spironolactone since 2016, roughly 10.5 years. Not decisive (ischemic)."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 6,
+      "why": "SDM 09/26/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "Pre-admission plan states none, citing the EP consult. The HF clinic note's decompensation also raises a clinical-stability question, which a reviewer resolving the NYHA conflict would settle at the same time."
+    }
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rule 4 turns on NYHA class, and the packet has two contradictory same-day assessments (II and IV). Neither is newer, so the 'later wins' rule cannot settle it. A person must decide (and should also check clinical stability). Verify."
+}

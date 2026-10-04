@@ -1,0 +1,181 @@
+{
+  "id": "adv_017",
+  "service": "icd",
+  "category": "wrong_patient_or_copy_forward",
+  "difficulty": "hard",
+  "why_hard": "The most recently dated document (the pre-op H&P) contains an imaging block copied forward from 11/2025 saying LVEF 25%. The current TTE from 09/09/2026 shows recovery to 41%.",
+  "member": {
+    "name": "Thaddeus J. Ellsworth",
+    "dob": "1963-05-15",
+    "age": 63,
+    "member_id": "MBR-80114",
+    "sex": "M"
+  },
+  "practice": "Fox Run Cardiology Group",
+  "planned_admit_date": "2026-10-19",
+  "pages": [
+    {
+      "title": "Pre-operative history and physical",
+      "lines": [
+        "FOX RUN CARDIOLOGY GROUP - PRE-OPERATIVE H&P",
+        "Date: 09/28/2026     Patient: Ellsworth, Thaddeus J.   DOB 05/15/1963",
+        "Procedure: ICD implant (CPT 33249)   Planned admit: 10/19/2026",
+        "",
+        "HPI (carried forward from 11/2025 visit): 62M w/ new NICM, presented 10/2025 w/ HF. Cath normal cors. Dyspnea w/ minimal exertion, NYHA III.",
+        "",
+        "Cardiac imaging: TTE 11/18/2025: LVEF 25%, severe global HK, LVIDd 6.9.",
+        "",
+        "PMH: NICM, HTN, DM2, OSA (on CPAP), obesity.",
+        "Meds: see med list.",
+        "",
+        "Assessment: NICM, EF 25%, meets criteria for primary prevention ICD.",
+        "",
+        "Expected LOS: 2 midnights - OSA w/ post-sedation monitoring, DM2 on insulin, BMI 39.",
+        "Limiting conditions: none (no cognitive impairment, no terminal illness, no AF, stable).",
+        "No hx of MI, PCI or CABG.",
+        "Signed: Rafael Gutierrez-Hahn, PA-C for Dr. Wendell Okoro"
+      ]
+    },
+    {
+      "title": "Heart failure clinic note",
+      "lines": [
+        "FOX RUN HF CLINIC   Visit 09/16/2026",
+        "Thaddeus Ellsworth   63M",
+        "S: Much improved over the past year. Walks 1-2 miles, gets winded on steep hills. No orthopnea.",
+        "O: BP 122/76, HR 64. No edema.",
+        "Data: TTE 9/9/26: LVEF 41% (prior 25% 11/2025).",
+        "A: NICM w/ improved EF on GDMT. NYHA II.",
+        "P: Continue GDMT. EP appointment as scheduled.",
+        "Wendell Okoro, MD"
+      ]
+    },
+    {
+      "title": "Echocardiogram report (current)",
+      "lines": [
+        "FOX RUN CARDIOLOGY - ECHOCARDIOGRAPHY",
+        "Study date: 09/09/2026",
+        "ELLSWORTH, THADDEUS J",
+        "LVEF (biplane Simpson): 41%",
+        "LV size normal-upper normal (LVIDd 5.7). Mild global hypokinesis.",
+        "Grade I DD. Trivial MR.",
+        "Impression: Mildly reduced LV function, LVEF 41%. Significant improvement compared with 11/18/2025 (LVEF 25%).",
+        "Read by: A. Kapoor-Lindgren, MD"
+      ]
+    },
+    {
+      "title": "Echocardiogram report (prior)",
+      "lines": [
+        "FOX RUN CARDIOLOGY - ECHOCARDIOGRAPHY",
+        "Study date: 11/18/2025",
+        "ELLSWORTH, THADDEUS J",
+        "LVEF (biplane Simpson): 25%",
+        "LV dilated (LVIDd 6.9). Severe global HK. Mod MR.",
+        "Impression: Severe LV dysfunction."
+      ]
+    },
+    {
+      "title": "Medication list",
+      "lines": [
+        "Ellsworth, Thaddeus J - Med list printed 09/16/2026",
+        "Sacubitril-valsartan 97/103 BID   start 10/24/2025",
+        "Carvedilol 25 mg BID              start 10/24/2025",
+        "Spironolactone 25 mg              start 10/24/2025",
+        "Empagliflozin 25 mg               start 10/24/2025",
+        "Insulin glargine 40 u             start 2020",
+        "Metformin 1000 BID                start 2017"
+      ]
+    },
+    {
+      "title": "Shared decision making note",
+      "lines": [
+        "FOX RUN DEVICE CLINIC - SDM FOR ICD",
+        "09/22/2026",
+        "Thaddeus Ellsworth",
+        "Clinician: Bettina Saarinen, NP",
+        "Decision aid: evidence-based ICD decision aid reviewed (video).",
+        "Discussed benefit/risk and the improved EF on recent echo. Pt still wishes to proceed.",
+        "B. Saarinen NP"
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "FOX RUN LAB  09/16/2026",
+        "Ellsworth, T.",
+        "Na 140 K 4.2 Cr 1.0 eGFR 82",
+        "A1c 7.6",
+        "NT-proBNP 210",
+        "Hgb 14.9"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 2,
+      "why": "'Expected LOS: 2 midnights'."
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "obstructive sleep apnea on CPAP",
+        "type 2 diabetes on insulin",
+        "obesity BMI 39",
+        "hypertension"
+      ],
+      "page": 2,
+      "why": "Pre-op H&P PMH and LOS line."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 41,
+      "page": 4,
+      "why": "TTE 11/18/2025: 25% (page 5, and copied into the 09/28/2026 H&P on page 2). TTE 09/09/2026: 41% (page 4, also in HF note page 3). The later measurement wins. The H&P's 25% is a copied-forward old value, not a new measurement."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 4,
+      "why": "TTE biplane."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "II",
+      "page": 3,
+      "why": "HF clinic 09/16/2026: NYHA II. The 'NYHA III' in the H&P sits in an HPI block labeled as carried forward from 11/2025."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "non-ischemic",
+      "page": 2,
+      "why": "NICM with normal coronaries."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 2,
+      "why": "'No hx of MI, PCI or CABG.'"
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 11.8,
+      "page": 6,
+      "why": "GDMT since 2025-10-24, about 11.8 months to the implant."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 7,
+      "why": "SDM 09/22/2026 with an evidence-based decision aid."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 2,
+      "why": "'Limiting conditions: none'."
+    }
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "All facts present. The current LVEF is 41% (09/09/2026), so rule 2 (35% or less) fails. Other rules pass. Escalate."
+}

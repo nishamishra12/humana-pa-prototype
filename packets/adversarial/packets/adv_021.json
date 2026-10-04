@@ -1,0 +1,138 @@
+{
+  "id": "adv_021",
+  "service": "bariatric",
+  "category": "clean_control",
+  "difficulty": "easy",
+  "why_hard": "Clean control: BMI, comorbidities, a failed supervised program and a 2-midnight plan are all clearly documented.",
+  "member": {
+    "name": "Delphine R. Mattox",
+    "dob": "1972-04-11",
+    "age": 54,
+    "member_id": "MBR-70218",
+    "sex": "F"
+  },
+  "practice": "Bluebonnet Bariatric & Metabolic Surgery",
+  "planned_admit_date": "2026-11-09",
+  "pages": [
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "BLUEBONNET BARIATRIC & METABOLIC SURGERY",
+        "Surgical consult   09/24/2026",
+        "Patient: Mattox, Delphine R.   DOB 04/11/1972",
+        "",
+        "HPI: 54F w/ severe obesity since her 20s, T2DM on insulin, severe OSA on CPAP, HTN. Completed our 6-month medically supervised weight management program (01-07/2026) without meaningful loss. Interested in RYGB for diabetes control.",
+        "",
+        "Vitals: Ht 65 in   Wt 265.6 lb   BMI 44.2 kg/m2   BP 138/84",
+        "",
+        "Assessment: Class III obesity, BMI 44.2, w/ T2DM (A1c 8.1 on insulin), severe OSA, HTN.",
+        "Plan: laparoscopic Roux-en-Y gastric bypass. Psych and nutrition clearance obtained. Will schedule.",
+        "Signed: Anneliese Fortier-Kwan, MD, FACS"
+      ]
+    },
+    {
+      "title": "Medically supervised weight management program summary",
+      "lines": [
+        "BLUEBONNET MEDICAL WEIGHT MANAGEMENT PROGRAM",
+        "Program summary letter   07/15/2026",
+        "Participant: Delphine Mattox",
+        "Supervising physician: Kofi Ampofo, MD (Obesity Medicine)",
+        "",
+        "Enrolled 01/08/2026, final visit 07/09/2026: 7 monthly physician/dietitian visits, all attended.",
+        "Interventions: 1,400 kcal meal plan with food logs; activity goal 150 min/wk (achieved ~90 min/wk due to knee pain); behavioral counseling; phentermine 15 mg 02/05-04/20/2026, stopped for BP elevation and palpitations. GLP-1 RA not added (already on insulin; pt declined injectable add-on, cost).",
+        "",
+        "Weights: start 268.0 lb -> nadir 261.2 lb (05/2026) -> final 262.4 lb. Total loss 2.1%.",
+        "Outcome: did not achieve 5% weight loss goal. Medical management unsuccessful. Referred to bariatric surgery.",
+        "K. Ampofo MD"
+      ]
+    },
+    {
+      "title": "Polysomnography summary",
+      "lines": [
+        "BLUEBONNET SLEEP CENTER - Diagnostic PSG",
+        "Study date: 03/14/2025   Mattox, Delphine",
+        "AHI 38/h (severe). Nadir SpO2 79%.",
+        "CPAP titration: optimal 12 cm H2O.",
+        "Dx: severe obstructive sleep apnea. On CPAP since 04/2025, compliance 86% of nights >4h (09/2026 download)."
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-BARIATRIC PSYCHOLOGICAL EVALUATION",
+        "08/19/2026   Mattox, Delphine R.",
+        "Evaluator: Rosa Lindqvist-Owens, PsyD",
+        "No current eating disorder; no binge eating. Mild depression in remission, no SI. Good support (husband, sister). Understands post-op diet and lifelong supplementation.",
+        "Recommendation: psychologically cleared for bariatric surgery."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "BLUEBONNET LAB   09/22/2026",
+        "MATTOX, DELPHINE",
+        "HbA1c 8.1% (H)   Glucose 182 (H)",
+        "Cr 0.8   eGFR 88   K 4.1",
+        "ALT 34   AST 29",
+        "Hgb 12.9   Ferritin 48   B12 512   Vit D 21 (L)",
+        "TSH 1.9"
+      ]
+    },
+    {
+      "title": "Primary care letter",
+      "lines": [
+        "WILLOW BEND PRIMARY CARE",
+        "09/02/2026",
+        "Re: Delphine Mattox",
+        "Active problems: T2DM since 2014, on insulin glargine 46 u + metformin; HTN on lisinopril 20 + amlodipine 5; severe OSA on CPAP; bilateral knee OA.",
+        "I support bariatric surgery. Her diabetes has worsened despite medication changes.",
+        "Ines Delacourt, MD"
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "BLUEBONNET BARIATRIC - OPERATIVE PLAN / LEVEL OF CARE",
+        "Date: 09/30/2026",
+        "Patient: Mattox, Delphine R.   MBR-70218",
+        "Procedure: laparoscopic Roux-en-Y gastric bypass (CPT 43644). Admit 11/09/2026, inpatient.",
+        "Expected LOS: 2 midnights.",
+        "Rationale: severe OSA requiring CPAP and continuous pulse oximetry post-op; insulin-requiring T2DM needing insulin dose reduction and glucose monitoring as diet advances; HTN med adjustment.",
+        "A. Fortier-Kwan MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "type 2 diabetes on insulin",
+        "severe obstructive sleep apnea",
+        "hypertension",
+        "knee osteoarthritis"
+      ],
+      "page": 2,
+      "why": "Consult assessment and PCP letter (page 7)."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 44.2,
+      "page": 2,
+      "why": "Consult 09/24/2026: BMI 44.2."
+    },
+    "prior_medical_treatment": {
+      "truth": "present",
+      "value": null,
+      "page": 3,
+      "why": "6-month physician-supervised program 01/08 to 07/09/2026, with diet, activity, counseling and phentermine. Lost 2.1%; documented as unsuccessful."
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "BMI 44.2 (35 or higher), T2DM and OSA documented, supervised program failed, 2 midnights with documented factors. Approve."
+}

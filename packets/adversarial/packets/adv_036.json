@@ -1,0 +1,112 @@
+{
+  "id": "adv_036",
+  "service": "bariatric",
+  "category": "missing_but_adjacent",
+  "difficulty": "medium",
+  "why_hard": "Weight management comes up everywhere: yearly PCP counseling, self-joined Weight Watchers, and a dietitian education visit. None of it is a supervised medical weight-loss program with a duration and result.",
+  "member": {
+    "name": "Clementine A. Bauer",
+    "dob": "1963-04-23",
+    "age": 63,
+    "member_id": "MBR-11847",
+    "sex": "F"
+  },
+  "practice": "Juniper Hills Weight Loss Surgery",
+  "planned_admit_date": "2026-11-13",
+  "pages": [
+    {
+      "title": "Bariatric surgery consultation",
+      "lines": [
+        "JUNIPER HILLS WEIGHT LOSS SURGERY",
+        "Consult  09/08/2026",
+        "Clementine A. Bauer   63F",
+        "Ht 65 in   Wt 251.8 lb   BMI 41.9",
+        "PMH: HTN (2010), T2DM (2019, metformin), L knee replacement 2022.",
+        "Weight hx: has been unable to lose weight despite years of dieting and physician counseling.",
+        "Plan: RYGB.",
+        "Dr. Eamon Achterberg-Silva"
+      ]
+    },
+    {
+      "title": "Primary care notes (excerpts)",
+      "lines": [
+        "MEADOWBROOK PRIMARY CARE - Bauer, Clementine A.",
+        "",
+        "06/12/2024 annual: BMI elevated. Counseled on diet and exercise, handout given. Pt says she did Weight Watchers on her own in 2019 - lost 12 lb, regained.",
+        "",
+        "06/18/2025 annual: weight up 6 lb. Discussed weight management; advised Mediterranean diet and walking. Pt not interested in meds.",
+        "",
+        "06/10/2026 annual: weight management discussed again. Pt now interested in surgery. Referral placed.",
+        "",
+        "Signed: Natalia Brzezinski, MD"
+      ]
+    },
+    {
+      "title": "Dietitian education visit",
+      "lines": [
+        "JUNIPER HILLS NUTRITION",
+        "Pre-operative nutrition education (single visit)   08/21/2026",
+        "Bauer, Clementine",
+        "Reviewed post-RYGB diet stages, protein targets, vitamins. Pt understands.",
+        "Weight today 252 lb. No weight-loss program enrollment at this time.",
+        "RD: Tamsin Okeke-Larsen"
+      ]
+    },
+    {
+      "title": "Psychological evaluation",
+      "lines": [
+        "PRE-BARIATRIC PSYCH   08/04/2026",
+        "Bauer, Clementine",
+        "No eating disorder. Cleared."
+      ]
+    },
+    {
+      "title": "Laboratory results",
+      "lines": [
+        "JUNIPER HILLS LAB  09/02/2026",
+        "A1c 7.2 H  Cr 0.9  LDL 118  Hgb 12.7"
+      ]
+    },
+    {
+      "title": "Surgical plan",
+      "lines": [
+        "OPERATIVE PLAN  09/24/2026",
+        "Bauer, Clementine A.   MBR-11847",
+        "Lap RYGB (CPT 43644). Admit 11/13/2026, inpatient.",
+        "Expected LOS: 2 midnights. Factors: T2DM, HTN, age 63 with prior knee arthroplasty and VTE risk.",
+        "E. Achterberg-Silva MD"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 7,
+      "why": "'Expected LOS: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "hypertension",
+        "type 2 diabetes"
+      ],
+      "page": 2,
+      "why": "Consult PMH."
+    },
+    "bmi": {
+      "truth": "present",
+      "value": 41.9,
+      "page": 2,
+      "why": "Consult 09/08/2026: BMI 41.9."
+    },
+    "prior_medical_treatment": {
+      "truth": "absent",
+      "value": null,
+      "page": null,
+      "why": "No supervised medical weight-loss program is documented. Yearly PCP counseling is advice, not a program. Weight Watchers 2019 was self-joined and commercial. The dietitian visit was one-time surgical education and states 'No weight-loss program enrollment'."
+    }
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 3 needs documented supervised medical treatment that failed. It is absent. Pend. Other rules pass."
+}

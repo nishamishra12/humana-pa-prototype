@@ -1,0 +1,228 @@
+{
+  "id": "adv_001",
+  "service": "icd",
+  "category": "temporal_trap",
+  "difficulty": "hard",
+  "why_hard": "The NSTEMI was 38 days before today but 41 days before the planned implant, and the ischemic patient has only about 1 month of GDMT, which looks like a failure but does not matter for ischemic cardiomyopathy.",
+  "member": {
+    "name": "Dale R. Whitcombe",
+    "dob": "1955-06-21",
+    "age": 71,
+    "member_id": "MBR-40217",
+    "sex": "M"
+  },
+  "practice": "Larkspur Valley Heart & Rhythm",
+  "planned_admit_date": "2026-10-07",
+  "pages": [
+    {
+      "title": "Electrophysiology consultation",
+      "lines": [
+        "Larkspur Valley Heart & Rhythm - EP Clinic",
+        "Pt: WHITCOMBE, DALE R   DOB 06/21/1955   MRN LV-552310",
+        "DOS: 09/22/2026   Referring: K. Abernathy-Ruiz MD (general cardiology)",
+        "",
+        "## Reason for consult",
+        "Primary prevention ICD eval, ischemic CM.",
+        "",
+        "## HPI",
+        "71 yo M w/ CAD, insulin-requiring DM2, CKD 3b, HTN. Admitted 08/27/2026 w/ NSTEMI (peak hs-TnT 1,840 ng/L). LHC 08/28 w/ severe 3V CAD incl chronic total occlusion of RCA filling via L-to-R collaterals and diffuse mid/distal LAD dz. Heart team reviewed films: poor distal targets, CABG not offered, no PCI attempted. Medically managed and d/c'd 08/31 on DAPT + GDMT.",
+        "Since d/c gets winded walking up his driveway or carrying groceries in from the car. Comfortable at rest, sleeps on 1 pillow. No syncope, no presyncope, no palpitations.",
+        "",
+        "## Data",
+        "TTE 08/28/2026 (inpatient): LVEF 25%, inferior/inferolateral akinesis.",
+        "Repeat TTE ordered >30d post event.",
+        "ECG today: SR 74, QRS 118 ms (nonspecific IVCD), inferior Q waves.",
+        "",
+        "## Assessment",
+        "1. Ischemic cardiomyopathy / HFrEF. NYHA class II.",
+        "2. CAD, NSTEMI 08/27/26, medically managed, not revascularized.",
+        "3. DM2 on insulin, CKD 3b (Cr 1.8), HTN.",
+        "",
+        "## Plan",
+        "- Single chamber ICD if repeat LVEF stays <=35% after the post-MI waiting period. QRS <130, not a CRT candidate.",
+        "- Refer to HF NP for formal SDM visit w/ decision aid before we book.",
+        "- Do NOT interrupt ASA/ticagrelor peri-procedure.",
+        "",
+        "Electronically signed: Priyanka Oduya-Lind, MD, FHRS  09/22/2026 16:42"
+      ]
+    },
+    {
+      "title": "Hospital discharge summary",
+      "lines": [
+        "MERCY LARKSPUR GENERAL HOSPITAL - DISCHARGE SUMMARY",
+        "Patient: Whitcombe, Dale   Admit: 08/27/2026   Discharge: 08/31/2026",
+        "Attending: S. Mulrooney, MD (Cardiology)",
+        "",
+        "Principal dx: NSTEMI (I21.4)",
+        "Secondary: CAD native vessels, HFrEF new dx, DM2 w/ hyperglycemia, CKD 3b, HTN",
+        "",
+        "Hospital course: Presented w/ 3h substernal pressure. Trop rising, peak 1,840. Started heparin gtt, ASA, ticagrelor load. LHC 08/28: LM nl; LAD diffuse 70-80% mid and distal, small caliber; LCx 50% OM1; RCA CTO proximal w/ L-to-R collaterals. No intervention performed. CT surgery (Dr. Hanlon) reviewed: poor targets, high STS risk, not a surgical candidate at this time. TTE 08/28: LVEF 25%, inferior/inferolateral AK, mild MR. Pt has no prior PCI or CABG.",
+        "GDMT started prior to d/c, tolerated w/o hypotension. Cr stable 1.7-1.9.",
+        "",
+        "Discharge meds: see med rec.",
+        "F/u: Cardiology 2 wks, EP referral for ICD eval after waiting period."
+      ]
+    },
+    {
+      "title": "Transthoracic echocardiogram",
+      "lines": [
+        "LARKSPUR VALLEY HEART & RHYTHM - ECHO LAB",
+        "Study date: 10/01/2026   Pt: Whitcombe, Dale R   Ht 70 in  Wt 204 lb  BP 118/66  HR 71",
+        "Indication: ischemic CM, reassess LV function post-MI",
+        "Comparison: 08/28/2026 inpatient TTE",
+        "",
+        "Measurements:",
+        "LVIDd 6.1 cm   LVIDs 5.0 cm   IVSd 1.0 cm",
+        "LVEF (biplane Simpson): 30%",
+        "TAPSE 1.9 cm   RVSP 34 mmHg   LA vol index 41 mL/m2",
+        "",
+        "Findings: Moderately dilated LV. Akinesis of the basal-mid inferior and inferolateral walls, hypokinesis elsewhere. Moderate global systolic dysfunction. Grade II diastolic dysfunction. Mild functional MR. Normal RV size/fxn. No pericardial effusion. No LV thrombus.",
+        "",
+        "Impression: LVEF 30%, modestly improved from 25% on 08/28/26. Regional WMA as above.",
+        "Read by: T. Ingersoll, MD  10/01/2026"
+      ]
+    },
+    {
+      "title": "Medication reconciliation",
+      "lines": [
+        "Medication List - reconciled 09/22/2026 (EP clinic)",
+        "Whitcombe, Dale R  DOB 06/21/1955",
+        "",
+        "Medication | Dose | Start date | Indication",
+        "Aspirin | 81 mg daily | 04/2019 | CAD",
+        "Ticagrelor | 90 mg BID | 08/27/2026 | ACS",
+        "Metoprolol succinate | 50 mg daily | 08/30/2026 | HFrEF",
+        "Sacubitril/valsartan | 24/26 mg BID | 08/30/2026 | HFrEF",
+        "Eplerenone | 25 mg daily | 08/30/2026 | HFrEF",
+        "Empagliflozin | 10 mg daily | 08/30/2026 | HFrEF / DM2",
+        "Atorvastatin | 80 mg daily | 04/11/2019 (dose incr 08/2026) | CAD",
+        "Insulin glargine | 28 units qHS | 2016 | DM2",
+        "Insulin lispro | sliding scale AC | 2016 | DM2",
+        "Furosemide | 20 mg daily PRN wt gain >3 lb | 08/31/2026 | volume",
+        "",
+        "Allergies: lisinopril (cough)",
+        "Reconciled by: J. Tolliver, RN"
+      ]
+    },
+    {
+      "title": "Shared decision making visit",
+      "lines": [
+        "HEART FAILURE CLINIC - SHARED DECISION-MAKING ENCOUNTER",
+        "Date: 09/29/2026   Pt: Dale R. Whitcombe   Accompanied by: wife (Joan)",
+        "Clinician: Renata Aguillard, ACNP-BC",
+        "",
+        "Purpose: SDM re: primary prevention ICD prior to implant, as required for device candidates.",
+        "Tool used: ICD patient decision aid (evidence-based, booklet + 12-min video), reviewed together in clinic.",
+        "",
+        "Covered: estimated SCD risk with LVEF <=35%; what an ICD does and does not do (does not treat HF sx); inappropriate shocks; lead and infection risk; driving restrictions after shocks; option of deactivation at end of life; alternative of continuing medical tx alone.",
+        "Pt teach-back accurate. Values: wants to see granddaughter graduate, accepts risk of shocks. Wife supportive.",
+        "Decision: pt elects to proceed with ICD. Copy of decision aid given.",
+        "Time: 40 min, >50% counseling.",
+        "",
+        "R. Aguillard, ACNP-BC  09/29/2026"
+      ]
+    },
+    {
+      "title": "Pre-procedure labs",
+      "lines": [
+        "LARKSPUR OUTPATIENT LAB   Collected 09/30/2026 07:52",
+        "Pt: WHITCOMBE, DALE   Ordering: P. Oduya-Lind MD",
+        "",
+        "Na 138  K 4.6  Cl 103  CO2 24  BUN 31 (H)  Cr 1.8 (H)  eGFR 38 (L)  Glu 188 (H)",
+        "Mg 2.0",
+        "WBC 7.2  Hgb 12.1 (L)  Plt 214",
+        "PT 11.9  INR 1.0",
+        "NT-proBNP 1,612 pg/mL (H)",
+        "HbA1c 8.4% (H)",
+        "TSH 2.1"
+      ]
+    },
+    {
+      "title": "Pre-admission procedure plan",
+      "lines": [
+        "EP PRE-ADMISSION H&P / PROCEDURE PLAN",
+        "Date: 10/02/2026   Pt: Whitcombe, Dale R   Proc: transvenous single-chamber ICD (CPT 33249)",
+        "Planned admission: 10/07/2026, inpatient",
+        "",
+        "Indication: ischemic CM, LVEF 30% (TTE 10/01/26), NYHA II, on GDMT, SDM completed 09/29.",
+        "Interval hx: no chest pain or ACS since index NSTEMI of 08/27/26. No revascularization done or planned.",
+        "",
+        "Expected length of stay: 2 midnights.",
+        "Rationale: (1) uninterrupted DAPT w/ ticagrelor + ASA <6 wks from ACS, high pocket hematoma risk, needs serial pocket checks and compression; (2) CKD 3b, eGFR 38, renal fxn and K check POD1; (3) insulin-requiring DM2 w/ A1c 8.4, needs inpatient insulin titration around NPO period.",
+        "",
+        "Screening for contraindications: alert, oriented, manages own meds, no cognitive impairment. No malignancy or other illness limiting survival to <1 yr. No AF history, SR on all ECGs. Euvolemic, BP stable on oral regimen, clinically stable for elective implant.",
+        "",
+        "P. Oduya-Lind, MD   10/02/2026"
+      ]
+    }
+  ],
+  "truth": {
+    "expected_los_days": {
+      "truth": "present",
+      "value": 2,
+      "page": 8,
+      "why": "Pre-admission plan states 'Expected length of stay: 2 midnights.'"
+    },
+    "comorbidities": {
+      "truth": "present",
+      "value": [
+        "CKD stage 3b",
+        "type 2 diabetes on insulin",
+        "hypertension",
+        "dual antiplatelet therapy after recent NSTEMI"
+      ],
+      "page": 8,
+      "why": "Pre-admission plan lists DAPT bleeding risk, CKD 3b and insulin-requiring DM2 as the LOS rationale; HTN is in the EP consult on page 2."
+    },
+    "lvef_percent": {
+      "truth": "present",
+      "value": 30,
+      "page": 4,
+      "why": "TTE 08/28/2026 (pages 2 and 3) shows 25%; TTE 10/01/2026 (page 4) shows 30%. The later measurement wins."
+    },
+    "lvef_method": {
+      "truth": "present",
+      "value": "echocardiography",
+      "page": 4,
+      "why": "Transthoracic echo, biplane Simpson."
+    },
+    "nyha_class": {
+      "truth": "present",
+      "value": "II",
+      "page": 2,
+      "why": "EP consult assessment: 'NYHA class II'; repeated on page 8."
+    },
+    "cardiomyopathy_type": {
+      "truth": "present",
+      "value": "ischemic",
+      "page": 2,
+      "why": "Ischemic cardiomyopathy after NSTEMI with severe 3-vessel CAD."
+    },
+    "recent_mi_revasc": {
+      "truth": "negated",
+      "value": null,
+      "page": 3,
+      "why": "NSTEMI on 2026-08-27 is 41 days before the planned implant on 2026-10-07, so it is outside the 40-day window (it is only 38 days before today, which is the trap). No PCI was done and CABG was not offered; no prior PCI or CABG."
+    },
+    "optimal_medical_therapy_months": {
+      "truth": "present",
+      "value": 1.2,
+      "page": 5,
+      "why": "All four HF GDMT drugs started 2026-08-30. That is 38 days (1.2 months) to the planned implant. Rule 6 applies only to non-ischemic cardiomyopathy, so this short duration does not block approval."
+    },
+    "shared_decision_making": {
+      "truth": "present",
+      "value": null,
+      "page": 6,
+      "why": "Formal SDM visit on 2026-09-29 with an evidence-based ICD decision aid, before the implant."
+    },
+    "limiting_conditions": {
+      "truth": "negated",
+      "value": [],
+      "page": 8,
+      "why": "Plan explicitly screens out cognitive impairment, illness limiting survival to under 1 year, and AF, and states he is clinically stable."
+    }
+  },
+  "expected_action": "approve",
+  "action_reasoning": "Rule 1: ischemic. Rule 2: LVEF 30% (latest). Rule 3: echo. Rule 4: NYHA II. Rule 5: MI 41 days before implant, outside 40 days; no revascularization. Rule 6: not applicable (ischemic). Rule 7: SDM with decision aid 09/29. Rule 8: none. Rule 9: 2 midnights with documented DAPT, CKD and insulin factors. All met, so approve."
+}
