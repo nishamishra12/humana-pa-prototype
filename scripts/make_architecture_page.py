@@ -1,10 +1,10 @@
-"""Writes docs/architecture.html: the engineering-level architecture of PA Desk.
+"""Writes architecture/engineering_architecture.html: the engineering-level architecture of PA Desk.
 Two diagrams: what is built today (components, data stores, trust boundary, numbered hops) and the production
 target. Run: python scripts/make_architecture_page.py
 """
 import html, os
 
-OUT = os.path.join(os.path.dirname(__file__), "..", "docs", "architecture.html")
+OUT = os.path.join(os.path.dirname(__file__), "..", "architecture", "engineering_architecture.html")
 e = html.escape
 
 

@@ -1,10 +1,10 @@
-"""Writes docs/architecture_walkthrough.html: the path of one case through PA Desk, what is AI and what is plain code,
+"""Writes architecture/architecture_walkthrough.html: the path of one case through PA Desk, what is AI and what is plain code,
 what surrounds the case (data, traces, evals, dashboards, hosting), and a say-it-out-loud explainer for each step.
 Run: python scripts/make_architecture_walkthrough.py
 """
 import html, os
 
-OUT = os.path.join(os.path.dirname(__file__), "..", "docs", "architecture_walkthrough.html")
+OUT = os.path.join(os.path.dirname(__file__), "..", "architecture", "architecture_walkthrough.html")
 e = html.escape
 P = []  # svg parts
 

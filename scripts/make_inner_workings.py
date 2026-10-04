@@ -1,4 +1,4 @@
-"""Writes docs/inner_workings.html: what happens inside steps 3 to 6 for one real packet, shown the way Unstructured's own
+"""Writes architecture/inner_workings.html: what happens inside steps 3 to 6 for one real packet, shown the way Unstructured's own
 screen shows the parse: an input pane on the left and an output pane on the right, with real data from evals/trace/<name>.json.
 Make the trace first:  PYTHONPATH=. python scripts/trace_case.py packets/multi/icd4_scanned_noisy.pdf
 Then:                  python scripts/make_inner_workings.py
@@ -8,7 +8,7 @@ from datetime import date
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 T = json.load(open(os.path.join(ROOT, "evals", "trace", "icd4_scanned_noisy.json"), encoding="utf-8"))
-OUT = os.path.join(ROOT, "docs", "inner_workings.html")
+OUT = os.path.join(ROOT, "architecture", "inner_workings.html")
 e = html.escape
 
 
@@ -38,7 +38,7 @@ def show(v):
 
 
 import base64
-IMG = base64.b64encode(open(os.path.join(ROOT, 'docs', 'assets', 'unstructured_parse.webp'), 'rb').read()).decode()
+IMG = base64.b64encode(open(os.path.join(ROOT, "architecture", "assets", "unstructured_parse.webp"), 'rb').read()).decode()
 
 # ---------- step 2 (summary)
 els = T["ingest"]["elements"]
