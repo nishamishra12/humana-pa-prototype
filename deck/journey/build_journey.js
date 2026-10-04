@@ -7,8 +7,8 @@ const pptxgen = require("pptxgenjs");
 const JSZip = require("jszip");
 const { Resvg } = require("@resvg/resvg-js"); // draws the SVG art to PNG (npm i @resvg/resvg-js)
 
-const OUT = path.join(__dirname, "Journey_Animation.pptx"); // only with --animated
-const OUT_STEPS = path.join(__dirname, "Journey_Steps.pptx"); // default: one slide per step
+const OUT = path.join(__dirname, "Journey_Click_Through.pptx"); // default: ONE slide, one click per step
+const OUT_STEPS = path.join(__dirname, "Journey_Steps.pptx"); // only with --slides: one slide per step
 const C = {
   ink: "16211E", muted: "5C6B66", green: "1F6F5C", greenSoft: "E3F0EB", line: "CBD5D1",
   coral: "B8452F", coralSoft: "FBE9E4", amber: "8A5A00", amberSoft: "FCEFD0",
@@ -173,7 +173,7 @@ const slots = [
 ];
 
 /* ---------- build the slide ---------- */
-const ANIMATED = process.argv.includes("--animated");
+const ANIMATED = !process.argv.includes("--slides");
 const animatedNames = new Set(slots.flatMap((sl) => sl.fx.map((e) => e.name)));
 
 // what is on screen after the first k slots have played
@@ -229,7 +229,7 @@ async function main() {
   const s = pres.addSlide();
   s.background = { color: C.white };
   draw(pres, s, PNG, null);
-  s.addNotes(NOTES);
+  s.addNotes(["One slide. Click once per step. Finish your talking point, then click."].concat(STEP_NOTES.map((t, i) => "Click " + (i + 1) + ": " + t)).join(String.fromCharCode(10, 10)));
   await pres.writeFile({ fileName: OUT });
 
   // inject the animation
@@ -248,7 +248,7 @@ async function main() {
   fs.writeFileSync(OUT, await zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" }));
   fs.writeFileSync(path.join(__dirname, "preview.html"), preview());
   let total = 0; slots.forEach((sl) => (total += sl.hold + Math.max(...sl.fx.map((e) => (e.delay + e.dur) / 1000))));
-  console.log("wrote", OUT, "| animation length about", Math.round(total), "seconds");
+  console.log("wrote", OUT, "| ", slots.length, "clicks");
 }
 
 function buildTiming(ids, byName) {
@@ -268,19 +268,17 @@ function buildTiming(ids, byName) {
     else { const d = e.dir === "down" ? fromTop.down : dirs[e.dir]; preset = 22; cls = "entr"; sub = d[0]; body = setVis(spid, "visible", 0) + filt(spid, d[1], "in", e.dur); }
     return `<p:par><p:cTn id="${id()}" presetID="${preset}" presetClass="${cls}" presetSubtype="${sub}" fill="hold"${grp} nodeType="${nodeType}"><p:stCondLst><p:cond delay="${e.delay}"/></p:stCondLst><p:childTnLst>${body}</p:childTnLst></p:cTn></p:par>`;
   };
-  const outerId = id();
-  let t = 0, slotsXml = "";
-  slots.forEach((sl, i) => {
-    const fx = sl.fx.map((e) => ({ ...e, delay: e.delay + (i > 0 ? Math.round(sl.hold * 1000) : 0) }));
-    const slotId = id();
-    const inner = fx.map((e, k) => effect(e, i === 0 && k === 0 ? "clickEffect" : k === 0 ? "afterEffect" : "withEffect")).join("");
-    slotsXml += `<p:par><p:cTn id="${slotId}" fill="hold"><p:stCondLst><p:cond delay="${t}"/></p:stCondLst><p:childTnLst>${inner}</p:childTnLst></p:cTn></p:par>`;
-    t += Math.max(...fx.map((e) => e.delay + e.dur));
+  // one click per step: the presenter finishes the talking point, then clicks. Nothing plays by itself.
+  let clicksXml = "";
+  slots.forEach((sl) => {
+    const outerId = id(), slotId = id();
+    const inner = sl.fx.map((e, k) => effect(e, k === 0 ? "clickEffect" : "withEffect")).join("");
+    clicksXml += `<p:par><p:cTn id="${outerId}" fill="hold"><p:stCondLst><p:cond delay="indefinite"/></p:stCondLst><p:childTnLst><p:par><p:cTn id="${slotId}" fill="hold"><p:stCondLst><p:cond delay="0"/></p:stCondLst><p:childTnLst>${inner}</p:childTnLst></p:cTn></p:par></p:childTnLst></p:cTn></p:par>`;
   });
   const bld = [...new Set(slots.flatMap((sl) => sl.fx.map((e) => e.name)))].filter((nm) => !["line", "image"].includes(byName[nm].kind))
     .map((nm) => { const o = byName[nm]; const bg = o.kind === "ring" || (o.kind === "node" && o.fill); return `<p:bldP spid="${ids[nm]}" grpId="0"${bg ? ' animBg="1"' : ""}/>`; }).join("");
   const rootId = 1, seqId = 2;
-  return `<p:timing><p:tnLst><p:par><p:cTn id="${rootId}" dur="indefinite" restart="never" nodeType="tmRoot"><p:childTnLst><p:seq concurrent="1" nextAc="seek"><p:cTn id="${seqId}" dur="indefinite" nodeType="mainSeq"><p:childTnLst><p:par><p:cTn id="${outerId}" fill="hold"><p:stCondLst><p:cond delay="indefinite"/></p:stCondLst><p:childTnLst>${slotsXml}</p:childTnLst></p:cTn></p:par></p:childTnLst></p:cTn><p:prevCondLst><p:cond evt="onPrev" delay="0"><p:tgtEl><p:sldTgt/></p:tgtEl></p:cond></p:prevCondLst><p:nextCondLst><p:cond evt="onNext" delay="0"><p:tgtEl><p:sldTgt/></p:tgtEl></p:cond></p:nextCondLst></p:seq></p:childTnLst></p:cTn></p:par></p:tnLst><p:bldLst>${bld}</p:bldLst></p:timing>`;
+  return `<p:timing><p:tnLst><p:par><p:cTn id="${rootId}" dur="indefinite" restart="never" nodeType="tmRoot"><p:childTnLst><p:seq concurrent="1" nextAc="seek"><p:cTn id="${seqId}" dur="indefinite" nodeType="mainSeq"><p:childTnLst>${clicksXml}</p:childTnLst></p:cTn><p:prevCondLst><p:cond evt="onPrev" delay="0"><p:tgtEl><p:sldTgt/></p:tgtEl></p:cond></p:prevCondLst><p:nextCondLst><p:cond evt="onNext" delay="0"><p:tgtEl><p:sldTgt/></p:tgtEl></p:cond></p:nextCondLst></p:seq></p:childTnLst></p:cTn></p:par></p:tnLst><p:bldLst>${bld}</p:bldLst></p:timing>`;
 }
 
 /* ---------- static preview: every object visible at once, to check the layout ---------- */
