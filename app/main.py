@@ -10,6 +10,7 @@ from pipeline.engine import analyze
 from pipeline.run import process, extract as run_extract
 from pipeline.procedures import procedure_for_cpt, defs_by_key, display_for
 from pipeline import telemetry as tel
+from . import dashboard as dash_mod
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 UPLOADS = os.path.join(ROOT, "uploads")
@@ -614,6 +615,16 @@ def evals_holdout(request: Request):
     out["caveat"] = ("We wrote these packets to be hard, not typical. A miss here points to one specific weakness. "
                       "It does not say how often that weakness shows up on real packets.")
     return out
+
+
+@app.get("/api/dashboard")
+def dashboard_data(request: Request):
+    """Live numbers for the executive and utilization management views (web/ops.html). Intake and medical directors only."""
+    c = db.conn()
+    u = me(request, c)
+    if u["role"] not in ("admin", "medical_director"):
+        raise HTTPException(403, "This view is for intake and medical directors")
+    return dash_mod.compute(c)
 
 
 app.mount("/", StaticFiles(directory=os.path.join(ROOT, "web"), html=True), name="web")

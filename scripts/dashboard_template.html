@@ -38,6 +38,9 @@ td:first-child{white-space:nowrap}
 .pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:500}
 .pill.gap{background:var(--ambersoft);color:var(--amber)}
 [hidden]{display:none!important}
+.flash{animation:flash 1.6s ease-out}
+@keyframes flash{0%{background:var(--accsoft);outline:3px solid var(--acc);border-radius:6px}100%{background:transparent;outline:3px solid transparent}}
+@media (prefers-reduced-motion:reduce){.flash{animation:none}}
 </style>
 <main>
 <header>
@@ -49,7 +52,8 @@ td:first-child{white-space:nowrap}
 <section id="p-um" role="tabpanel" hidden></section>
 </main>
 <script>
-const D = __DATA__;
+const LIVE = __LIVE__;
+let D = __DATA__;
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 const dash = (v, suffix = "") => (v === null || v === undefined ? "n/a" : v + suffix);
@@ -58,8 +62,9 @@ function bars(rows, color) {
   const max = Math.max(1, ...rows.map((r) => r.n));
   return rows.map((r) => `<div class="bar"><span>${esc(r.label)}</span><span class="t"><span class="f" style="display:block;width:${(100 * r.n) / max}%;${color ? "background:" + color : ""}"></span></span><span class="v">${r.n}</span></div>`).join("");
 }
+function render() {
 const E = D.exec, U = D.um;
-$("#demo").textContent = `Made-up demo data: ${D.n} cases. Updated ${D.generated}`;
+$("#demo").textContent = LIVE ? `Live. Made-up demo data: ${D.n} cases. Updated ${D.generated}` : `Made-up demo data: ${D.n} cases. Snapshot from ${D.generated}`;
 $("#p-exec").innerHTML = `
 <h2>Right now</h2>
 <div class="kpis">
@@ -116,6 +121,7 @@ ${U.nurses.map((n) => `<tr><td>${esc(n.name)}</td><td class="num">${n.assigned}<
 <thead><tr><th>Medical director</th><th class="num">Waiting for a decision</th><th class="num">Oldest waiting (days)</th><th class="num">Decided</th><th class="num">Returned to nurse</th></tr></thead><tbody>
 ${U.directors.map((d) => `<tr><td>${esc(d.name)}</td><td class="num">${d.waiting}</td><td class="num">${dash(d.oldest_days)}</td><td class="num">${d.decided}</td><td class="num">${d.returned}</td></tr>`).join("")}
 </tbody></table></div></div>`;
+}
 
 const tabs = { exec: ["#t-exec", "#p-exec"], um: ["#t-um", "#p-um"] };
 function show(k) {
@@ -124,4 +130,23 @@ function show(k) {
 }
 for (const k of Object.keys(tabs)) $(tabs[k][0]).onclick = () => show(k);
 try { const s = localStorage.getItem("pa-dash-tab"); if (s && tabs[s]) show(s); } catch (e) {}
+
+// Live mode: ask the app for fresh numbers every few seconds. A number that changed flashes once.
+const cells = () => [...document.querySelectorAll(".kpi .n, .bar .v, td.num")];
+async function refresh() {
+  try {
+    const r = await fetch("/api/dashboard", { cache: "no-store" });
+    if (r.status === 401 || r.status === 403) {
+      $("#demo").textContent = r.status === 401 ? "Sign in to PA Desk first, then reopen this page." : "This view is for intake and medical directors.";
+      return;
+    }
+    const next = await r.json();
+    const before = cells().map((e) => e.textContent);
+    D = next;
+    render();
+    const after = cells();
+    if (before.length === after.length) after.forEach((e, i) => { if (before[i] !== e.textContent) e.classList.add("flash"); });
+  } catch (e) { $("#demo").textContent = "Cannot reach PA Desk. Retrying."; }
+}
+if (LIVE) { refresh(); setInterval(refresh, 4000); } else render();
 </script>

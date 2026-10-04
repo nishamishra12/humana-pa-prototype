@@ -52,8 +52,8 @@ td:first-child{white-space:nowrap}
 <section id="p-um" role="tabpanel" hidden></section>
 </main>
 <script>
-const LIVE = false;
-let D = {"generated": "2026-10-04 16:13 UTC", "n": 15, "exec": {"total": 15, "at_risk": 8, "clean": 7, "by_status": [{"label": "Not started", "n": 10}, {"label": "In review with a nurse", "n": 1}, {"label": "Waiting on the provider", "n": 1}, {"label": "With a medical director", "n": 2}, {"label": "Approved", "n": 1}, {"label": "Denied", "n": 0}], "risk_split": [{"label": "AI says approve (not at risk)", "n": 7}, {"label": "AI says pend: something is missing", "n": 3}, {"label": "AI says escalate: a rule is not met", "n": 5}, {"label": "AI says verify: unclear, a person decides", "n": 0}, {"label": "No policy for this service", "n": 0}], "pended": 1, "with_md": 2, "approved": 1, "denied": 0, "avg_hours": 4.8, "decided": 1, "within_deadline": 100, "overdue": 2, "due_soon": 0, "first_review_rate": 100, "agree_rate": 67, "n_actions": 6, "overrides": 0, "avoidable_escalations": 0, "returns": 0, "escalations": 3}, "um": {"unassigned": 0, "oldest_unassigned_days": 0, "aging": [{"label": "Under 1 day", "n": 4}, {"label": "1 to 3 days", "n": 7}, {"label": "3 to 5 days", "n": 2}, {"label": "5 days or more", "n": 1}], "nurses": [{"name": "Maria Santos", "assigned": 11, "open": 11, "at_risk_open": 6, "overdue": 2, "pended": 1, "escalated": 2, "decided": 0, "avg_hours": null, "overrides": 0}, {"name": "James Okafor", "assigned": 4, "open": 3, "at_risk_open": 2, "overdue": 0, "pended": 0, "escalated": 0, "decided": 1, "avg_hours": 4.8, "overrides": 0}], "directors": [{"name": "Dr. Priya Patel", "waiting": 2, "oldest_days": 2.9, "decided": 0, "returned": 0}, {"name": "Dr. Alan Brooks", "waiting": 0, "oldest_days": null, "decided": 0, "returned": 0}], "open": 14, "overdue": 2, "due_soon": 0, "at_risk_open": 8}};
+const LIVE = true;
+let D = null;
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 const dash = (v, suffix = "") => (v === null || v === undefined ? "n/a" : v + suffix);
