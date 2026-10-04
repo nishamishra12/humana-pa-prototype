@@ -321,7 +321,7 @@ function reviewHtml(d, a, done) {
   const canFix = !done && ["nurse", "medical_director"].includes(S.user.role);
   const mk = { met: "✓", missing: "?", unsure: "?", advisory: "!", not_met: "✕", info: "i" };
   const stLabel = { met: "Met", missing: "Missing", unsure: "Not sure", advisory: "Advisory", not_met: "Not met", info: "Info" };
-  const reco = `<div class="reco ${a.action}"><span class="mk big ${RECO_MARK[a.action][0]}">${RECO_MARK[a.action][1]}</span><div><h3>${RECO_TITLE(a)}</h3><p>${esc(a.rationale)}</p>${a.action === "no_policy" ? "" : `<div class="note">PA Desk can recommend approve, pend, or escalate. Only a medical director can deny.</div>`}</div></div>`;
+  const reco = `<div class="reco ${a.action}"><span class="mk big ${RECO_MARK[a.action][0]}">${RECO_MARK[a.action][1]}</span><div><h3>${RECO_TITLE(a)}</h3><p>${esc(a.rationale)}</p></div></div>`;
   if (a.action === "no_policy") {
     return `<div class="stack" style="max-width:860px">${reco}<div class="card"><h3>What happens next</h3><p class="muted" style="line-height:1.6;margin:0">A reviewer needs to find the right policy for this procedure before anything can be checked. PA Desk checks lumbar spinal fusion today (CPT ${esc((a.covered_cpt_codes || []).join(", "))}). You can still approve, ask the provider, or escalate below.</p></div></div>`;
   }
