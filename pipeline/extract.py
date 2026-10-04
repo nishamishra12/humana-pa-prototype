@@ -55,27 +55,42 @@ def _months(text):
     return n if unit.startswith("month") else n * 12 if unit.startswith("year") else round(n / 4.33, 1)
 
 
+def _flatten_tables(text: str) -> str:
+    """OCR output sometimes returns a form as a markdown table ("| Member | Jane Doe |"). Turn each row into "Member: Jane Doe"
+    so the same patterns read it. Rows that are only dashes or empty are dropped."""
+    out = []
+    for ln in text.split("\n"):
+        m = re.match(r"^\s*\|\s*([^|]+?)\s*\|\s*([^|]*?)\s*\|\s*$", ln)
+        if m and not re.fullmatch(r"[-: ]+", m.group(1)):
+            out.append(f"{m.group(1)}: {m.group(2)}")
+        elif not re.fullmatch(r"\s*\|[\s|:-]*", ln):
+            out.append(ln)
+    return "\n".join(out)
+
+
 def extract_header(full: str) -> dict:
-    """Header fields (member, facility, CPT, procedure, admit date, setting) are boilerplate
-    with a fixed format. Regex already gets these right 100% of the time in both eval sets,
-    so both the rule-based and LLM extractors reuse this instead of asking a model to redo
-    something that isn't broken."""
+    """Header fields (member, facility, CPT, procedure, admit date, setting) are boilerplate with a fixed format.
+    Regex gets these right on typed packets. A scan read by OCR often puts a whole form on one line and drops the
+    colons ("Planned admit date 2026-11-19"), so every colon here is optional and each field stops at the next label."""
+    full = _flatten_tables(full)
     facts = {}
-    m = re.search(r"Member:\s*(.+?)\s+DOB:\s*([\d-]+)\s*\(age (\d+)\)\s+Member ID:\s*(\S+)", full)
-    facts["_member"] = dict(name=m.group(1), dob=m.group(2), age=int(m.group(3)), member_id=m.group(4)) if m else {}
-    m = (re.search(r"Requesting facility:\s*(.+?),\s*Utilization", full)
-         or re.search(r"Practice:\s*(.+)", full))  # longer packets label the facility "Practice:"
+    m = re.search(r"(?:^|\s)Member:?\s+((?:(?!Member\b).)+?)\s+DOB:?\s*([\d-]+)\s*\(age (\d+)\)\s+Member ID:?\s*(\S+)", full, re.S)
+    facts["_member"] = dict(name=m.group(1).strip(), dob=m.group(2), age=int(m.group(3)), member_id=m.group(4)) if m else {}
+    m = (re.search(r"Requesting facility:?\s*(.+?),\s*Utilization", full)
+         or re.search(r"Practice:?\s*(.+?)(?=\s+Phone\b|\n|$)", full))  # longer packets label the facility "Practice:"
     facts["_facility"] = m.group(1).strip() if m else None
-    m = re.search(r"CPT\s*(\d{5})", full)
+    m = re.search(r"CPT:?\s*(\d{5})", full)
     facts["_cpt"] = m.group(1) if m else None
-    m = (re.search(r"Requested service:\s*(.+)", full)
-         or re.search(r"^(Elective inpatient admission,.+)$", full, re.M))  # same text, under a heading
+    m = (re.search(r"Requested service:?\s*(.+?)(?=\s+CPT\b|\n|$)", full)
+         or re.search(r"^(Elective inpatient admission,.+?)(?=\s+CPT\b|\n|$)", full, re.M))  # same text, under a heading
     facts["_procedure"] = m.group(1).strip().rstrip(".") if m else None
-    m = re.search(r"Planned admi(?:t|ssion) date:\s*([\d-]+)", full)
+    m = re.search(r"Planned admi(?:t|ssion) date:?\s*([\d-]+)", full)
     facts["_admit"] = m.group(1) if m else None
-    m = re.search(r"Level of care requested:\s*(\w+)", full)
+    m = re.search(r"Level of care requested:?\s*(\w+)", full)
     facts["_setting"] = m.group(1).lower() if m else None
     return facts
+
+
 
 
 def extract_facts(elements: list[Element]) -> dict:

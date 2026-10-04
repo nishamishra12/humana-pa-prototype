@@ -242,6 +242,10 @@ def _claim_text(d, raw):
         return f"The packet documents {label}."  # free text: do not make one sentence carry the whole summary
     if isinstance(v, list):
         return f"The passage mentions at least one of these (it does not need to mention all): {', '.join(v)}. Topic: {label}."
+    start = (raw.get("calc") or {}).get("start_date")
+    if d["key"] == "optimal_medical_therapy_months" and start:
+        # the months are counted by code from this date, to the planned procedure. The note may say "8 months as of today", so check the start, not the count.
+        return f"The patient has been on guideline-directed heart failure medicines since about {start}."
     return f"The value for {label} is {v}."
 
 
@@ -293,7 +297,8 @@ def _assemble(d, agreed, raw, why, pages, verdicts):
     return f
 
 
-def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3) -> dict:
+def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3, trace: dict | None = None) -> dict:
+    """trace: pass an empty dict to capture what each step saw and produced (used by scripts/trace_case.py). Nothing else changes."""
     import anthropic
     from .procedures import library
     proc = library()["procedures"][proc_key]
@@ -309,6 +314,10 @@ def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3) -> d
 
     pages = ev.page_texts(elements)
     combined = {d["key"]: _combine(runs, d) for d in defs}
+    if trace is not None:
+        trace.update(system_prompt=SYSTEM, packet_chars=len(packet_text), packet_preview=packet_text[:1800], header=head, runs=runs,
+                     combined={k: dict(agreed=v[0], why=v[2]) for k, v in combined.items()}, tool_facts=[dict(key=d["key"], label=d["label"], ask=d["ask"], kind=d["kind"]) for d in defs],
+                     policy_tests=_policy_tests(proc))
     items = []  # one batched meaning check over every fact that has a located supporting sentence
     for d in defs:
         agreed, raw, _ = combined[d["key"]]
@@ -324,6 +333,8 @@ def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3) -> d
                 i += 1
     with tel.span("evidence.verify_meaning", items=len(items)):
         verdicts = ev.verify_meaning(items, client)
+        if trace is not None:
+            trace.update(items=items, verdicts={k: list(v) for k, v in verdicts.items()})
         tel.add(verdicts_returned=len(verdicts), verdicts_missing=len(items) - len(verdicts))
 
     facts = extract_header(full)
