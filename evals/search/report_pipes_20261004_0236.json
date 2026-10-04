@@ -1,0 +1,1859 @@
+{
+ "summary": {
+  "keyword/formal": {
+   "n": 44,
+   "at1": 65.9,
+   "at5": 81.8,
+   "at8": 88.6,
+   "mrr": 0.74
+  },
+  "keyword/plain": {
+   "n": 44,
+   "at1": 52.3,
+   "at5": 63.6,
+   "at8": 70.5,
+   "mrr": 0.6
+  },
+  "keyword/all": {
+   "n": 88,
+   "at1": 59.1,
+   "at5": 72.7,
+   "at8": 79.5,
+   "mrr": 0.67
+  },
+  "bm25/formal": {
+   "n": 44,
+   "at1": 54.5,
+   "at5": 88.6,
+   "at8": 93.2,
+   "mrr": 0.709
+  },
+  "bm25/plain": {
+   "n": 44,
+   "at1": 59.1,
+   "at5": 81.8,
+   "at8": 93.2,
+   "mrr": 0.704
+  },
+  "bm25/all": {
+   "n": 88,
+   "at1": 56.8,
+   "at5": 85.2,
+   "at8": 93.2,
+   "mrr": 0.706
+  },
+  "pipes-chunks/formal": {
+   "n": 44,
+   "at1": 77.3,
+   "at5": 97.7,
+   "at8": 97.7,
+   "mrr": 0.861
+  },
+  "pipes-chunks/plain": {
+   "n": 44,
+   "at1": 75.0,
+   "at5": 93.2,
+   "at8": 97.7,
+   "mrr": 0.831
+  },
+  "pipes-chunks/all": {
+   "n": 88,
+   "at1": 76.1,
+   "at5": 95.5,
+   "at8": 97.7,
+   "mrr": 0.846
+  },
+  "hybrid/formal": {
+   "n": 44,
+   "at1": 75.0,
+   "at5": 93.2,
+   "at8": 100.0,
+   "mrr": 0.836
+  },
+  "hybrid/plain": {
+   "n": 44,
+   "at1": 63.6,
+   "at5": 95.5,
+   "at8": 95.5,
+   "mrr": 0.765
+  },
+  "hybrid/all": {
+   "n": 88,
+   "at1": 69.3,
+   "at5": 94.3,
+   "at8": 97.7,
+   "mrr": 0.8
+  }
+ },
+ "rows": {
+  "keyword": [
+   {
+    "service": "icd",
+    "kind": "formal",
+    "rank": 4
+   },
+   {
+    "service": "icd",
+    "kind": "plain",
+    "rank": 21
+   },
+   {
+    "service": "bariatric",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "bariatric",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "cpap",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cpap",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "home_o2",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "home_o2",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "ldct",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "ldct",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pet",
+    "kind": "formal",
+    "rank": 8
+   },
+   {
+    "service": "pet",
+    "kind": "plain",
+    "rank": 158
+   },
+   {
+    "service": "cochlear",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cochlear",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "tavr",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tavr",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pacemaker",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "pacemaker",
+    "kind": "plain",
+    "rank": 33
+   },
+   {
+    "service": "vad",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "vad",
+    "kind": "plain",
+    "rank": 11
+   },
+   {
+    "service": "heart_tx",
+    "kind": "formal",
+    "rank": 14
+   },
+   {
+    "service": "heart_tx",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "lvrs",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "lvrs",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "hbot",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "hbot",
+    "kind": "plain",
+    "rank": 9
+   },
+   {
+    "service": "bmd",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "bmd",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "sleep_test",
+    "kind": "formal",
+    "rank": 15
+   },
+   {
+    "service": "sleep_test",
+    "kind": "plain",
+    "rank": 6
+   },
+   {
+    "service": "vns",
+    "kind": "formal",
+    "rank": 10
+   },
+   {
+    "service": "vns",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "dbs",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "dbs",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "liver_tx",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "liver_tx",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "stem_cell",
+    "kind": "formal",
+    "rank": 7
+   },
+   {
+    "service": "stem_cell",
+    "kind": "plain",
+    "rank": 19
+   },
+   {
+    "service": "cart",
+    "kind": "formal",
+    "rank": 4
+   },
+   {
+    "service": "cart",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "laac",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "laac",
+    "kind": "plain",
+    "rank": 242
+   },
+   {
+    "service": "teer",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "teer",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "sci",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "sci",
+    "kind": "plain",
+    "rank": 16
+   },
+   {
+    "service": "esi",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "esi",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "facet",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "facet",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "si_joint",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "si_joint",
+    "kind": "plain",
+    "rank": 5
+   },
+   {
+    "service": "varicose",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "varicose",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "blepharoplasty",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "blepharoplasty",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "hospital_bed",
+    "kind": "formal",
+    "rank": 3
+   },
+   {
+    "service": "hospital_bed",
+    "kind": "plain",
+    "rank": 6
+   },
+   {
+    "service": "power_chair",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "power_chair",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "glucose",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "glucose",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "proton",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "proton",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "cataract",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cataract",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "botox",
+    "kind": "formal",
+    "rank": 6
+   },
+   {
+    "service": "botox",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "npwt",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "npwt",
+    "kind": "plain",
+    "rank": 6
+   },
+   {
+    "service": "tens",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tens",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "mri",
+    "kind": "formal",
+    "rank": 43
+   },
+   {
+    "service": "mri",
+    "kind": "plain",
+    "rank": 14
+   },
+   {
+    "service": "tms",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tms",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pulm_rehab",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "pulm_rehab",
+    "kind": "plain",
+    "rank": 1223
+   },
+   {
+    "service": "pta",
+    "kind": "formal",
+    "rank": 29
+   },
+   {
+    "service": "pta",
+    "kind": "plain",
+    "rank": 13
+   },
+   {
+    "service": "lumbar_fusion",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "lumbar_fusion",
+    "kind": "plain",
+    "rank": 10
+   },
+   {
+    "service": "cervical_fusion",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cervical_fusion",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "dialysis",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "dialysis",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "ventilator",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "ventilator",
+    "kind": "plain",
+    "rank": 24
+   }
+  ],
+  "bm25": [
+   {
+    "service": "icd",
+    "kind": "formal",
+    "rank": 3
+   },
+   {
+    "service": "icd",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "bariatric",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "bariatric",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "cpap",
+    "kind": "formal",
+    "rank": 14
+   },
+   {
+    "service": "cpap",
+    "kind": "plain",
+    "rank": 11
+   },
+   {
+    "service": "home_o2",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "home_o2",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "ldct",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "ldct",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pet",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "pet",
+    "kind": "plain",
+    "rank": 6
+   },
+   {
+    "service": "cochlear",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cochlear",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "tavr",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tavr",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pacemaker",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "pacemaker",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "vad",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "vad",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "heart_tx",
+    "kind": "formal",
+    "rank": 15
+   },
+   {
+    "service": "heart_tx",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "lvrs",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "lvrs",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "hbot",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "hbot",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "bmd",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "bmd",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "sleep_test",
+    "kind": "formal",
+    "rank": 5
+   },
+   {
+    "service": "sleep_test",
+    "kind": "plain",
+    "rank": 8
+   },
+   {
+    "service": "vns",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "vns",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "dbs",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "dbs",
+    "kind": "plain",
+    "rank": 6
+   },
+   {
+    "service": "liver_tx",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "liver_tx",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "stem_cell",
+    "kind": "formal",
+    "rank": 8
+   },
+   {
+    "service": "stem_cell",
+    "kind": "plain",
+    "rank": 7
+   },
+   {
+    "service": "cart",
+    "kind": "formal",
+    "rank": 8
+   },
+   {
+    "service": "cart",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "laac",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "laac",
+    "kind": "plain",
+    "rank": 23
+   },
+   {
+    "service": "teer",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "teer",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "sci",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "sci",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "esi",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "esi",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "facet",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "facet",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "si_joint",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "si_joint",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "varicose",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "varicose",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "blepharoplasty",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "blepharoplasty",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "hospital_bed",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "hospital_bed",
+    "kind": "plain",
+    "rank": 4
+   },
+   {
+    "service": "power_chair",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "power_chair",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "glucose",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "glucose",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "proton",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "proton",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "cataract",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cataract",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "botox",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "botox",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "npwt",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "npwt",
+    "kind": "plain",
+    "rank": 4
+   },
+   {
+    "service": "tens",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "tens",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "mri",
+    "kind": "formal",
+    "rank": 12
+   },
+   {
+    "service": "mri",
+    "kind": "plain",
+    "rank": 4
+   },
+   {
+    "service": "tms",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tms",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pulm_rehab",
+    "kind": "formal",
+    "rank": 5
+   },
+   {
+    "service": "pulm_rehab",
+    "kind": "plain",
+    "rank": 1223
+   },
+   {
+    "service": "pta",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "pta",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "lumbar_fusion",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "lumbar_fusion",
+    "kind": "plain",
+    "rank": 3
+   },
+   {
+    "service": "cervical_fusion",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cervical_fusion",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "dialysis",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "dialysis",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "ventilator",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "ventilator",
+    "kind": "plain",
+    "rank": 7
+   }
+  ],
+  "pipes-chunks": [
+   {
+    "service": "icd",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "icd",
+    "kind": "plain",
+    "rank": 3
+   },
+   {
+    "service": "bariatric",
+    "kind": "formal",
+    "rank": 4
+   },
+   {
+    "service": "bariatric",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "cpap",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "cpap",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "home_o2",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "home_o2",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "ldct",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "ldct",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pet",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "pet",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "cochlear",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cochlear",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "tavr",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tavr",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pacemaker",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "pacemaker",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "vad",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "vad",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "heart_tx",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "heart_tx",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "lvrs",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "lvrs",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "hbot",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "hbot",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "bmd",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "bmd",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "sleep_test",
+    "kind": "formal",
+    "rank": 10
+   },
+   {
+    "service": "sleep_test",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "vns",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "vns",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "dbs",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "dbs",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "liver_tx",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "liver_tx",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "stem_cell",
+    "kind": "formal",
+    "rank": 5
+   },
+   {
+    "service": "stem_cell",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "cart",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "cart",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "laac",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "laac",
+    "kind": "plain",
+    "rank": 61
+   },
+   {
+    "service": "teer",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "teer",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "sci",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "sci",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "esi",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "esi",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "facet",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "facet",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "si_joint",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "si_joint",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "varicose",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "varicose",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "blepharoplasty",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "blepharoplasty",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "hospital_bed",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "hospital_bed",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "power_chair",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "power_chair",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "glucose",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "glucose",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "proton",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "proton",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "cataract",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cataract",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "botox",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "botox",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "npwt",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "npwt",
+    "kind": "plain",
+    "rank": 3
+   },
+   {
+    "service": "tens",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tens",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "mri",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "mri",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "tms",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tms",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pulm_rehab",
+    "kind": "formal",
+    "rank": 3
+   },
+   {
+    "service": "pulm_rehab",
+    "kind": "plain",
+    "rank": 7
+   },
+   {
+    "service": "pta",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "pta",
+    "kind": "plain",
+    "rank": 4
+   },
+   {
+    "service": "lumbar_fusion",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "lumbar_fusion",
+    "kind": "plain",
+    "rank": 6
+   },
+   {
+    "service": "cervical_fusion",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cervical_fusion",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "dialysis",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "dialysis",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "ventilator",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "ventilator",
+    "kind": "plain",
+    "rank": 3
+   }
+  ],
+  "hybrid": [
+   {
+    "service": "icd",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "icd",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "bariatric",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "bariatric",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "cpap",
+    "kind": "formal",
+    "rank": 7
+   },
+   {
+    "service": "cpap",
+    "kind": "plain",
+    "rank": 4
+   },
+   {
+    "service": "home_o2",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "home_o2",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "ldct",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "ldct",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pet",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "pet",
+    "kind": "plain",
+    "rank": 4
+   },
+   {
+    "service": "cochlear",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cochlear",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "tavr",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tavr",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pacemaker",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "pacemaker",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "vad",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "vad",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "heart_tx",
+    "kind": "formal",
+    "rank": 4
+   },
+   {
+    "service": "heart_tx",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "lvrs",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "lvrs",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "hbot",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "hbot",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "bmd",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "bmd",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "sleep_test",
+    "kind": "formal",
+    "rank": 6
+   },
+   {
+    "service": "sleep_test",
+    "kind": "plain",
+    "rank": 5
+   },
+   {
+    "service": "vns",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "vns",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "dbs",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "dbs",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "liver_tx",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "liver_tx",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "stem_cell",
+    "kind": "formal",
+    "rank": 8
+   },
+   {
+    "service": "stem_cell",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "cart",
+    "kind": "formal",
+    "rank": 4
+   },
+   {
+    "service": "cart",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "laac",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "laac",
+    "kind": "plain",
+    "rank": 28
+   },
+   {
+    "service": "teer",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "teer",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "sci",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "sci",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "esi",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "esi",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "facet",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "facet",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "si_joint",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "si_joint",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "varicose",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "varicose",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "blepharoplasty",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "blepharoplasty",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "hospital_bed",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "hospital_bed",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "power_chair",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "power_chair",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "glucose",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "glucose",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "proton",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "proton",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "cataract",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cataract",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "botox",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "botox",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "npwt",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "npwt",
+    "kind": "plain",
+    "rank": 3
+   },
+   {
+    "service": "tens",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tens",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "mri",
+    "kind": "formal",
+    "rank": 3
+   },
+   {
+    "service": "mri",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "tms",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "tms",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "pulm_rehab",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "pulm_rehab",
+    "kind": "plain",
+    "rank": 52
+   },
+   {
+    "service": "pta",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "pta",
+    "kind": "plain",
+    "rank": 2
+   },
+   {
+    "service": "lumbar_fusion",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "lumbar_fusion",
+    "kind": "plain",
+    "rank": 3
+   },
+   {
+    "service": "cervical_fusion",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "cervical_fusion",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "dialysis",
+    "kind": "formal",
+    "rank": 1
+   },
+   {
+    "service": "dialysis",
+    "kind": "plain",
+    "rank": 1
+   },
+   {
+    "service": "ventilator",
+    "kind": "formal",
+    "rank": 2
+   },
+   {
+    "service": "ventilator",
+    "kind": "plain",
+    "rank": 4
+   }
+  ]
+ },
+ "covered_policies": 1314
+}
