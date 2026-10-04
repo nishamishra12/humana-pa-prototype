@@ -27,10 +27,10 @@ th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);verti
 
 <h2>3. Checking the evidence</h2>
 <p class="lead">The quote check has two parts. Plain code finds the sentence (9 of 9 checks pass, including a fuzzy match that survives scan noise and refuses to match a different number). A second AI call judges whether the sentence states the fact (4 or 5 of 5 on cases built to fool an exact-text search, depending on the run).</p>
-<p>Planted errors: 5 of 6 planted wrong pairs were flagged by the product&#x27;s second AI check. A fact flagged "insufficient" stays in the product without the tick, so the nurse is not told it was confirmed.</p>
+<p>Planted errors: 5 of 5 planted wrong pairs were flagged by the product&#x27;s second AI check. A fact flagged "insufficient" stays in the product without the tick, so the nurse is not told it was confirmed.</p>
 
 <h2>4. A human audit of the citations</h2>
-<p>Pending: 30 cited sentences (24 real, 6 planted errors) are waiting for a human to judge them.</p>
+<p>A person judged 24 real citations from five made-up cases. <b>18 yes</b> (75.0%), 3 partly, 3 no, 0 can't tell. Counting 'partly' as a pass, 87.5% held up.</p><p>Planted errors: the auditor caught 5 of 5, and so did the product's second AI check (5 of 5). One more planted pair turned out to be a valid citation and is left out.</p><p>What the 6 weaker citations were:</p><ul><li><b>Claim packs several facts into one sentence.</b> 'Recent heart attack: date, within 40 days, no stent' cites only the sentence about the admission. 'Shared decision making: documented' cites the visit description, not the line that says it was completed.</li><li><b>The sentence names the method, not the word.</b> 'Measured by echocardiography' cites 'biplane Simpson' or 'TTE'. The page says echo, but that sentence alone does not.</li><li><b>Needs a second look by the auditor.</b> 'Ejection fraction 31%' cites 'Quantitative LVEF 31%' and was judged No, which looks like a misread.</li></ul><p>The second AI check said 'supports' for all 24 real items, so it did not see these weak spots. The fix is to show the whole supporting passage, and to cite one sentence per part of a compound claim.</p>
 
 <h2>5. Hard cases from a separate author</h2>
 <p>Pending. A prompt for a separate AI session to write 40 adversarial packets is ready (docs/ADVERSARIAL_PACKET_PROMPT.md), and the converter and scoring are built. That author never sees our reader's code.</p>

@@ -52,7 +52,7 @@ if sr:
 
 # ---- audit
 key = json.load(open(os.path.join(ROOT, "evals", "audit", "audit_key.json"))) if os.path.exists(os.path.join(ROOT, "evals", "audit", "audit_key.json")) else {}
-planted = {k: v for k, v in key.items() if v.get("planted")}
+planted = {k: v for k, v in key.items() if v.get("planted") and not v.get("excluded")}
 caught = sum(1 for v in planted.values() if v["ai_verdict"] in ("unrelated", "insufficient", "contradicts"))
 res_path = os.path.join(ROOT, "evals", "audit", "audit_results.json")
 audit = json.load(open(res_path)) if os.path.exists(res_path) else None
@@ -80,13 +80,19 @@ planted_txt = f"{caught} of {len(planted)} planted wrong pairs were flagged by t
 if audit:
     ans = {k: v for k, v in audit.items() if k in key}
     real = [k for k in ans if not key[k].get("planted")]
-    yes = sum(1 for k in real if ans[k] == "yes")
-    part = sum(1 for k in real if ans[k] == "partly")
-    no = sum(1 for k in real if ans[k] == "no")
-    unsure = sum(1 for k in real if ans[k] == "unsure")
-    pl_no = sum(1 for k in ans if key[k].get("planted") and ans[k] == "no")
-    audit_html = (f"<p>A person judged {len(real)} real citations: <b>{yes} yes</b>, {part} partly, {no} no, {unsure} can't tell. "
-                  f"Of the {len([k for k in ans if key[k].get('planted')])} planted wrong pairs, the auditor caught {pl_no}.</p>")
+    cnt = {c: sum(1 for k in real if ans[k] == c) for c in ("yes", "partly", "no", "unsure")}
+    pl = [k for k in ans if k in planted]
+    pl_no = sum(1 for k in pl if ans[k] == "no")
+    ai_no = sum(1 for k in pl if key[k]["ai_verdict"] in ("unrelated", "insufficient", "contradicts"))
+    audit_html = (f"<p>A person judged {len(real)} real citations from five made-up cases. "
+                  f"<b>{cnt['yes']} yes</b> ({pct(cnt['yes'], len(real))}), {cnt['partly']} partly, {cnt['no']} no, {cnt['unsure']} can't tell. "
+                  f"Counting 'partly' as a pass, {pct(cnt['yes'] + cnt['partly'], len(real))} held up.</p>"
+                  f"<p>Planted errors: the auditor caught {pl_no} of {len(pl)}, and so did the product's second AI check ({ai_no} of {len(pl)}). One more planted pair turned out to be a valid citation and is left out.</p>"
+                  "<p>What the 6 weaker citations were:</p><ul>"
+                  "<li><b>Claim packs several facts into one sentence.</b> 'Recent heart attack: date, within 40 days, no stent' cites only the sentence about the admission. 'Shared decision making: documented' cites the visit description, not the line that says it was completed.</li>"
+                  "<li><b>The sentence names the method, not the word.</b> 'Measured by echocardiography' cites 'biplane Simpson' or 'TTE'. The page says echo, but that sentence alone does not.</li>"
+                  "<li><b>Needs a second look by the auditor.</b> 'Ejection fraction 31%' cites 'Quantitative LVEF 31%' and was judged No, which looks like a misread.</li></ul>"
+                  "<p>The second AI check said 'supports' for all 24 real items, so it did not see these weak spots. The fix is to show the whole supporting passage, and to cite one sentence per part of a compound claim.</p>")
 else:
     audit_html = "<p>Pending: 30 cited sentences (24 real, 6 planted errors) are waiting for a human to judge them.</p>"
 

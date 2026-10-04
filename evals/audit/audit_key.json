@@ -277,7 +277,8 @@
   "ai_verdict": "supports",
   "match": "exact",
   "page": 8,
-  "planted": true
+  "planted": true,
+  "excluded": "The planted sentence also states the claim, so this pair was not an error"
  },
  "c29": {
   "case": "Dennis Kowalczyk",
