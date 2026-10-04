@@ -30,6 +30,27 @@ def badge(n, x, y):
 W = 156
 GAP = 22
 X0 = 24
+OFF = 232  # the existing diagram moves down to make room for the library lane
+
+P_main, P = P, []
+P.append(f'<text class="zt" x="{X0}" y="22">Built before any case: the policy library</text>')
+lane = [
+    ("Policy sources", ["CMS coverage database", "eCFR, plus PDFs"], "ext", "OUTSIDE SOURCE", False),
+    ("ETL + AI", ["Unstructured turns", "each policy into", "structured elements"], "ext", "OUTSIDE SERVICE + AI", False),
+    ("AI drafts the rules", ["Claude writes each rule", "with its source quote", "(done by hand today)"], "ai", "AI MODEL", False),
+    ("Code checks", ["quote must exist in", "the source; schema ok;", "change report"], "code", "CODE", False),
+    ("Policy owner approves", ["NOT BUILT YET", "owner reviews, edits,", "and publishes a version"], "human", "PERSON", True),
+    ("Policy library", ["versioned: CPT code,", "policies, rules, and", "the source of each"], "code", "CODE + DATA", False),
+]
+LX = []
+for i, (t, lines, kind, tag, dsh) in enumerate(lane):
+    x = X0 + i * (W + GAP)
+    LX.append(x)
+    box(x, 56, W, 100, t, lines, kind, tag, dashed=dsh)
+    if i:
+        arrow([(x - GAP + 2, 106), (x - 2, 106)])
+P.append(f'<text class="s" x="{X0}" y="184">Today: the first three steps were done once, by Claude, from the official text, with your review. The owner approval is the gap.</text>')
+P_lane, P = P, P_main
 Y = 70
 H = 118
 stages = [
@@ -50,12 +71,15 @@ for i, (t, lines, kind, tag) in enumerate(stages):
     if i:
         arrow([(x - GAP + 2, Y + H // 2), (x - 2, Y + H // 2)])
 
+P_lane.append(f'<polyline class="a" points="{LX[5] + W // 2},158 {LX[5] + W // 2},{OFF - 18} {xs[2] + W // 2},{OFF - 18} {xs[2] + W // 2},{OFF + Y - 4}" marker-end="url(#ah)"/>')
+P_lane.append(f'<text class="s" x="{xs[2] + W // 2 + 8}" y="{OFF - 24}">step 3 and step 6 read the approved library</text>')
+
 # branch: no policy for this code
 bx = xs[2]
-box(bx, 250, 330, 92, "No policy for this code", ["search 1,314 CMS policies by keyword", "AI drafts a checklist, marked draft", "a person reviews it before use"], "ai", None, dashed=True)
+box(bx, 250, 330, 92, "No policy for this code", ["today: the case says no policy,", "and goes to a person", "planned: draft one for the owner to approve"], "ai", None, dashed=True)
 arrow([(xs[2] + W // 2, Y + H + 2), (xs[2] + W // 2, 248)], dashed=True)
 arrow([(bx + 330 + 2, 296), (xs[6] + W // 2, 296), (xs[6] + W // 2, Y + H + 2)], dashed=True)
-P.append(f'<text class="s" x="{bx + 340}" y="288">draft goes to a person, never straight to a decision</text>')
+P.append(f'<text class="s" x="{bx + 340}" y="288">a person decides today, with no policy help</text>')
 
 # around the case
 P.append(f'<text class="zt" x="{X0}" y="392">Around every case</text>')
@@ -71,10 +95,10 @@ for i, (t, lines) in enumerate(around):
     box(X0 + i * (AW + 16), 408, AW, 78, t, lines, "plat")
 P.append(f'<text class="s" x="{X0 + 5 * (AW + 16) - 6}" y="506" text-anchor="end">Every step above reports a trace. The nurse and director screens run on the same data.</text>')
 
-SVG_W, SVG_H = 1280, 524
+SVG_W, SVG_H = 1280, 524 + OFF
 defs = ('<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">'
         '<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>')
-SVG = f'<svg viewBox="0 0 {SVG_W} {SVG_H}" role="img" aria-label="The path of one case through PA Desk">{defs}{"".join(P)}</svg>'
+SVG = f'<svg viewBox="0 0 {SVG_W} {SVG_H}" role="img" aria-label="The path of one case through PA Desk">{defs}{"".join(P_lane)}<g transform="translate(0,{OFF})">{"".join(P)}</g></svg>'
 
 cards = [
     ("1 - What Unstructured does (the partitioner)",
@@ -97,11 +121,13 @@ cards = [
       "It catches what text matching cannot: 'no evidence of instability' quoted as if instability was found. Contradicts or unrelated turns the fact into 'not sure'. Insufficient keeps the fact but removes the green tick."]),
     ("6 - What the rules engine does, and where RAG appears",
      ["The rules are plain code. Each policy criterion names a fact and a test, such as 'LVEF is 35% or less'. The engine checks the facts, builds the checklist, and picks approve, pend, escalate or verify. The same facts give the same answer every time, and there is no 'deny' in its vocabulary.",
-      "<b>The decision path uses no RAG.</b> The packet is read whole and the policies are a curated, versioned library, each criterion tied to its source. Retrieval appears in one side branch only: a service we have no policy for. Then a keyword search over 1,314 CMS policies suggests one, and the AI drafts a checklist for a person to review. In my test, embedding search found the right policy more often than keyword search (97.7% against 79.5%). It is measured, not yet switched on."]),
+      "<b>The decision path uses no RAG.</b> The packet is read whole and the policies are a curated, versioned library, each criterion tied to its source. Nothing is searched while a case runs. The policy library is built before any case: Unstructured parses the official policy, an AI drafts the rules, code checks them, and a policy owner approves them. Today I did the drafting once by hand and the owner approval is missing. The planned side branch for a service with no policy would search the 1,314 CMS policies and draft one for the owner to approve. In my test, embedding search found the right policy more often than keyword search (97.7% against 79.5%). It is measured and not connected."]),
 ]
 card_html = "".join(f'<section class="card"><h3>{e(t)}</h3>' + "".join(f"<p>{p}</p>" for p in ps) + "</section>" for t, ps in cards)
 
 NOTCLAIM = [
+    "The policy library was drafted by AI (Claude) from the official text, with review by you. No policy owner has approved it yet.",
+    "The search over 1,314 CMS policies is not connected to the app. A code we do not cover goes to a person.",
     "The policies are public Medicare policies. The Humana policy and MCG slots are placeholders, marked illustrative.",
     "All packets are made up. Nothing here has seen a real patient.",
     "We do not know which Unstructured method the Transform service uses on a page. We know what it returned.",
