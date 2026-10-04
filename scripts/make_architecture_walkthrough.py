@@ -35,10 +35,10 @@ OFF = 232  # the existing diagram moves down to make room for the library lane
 P_main, P = P, []
 P.append(f'<text class="zt" x="{X0}" y="22">Built before any case: the policy library</text>')
 lane = [
-    ("Policy sources", ["CMS coverage database", "eCFR, plus PDFs"], "ext", "OUTSIDE SOURCE", False),
+    ("Policy sources", ["CMS coverage API,", "eCFR, or your PDF"], "ext", "OUTSIDE SOURCE", False),
     ("ETL + AI", ["Unstructured turns", "each policy into", "structured elements"], "ext", "OUTSIDE SERVICE + AI", False),
-    ("AI drafts the rules", ["Claude writes each rule", "with its source quote", "(done by hand today)"], "ai", "AI MODEL", False),
-    ("Code checks", ["quote must exist in", "the source; schema ok;", "change report"], "code", "CODE", False),
+    ("AI drafts the rules", ["Claude fills a form:", "each rule carries its", "exact source quote"], "ai", "AI MODEL", False),
+    ("Code checks", ["every quote, number", "and fact is checked;", "compared with ours"], "code", "CODE", False),
     ("Policy owner approves", ["NOT BUILT YET", "owner reviews, edits,", "and publishes a version"], "human", "PERSON", True),
     ("Policy library", ["versioned: CPT code,", "policies, rules, and", "the source of each"], "code", "CODE + DATA", False),
 ]
@@ -49,7 +49,7 @@ for i, (t, lines, kind, tag, dsh) in enumerate(lane):
     box(x, 56, W, 100, t, lines, kind, tag, dashed=dsh)
     if i:
         arrow([(x - GAP + 2, 106), (x - 2, 106)])
-P.append(f'<text class="s" x="{X0}" y="184">Today: the first three steps were done once, by Claude, from the official text, with your review. The owner approval is the gap.</text>')
+P.append(f'<text class="s" x="{X0}" y="184">Built and tested on 5 policies (15 of 17 approved rules reproduced). The gap: owner approval and publishing. The library in use today is still the hand-written one.</text>')
 P_lane, P = P, P_main
 Y = 70
 H = 118
@@ -121,12 +121,12 @@ cards = [
       "It catches what text matching cannot: 'no evidence of instability' quoted as if instability was found. Contradicts or unrelated turns the fact into 'not sure'. Insufficient keeps the fact but removes the green tick."]),
     ("6 - What the rules engine does, and where RAG appears",
      ["The rules are plain code. Each policy criterion names a fact and a test, such as 'LVEF is 35% or less'. The engine checks the facts, builds the checklist, and picks approve, pend, escalate or verify. The same facts give the same answer every time, and there is no 'deny' in its vocabulary.",
-      "<b>The decision path uses no RAG.</b> The packet is read whole and the policies are a curated, versioned library, each criterion tied to its source. Nothing is searched while a case runs. The policy library is built before any case: Unstructured parses the official policy, an AI drafts the rules, code checks them, and a policy owner approves them. Today I did the drafting once by hand and the owner approval is missing. The planned side branch for a service with no policy would search the 1,314 CMS policies and draft one for the owner to approve. In my test, embedding search found the right policy more often than keyword search (97.7% against 79.5%). It is measured and not connected."]),
+      "<b>The decision path uses no RAG.</b> The packet is read whole and the policies are a curated, versioned library, each criterion tied to its source. Nothing is searched while a case runs. The policy library is built before any case: Unstructured parses the official policy, an AI drafts the rules, code checks them, and a policy owner approves them. The library in use today was written once by hand. The build now drafts rules from the official text, tested on five policies, and the owner approval is missing. The planned side branch for a service with no policy would search the 1,314 CMS policies and draft one for the owner to approve. In my test, embedding search found the right policy more often than keyword search (97.7% against 79.5%). It is measured and not connected."]),
 ]
 card_html = "".join(f'<section class="card"><h3>{e(t)}</h3>' + "".join(f"<p>{p}</p>" for p in ps) + "</section>" for t, ps in cards)
 
 NOTCLAIM = [
-    "The policy library was drafted by AI (Claude) from the official text, with review by you. No policy owner has approved it yet.",
+    "The policy library in use was written by Claude from the official text, with your review. The build pipeline drafts the same kind of rules and was tested on five policies. No policy owner has approved any of it yet.",
     "The search over 1,314 CMS policies is not connected to the app. A code we do not cover goes to a person.",
     "The policies are public Medicare policies. The Humana policy and MCG slots are placeholders, marked illustrative.",
     "All packets are made up. Nothing here has seen a real patient.",

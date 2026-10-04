@@ -185,6 +185,12 @@ s6 = f"""<div class="two"><div class="pane"><h4>Input: the facts and the policy 
 
 GH = "https://github.com/nishamishra12/humana-pa-prototype/blob/master/"
 files = [
+    ("A", "Fetch the policy", "pipeline/policy_build/sources.py", "Fetches from the CMS Coverage API or eCFR and saves the text with its URL, version, time and hash."),
+    ("B", "Parse the policy", "pipeline/policy_build/parse.py", "Sends the policy to Unstructured and keeps the elements."),
+    ("C", "AI drafts the rules", "pipeline/policy_build/draft.py", "The drafting rules (SYSTEM) and the fixed form the AI fills in."),
+    ("D", "Code checks the draft", "pipeline/policy_build/validate.py", "Checks every quote, number and fact in the draft."),
+    ("E", "Compare and approve", "pipeline/policy_build/compare.py", "Compares the draft with the approved rules. Owner review is not built yet."),
+    ("A-E", "Run the whole build", "pipeline/policy_build/build.py", "Runs steps A to E for one policy. Start it with scripts/build_policy.py."),
     ("2", "ETL + AI", "pipeline/ingest.py", "Calls Unstructured and keeps page, type and text for each element."),
     ("3", "Pick the policy", "pipeline/extract.py", "extract_header: finds the CPT code, planned date and member with pattern matching."),
     ("3", "Pick the policy", "pipeline/procedures.py", "procedure_for_cpt: the lookup from CPT code to service."),
@@ -196,14 +202,67 @@ files = [
 ]
 file_rows = "".join(f'<tr><td>{n}</td><td>{e(t)}</td><td><a href="{GH}{f}">{e(f)}</a></td><td>{e(d)}</td></tr>' for n, t, f, d in files)
 where_html = f"""<section><h2>Where each step lives in the code</h2><div class="pane wide tw"><table><thead><tr><th>Step</th><th>What</th><th>File on GitHub</th><th>What is in it</th></tr></thead><tbody>{file_rows}</tbody></table>
-<p class="note" style="margin-top:10px">The policy criteria were written once by hand from the official policy text (saved in policies/raw) and stored in the library with their source. They are not pulled from the policy documents while a case runs.</p></div></section>"""
+<p class="note" style="margin-top:10px">The library in use today (policies/policy_library.json) was written by hand from the official policy text. The build in steps A to E now drafts the same kind of rules from the official text, and each run is saved in policies/work. Nothing is pulled from the policy documents while a case runs.</p></div></section>"""
 
 # ---------- found while looking
 found = """<ul><li><b>The request form on a scan.</b> Unstructured read this form two different ways on two calls: once as one long line with no colons, once as a table. My header reader only understood typed forms, so on scans it missed the member, the facility and the planned date, and the date counting never switched on. It now handles both layouts. On the 76 typed packets it gives identical results.</li>
 <li><b>The meaning check against a counted number.</b> The packet says "8 months as of today". Code counts 9.5 months to the planned procedure date. The second AI called that a contradiction and the case was flagged. The check now tests the start date the packet gives, and the case is approved.</li></ul>
 <p class="note">Neither would have been found from the score alone. Looking inside each step is how I found them.</p>"""
 
-STEPS = [("2", "ETL + AI", s2), ("3", "Pick the policy", s3), ("4", "Read the packet", s4), ("5", "Check the evidence", s5), ("6", "Apply the rules", s6)]
+
+# ---------- the policy library build (before any case), from the real NCD 20.4 run
+import sys
+sys.path.insert(0, ROOT)
+from pipeline.policy_build.draft import SYSTEM as DRAFT_SYSTEM
+PW = os.path.join(ROOT, "policies", "work", "NCD-20.4", "v5")
+lm = json.load(open(os.path.join(PW, "meta.json"), encoding="utf-8"))
+lel = json.load(open(os.path.join(PW, "elements.json"), encoding="utf-8"))
+ld = json.load(open(os.path.join(PW, "draft.json"), encoding="utf-8"))
+lr = json.load(open(os.path.join(PW, "report.json"), encoding="utf-8"))
+lc = json.load(open(os.path.join(PW, "compare.json"), encoding="utf-8"))
+lsrc = open(os.path.join(PW, "source.txt"), encoding="utf-8").read()
+ltypes = collections.Counter(x["type"] for x in lel["elements"])
+
+sA = f"""<div class="two"><div class="pane"><h4>Input: a policy to fetch</h4><p>One request: <b>NCD 20.4</b>, a National Coverage Determination. The job knows three sources: the CMS Medicare Coverage Database for NCDs and LCDs, the eCFR for regulations, and a file you upload for a policy that has no API (a health plan's own PDF).</p>
+<p class="note">A scheduled run repeats this for every policy and compares the hash with the last saved one. A different hash means the policy changed.</p></div>
+<div class="pane"><h4>Output: the source text and where it came from</h4><table class="kv"><tr><td>Policy</td><td><b>{e(lm['title'])}</b></td></tr><tr><td>Source</td><td>{e(lm['source'])}</td></tr><tr><td>Version, effective</td><td>{e(lm['version'])}, {e(lm['effective'])}</td></tr><tr><td>Retrieved</td><td>{e(lm['retrieved_at'])}</td></tr><tr><td>Hash</td><td class="q">{e(lm['sha256'][:24])}...</td></tr><tr><td>Size</td><td>{lm['chars']:,} characters</td></tr></table>
+<pre class="pg">{e(lsrc[:520])}...</pre></div></div>"""
+
+els_li = "".join(f'<tr><td>{badge(x["type"], "gray")}</td><td>p. {x["page"]}</td><td>{e(x["text"][:150])}{"..." if len(x["text"]) > 150 else ""}</td></tr>' for x in lel["elements"][:9])
+sB = f"""<div class="two"><div class="pane"><h4>Input: the source as a PDF</h4><p>The same Unstructured service that reads the packets. It reads PDFs, so a policy that arrives as text is turned into a PDF first. A policy PDF that already exists goes in as it is.</p></div>
+<div class="pane"><h4>Output: {len(lel['elements'])} elements, {lel['info'].get('pages')} pages</h4><p>{" ".join(badge(f"{k} {v}", "gray") for k, v in ltypes.most_common())}</p><table><tbody>{els_li}</tbody></table><p class="note">Titles carry the section letters (A, B, C), which the draft step cites.</p></div></div>"""
+
+rules_c = [re.sub(r"^\d+\.\s*", "", " ".join(x.split())) for x in re.split(r"\n(?=\d+\.\s)", DRAFT_SYSTEM) if re.match(r"^\d+\.", x.strip())]
+rules_c_html = "".join(f"<li><b>{e(r.partition('.')[0].title())}.</b> {e(r.partition('. ')[2][:105])}...</li>" for r in rules_c)
+vocab_keys = ", ".join(f["key"] for f in T["trace"]["tool_facts"])
+crit_rows = "".join(f"<tr><td><b>{e(c['id'])}</b><div class='note'>{e(c['cite'])}</div></td><td>{e(c['text'])}<div class='note q'>{e(c['source_quote'][:130])}{'...' if len(c['source_quote']) > 130 else ''}</div></td><td>{e(show(c['required_fact']))}</td><td>{e(c['test']['type'])} {e(show(c['test'].get('value')))}</td><td>{badge(c['confidence'], 'green' if c['confidence'] == 'high' else 'amber')}</td></tr>" for c in ld["criteria"])
+nm = "".join(f"<li>{e(n['quote'][:90])}...<div class='note'>{e(n['why'][:110])}</div></li>" for n in ld["not_modeled"])
+sC = f"""<div class="two"><div class="pane"><h4>Input to the AI (Claude Sonnet, one call)</h4><p>The policy elements, a list of facts the packet reader can already find, and ten rules for how to draft. It must answer through a fixed form, and never sees the existing hand-written rules.</p>
+<div class="msg"><b>Its rules</b><ol>{rules_c_html}</ol></div><div class="msg"><b>Fact vocabulary</b><div class="note">{e(vocab_keys)}</div></div></div>
+<div class="pane"><h4>Not modeled, left for a person ({len(ld['not_modeled'])})</h4><p class="note">Parts of the policy the draft did not turn into rules, with its reason.</p><ul class="crit">{nm}</ul></div></div>
+<div class="pane wide"><h4>Output: {len(ld['criteria'])} drafted criteria. Each one carries the exact source sentence.</h4><div class="tw"><table class="ev"><thead><tr><th>Id and section</th><th>Rule and its source quote</th><th>Fact it tests</th><th>Test</th><th>AI confidence</th></tr></thead><tbody>{crit_rows}</tbody></table></div>
+<p class="note">This is where the "required fact" and the test, such as "at most 35", used by step 6 come from.</p></div>"""
+
+lrows = "".join(f"<tr><td>{e(r['id'])}</td><td>{badge(r['level'], 'green' if r['level'] == 'pass' else ('amber' if r['level'] == 'review' else 'red'))}</td><td class='note'>{e('; '.join(r['issues'])) or 'quote found, fact known, numbers in the quote'}</td></tr>" for r in lr["criteria"])
+unc = "".join(f"<li>{e(u[:120])}</li>" for u in lr["uncovered"])
+sD = f"""<div class="two"><div class="pane"><h4>What plain code checks, with no AI</h4><ul class="crit"><li>The quote must be found in the policy text, exact or fuzzy with the same numbers. A quote shortened with "..." passes if every piece is exact.</li><li>Every number in a test must appear in its quote. A threshold the policy did not state is rejected. A fraction written as a percent is sent for review.</li><li>The fact must exist in the vocabulary or be declared new. A new fact is flagged: the packet reader needs it added.</li><li>An "in" test may only use values the fact can take.</li><li>Sentences with rule words that no criterion covers are listed as possible misses.</li></ul>
+<p>Result: <b>{lr['counts']['pass']} pass, {lr['counts']['review']} review, {lr['counts']['fail']} fail.</b></p><h4>Possible misses ({len(lr['uncovered'])})</h4><ul class="crit">{unc}</ul></div>
+<div class="pane"><h4>Output: a check on every criterion</h4><div class="tw"><table><thead><tr><th>Id</th><th>Result</th><th>Why</th></tr></thead><tbody>{lrows}</tbody></table></div></div></div>"""
+
+crow = "".join(f"<tr><td><b>{e(x['id'])}</b></td><td>{e(show(x['fact']))}</td><td>{e(x.get('approved') or '')}</td><td>{e(x.get('draft') or '')}</td><td>{badge(x['result'], 'green' if x['result'] == 'same' else ('amber' if x['result'] == 'differs' else ('red' if x['result'] == 'missed' else 'gray')))}</td></tr>" for x in lc["rows"])
+allp = []
+for pid, ver in (("NCD-20.4", "v5"), ("CFR-42-412.3", "2026-10-01"), ("NCD-100.1", "v5"), ("LCD-L37848", "v18"), ("NCD-240.4", "v3")):
+    fp = os.path.join(ROOT, "policies", "work", pid, ver)
+    dd = json.load(open(os.path.join(fp, "draft.json"), encoding="utf-8"))
+    rr = json.load(open(os.path.join(fp, "report.json"), encoding="utf-8"))
+    cc = json.load(open(os.path.join(fp, "compare.json"), encoding="utf-8"))["counts"] if os.path.exists(os.path.join(fp, "compare.json")) else None
+    allp.append((pid, len(dd["criteria"]), rr["counts"], len(dd["new_facts"]), cc))
+prow = "".join(f"<tr><td><b>{e(p)}</b></td><td>{n}</td><td>{c['pass']} / {c['review']} / {c['fail']}</td><td>{nf}</td><td>{('same ' + str(cc['same']) + ', differs ' + str(cc['differs']) + ', missed ' + str(cc['missed'])) if cc else 'no hand-written set (a policy never modeled)'}</td></tr>" for p, n, c, nf, cc in allp)
+sE = f"""<div class="two"><div class="pane"><h4>Our own eval: the draft against the approved rules</h4><p>The rules in the live library were written by hand. The draft is matched to them by the fact each tests, then the tests are compared. {lc['counts']['same']} of {lc['approved_count']} match exactly for this policy.</p><div class="tw"><table><thead><tr><th>Approved rule</th><th>Fact</th><th>Approved test</th><th>Draft test</th><th></th></tr></thead><tbody>{crow}</tbody></table></div></div>
+<div class="pane"><h4>Across the five policies we ran</h4><div class="tw"><table><thead><tr><th>Policy</th><th>Drafted</th><th>Pass / review / fail</th><th>New facts</th><th>Against the approved rules</th></tr></thead><tbody>{prow}</tbody></table></div>
+<div class="callout" style="background:var(--ambersoft)"><b>Not built yet: the policy owner.</b> A person reviews each drafted rule with the source text beside it, edits or rejects it, and publishes a new versioned library. The library used by the steps below is still the hand-written one.</div></div></div>"""
+
+STEPS = [("A", "Fetch the policy", sA), ("B", "Parse the policy", sB), ("C", "AI drafts the rules", sC), ("D", "Code checks the draft", sD), ("E", "Compare and approve", sE), ("2", "ETL + AI", s2), ("3", "Pick the policy", s3), ("4", "Read the packet", s4), ("5", "Check the evidence", s5), ("6", "Apply the rules", s6)]
 nav = "".join(f'<a href="#s{n}"><span class="n">{n}</span>{e(t)}</a>' for n, t, _ in STEPS)
 sections = "".join(f'<section id="s{n}"><h2><span class="n">{n}</span>{e(t)}</h2>{body}</section>' for n, t, body in STEPS)
 
@@ -242,7 +301,7 @@ table.demo td:first-child{{width:28%}}
 </style>
 <main>
 <h1>Inside the case: what each step does</h1>
-<p class="lead">One real, made-up packet (<b>{e(T['file'])}</b>, a scan) run through PA Desk. Each step shows what goes in on the left and what comes out on the right, the way Unstructured's screen shows its parse. The data on this page is the real output of that run.</p>
+<p class="lead">Two parts. First, steps A to E: how a policy becomes rules, shown with the real NCD 20.4 run. Then steps 2 to 6: one real, made-up packet (<b>{e(T['file'])}</b>, a scan) run through PA Desk. Each step shows what goes in on the left and what comes out on the right, the way Unstructured's screen shows its parse. The data on this page is the real output of that run.</p>
 <nav>{nav}</nav>
 {sections}
 {where_html}
