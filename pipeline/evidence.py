@@ -17,6 +17,7 @@ The model does the reading. Plain code does the matching and the number checks.
 """
 import os, re, unicodedata
 from rapidfuzz import fuzz
+from . import telemetry as tel
 
 FUZZY_MIN = 88          # similarity needed (out of 100) when the exact text is not found
 MIN_QUOTE = 8           # shorter quotes are too weak to trust
@@ -142,6 +143,7 @@ def verify_meaning(items, client):
             resp = client.messages.create(model=VERIFY_MODEL, max_tokens=3000, system=VERIFY_SYSTEM, tools=[VERDICT_TOOL],
                                          tool_choice={"type": "tool", "name": "record_verdicts"},
                                          messages=[{"role": "user", "content": listing}])
+            tel.llm_usage(resp)
             out = next(b for b in resp.content if b.type == "tool_use").input.get("verdicts", [])
             return {v["id"]: (v["verdict"], v["reason"]) for v in out}
         except Exception as e:

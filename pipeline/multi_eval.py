@@ -17,6 +17,7 @@ from .ingest import _ingest_local, ingest
 from .run import extract
 from .engine import analyze
 from .procedures import library, defs_by_key
+from . import telemetry as tel
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 MANIFEST = os.path.join(ROOT, "evals", "multi_manifest.json")
@@ -51,7 +52,21 @@ def classify(kind, truth, want, status, got):
     return "correct" if status == "missing" else "false_positive"  # absent
 
 
-def run_one(m):
+def run_one(m, run_id=None, eval_set="multi"):
+    """Runs one packet. When Honeycomb is on, the case trace and the scored result land in the same trace,
+    so a wrong answer can be opened and read step by step."""
+    with tel.span("eval.packet", **{"eval.run_id": run_id, "eval.set": eval_set, "eval.file": m["file"], "eval.category": m.get("category"),
+                                    "eval.expected_action": m["expected_action"]}):
+        out = _run_one(m)
+        tel.add(**{"eval.action_matches": out["action_matches"], "eval.actual_action": out["actual_action"], "eval.seconds": out["seconds"]})
+        for f in out["facts"]:
+            tel.event("eval.fact", **{"eval.run_id": run_id, "eval.set": eval_set, "eval.fact_key": f["fact"], "eval.truth": f["truth"],
+                                      "eval.outcome": f["outcome"], "eval.status": f["status"], "eval.category": m.get("category"),
+                                      "eval.is_error": f["outcome"] in ("false_positive", "false_negative", "wrong_value")})
+        return out
+
+
+def _run_one(m):
     t0 = time.time()
     path = os.path.join(ROOT, "packets", m["file"])
     els = ingest(path)[0] if m.get("needs_ocr") else _ingest_local(path)
@@ -72,8 +87,11 @@ def run_one(m):
 
 def run_multi(workers=3, manifest_path=MANIFEST):
     manifest = json.load(open(manifest_path, encoding="utf-8"))
+    run_id = time.strftime("%Y%m%d-%H%M%S")
+    eval_set = "adversarial" if manifest_path == ADVERSARIAL else "multi"
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        results = list(pool.map(run_one, manifest))
+        results = list(pool.map(tel.bind(lambda m: run_one(m, run_id, eval_set)), manifest))
+    tel.flush()
     allf = [f for r in results for f in r["facts"]]
     present = [f for f in allf if f["truth"] == "present"]
     guarded = [f for f in allf if f["truth"] in ("absent", "negated")]

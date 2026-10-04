@@ -44,6 +44,11 @@ def init():
 def audit(c, case_id, user_id, action, detail="", at=None):
     c.execute("INSERT INTO audit(case_id,user_id,action,detail,created_at) VALUES(?,?,?,?,?)",
               (case_id, user_id, action, detail, at or now()))
+    try:  # one event per human action, so Honeycomb can show overrides and the time from recommendation to decision. No detail text: it can hold names.
+        from pipeline import telemetry
+        telemetry.event("case.human_action", **{"case.id": case_id, "case.action": action, "case.override": action == "approved_override"})
+    except Exception:
+        pass
 
 
 def notify(c, user_id, case_id, body):

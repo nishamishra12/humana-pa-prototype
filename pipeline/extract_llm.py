@@ -16,6 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 from .ingest import Element
 from .extract import extract_header, _months, _fact
 from . import evidence as ev
+from . import telemetry as tel
 
 EXTRACT_MODEL = os.getenv("PA_EXTRACT_MODEL", "claude-sonnet-5")
 
@@ -87,16 +88,19 @@ def _coerce(raw, proc):
 def _run_once(packet_text, proc, client):
     last = None
     for attempt in (1, 2):  # one retry on an unreadable reply
-        resp = client.messages.create(
-            model=EXTRACT_MODEL, max_tokens=4000, system=SYSTEM, tools=[build_tool(proc)],
-            tool_choice={"type": "tool", "name": "record_facts"},
-            messages=[{"role": "user", "content": f"Procedure: {proc['name']}\n\nPacket:\n\n{packet_text}"}])
-        raw = next(b for b in resp.content if b.type == "tool_use").input
-        try:
-            return _coerce(raw, proc)
-        except Exception as e:
-            last = e
-            print(f"[extract] unreadable AI reply, attempt {attempt} ({type(e).__name__}: {str(e)[:80]})")
+        with tel.span("extract.read", model=EXTRACT_MODEL, attempt=attempt):
+            resp = client.messages.create(
+                model=EXTRACT_MODEL, max_tokens=4000, system=SYSTEM, tools=[build_tool(proc)],
+                tool_choice={"type": "tool", "name": "record_facts"},
+                messages=[{"role": "user", "content": f"Procedure: {proc['name']}\n\nPacket:\n\n{packet_text}"}])
+            tel.llm_usage(resp)
+            raw = next(b for b in resp.content if b.type == "tool_use").input
+            try:
+                return _coerce(raw, proc)
+            except Exception as e:
+                last = e
+                tel.add(unreadable_reply=True)
+                print(f"[extract] unreadable AI reply, attempt {attempt} ({type(e).__name__}: {str(e)[:80]})")
     raise last
 
 
@@ -196,8 +200,9 @@ def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3) -> d
     full = "\n".join(e.text for e in elements)
     packet_text = "\n\n".join(f"[page {e.page}] {e.text}" for e in elements)
     n = max(1, n_votes)
-    with ThreadPoolExecutor(max_workers=n) as pool:
-        runs = list(pool.map(lambda _: _run_once(packet_text, proc, client), range(n)))
+    with tel.span("extract.reads", procedure=proc_key, votes=n, pages=len({e.page for e in elements})):
+        with ThreadPoolExecutor(max_workers=n) as pool:
+            runs = list(pool.map(tel.bind(lambda _: _run_once(packet_text, proc, client)), range(n)))
 
     pages = ev.page_texts(elements)
     combined = {d["key"]: _combine(runs, d) for d in defs}
@@ -214,7 +219,9 @@ def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3) -> d
             if hit:
                 items.append(dict(id=f"{d['key']}#{i}", claim=_claim_text(d, raw), quote=hit["text"], context=ev.context_for(pages, hit)))
                 i += 1
-    verdicts = ev.verify_meaning(items, client)
+    with tel.span("evidence.verify_meaning", items=len(items)):
+        verdicts = ev.verify_meaning(items, client)
+        tel.add(verdicts_returned=len(verdicts), verdicts_missing=len(items) - len(verdicts))
 
     facts = extract_header(full)
     facts["_extractor"] = "llm"
@@ -225,4 +232,8 @@ def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3) -> d
     cons = facts.get("conservative_treatment")
     if cons and cons["status"] == "found" and cons.get("quote"):
         cons["duration_months"] = _months(cons["quote"])
+    stat = [facts[d["key"]]["status"] for d in defs]
+    tel.add(facts_total=len(defs), facts_found=stat.count("found"), facts_none=stat.count("none"), facts_missing=stat.count("missing"),
+            facts_unsure=stat.count("unsure"), facts_checked=sum(1 for d in defs if facts[d["key"]].get("checked")),
+            facts_fuzzy_match=sum(1 for d in defs for x in facts[d["key"]].get("evidence", []) if x.get("match") == "fuzzy"))
     return facts

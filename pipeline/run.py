@@ -3,6 +3,7 @@ from .ingest import _ingest_local, ingest
 from .extract import extract_facts as extract_facts_rule_based, extract_header, _fact
 from .engine import analyze
 from .procedures import procedure_for_cpt, library
+from . import telemetry as tel
 
 
 def _unsure_all(proc_key, header, why):
@@ -37,9 +38,23 @@ def process(path, local=False, progress=None):
     """progress, if given, is called as progress(stage, **info) at the start of each stage:
     reading, facts, policy. The upload screen polls these to show what is happening."""
     say = progress or (lambda *a, **k: None)
-    say("reading")
-    elements, engine = (_ingest_local(path), "local") if local else ingest(path)
-    say("facts", pages=len({e.page for e in elements}))
-    facts = extract(elements, local=local)
-    say("policy")
-    return elements, engine, facts, analyze(facts)
+    with tel.span("pa.analyze_packet", **tel.packet_tags()) as root:
+        say("reading")
+        with tel.span("ingest.read_pages", local=local) as s:
+            elements, engine = (_ingest_local(path), "local") if local else ingest(path)
+            tel.add(engine=engine, pages=len({e.page for e in elements}), elements=len(elements))
+        say("facts", pages=len({e.page for e in elements}))
+        with tel.span("extract.facts"):
+            facts = extract(elements, local=local)
+            tel.add(extractor=facts.get("_extractor"), cpt=facts.get("_cpt"), procedure_key=facts.get("_procedure_key"))
+        say("policy")
+        with tel.span("rules.analyze"):
+            res = analyze(facts)
+            tel.add(action=res["action"], criteria=len(res.get("checklist", [])),
+                    criteria_met=sum(1 for c in res.get("checklist", []) if c["status"] == "met"),
+                    criteria_not_met=sum(1 for c in res.get("checklist", []) if c["status"] == "not_met"),
+                    criteria_missing=sum(1 for c in res.get("checklist", []) if c["status"] == "missing"),
+                    criteria_unsure=sum(1 for c in res.get("checklist", []) if c["status"] == "unsure"),
+                    questions_for_provider=len(res.get("gate", {}).get("questions", [])))
+        root.set_attribute("recommendation", res["action"])
+        return elements, engine, facts, res
