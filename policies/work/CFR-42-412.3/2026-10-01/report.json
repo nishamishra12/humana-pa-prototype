@@ -43,15 +43,17 @@
   },
   {
    "id": "SHORT-STAY-SUPPORT",
-   "level": "pass",
-   "issues": [],
+   "level": "review",
+   "issues": [
+    "applies_if says 'only when expected_los_days is under_2', which that fact can never be. The engine would skip this rule."
+   ],
    "quote_found": true,
    "match": "exact"
   }
  ],
  "counts": {
-  "pass": 3,
-  "review": 3,
+  "pass": 2,
+  "review": 4,
   "fail": 0
  },
  "total": 6,

@@ -14,7 +14,7 @@ import gzip, hashlib, html, json, os, re, urllib.request
 from datetime import datetime, timezone
 
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
-WORK = os.path.join(ROOT, "policies", "work")
+WORK = os.path.join(os.environ["PA_DATA_DIR"], "policy_work") if os.getenv("PA_DATA_DIR") else os.path.join(ROOT, "policies", "work")
 CMS = "https://api.coverage.cms.gov/v1"
 ECFR = "https://www.ecfr.gov/api/versioner/v1"
 

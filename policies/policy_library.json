@@ -1,657 +1,1088 @@
 {
-  "version": "0.2.0",
-  "generated": "2026-09-26",
-  "hierarchy": [
-    "REGULATION",
-    "NCD",
-    "LCD",
-    "HUMANA_INTERNAL",
-    "MCG"
-  ],
-  "hierarchy_note": "Higher entries win. CMS-4201-F: MA plans may not apply internal criteria or MCG more restrictively than Traditional Medicare NCD/LCD/regulation.",
-  "covered_cpt_codes": [
-    "22612",
-    "33249",
-    "43644"
-  ],
-  "covered_cpt_note": "The curated criteria apply ONLY to the procedures listed under `procedures`. Any other CPT has no entry here: the engine refuses to score it against another service's criteria and routes it to the retrieval fallback (pipeline/policy_retrieval.py), whose output a person must confirm.",
-  "questions": [
-    {
-      "id": "Q1_LEVEL_OF_CARE",
-      "asks": "Is inpatient the right level of care (vs outpatient or observation)?"
-    },
-    {
-      "id": "Q2_MEDICAL_NECESSITY",
-      "asks": "Is the procedure itself covered and medically necessary for this patient?"
-    }
-  ],
-  "policies": [
-    {
-      "id": "CFR-42-412.3",
-      "level": "REGULATION",
-      "answers": "Q1_LEVEL_OF_CARE",
-      "title": "Admissions (two-midnight benchmark)",
-      "source": "42 CFR 412.3(d)",
-      "url": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-412/subpart-A/section-412.3",
-      "verified": true,
-      "verified_from": "eCFR API, text retrieved 2026-09-26 (policies/raw/CFR_42_412_3.txt)",
-      "applies_to": "all Medicare inpatient admissions",
-      "criteria": [
-        {
-          "id": "LOC-1",
-          "text": "Admitting physician expects the patient to need hospital care crossing at least 2 midnights.",
-          "cite": "412.3(d)(1)",
-          "required_fact": "expected_los_days",
-          "test": "expected_los_days >= 2",
-          "if_missing": "Ask: how many midnights does the surgeon expect the patient to need hospital care?",
-          "short": "the expected stay does not cross 2 midnights",
-          "check": {
-            "op": "gte",
-            "value": 2
-          }
-        },
-        {
-          "id": "LOC-2",
-          "text": "The factors behind that expectation are documented in the record (history and comorbidities, severity of signs and symptoms, current medical needs, risk of an adverse event).",
-          "cite": "412.3(d)(1)(i)",
-          "required_fact": "comorbidities",
-          "test": "non_empty",
-          "if_missing": "Ask: which comorbidities or risk factors support the expected stay?",
-          "short": "no risk factors are documented"
-        },
-        {
-          "id": "LOC-3",
-          "text": "Exception: a stay under 2 midnights can still be inpatient on the admitting physician's documented clinical judgment.",
-          "cite": "412.3(d)(3)",
-          "required_fact": null,
-          "test": "informational",
-          "if_missing": null
-        }
-      ]
-    },
-    {
-      "id": "LCD-L37848",
-      "level": "LCD",
-      "answers": "Q2_MEDICAL_NECESSITY",
-      "title": "Lumbar Spinal Fusion",
-      "source": "CMS Medicare Coverage Database, LCD L37848 v18, Palmetto GBA (MAC Part A and B), effective 09/12/2024",
-      "url": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=37848",
-      "verified": true,
-      "verified_from": "CMS Coverage API, text retrieved 2026-09-26 (policies/raw/LCD_L37848.json)",
-      "applies_to": "CPT 22612 and other lumbar fusion, within the Palmetto GBA jurisdiction. LCDs are jurisdiction-specific; the policy table must key by MAC jurisdiction.",
-      "criteria": [
-        {
-          "id": "LCD-IND",
-          "text": "Documentation shows the patient meets at least 1 indication: (1) radiographic or clinical evidence of instability (e.g. chronic degenerative conditions), (2) symptomatic spinal deformity meeting criteria, (3) revision for pseudarthrosis meeting criteria, (4) symptomatic neural compression needing disc excision.",
-          "cite": "LCD L37848, Indications",
-          "required_fact": "indication_evidence",
-          "test": "non_empty",
-          "if_missing": "Ask: what imaging or clinical findings document instability, deformity, pseudarthrosis or neural compression at each level to be fused?",
-          "short": "no qualifying indication is documented"
-        },
-        {
-          "id": "LCD-CONS",
-          "text": "The record reflects which conservative treatments were tried or why the patient is not a candidate (medical therapy, physical and exercise therapy, injections).",
-          "cite": "LCD L37848, Indications",
-          "required_fact": "conservative_treatment",
-          "test": "non_empty",
-          "if_missing": "Ask: which conservative treatments were tried, and for how long?",
-          "short": "conservative treatment is not documented"
-        },
-        {
-          "id": "LCD-SDM",
-          "text": "Where possible, shared decision making with the patient is documented, including risks and benefits.",
-          "cite": "LCD L37848, Requirements",
-          "required_fact": "shared_decision_making",
-          "test": "non_empty",
-          "severity": "soft",
-          "if_missing": "Ask: is shared decision making documented?"
-        },
-        {
-          "id": "LCD-LEVELS",
-          "text": "If more than 1 level is fused, the record shows each fused level is affected by a qualifying condition.",
-          "cite": "LCD L37848, Indication 1 and 4",
-          "required_fact": "levels_fused",
-          "test": "informational",
-          "if_missing": null
-        }
-      ]
-    },
-    {
-      "id": "HUM-IP-ILLUSTRATIVE",
-      "level": "HUMANA_INTERNAL",
-      "answers": "Q1_LEVEL_OF_CARE",
-      "title": "Inpatient level of care for elective spinal surgery (ILLUSTRATIVE)",
-      "source": "Humana Use Case 1 brief, sample medical policy. Made up for the exercise. Not a real Humana policy.",
-      "url": null,
-      "verified": false,
-      "applies_to": "prototype only",
-      "criteria": [
-        {
-          "id": "HUM-1",
-          "text": "Documented comorbidities that raise peri-operative risk (for example heart failure, COPD, uncontrolled diabetes).",
-          "cite": "Humana IP (illustrative)",
-          "required_fact": "comorbidities",
-          "test": "non_empty",
-          "if_missing": "Ask: which comorbidities raise peri-operative risk?",
-          "short": "no risk-raising comorbidities are documented"
-        },
-        {
-          "id": "HUM-2",
-          "text": "Post-operative monitoring or care needs that cannot be safely provided in an outpatient or observation setting.",
-          "cite": "Humana IP (illustrative)",
-          "required_fact": "post_op_needs",
-          "test": "non_empty",
-          "if_missing": "Ask: what post-operative monitoring or care needs cannot be met outside the hospital?",
-          "short": "no post-operative needs beyond routine recovery are documented"
-        }
-      ]
-    },
-    {
-      "id": "MCG-STUB",
-      "level": "MCG",
-      "answers": "Q1_LEVEL_OF_CARE",
-      "title": "MCG inpatient and surgical care guideline (NOT INCLUDED)",
-      "source": "MCG is licensed, proprietary content and is not publicly available. Not reproduced here.",
-      "url": null,
-      "verified": false,
-      "applies_to": "placeholder that marks where a licensed MCG feed would plug in",
-      "criteria": []
-    },
-    {
-      "id": "NCD-20.4",
-      "level": "NCD",
-      "answers": "Q2_MEDICAL_NECESSITY",
-      "title": "Implantable Cardioverter Defibrillators (ICDs)",
-      "source": "CMS Medicare Coverage Database, NCD 20.4 v5, effective 07/31/2023 (last reviewed February 2018)",
-      "url": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=110",
-      "verified": true,
-      "verified_from": "CMS Coverage database download (policies/corpus/ncds.json), source text saved in policies/raw/NCD_20_4.txt",
-      "applies_to": "Primary prevention for ischemic or non-ischemic dilated cardiomyopathy (NCD 20.4, B3 and B4). Other covered pathways (B1, B2, B5) are not modeled and go to a physician.",
-      "criteria": [
-        {
-          "id": "ICD-PATH",
-          "text": "The request rests on ischemic or non-ischemic dilated cardiomyopathy with heart failure. The other covered pathways (prior sustained ventricular tachycardia or cardiac arrest, prior heart attack with LVEF 30% or less, inherited rhythm disorders) are outside this prototype and go to a physician.",
-          "cite": "NCD 20.4, B3 and B4",
-          "required_fact": "cardiomyopathy_type",
-          "if_missing": "Ask: what is the cause of the cardiomyopathy: ischemic (coronary disease or prior heart attack) or non-ischemic?",
-          "short": "the indication is a pathway this prototype does not model",
-          "check": {
-            "op": "in",
-            "value": [
-              "ischemic",
-              "non-ischemic"
-            ]
-          }
-        },
-        {
-          "id": "ICD-LVEF",
-          "text": "Left ventricular ejection fraction (LVEF) is 35% or less.",
-          "cite": "NCD 20.4, B3 and B4",
-          "required_fact": "lvef_percent",
-          "if_missing": "Ask: what is the most recent ejection fraction, how was it measured, and on what date?",
-          "short": "the ejection fraction is above 35%",
-          "check": {
-            "op": "lte",
-            "value": 35
-          }
-        },
-        {
-          "id": "ICD-METHOD",
-          "text": "LVEF was measured by echocardiography, nuclear imaging, cardiac MRI, or catheter angiography.",
-          "cite": "NCD 20.4, B (additional criteria)",
-          "required_fact": "lvef_method",
-          "if_missing": "Ask: how was the ejection fraction measured?",
-          "short": "the ejection fraction was not measured by an accepted method",
-          "check": {
-            "op": "in",
-            "value": [
-              "echocardiography",
-              "nuclear imaging",
-              "cardiac MRI",
-              "angiography"
-            ]
-          }
-        },
-        {
-          "id": "ICD-NYHA",
-          "text": "Heart failure is NYHA class II or III.",
-          "cite": "NCD 20.4, B3 and B4",
-          "required_fact": "nyha_class",
-          "if_missing": "Ask: what is the patient's NYHA heart failure class?",
-          "short": "the NYHA class is not II or III",
-          "check": {
-            "op": "in",
-            "value": [
-              "II",
-              "III"
-            ]
-          }
-        },
-        {
-          "id": "ICD-WAIT",
-          "text": "No heart attack in the past 40 days, and no bypass surgery or stent procedure in the past 3 months.",
-          "cite": "NCD 20.4, B3 and B4",
-          "required_fact": "recent_mi_revasc",
-          "if_missing": "Ask: has the patient had a heart attack in the past 40 days, or bypass surgery or a stent in the past 3 months?",
-          "short": "there was a recent heart attack, bypass, or stent",
-          "mode": "absent"
-        },
-        {
-          "id": "ICD-OMT",
-          "text": "For non-ischemic cardiomyopathy: the patient has been on optimal medical therapy for at least 3 months.",
-          "cite": "NCD 20.4, B4",
-          "required_fact": "optimal_medical_therapy_months",
-          "if_missing": "Ask: how long has the patient been on optimal heart failure medicines?",
-          "short": "the patient has had under 3 months of optimal medical therapy",
-          "check": {
-            "op": "gte",
-            "value": 3
-          },
-          "applies_if": {
-            "fact": "cardiomyopathy_type",
-            "equals": "non-ischemic"
-          }
-        },
-        {
-          "id": "ICD-SDM",
-          "text": "A formal shared decision making visit, using an evidence-based decision tool, took place before the implant.",
-          "cite": "NCD 20.4, B3 and B4",
-          "required_fact": "shared_decision_making",
-          "if_missing": "Ask: is a shared decision making visit with a decision tool documented before the implant?",
-          "short": "no shared decision making visit is documented"
-        },
-        {
-          "id": "ICD-EXCL",
-          "text": "The patient is clinically stable and has no condition that rules out an ICD (severe brain damage, another illness with survival under 1 year, poorly controlled atrial fibrillation).",
-          "cite": "NCD 20.4, B (additional criteria)",
-          "required_fact": "limiting_conditions",
-          "if_missing": "Ask: is the patient clinically stable, and are there any conditions that limit survival or rule out an ICD?",
-          "short": "a condition that rules out an ICD is documented",
-          "mode": "absent"
-        }
-      ]
-    },
-    {
-      "id": "NCD-100.1",
-      "level": "NCD",
-      "answers": "Q2_MEDICAL_NECESSITY",
-      "title": "Bariatric Surgery for Treatment of Co-Morbid Conditions Related to Morbid Obesity",
-      "source": "CMS Medicare Coverage Database, NCD 100.1 v5, effective 09/24/2013",
-      "url": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=57",
-      "verified": true,
-      "verified_from": "CMS Coverage database download (policies/corpus/ncds.json), source text saved in policies/raw/NCD_100_1.txt",
-      "applies_to": "Open and laparoscopic Roux-en-Y gastric bypass (CPT 43644), nationally covered. Stand-alone sleeve gastrectomy is decided by each Medicare contractor and is not modeled.",
-      "criteria": [
-        {
-          "id": "BAR-BMI",
-          "text": "Body-mass index (BMI) is 35 or higher.",
-          "cite": "NCD 100.1, B",
-          "required_fact": "bmi",
-          "if_missing": "Ask: what is the patient's BMI, and when was it measured?",
-          "short": "the BMI is under 35",
-          "check": {
-            "op": "gte",
-            "value": 35
-          }
-        },
-        {
-          "id": "BAR-CM",
-          "text": "At least one comorbidity related to obesity is documented (type 2 diabetes counts).",
-          "cite": "NCD 100.1, B",
-          "required_fact": "comorbidities",
-          "if_missing": "Ask: which obesity-related conditions does the patient have, such as type 2 diabetes?",
-          "short": "no obesity-related comorbidity is documented"
-        },
-        {
-          "id": "BAR-TX",
-          "text": "The patient was previously unsuccessful with medical treatment for obesity.",
-          "cite": "NCD 100.1, B",
-          "required_fact": "prior_medical_treatment",
-          "if_missing": "Ask: what medical treatment for obesity was tried, for how long, and what was the result?",
-          "short": "no unsuccessful medical treatment is documented"
-        }
-      ]
-    }
-  ],
-  "open_items": [
-    "Confirm whether CPT 22612 is on the CMS inpatient-only list (OPPS Addendum E). Not verified; the inpatient-only list is a payment-rule list, not an LCD.",
-    "Confirm which MAC jurisdictions cover the member's state and whether other MACs publish their own lumbar fusion LCD.",
-    "Check for an NCD that touches lumbar fusion beyond NCD 150.10 (artificial disc). Index search found none for fusion.",
-    "ICD: only the primary-prevention cardiomyopathy pathways (NCD 20.4 B3 and B4) are modeled. Secondary prevention, prior MI with LVEF 30% or less, and inherited disorders route to a physician.",
-    "Bariatric: Roux-en-Y bypass is nationally covered. Stand-alone sleeve gastrectomy is decided by each Medicare contractor, so it is not modeled.",
-    "The new criteria were written from the NCD text and have not been signed off by a clinical policy owner."
-  ],
-  "procedures": {
-    "lumbar_fusion": {
-      "name": "Lumbar spinal fusion",
-      "short": "Lumbar fusion",
-      "cpts": [
-        "22612"
-      ],
-      "policies": [
-        "CFR-42-412.3",
-        "LCD-L37848",
-        "HUM-IP-ILLUSTRATIVE",
-        "MCG-STUB"
-      ],
-      "facts": [
-        {
-          "key": "expected_los_days",
-          "label": "Expected stay",
-          "kind": "number",
-          "phrase": "the expected length of stay",
-          "ask": "Number of midnights of hospital care the physician expects. If the text only says something like 'a multi-day stay' with no number, use status implied.",
-          "statuses": [
-            "found",
-            "implied",
-            "missing"
-          ],
-          "hint": "Number of midnights, like 3",
-          "unit": "midnight"
-        },
-        {
-          "key": "comorbidities",
-          "label": "Comorbidities",
-          "kind": "list",
-          "phrase": "comorbidity documentation",
-          "ask": "Short labels for the patient's conditions that raise risk, for example 'heart failure'. Use status none only when the packet says there are none.",
-          "statuses": [
-            "found",
-            "none",
-            "missing"
-          ],
-          "hint": "For example: heart failure, diabetes",
-          "none_text": "None documented as present"
-        },
-        {
-          "key": "post_op_needs",
-          "label": "Post-op care needs",
-          "kind": "text",
-          "phrase": "post-operative care needs",
-          "ask": "Post-operative monitoring or care needs. Use status none only if the packet says recovery is routine.",
-          "statuses": [
-            "found",
-            "none",
-            "missing"
-          ],
-          "hint": "What care is needed after surgery",
-          "none_text": "Routine recovery only"
-        },
-        {
-          "key": "indication_evidence",
-          "label": "Surgical indication",
-          "kind": "enum",
-          "phrase": "imaging or exam evidence for the surgical indication",
-          "ask": "The qualifying finding on imaging or exam. Use status none when the imaging or exam explicitly RULES OUT a finding (for example 'no evidence of instability'). That is not the same as missing.",
-          "statuses": [
-            "found",
-            "none",
-            "implied",
-            "missing"
-          ],
-          "hint": "",
-          "values": [
-            "instability",
-            "deformity",
-            "pseudarthrosis",
-            "neural compression"
-          ]
-        },
-        {
-          "key": "conservative_treatment",
-          "label": "Conservative care",
-          "kind": "text",
-          "phrase": "the conservative treatment history",
-          "ask": "Which non-surgical treatments were tried and for how long (therapy, medicines, injections).",
-          "statuses": [
-            "found",
-            "missing"
-          ],
-          "hint": "What was tried and for how long"
-        },
-        {
-          "key": "shared_decision_making",
-          "label": "Shared decision making",
-          "kind": "text",
-          "phrase": "shared decision making",
-          "ask": "A documented shared decision making discussion with the patient, including risks and benefits.",
-          "statuses": [
-            "found",
-            "missing"
-          ],
-          "hint": "Optional note"
-        }
-      ]
-    },
-    "icd": {
-      "name": "Implantable cardioverter defibrillator (ICD)",
-      "short": "ICD, heart failure",
-      "cpts": [
-        "33249"
-      ],
-      "policies": [
-        "CFR-42-412.3",
-        "NCD-20.4",
-        "MCG-STUB"
-      ],
-      "facts": [
-        {
-          "key": "expected_los_days",
-          "label": "Expected stay",
-          "kind": "number",
-          "phrase": "the expected length of stay",
-          "ask": "Number of midnights of hospital care the physician expects. If the text only says something like 'a multi-day stay' with no number, use status implied.",
-          "statuses": [
-            "found",
-            "implied",
-            "missing"
-          ],
-          "hint": "Number of midnights, like 3",
-          "unit": "midnight"
-        },
-        {
-          "key": "comorbidities",
-          "label": "Comorbidities",
-          "kind": "list",
-          "phrase": "comorbidity documentation",
-          "ask": "Short labels for the patient's conditions that raise risk, for example 'heart failure'. Use status none only when the packet says there are none.",
-          "statuses": [
-            "found",
-            "none",
-            "missing"
-          ],
-          "hint": "For example: heart failure, diabetes",
-          "none_text": "None documented as present"
-        },
-        {
-          "key": "lvef_percent",
-          "label": "Ejection fraction",
-          "kind": "number",
-          "phrase": "the most recent ejection fraction",
-          "ask": "The most recent measured left ventricular ejection fraction, as a percent number. If two measurements conflict, use the later one and say so in the note.",
-          "statuses": [
-            "found",
-            "missing"
-          ],
-          "hint": "Percent, like 30",
-          "unit": "%"
-        },
-        {
-          "key": "lvef_method",
-          "label": "How it was measured",
-          "kind": "enum",
-          "phrase": "how the ejection fraction was measured",
-          "ask": "How the most recent ejection fraction was measured.",
-          "statuses": [
-            "found",
-            "missing"
-          ],
-          "hint": "",
-          "values": [
-            "echocardiography",
-            "nuclear imaging",
-            "cardiac MRI",
-            "angiography",
-            "other"
-          ]
-        },
-        {
-          "key": "nyha_class",
-          "label": "NYHA class",
-          "kind": "enum",
-          "phrase": "the NYHA heart failure class",
-          "ask": "The New York Heart Association functional class of heart failure, I to IV.",
-          "statuses": [
-            "found",
-            "missing"
-          ],
-          "hint": "",
-          "values": [
-            "I",
-            "II",
-            "III",
-            "IV"
-          ]
-        },
-        {
-          "key": "cardiomyopathy_type",
-          "label": "Cause of heart failure",
-          "kind": "enum",
-          "phrase": "the cause of the cardiomyopathy",
-          "ask": "ischemic if caused by coronary artery disease or a prior heart attack. non-ischemic if dilated cardiomyopathy without a coronary cause. other if the request rests on something else, such as prior sustained ventricular tachycardia, cardiac arrest, or an inherited rhythm disorder.",
-          "statuses": [
-            "found",
-            "missing"
-          ],
-          "hint": "",
-          "values": [
-            "ischemic",
-            "non-ischemic",
-            "other"
-          ]
-        },
-        {
-          "key": "recent_mi_revasc",
-          "label": "Recent heart attack, bypass, or stent",
-          "kind": "event",
-          "phrase": "whether there was a heart attack in the past 40 days or a bypass or stent in the past 3 months",
-          "ask": "Use status found if a heart attack within 40 days, or bypass surgery or a stent within 3 months, is documented. Use status none only if the packet states there was none, or gives dates that are outside those windows.",
-          "statuses": [
-            "found",
-            "none",
-            "missing"
-          ],
-          "hint": "What happened and when",
-          "none_text": "None in the waiting window"
-        },
-        {
-          "key": "optimal_medical_therapy_months",
-          "label": "Months on heart failure medicines",
-          "kind": "number",
-          "phrase": "how long the patient has been on optimal heart failure medicines",
-          "ask": "Number of months on guideline-directed heart failure medical therapy.",
-          "statuses": [
-            "found",
-            "missing"
-          ],
-          "hint": "Number of months, like 4",
-          "unit": "month"
-        },
-        {
-          "key": "shared_decision_making",
-          "label": "Shared decision making",
-          "kind": "text",
-          "phrase": "the shared decision making visit",
-          "ask": "A documented formal shared decision making visit between the patient and a physician or qualified practitioner, using an evidence-based decision tool on ICDs, before the implant.",
-          "statuses": [
-            "found",
-            "missing"
-          ],
-          "hint": "What was documented, and when"
-        },
-        {
-          "key": "limiting_conditions",
-          "label": "Conditions that rule out an ICD",
-          "kind": "list",
-          "phrase": "whether any condition rules out an ICD",
-          "ask": "Conditions that rule out an ICD: severe irreversible brain damage, a non-cardiac illness with expected survival under 1 year, atrial fibrillation with a poorly controlled rate, or a patient who is not clinically stable. Use status none only if the packet says there are none.",
-          "statuses": [
-            "found",
-            "none",
-            "missing"
-          ],
-          "hint": "For example: none, or the condition",
-          "none_text": "None documented"
-        }
-      ]
-    },
-    "bariatric": {
-      "name": "Bariatric surgery (Roux-en-Y gastric bypass)",
-      "short": "Bariatric surgery",
-      "cpts": [
-        "43644"
-      ],
-      "policies": [
-        "CFR-42-412.3",
-        "NCD-100.1",
-        "MCG-STUB"
-      ],
-      "facts": [
-        {
-          "key": "expected_los_days",
-          "label": "Expected stay",
-          "kind": "number",
-          "phrase": "the expected length of stay",
-          "ask": "Number of midnights of hospital care the physician expects. If the text only says something like 'a multi-day stay' with no number, use status implied.",
-          "statuses": [
-            "found",
-            "implied",
-            "missing"
-          ],
-          "hint": "Number of midnights, like 3",
-          "unit": "midnight"
-        },
-        {
-          "key": "comorbidities",
-          "label": "Comorbidities",
-          "kind": "list",
-          "phrase": "comorbidity documentation",
-          "ask": "Short labels for the patient's conditions that raise risk, for example 'heart failure'. Use status none only when the packet says there are none.",
-          "statuses": [
-            "found",
-            "none",
-            "missing"
-          ],
-          "hint": "For example: heart failure, diabetes",
-          "none_text": "None documented as present"
-        },
-        {
-          "key": "bmi",
-          "label": "BMI",
-          "kind": "number",
-          "phrase": "the patient's BMI",
-          "ask": "The most recent body-mass index in kg/m2.",
-          "statuses": [
-            "found",
-            "missing"
-          ],
-          "hint": "Number, like 41",
-          "unit": "kg/m2"
-        },
-        {
-          "key": "prior_medical_treatment",
-          "label": "Prior medical treatment",
-          "kind": "text",
-          "phrase": "the history of medical treatment for obesity",
-          "ask": "Supervised medical treatment for obesity that was tried and did not work (diet, exercise, medicines), with how long and the result.",
-          "statuses": [
-            "found",
-            "missing"
-          ],
-          "hint": "What was tried, for how long, and the result"
-        }
-      ]
-    }
+ "version": "0.2.0",
+ "generated": "2026-09-26",
+ "hierarchy": [
+  "REGULATION",
+  "NCD",
+  "LCD",
+  "HUMANA_INTERNAL",
+  "MCG"
+ ],
+ "hierarchy_note": "Higher entries win. CMS-4201-F: MA plans may not apply internal criteria or MCG more restrictively than Traditional Medicare NCD/LCD/regulation.",
+ "covered_cpt_codes": [
+  "22612",
+  "33249",
+  "43644"
+ ],
+ "covered_cpt_note": "The curated criteria apply ONLY to the procedures listed under `procedures`. Any other CPT has no entry here: the engine refuses to score it against another service's criteria and routes it to the retrieval fallback (pipeline/policy_retrieval.py), whose output a person must confirm.",
+ "questions": [
+  {
+   "id": "Q1_LEVEL_OF_CARE",
+   "asks": "Is inpatient the right level of care (vs outpatient or observation)?"
+  },
+  {
+   "id": "Q2_MEDICAL_NECESSITY",
+   "asks": "Is the procedure itself covered and medically necessary for this patient?"
   }
+ ],
+ "policies": [
+  {
+   "id": "CFR-42-412.3",
+   "level": "REGULATION",
+   "answers": "Q1_LEVEL_OF_CARE",
+   "title": "Admissions (two-midnight benchmark)",
+   "source": "42 CFR 412.3(d)",
+   "url": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-412/subpart-A/section-412.3",
+   "verified": true,
+   "verified_from": "eCFR API, text retrieved 2026-09-26 (policies/raw/CFR_42_412_3.txt)",
+   "applies_to": "all Medicare inpatient admissions",
+   "criteria": [
+    {
+     "id": "LOC-1",
+     "text": "Admitting physician expects the patient to need hospital care crossing at least 2 midnights.",
+     "cite": "412.3(d)(1)",
+     "required_fact": "expected_los_days",
+     "test": "expected_los_days >= 2",
+     "if_missing": "Ask: how many midnights does the surgeon expect the patient to need hospital care?",
+     "short": "the expected stay does not cross 2 midnights",
+     "check": {
+      "op": "gte",
+      "value": 2
+     }
+    },
+    {
+     "id": "LOC-2",
+     "text": "The factors behind that expectation are documented in the record (history and comorbidities, severity of signs and symptoms, current medical needs, risk of an adverse event).",
+     "cite": "412.3(d)(1)(i)",
+     "required_fact": "comorbidities",
+     "test": "non_empty",
+     "if_missing": "Ask: which comorbidities or risk factors support the expected stay?",
+     "short": "no risk factors are documented"
+    },
+    {
+     "id": "LOC-3",
+     "text": "Exception: a stay under 2 midnights can still be inpatient on the admitting physician's documented clinical judgment.",
+     "cite": "412.3(d)(3)",
+     "required_fact": null,
+     "test": "informational",
+     "if_missing": null
+    }
+   ]
+  },
+  {
+   "id": "LCD-L37848",
+   "level": "LCD",
+   "answers": "Q2_MEDICAL_NECESSITY",
+   "title": "Lumbar Spinal Fusion",
+   "source": "CMS Medicare Coverage Database, LCD L37848 v18, Palmetto GBA (MAC Part A and B), effective 09/12/2024",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=37848",
+   "verified": true,
+   "verified_from": "CMS Coverage API, text retrieved 2026-09-26 (policies/raw/LCD_L37848.json)",
+   "applies_to": "CPT 22612 and other lumbar fusion, within the Palmetto GBA jurisdiction. LCDs are jurisdiction-specific; the policy table must key by MAC jurisdiction.",
+   "criteria": [
+    {
+     "id": "LCD-IND",
+     "text": "Documentation shows the patient meets at least 1 indication: (1) radiographic or clinical evidence of instability (e.g. chronic degenerative conditions), (2) symptomatic spinal deformity meeting criteria, (3) revision for pseudarthrosis meeting criteria, (4) symptomatic neural compression needing disc excision.",
+     "cite": "LCD L37848, Indications",
+     "required_fact": "indication_evidence",
+     "test": "non_empty",
+     "if_missing": "Ask: what imaging or clinical findings document instability, deformity, pseudarthrosis or neural compression at each level to be fused?",
+     "short": "no qualifying indication is documented"
+    },
+    {
+     "id": "LCD-CONS",
+     "text": "The record reflects which conservative treatments were tried or why the patient is not a candidate (medical therapy, physical and exercise therapy, injections).",
+     "cite": "LCD L37848, Indications",
+     "required_fact": "conservative_treatment",
+     "test": "non_empty",
+     "if_missing": "Ask: which conservative treatments were tried, and for how long?",
+     "short": "conservative treatment is not documented"
+    },
+    {
+     "id": "LCD-SDM",
+     "text": "Where possible, shared decision making with the patient is documented, including risks and benefits.",
+     "cite": "LCD L37848, Requirements",
+     "required_fact": "shared_decision_making",
+     "test": "non_empty",
+     "severity": "soft",
+     "if_missing": "Ask: is shared decision making documented?"
+    },
+    {
+     "id": "LCD-LEVELS",
+     "text": "If more than 1 level is fused, the record shows each fused level is affected by a qualifying condition.",
+     "cite": "LCD L37848, Indication 1 and 4",
+     "required_fact": "levels_fused",
+     "test": "informational",
+     "if_missing": null
+    }
+   ]
+  },
+  {
+   "id": "HUM-IP-ILLUSTRATIVE",
+   "level": "HUMANA_INTERNAL",
+   "answers": "Q1_LEVEL_OF_CARE",
+   "title": "Inpatient level of care for elective spinal surgery (ILLUSTRATIVE)",
+   "source": "Humana Use Case 1 brief, sample medical policy. Made up for the exercise. Not a real Humana policy.",
+   "url": null,
+   "verified": false,
+   "applies_to": "prototype only",
+   "criteria": [
+    {
+     "id": "HUM-1",
+     "text": "Documented comorbidities that raise peri-operative risk (for example heart failure, COPD, uncontrolled diabetes).",
+     "cite": "Humana IP (illustrative)",
+     "required_fact": "comorbidities",
+     "test": "non_empty",
+     "if_missing": "Ask: which comorbidities raise peri-operative risk?",
+     "short": "no risk-raising comorbidities are documented"
+    },
+    {
+     "id": "HUM-2",
+     "text": "Post-operative monitoring or care needs that cannot be safely provided in an outpatient or observation setting.",
+     "cite": "Humana IP (illustrative)",
+     "required_fact": "post_op_needs",
+     "test": "non_empty",
+     "if_missing": "Ask: what post-operative monitoring or care needs cannot be met outside the hospital?",
+     "short": "no post-operative needs beyond routine recovery are documented"
+    }
+   ]
+  },
+  {
+   "id": "MCG-STUB",
+   "level": "MCG",
+   "answers": "Q1_LEVEL_OF_CARE",
+   "title": "MCG inpatient and surgical care guideline (NOT INCLUDED)",
+   "source": "MCG is licensed, proprietary content and is not publicly available. Not reproduced here.",
+   "url": null,
+   "verified": false,
+   "applies_to": "placeholder that marks where a licensed MCG feed would plug in",
+   "criteria": []
+  },
+  {
+   "id": "NCD-20.4",
+   "level": "NCD",
+   "answers": "Q2_MEDICAL_NECESSITY",
+   "title": "Implantable Cardioverter Defibrillators (ICDs)",
+   "source": "CMS Medicare Coverage Database, NCD 20.4 v5, effective 07/31/2023 (last reviewed February 2018)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=110",
+   "verified": true,
+   "verified_from": "CMS Coverage database download (policies/corpus/ncds.json), source text saved in policies/raw/NCD_20_4.txt",
+   "applies_to": "Primary prevention for ischemic or non-ischemic dilated cardiomyopathy (NCD 20.4, B3 and B4). Other covered pathways (B1, B2, B5) are not modeled and go to a physician.",
+   "criteria": [
+    {
+     "id": "ICD-PATH",
+     "text": "The request rests on ischemic or non-ischemic dilated cardiomyopathy with heart failure. The other covered pathways (prior sustained ventricular tachycardia or cardiac arrest, prior heart attack with LVEF 30% or less, inherited rhythm disorders) are outside this prototype and go to a physician.",
+     "cite": "NCD 20.4, B3 and B4",
+     "required_fact": "cardiomyopathy_type",
+     "if_missing": "Ask: what is the cause of the cardiomyopathy: ischemic (coronary disease or prior heart attack) or non-ischemic?",
+     "short": "the indication is a pathway this prototype does not model",
+     "check": {
+      "op": "in",
+      "value": [
+       "ischemic",
+       "non-ischemic"
+      ]
+     }
+    },
+    {
+     "id": "ICD-LVEF",
+     "text": "Left ventricular ejection fraction (LVEF) is 35% or less.",
+     "cite": "NCD 20.4, B3 and B4",
+     "required_fact": "lvef_percent",
+     "if_missing": "Ask: what is the most recent ejection fraction, how was it measured, and on what date?",
+     "short": "the ejection fraction is above 35%",
+     "check": {
+      "op": "lte",
+      "value": 35
+     }
+    },
+    {
+     "id": "ICD-METHOD",
+     "text": "LVEF was measured by echocardiography, nuclear imaging, cardiac MRI, or catheter angiography.",
+     "cite": "NCD 20.4, B (additional criteria)",
+     "required_fact": "lvef_method",
+     "if_missing": "Ask: how was the ejection fraction measured?",
+     "short": "the ejection fraction was not measured by an accepted method",
+     "check": {
+      "op": "in",
+      "value": [
+       "echocardiography",
+       "nuclear imaging",
+       "cardiac MRI",
+       "angiography"
+      ]
+     }
+    },
+    {
+     "id": "ICD-NYHA",
+     "text": "Heart failure is NYHA class II or III.",
+     "cite": "NCD 20.4, B3 and B4",
+     "required_fact": "nyha_class",
+     "if_missing": "Ask: what is the patient's NYHA heart failure class?",
+     "short": "the NYHA class is not II or III",
+     "check": {
+      "op": "in",
+      "value": [
+       "II",
+       "III"
+      ]
+     }
+    },
+    {
+     "id": "ICD-WAIT",
+     "text": "No heart attack in the past 40 days, and no bypass surgery or stent procedure in the past 3 months.",
+     "cite": "NCD 20.4, B3 and B4",
+     "required_fact": "recent_mi_revasc",
+     "if_missing": "Ask: has the patient had a heart attack in the past 40 days, or bypass surgery or a stent in the past 3 months?",
+     "short": "there was a recent heart attack, bypass, or stent",
+     "mode": "absent"
+    },
+    {
+     "id": "ICD-OMT",
+     "text": "For non-ischemic cardiomyopathy: the patient has been on optimal medical therapy for at least 3 months.",
+     "cite": "NCD 20.4, B4",
+     "required_fact": "optimal_medical_therapy_months",
+     "if_missing": "Ask: how long has the patient been on optimal heart failure medicines?",
+     "short": "the patient has had under 3 months of optimal medical therapy",
+     "check": {
+      "op": "gte",
+      "value": 3
+     },
+     "applies_if": {
+      "fact": "cardiomyopathy_type",
+      "equals": "non-ischemic"
+     }
+    },
+    {
+     "id": "ICD-SDM",
+     "text": "A formal shared decision making visit, using an evidence-based decision tool, took place before the implant.",
+     "cite": "NCD 20.4, B3 and B4",
+     "required_fact": "shared_decision_making",
+     "if_missing": "Ask: is a shared decision making visit with a decision tool documented before the implant?",
+     "short": "no shared decision making visit is documented"
+    },
+    {
+     "id": "ICD-EXCL",
+     "text": "The patient is clinically stable and has no condition that rules out an ICD (severe brain damage, another illness with survival under 1 year, poorly controlled atrial fibrillation).",
+     "cite": "NCD 20.4, B (additional criteria)",
+     "required_fact": "limiting_conditions",
+     "if_missing": "Ask: is the patient clinically stable, and are there any conditions that limit survival or rule out an ICD?",
+     "short": "a condition that rules out an ICD is documented",
+     "mode": "absent"
+    }
+   ]
+  },
+  {
+   "id": "NCD-100.1",
+   "level": "NCD",
+   "answers": "Q2_MEDICAL_NECESSITY",
+   "title": "Bariatric Surgery for Treatment of Co-Morbid Conditions Related to Morbid Obesity",
+   "source": "CMS Medicare Coverage Database, NCD 100.1 v5, effective 09/24/2013",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=57",
+   "verified": true,
+   "verified_from": "CMS Coverage database download (policies/corpus/ncds.json), source text saved in policies/raw/NCD_100_1.txt",
+   "applies_to": "Open and laparoscopic Roux-en-Y gastric bypass (CPT 43644), nationally covered. Stand-alone sleeve gastrectomy is decided by each Medicare contractor and is not modeled.",
+   "criteria": [
+    {
+     "id": "BAR-BMI",
+     "text": "Body-mass index (BMI) is 35 or higher.",
+     "cite": "NCD 100.1, B",
+     "required_fact": "bmi",
+     "if_missing": "Ask: what is the patient's BMI, and when was it measured?",
+     "short": "the BMI is under 35",
+     "check": {
+      "op": "gte",
+      "value": 35
+     }
+    },
+    {
+     "id": "BAR-CM",
+     "text": "At least one comorbidity related to obesity is documented (type 2 diabetes counts).",
+     "cite": "NCD 100.1, B",
+     "required_fact": "comorbidities",
+     "if_missing": "Ask: which obesity-related conditions does the patient have, such as type 2 diabetes?",
+     "short": "no obesity-related comorbidity is documented"
+    },
+    {
+     "id": "BAR-TX",
+     "text": "The patient was previously unsuccessful with medical treatment for obesity.",
+     "cite": "NCD 100.1, B",
+     "required_fact": "prior_medical_treatment",
+     "if_missing": "Ask: what medical treatment for obesity was tried, for how long, and what was the result?",
+     "short": "no unsuccessful medical treatment is documented"
+    }
+   ]
+  }
+ ],
+ "open_items": [
+  "Confirm whether CPT 22612 is on the CMS inpatient-only list (OPPS Addendum E). Not verified; the inpatient-only list is a payment-rule list, not an LCD.",
+  "Confirm which MAC jurisdictions cover the member's state and whether other MACs publish their own lumbar fusion LCD.",
+  "Check for an NCD that touches lumbar fusion beyond NCD 150.10 (artificial disc). Index search found none for fusion.",
+  "ICD: only the primary-prevention cardiomyopathy pathways (NCD 20.4 B3 and B4) are modeled. Secondary prevention, prior MI with LVEF 30% or less, and inherited disorders route to a physician.",
+  "Bariatric: Roux-en-Y bypass is nationally covered. Stand-alone sleeve gastrectomy is decided by each Medicare contractor, so it is not modeled.",
+  "The new criteria were written from the NCD text and have not been signed off by a clinical policy owner."
+ ],
+ "procedures": {
+  "lumbar_fusion": {
+   "name": "Lumbar spinal fusion",
+   "short": "Lumbar fusion",
+   "cpts": [
+    "22612"
+   ],
+   "policies": [
+    "CFR-42-412.3",
+    "LCD-L37848",
+    "HUM-IP-ILLUSTRATIVE",
+    "MCG-STUB"
+   ],
+   "facts": [
+    {
+     "key": "expected_los_days",
+     "label": "Expected stay",
+     "kind": "number",
+     "phrase": "the expected length of stay",
+     "ask": "Number of midnights of hospital care the physician expects. If the text only says something like 'a multi-day stay' with no number, use status implied.",
+     "statuses": [
+      "found",
+      "implied",
+      "missing"
+     ],
+     "hint": "Number of midnights, like 3",
+     "unit": "midnight"
+    },
+    {
+     "key": "comorbidities",
+     "label": "Comorbidities",
+     "kind": "list",
+     "phrase": "comorbidity documentation",
+     "ask": "Short labels for the patient's conditions that raise risk, for example 'heart failure'. Use status none only when the packet says there are none.",
+     "statuses": [
+      "found",
+      "none",
+      "missing"
+     ],
+     "hint": "For example: heart failure, diabetes",
+     "none_text": "None documented as present"
+    },
+    {
+     "key": "post_op_needs",
+     "label": "Post-op care needs",
+     "kind": "text",
+     "phrase": "post-operative care needs",
+     "ask": "Post-operative monitoring or care needs. Use status none only if the packet says recovery is routine.",
+     "statuses": [
+      "found",
+      "none",
+      "missing"
+     ],
+     "hint": "What care is needed after surgery",
+     "none_text": "Routine recovery only"
+    },
+    {
+     "key": "indication_evidence",
+     "label": "Surgical indication",
+     "kind": "enum",
+     "phrase": "imaging or exam evidence for the surgical indication",
+     "ask": "The qualifying finding on imaging or exam. Use status none when the imaging or exam explicitly RULES OUT a finding (for example 'no evidence of instability'). That is not the same as missing.",
+     "statuses": [
+      "found",
+      "none",
+      "implied",
+      "missing"
+     ],
+     "hint": "",
+     "values": [
+      "instability",
+      "deformity",
+      "pseudarthrosis",
+      "neural compression"
+     ]
+    },
+    {
+     "key": "conservative_treatment",
+     "label": "Conservative care",
+     "kind": "text",
+     "phrase": "the conservative treatment history",
+     "ask": "Which non-surgical treatments were tried and for how long (therapy, medicines, injections).",
+     "statuses": [
+      "found",
+      "missing"
+     ],
+     "hint": "What was tried and for how long"
+    },
+    {
+     "key": "shared_decision_making",
+     "label": "Shared decision making",
+     "kind": "text",
+     "phrase": "shared decision making",
+     "ask": "A documented shared decision making discussion with the patient, including risks and benefits.",
+     "statuses": [
+      "found",
+      "missing"
+     ],
+     "hint": "Optional note"
+    }
+   ],
+   "cpt_sources": [
+    {
+     "code": "22612",
+     "description": "ARTHRODESIS, POSTERIOR OR POSTEROLATERAL TECHNIQUE, SINGLE INTERSPACE; LUMBAR (WITH LATERAL TRANSVERSE TECHNIQUE, WHEN PERFORMED)",
+     "sources": [
+      {
+       "article": "A56396",
+       "version": 11,
+       "title": "Lumbar Spinal Fusion",
+       "mac": "Palmetto GBA (MAC - Part A, MAC - Part B)",
+       "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56396&ver=11"
+      }
+     ]
+    }
+   ],
+   "cpt_checked": "2026-10-04",
+   "cms_other_codes": [
+    {
+     "code": "22533",
+     "description": "ARTHRODESIS, LATERAL EXTRACAVITARY TECHNIQUE, INCLUDING MINIMAL DISCECTOMY TO PREPARE INTERSPACE (OTHER THAN FOR DECOMPRESSION); LUMBAR",
+     "listed_by": 1
+    },
+    {
+     "code": "22558",
+     "description": "ARTHRODESIS, ANTERIOR INTERBODY TECHNIQUE, INCLUDING MINIMAL DISCECTOMY TO PREPARE INTERSPACE (OTHER THAN FOR DECOMPRESSION); LUMBAR",
+     "listed_by": 1
+    },
+    {
+     "code": "22630",
+     "description": "ARTHRODESIS, POSTERIOR INTERBODY TECHNIQUE, INCLUDING LAMINECTOMY AND&sol;OR DISCECTOMY TO PREPARE INTERSPACE (OTHER THAN FOR DECOMPRESSION), SINGLE INTERSPACE, LUMBAR;",
+     "listed_by": 1
+    },
+    {
+     "code": "22633",
+     "description": "ARTHRODESIS, COMBINED POSTERIOR OR POSTEROLATERAL TECHNIQUE WITH POSTERIOR INTERBODY TECHNIQUE INCLUDING LAMINECTOMY AND&sol;OR DISCECTOMY SUFFICIENT TO PREPARE INTERSPACE (OTHER THAN FOR DECOMPRESSION), SINGLE INTERSPACE, LUMBAR;",
+     "listed_by": 1
+    }
+   ]
+  },
+  "icd": {
+   "name": "Implantable cardioverter defibrillator (ICD)",
+   "short": "ICD, heart failure",
+   "cpts": [
+    "33249"
+   ],
+   "policies": [
+    "CFR-42-412.3",
+    "NCD-20.4",
+    "MCG-STUB"
+   ],
+   "facts": [
+    {
+     "key": "expected_los_days",
+     "label": "Expected stay",
+     "kind": "number",
+     "phrase": "the expected length of stay",
+     "ask": "Number of midnights of hospital care the physician expects. If the text only says something like 'a multi-day stay' with no number, use status implied.",
+     "statuses": [
+      "found",
+      "implied",
+      "missing"
+     ],
+     "hint": "Number of midnights, like 3",
+     "unit": "midnight"
+    },
+    {
+     "key": "comorbidities",
+     "label": "Comorbidities",
+     "kind": "list",
+     "phrase": "comorbidity documentation",
+     "ask": "Short labels for the patient's conditions that raise risk, for example 'heart failure'. Use status none only when the packet says there are none.",
+     "statuses": [
+      "found",
+      "none",
+      "missing"
+     ],
+     "hint": "For example: heart failure, diabetes",
+     "none_text": "None documented as present"
+    },
+    {
+     "key": "lvef_percent",
+     "label": "Ejection fraction",
+     "kind": "number",
+     "phrase": "the most recent ejection fraction",
+     "ask": "The most recent measured left ventricular ejection fraction, as a percent number. If two measurements conflict, use the later one and say so in the note.",
+     "statuses": [
+      "found",
+      "missing"
+     ],
+     "hint": "Percent, like 30",
+     "unit": "%"
+    },
+    {
+     "key": "lvef_method",
+     "label": "How it was measured",
+     "kind": "enum",
+     "phrase": "how the ejection fraction was measured",
+     "ask": "How the most recent ejection fraction was measured.",
+     "statuses": [
+      "found",
+      "missing"
+     ],
+     "hint": "",
+     "values": [
+      "echocardiography",
+      "nuclear imaging",
+      "cardiac MRI",
+      "angiography",
+      "other"
+     ]
+    },
+    {
+     "key": "nyha_class",
+     "label": "NYHA class",
+     "kind": "enum",
+     "phrase": "the NYHA heart failure class",
+     "ask": "The New York Heart Association functional class of heart failure, I to IV.",
+     "statuses": [
+      "found",
+      "missing"
+     ],
+     "hint": "",
+     "values": [
+      "I",
+      "II",
+      "III",
+      "IV"
+     ]
+    },
+    {
+     "key": "cardiomyopathy_type",
+     "label": "Cause of heart failure",
+     "kind": "enum",
+     "phrase": "the cause of the cardiomyopathy",
+     "ask": "ischemic if caused by coronary artery disease or a prior heart attack. non-ischemic if dilated cardiomyopathy without a coronary cause. other if the request rests on something else, such as prior sustained ventricular tachycardia, cardiac arrest, or an inherited rhythm disorder.",
+     "statuses": [
+      "found",
+      "missing"
+     ],
+     "hint": "",
+     "values": [
+      "ischemic",
+      "non-ischemic",
+      "other"
+     ]
+    },
+    {
+     "key": "recent_mi_revasc",
+     "label": "Recent heart attack, bypass, or stent",
+     "kind": "event",
+     "phrase": "whether there was a heart attack in the past 40 days or a bypass or stent in the past 3 months",
+     "ask": "Use status found if a heart attack within 40 days, or bypass surgery or a stent within 3 months, is documented. Use status none only if the packet states there was none, or gives dates that are outside those windows.",
+     "statuses": [
+      "found",
+      "none",
+      "missing"
+     ],
+     "hint": "What happened and when",
+     "none_text": "None in the waiting window"
+    },
+    {
+     "key": "optimal_medical_therapy_months",
+     "label": "Months on heart failure medicines",
+     "kind": "number",
+     "phrase": "how long the patient has been on optimal heart failure medicines",
+     "ask": "Number of months on guideline-directed heart failure medical therapy.",
+     "statuses": [
+      "found",
+      "missing"
+     ],
+     "hint": "Number of months, like 4",
+     "unit": "month"
+    },
+    {
+     "key": "shared_decision_making",
+     "label": "Shared decision making",
+     "kind": "text",
+     "phrase": "the shared decision making visit",
+     "ask": "A documented formal shared decision making visit between the patient and a physician or qualified practitioner, using an evidence-based decision tool on ICDs, before the implant.",
+     "statuses": [
+      "found",
+      "missing"
+     ],
+     "hint": "What was documented, and when"
+    },
+    {
+     "key": "limiting_conditions",
+     "label": "Conditions that rule out an ICD",
+     "kind": "list",
+     "phrase": "whether any condition rules out an ICD",
+     "ask": "Conditions that rule out an ICD: severe irreversible brain damage, a non-cardiac illness with expected survival under 1 year, atrial fibrillation with a poorly controlled rate, or a patient who is not clinically stable. Use status none only if the packet says there are none.",
+     "statuses": [
+      "found",
+      "none",
+      "missing"
+     ],
+     "hint": "For example: none, or the condition",
+     "none_text": "None documented"
+    }
+   ],
+   "cpt_sources": [
+    {
+     "code": "33249",
+     "description": "INSERTION OR REPLACEMENT OF PERMANENT IMPLANTABLE DEFIBRILLATOR SYSTEM, WITH TRANSVENOUS LEAD(S), SINGLE OR DUAL CHAMBER",
+     "sources": [
+      {
+       "article": "A56391",
+       "version": 40,
+       "title": "Implantable Automatic Defibrillators",
+       "mac": "WPS Insurance Corporation (MAC - Part A, MAC - Part B)",
+       "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56391&ver=40"
+      },
+      {
+       "article": "A57994",
+       "version": 7,
+       "title": "Implantable Automatic Defibrillators",
+       "mac": "CGS Administrators, LLC (MAC - Part A, MAC - Part B)",
+       "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57994&ver=7"
+      },
+      {
+       "article": "A56326",
+       "version": 28,
+       "title": "Implantable Automatic Defibrillators",
+       "mac": "National Government Services, Inc. (MAC - Part A, MAC - Part B)",
+       "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56326&ver=28"
+      },
+      {
+       "article": "A56340",
+       "version": 32,
+       "title": "Implantable Automatic Defibrillators",
+       "mac": "Noridian Healthcare Solutions, LLC (MAC - Part A, MAC - Part B)",
+       "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56340&ver=32"
+      },
+      {
+       "article": "A56343",
+       "version": 14,
+       "title": "Implantable Automatic Defibrillators",
+       "mac": "Palmetto GBA (MAC - Part A, MAC - Part B)",
+       "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56343&ver=14"
+      }
+     ]
+    }
+   ],
+   "cpt_checked": "2026-10-04",
+   "cms_other_codes": [
+    {
+     "code": "33202",
+     "description": "INSERTION OF EPICARDIAL ELECTRODE(S); OPEN INCISION (EG, THORACOTOMY, MEDIAN STERNOTOMY, SUBXIPHOID APPROACH)",
+     "listed_by": 5
+    },
+    {
+     "code": "33203",
+     "description": "INSERTION OF EPICARDIAL ELECTRODE(S); ENDOSCOPIC APPROACH (EG, THORACOSCOPY, PERICARDIOSCOPY)",
+     "listed_by": 5
+    },
+    {
+     "code": "33215",
+     "description": "REPOSITIONING OF PREVIOUSLY IMPLANTED TRANSVENOUS PACEMAKER OR IMPLANTABLE DEFIBRILLATOR (RIGHT ATRIAL OR RIGHT VENTRICULAR) ELECTRODE",
+     "listed_by": 5
+    },
+    {
+     "code": "33216",
+     "description": "INSERTION OF A SINGLE TRANSVENOUS ELECTRODE, PERMANENT PACEMAKER OR IMPLANTABLE DEFIBRILLATOR",
+     "listed_by": 5
+    },
+    {
+     "code": "33217",
+     "description": "INSERTION OF 2 TRANSVENOUS ELECTRODES, PERMANENT PACEMAKER OR IMPLANTABLE DEFIBRILLATOR",
+     "listed_by": 5
+    },
+    {
+     "code": "33218",
+     "description": "REPAIR OF SINGLE TRANSVENOUS ELECTRODE, PERMANENT PACEMAKER OR IMPLANTABLE DEFIBRILLATOR",
+     "listed_by": 5
+    },
+    {
+     "code": "33220",
+     "description": "REPAIR OF 2 TRANSVENOUS ELECTRODES FOR PERMANENT PACEMAKER OR IMPLANTABLE DEFIBRILLATOR",
+     "listed_by": 5
+    },
+    {
+     "code": "33223",
+     "description": "RELOCATION OF SKIN POCKET FOR IMPLANTABLE DEFIBRILLATOR",
+     "listed_by": 5
+    },
+    {
+     "code": "33224",
+     "description": "INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, WITH ATTACHMENT TO PREVIOUSLY PLACED PACEMAKER OR IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR (INCLUDING REVISION OF POCKET, REMOVAL, INSERTION, AND&sol;OR REPLACEMENT OF EXISTING GENERATOR)",
+     "listed_by": 5
+    },
+    {
+     "code": "33225",
+     "description": "INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, AT TIME OF INSERTION OF IMPLANTABLE DEFIBRILLATOR OR PACEMAKER PULSE GENERATOR (EG, FOR UPGRADE TO DUAL CHAMBER SYSTEM) (LIST SEPARATELY IN ADDITION TO CODE FOR PRIMARY PROCEDURE)",
+     "listed_by": 5
+    },
+    {
+     "code": "33230",
+     "description": "INSERTION OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR ONLY; WITH EXISTING DUAL LEADS",
+     "listed_by": 5
+    },
+    {
+     "code": "33231",
+     "description": "INSERTION OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR ONLY; WITH EXISTING MULTIPLE LEADS",
+     "listed_by": 5
+    },
+    {
+     "code": "33240",
+     "description": "INSERTION OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR ONLY; WITH EXISTING SINGLE LEAD",
+     "listed_by": 5
+    },
+    {
+     "code": "33241",
+     "description": "REMOVAL OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR ONLY",
+     "listed_by": 5
+    },
+    {
+     "code": "33243",
+     "description": "REMOVAL OF SINGLE OR DUAL CHAMBER IMPLANTABLE DEFIBRILLATOR ELECTRODE(S); BY THORACOTOMY",
+     "listed_by": 5
+    },
+    {
+     "code": "33244",
+     "description": "REMOVAL OF SINGLE OR DUAL CHAMBER IMPLANTABLE DEFIBRILLATOR ELECTRODE(S); BY TRANSVENOUS EXTRACTION",
+     "listed_by": 5
+    },
+    {
+     "code": "33262",
+     "description": "REMOVAL OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR WITH REPLACEMENT OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR; SINGLE LEAD SYSTEM",
+     "listed_by": 5
+    },
+    {
+     "code": "33263",
+     "description": "REMOVAL OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR WITH REPLACEMENT OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR; DUAL LEAD SYSTEM",
+     "listed_by": 5
+    },
+    {
+     "code": "33264",
+     "description": "REMOVAL OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR WITH REPLACEMENT OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR; MULTIPLE LEAD SYSTEM",
+     "listed_by": 5
+    },
+    {
+     "code": "33270",
+     "description": "INSERTION OR REPLACEMENT OF PERMANENT SUBCUTANEOUS IMPLANTABLE DEFIBRILLATOR SYSTEM, WITH SUBCUTANEOUS ELECTRODE, INCLUDING DEFIBRILLATION THRESHOLD EVALUATION, INDUCTION OF ARRHYTHMIA, EVALUATION OF SENSING FOR ARRHYTHMIA TERMINATION, AND PROGRAMMING OR REPROGRAMMING OF SENSING OR THERAPEUTIC PARAMETERS, WHEN PERFORMED",
+     "listed_by": 5
+    },
+    {
+     "code": "33271",
+     "description": "INSERTION OF SUBCUTANEOUS IMPLANTABLE DEFIBRILLATOR ELECTRODE",
+     "listed_by": 5
+    },
+    {
+     "code": "33272",
+     "description": "REMOVAL OF SUBCUTANEOUS IMPLANTABLE DEFIBRILLATOR ELECTRODE",
+     "listed_by": 5
+    },
+    {
+     "code": "33273",
+     "description": "REPOSITIONING OF PREVIOUSLY IMPLANTED SUBCUTANEOUS IMPLANTABLE DEFIBRILLATOR ELECTRODE",
+     "listed_by": 5
+    },
+    {
+     "code": "G0448",
+     "description": "INSERTION OR REPLACEMENT OF A PERMANENT PACING CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH TRANSVENOUS LEAD(S), SINGLE OR DUAL CHAMBER WITH INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING",
+     "listed_by": 5
+    },
+    {
+     "code": "C7537",
+     "description": "INSERTION OF NEW OR REPLACEMENT OF PERMANENT PACEMAKER WITH ATRIAL TRANSVENOUS ELECTRODE(S), WITH INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, AT TIME OF INSERTION OF IMPLANTABLE DEFIBRILLATOR OR PACEMAKER PULSE GENERATOR (E.G., FOR UPGRADE TO DUAL CHAMBER SYSTEM)",
+     "listed_by": 4
+    },
+    {
+     "code": "C7538",
+     "description": "INSERTION OF NEW OR REPLACEMENT OF PERMANENT PACEMAKER WITH VENTRICULAR TRANSVENOUS ELECTRODE(S), WITH INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, AT TIME OF INSERTION OF IMPLANTABLE DEFIBRILLATOR OR PACEMAKER PULSE GENERATOR (E.G., FOR UPGRADE TO DUAL CHAMBER SYSTEM)",
+     "listed_by": 4
+    },
+    {
+     "code": "C7539",
+     "description": "INSERTION OF NEW OR REPLACEMENT OF PERMANENT PACEMAKER WITH ATRIAL AND VENTRICULAR TRANSVENOUS ELECTRODE(S), WITH INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, AT TIME OF INSERTION OF IMPLANTABLE DEFIBRILLATOR OR PACEMAKER PULSE GENERATOR (EG, FOR UPGRADE TO DUAL CHAMBER SYSTEM)",
+     "listed_by": 4
+    },
+    {
+     "code": "C7540",
+     "description": "REMOVAL OF PERMANENT PACEMAKER PULSE GENERATOR WITH REPLACEMENT OF PACEMAKER PULSE GENERATOR, DUAL LEAD SYSTEM, WITH INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, AT TIME OF INSERTION OF IMPLANTABLE DEFIBRILLATOR OR PACEMAKER PULSE GENERATOR (EG, FOR UPGRADE TO DUAL CHAMBER SYSTEM)",
+     "listed_by": 4
+    },
+    {
+     "code": "0571T",
+     "description": "INSERTION OR REPLACEMENT OF IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH SUBSTERNAL ELECTRODE(S), INCLUDING ALL IMAGING GUIDANCE AND ELECTROPHYSIOLOGICAL EVALUATION (INCLUDES DEFIBRILLATION THRESHOLD EVALUATION, INDUCTION OF ARRHYTHMIA, EVALUATION OF SENSING FOR ARRHYTHMIA TERMINATION, AND PROGRAMMING OR REPROGRAMMING OF SENSING OR THERAPEUTIC PARAMETERS), WHEN PERFORMED",
+     "listed_by": 1
+    },
+    {
+     "code": "0572T",
+     "description": "INSERTION OF SUBSTERNAL IMPLANTABLE DEFIBRILLATOR ELECTRODE",
+     "listed_by": 1
+    },
+    {
+     "code": "0573T",
+     "description": "REMOVAL OF SUBSTERNAL IMPLANTABLE DEFIBRILLATOR ELECTRODE",
+     "listed_by": 1
+    },
+    {
+     "code": "0574T",
+     "description": "REPOSITIONING OF PREVIOUSLY IMPLANTED SUBSTERNAL IMPLANTABLE DEFIBRILLATOR-PACING ELECTRODE",
+     "listed_by": 1
+    },
+    {
+     "code": "0575T",
+     "description": "PROGRAMMING DEVICE EVALUATION (IN PERSON) OF IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH SUBSTERNAL ELECTRODE, WITH ITERATIVE ADJUSTMENT OF THE IMPLANTABLE DEVICE TO TEST THE FUNCTION OF THE DEVICE AND SELECT OPTIMAL PERMANENT PROGRAMMED VALUES WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL",
+     "listed_by": 1
+    },
+    {
+     "code": "0576T",
+     "description": "INTERROGATION DEVICE EVALUATION (IN PERSON) OF IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH SUBSTERNAL ELECTRODE, WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL, INCLUDES CONNECTION, RECORDING AND DISCONNECTION PER PATIENT ENCOUNTER",
+     "listed_by": 1
+    },
+    {
+     "code": "0577T",
+     "description": "ELECTROPHYSIOLOGIC EVALUATION OF IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH SUBSTERNAL ELECTRODE (INCLUDES DEFIBRILLATION THRESHOLD EVALUATION, INDUCTION OF ARRHYTHMIA, EVALUATION OF SENSING FOR ARRHYTHMIA TERMINATION, AND PROGRAMMING OR REPROGRAMMING OF SENSING OR THERAPEUTIC PARAMETERS)",
+     "listed_by": 1
+    },
+    {
+     "code": "0578T",
+     "description": "INTERROGATION DEVICE EVALUATION(S) (REMOTE), UP TO 90 DAYS, SUBSTERNAL LEAD IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH INTERIM ANALYSIS, REVIEW(S) AND REPORT(S) BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL",
+     "listed_by": 1
+    },
+    {
+     "code": "0579T",
+     "description": "INTERROGATION DEVICE EVALUATION(S) (REMOTE), UP TO 90 DAYS, SUBSTERNAL LEAD IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM, REMOTE DATA ACQUISITION(S), RECEIPT OF TRANSMISSIONS AND TECHNICIAN REVIEW, TECHNICAL SUPPORT AND DISTRIBUTION OF RESULTS",
+     "listed_by": 1
+    },
+    {
+     "code": "0580T",
+     "description": "REMOVAL OF SUBSTERNAL IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR ONLY",
+     "listed_by": 1
+    },
+    {
+     "code": "0614T",
+     "description": "REMOVAL AND REPLACEMENT OF SUBSTERNAL IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR",
+     "listed_by": 1
+    },
+    {
+     "code": "93282",
+     "description": "PROGRAMMING DEVICE EVALUATION (IN PERSON) WITH ITERATIVE ADJUSTMENT OF THE IMPLANTABLE DEVICE TO TEST THE FUNCTION OF THE DEVICE AND SELECT OPTIMAL PERMANENT PROGRAMMED VALUES WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL; SINGLE LEAD TRANSVENOUS IMPLANTABLE DEFIBRILLATOR SYSTEM",
+     "listed_by": 1
+    },
+    {
+     "code": "93283",
+     "description": "PROGRAMMING DEVICE EVALUATION (IN PERSON) WITH ITERATIVE ADJUSTMENT OF THE IMPLANTABLE DEVICE TO TEST THE FUNCTION OF THE DEVICE AND SELECT OPTIMAL PERMANENT PROGRAMMED VALUES WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL; DUAL LEAD TRANSVENOUS IMPLANTABLE DEFIBRILLATOR SYSTEM",
+     "listed_by": 1
+    },
+    {
+     "code": "93284",
+     "description": "PROGRAMMING DEVICE EVALUATION (IN PERSON) WITH ITERATIVE ADJUSTMENT OF THE IMPLANTABLE DEVICE TO TEST THE FUNCTION OF THE DEVICE AND SELECT OPTIMAL PERMANENT PROGRAMMED VALUES WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL; MULTIPLE LEAD TRANSVENOUS IMPLANTABLE DEFIBRILLATOR SYSTEM",
+     "listed_by": 1
+    },
+    {
+     "code": "93287",
+     "description": "PERI-PROCEDURAL DEVICE EVALUATION (IN PERSON) AND PROGRAMMING OF DEVICE SYSTEM PARAMETERS BEFORE OR AFTER A SURGERY, PROCEDURE, OR TEST WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL; SINGLE, DUAL, OR MULTIPLE LEAD IMPLANTABLE DEFIBRILLATOR SYSTEM",
+     "listed_by": 1
+    },
+    {
+     "code": "93289",
+     "description": "INTERROGATION DEVICE EVALUATION (IN PERSON) WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL, INCLUDES CONNECTION, RECORDING AND DISCONNECTION PER PATIENT ENCOUNTER; SINGLE, DUAL, OR MULTIPLE LEAD TRANSVENOUS IMPLANTABLE DEFIBRILLATOR SYSTEM, INCLUDING ANALYSIS OF HEART RHYTHM DERIVED DATA ELEMENTS",
+     "listed_by": 1
+    },
+    {
+     "code": "93292",
+     "description": "INTERROGATION DEVICE EVALUATION (IN PERSON) WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL, INCLUDES CONNECTION, RECORDING AND DISCONNECTION PER PATIENT ENCOUNTER; WEARABLE DEFIBRILLATOR SYSTEM",
+     "listed_by": 1
+    },
+    {
+     "code": "93295",
+     "description": "INTERROGATION DEVICE EVALUATION(S) (REMOTE), UP TO 90 DAYS; SINGLE, DUAL, OR MULTIPLE LEAD IMPLANTABLE DEFIBRILLATOR SYSTEM WITH INTERIM ANALYSIS, REVIEW(S) AND REPORT(S) BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL",
+     "listed_by": 1
+    },
+    {
+     "code": "93296",
+     "description": "INTERROGATION DEVICE EVALUATION(S) (REMOTE), UP TO 90 DAYS; SINGLE, DUAL, OR MULTIPLE LEAD PACEMAKER SYSTEM, LEADLESS PACEMAKER SYSTEM, OR IMPLANTABLE DEFIBRILLATOR SYSTEM, REMOTE DATA ACQUISITION(S), RECEIPT OF TRANSMISSIONS AND TECHNICIAN REVIEW, TECHNICAL SUPPORT AND DISTRIBUTION OF RESULTS",
+     "listed_by": 1
+    }
+   ]
+  },
+  "bariatric": {
+   "name": "Bariatric surgery (Roux-en-Y gastric bypass)",
+   "short": "Bariatric surgery",
+   "cpts": [
+    "43644"
+   ],
+   "policies": [
+    "CFR-42-412.3",
+    "NCD-100.1",
+    "MCG-STUB"
+   ],
+   "facts": [
+    {
+     "key": "expected_los_days",
+     "label": "Expected stay",
+     "kind": "number",
+     "phrase": "the expected length of stay",
+     "ask": "Number of midnights of hospital care the physician expects. If the text only says something like 'a multi-day stay' with no number, use status implied.",
+     "statuses": [
+      "found",
+      "implied",
+      "missing"
+     ],
+     "hint": "Number of midnights, like 3",
+     "unit": "midnight"
+    },
+    {
+     "key": "comorbidities",
+     "label": "Comorbidities",
+     "kind": "list",
+     "phrase": "comorbidity documentation",
+     "ask": "Short labels for the patient's conditions that raise risk, for example 'heart failure'. Use status none only when the packet says there are none.",
+     "statuses": [
+      "found",
+      "none",
+      "missing"
+     ],
+     "hint": "For example: heart failure, diabetes",
+     "none_text": "None documented as present"
+    },
+    {
+     "key": "bmi",
+     "label": "BMI",
+     "kind": "number",
+     "phrase": "the patient's BMI",
+     "ask": "The most recent body-mass index in kg/m2.",
+     "statuses": [
+      "found",
+      "missing"
+     ],
+     "hint": "Number, like 41",
+     "unit": "kg/m2"
+    },
+    {
+     "key": "prior_medical_treatment",
+     "label": "Prior medical treatment",
+     "kind": "text",
+     "phrase": "the history of medical treatment for obesity",
+     "ask": "Supervised medical treatment for obesity that was tried and did not work (diet, exercise, medicines), with how long and the result.",
+     "statuses": [
+      "found",
+      "missing"
+     ],
+     "hint": "What was tried, for how long, and the result"
+    }
+   ],
+   "cpt_sources": [
+    {
+     "code": "43644",
+     "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; WITH GASTRIC BYPASS AND ROUX-EN-Y GASTROENTEROSTOMY (ROUX LIMB 150 CM OR LESS)",
+     "sources": [
+      {
+       "article": "A54923",
+       "version": 45,
+       "title": "Bariatric Surgery for Treatment of Co-Morbidities Conditions Related to Morbid Obesity",
+       "mac": "WPS Insurance Corporation (MAC - Part A, MAC - Part B)",
+       "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54923&ver=45"
+      },
+      {
+       "article": "A53026",
+       "version": 65,
+       "title": "Bariatric Surgery Coverage",
+       "mac": "Noridian Healthcare Solutions, LLC (MAC - Part A, MAC - Part B)",
+       "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=53026&ver=65"
+      },
+      {
+       "article": "A56422",
+       "version": 50,
+       "title": "Bariatric Surgical Management of Morbid Obesity",
+       "mac": "Novitas Solutions, Inc. (MAC - Part A, MAC - Part B)",
+       "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56422&ver=50"
+      }
+     ]
+    }
+   ],
+   "cpt_checked": "2026-10-04",
+   "cms_other_codes": [
+    {
+     "code": "43645",
+     "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; WITH GASTRIC BYPASS AND SMALL INTESTINE RECONSTRUCTION TO LIMIT ABSORPTION",
+     "listed_by": 3
+    },
+    {
+     "code": "43770",
+     "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; PLACEMENT OF ADJUSTABLE GASTRIC RESTRICTIVE DEVICE (EG, GASTRIC BAND AND SUBCUTANEOUS PORT COMPONENTS)",
+     "listed_by": 3
+    },
+    {
+     "code": "43775",
+     "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; LONGITUDINAL GASTRECTOMY (IE, SLEEVE GASTRECTOMY)",
+     "listed_by": 3
+    },
+    {
+     "code": "43845",
+     "description": "GASTRIC RESTRICTIVE PROCEDURE WITH PARTIAL GASTRECTOMY, PYLORUS-PRESERVING DUODENOILEOSTOMY AND ILEOILEOSTOMY (50 TO 100 CM COMMON CHANNEL) TO LIMIT ABSORPTION (BILIOPANCREATIC DIVERSION WITH DUODENAL SWITCH)",
+     "listed_by": 3
+    },
+    {
+     "code": "43846",
+     "description": "GASTRIC RESTRICTIVE PROCEDURE, WITH GASTRIC BYPASS FOR MORBID OBESITY; WITH SHORT LIMB (150 CM OR LESS) ROUX-EN-Y GASTROENTEROSTOMY",
+     "listed_by": 3
+    },
+    {
+     "code": "43847",
+     "description": "GASTRIC RESTRICTIVE PROCEDURE, WITH GASTRIC BYPASS FOR MORBID OBESITY; WITH SMALL INTESTINE RECONSTRUCTION TO LIMIT ABSORPTION",
+     "listed_by": 3
+    },
+    {
+     "code": "43659",
+     "description": "UNLISTED LAPAROSCOPY PROCEDURE, STOMACH",
+     "listed_by": 1
+    },
+    {
+     "code": "43771",
+     "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; REVISION OF ADJUSTABLE GASTRIC RESTRICTIVE DEVICE COMPONENT ONLY",
+     "listed_by": 1
+    },
+    {
+     "code": "43772",
+     "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; REMOVAL OF ADJUSTABLE GASTRIC RESTRICTIVE DEVICE COMPONENT ONLY",
+     "listed_by": 1
+    },
+    {
+     "code": "43773",
+     "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; REMOVAL AND REPLACEMENT OF ADJUSTABLE GASTRIC RESTRICTIVE DEVICE COMPONENT ONLY",
+     "listed_by": 1
+    },
+    {
+     "code": "43774",
+     "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; REMOVAL OF ADJUSTABLE GASTRIC RESTRICTIVE DEVICE AND SUBCUTANEOUS PORT COMPONENTS",
+     "listed_by": 1
+    },
+    {
+     "code": "43848",
+     "description": "REVISION, OPEN, OF GASTRIC RESTRICTIVE PROCEDURE FOR MORBID OBESITY, OTHER THAN ADJUSTABLE GASTRIC RESTRICTIVE DEVICE (SEPARATE PROCEDURE)",
+     "listed_by": 1
+    },
+    {
+     "code": "43886",
+     "description": "GASTRIC RESTRICTIVE PROCEDURE, OPEN; REVISION OF SUBCUTANEOUS PORT COMPONENT ONLY",
+     "listed_by": 1
+    },
+    {
+     "code": "43887",
+     "description": "GASTRIC RESTRICTIVE PROCEDURE, OPEN; REMOVAL OF SUBCUTANEOUS PORT COMPONENT ONLY",
+     "listed_by": 1
+    },
+    {
+     "code": "43888",
+     "description": "GASTRIC RESTRICTIVE PROCEDURE, OPEN; REMOVAL AND REPLACEMENT OF SUBCUTANEOUS PORT COMPONENT ONLY",
+     "listed_by": 1
+    },
+    {
+     "code": "43999",
+     "description": "UNLISTED PROCEDURE, STOMACH",
+     "listed_by": 1
+    }
+   ]
+  }
+ }
 }

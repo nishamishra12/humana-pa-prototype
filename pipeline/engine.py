@@ -17,6 +17,15 @@ LIBRARY = library()
 POLICIES = {p["id"]: p for p in LIBRARY["policies"]}
 ORDER = {lvl: i for i, lvl in enumerate(LIBRARY["hierarchy"])}
 
+
+def refresh():
+    """Pick up a newly published library without restarting the app."""
+    global LIBRARY, POLICIES, ORDER
+    from .procedures import reload
+    LIBRARY = reload()
+    POLICIES = {p["id"]: p for p in LIBRARY["policies"]}
+    ORDER = {lvl: i for i, lvl in enumerate(LIBRARY["hierarchy"])}
+
 LEVEL_LABEL = {"REGULATION": "Regulation", "NCD": "NCD", "LCD": "LCD",
                "HUMANA_INTERNAL": "Humana policy (illustrative)", "MCG": "MCG"}
 
@@ -31,7 +40,10 @@ def _check(chk, value):
         if op == "lte":
             return float(value) <= want
         if op == "in":
-            return str(value).lower() in [str(w).lower() for w in want]
+            allowed = [str(w).lower() for w in want]
+            if isinstance(value, (list, tuple)):
+                return any(str(v).lower() in allowed for v in value)
+            return str(value).lower() in allowed
     except (TypeError, ValueError):
         return False
     return False
@@ -84,7 +96,7 @@ def analyze(facts: dict) -> dict:
         names = ", ".join(p["short"].lower() for p in LIBRARY["procedures"].values())
         return dict(
             checklist=[], gate=dict(complete=False, questions=[]), action="no_policy",
-            rationale=(f"We do not have a policy for CPT {cpt or 'unknown'} ({facts.get('_procedure') or 'procedure not identified'}). "
+            rationale=(f"We do not have a policy for procedure code {cpt or 'unknown'} ({facts.get('_procedure') or 'procedure not identified'}). "
                       f"Today PA Desk checks {names}. We will not judge this case against the wrong policy."),
             policies=[], cannot_deny=True, cpt_covered=False, covered_cpt_codes=covered, procedure=None, fact_schema=[])
     defs = defs_by_key(proc)
@@ -148,11 +160,11 @@ def analyze(facts: dict) -> dict:
     else:
         action = "approve"
         rationale = "The packet is complete and every criterion is supported."
-    return dict(checklist=checklist, gate=gate, action=action, rationale=rationale,
+    return dict(checklist=checklist, gate=gate, action=action, rationale=rationale, library_version=LIBRARY.get("version"),
                 policies=[dict(id=p["id"], level=LEVEL_LABEL[p["level"]], title=p["title"], source=p["source"],
                                url=p["url"], verified=p["verified"]) for p in policies if p["criteria"]],
                 cannot_deny=True, cpt_covered=True, covered_cpt_codes=covered,
-                procedure=dict(key=pkey, name=proc["name"], short=proc["short"], cpts=proc["cpts"]),
+                procedure=dict(key=pkey, name=proc["name"], short=proc["short"], cpts=proc["cpts"], status=proc.get("status", "live")),
                 fact_schema=ui_schema(proc))
 
 

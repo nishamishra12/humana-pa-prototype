@@ -1,0 +1,59 @@
+{
+ "method": "lcd_related_articles",
+ "retrieved_at": "2026-10-04T21:09:46+00:00",
+ "articles": [
+  {
+   "id": "A56396",
+   "version": 11,
+   "title": "Lumbar Spinal Fusion",
+   "mac": "Palmetto GBA (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56396&ver=11",
+   "match_score": null,
+   "cites_ncd": null,
+   "n_codes": 5
+  }
+ ],
+ "codes": [
+  {
+   "code": "22533",
+   "description": "ARTHRODESIS, LATERAL EXTRACAVITARY TECHNIQUE, INCLUDING MINIMAL DISCECTOMY TO PREPARE INTERSPACE (OTHER THAN FOR DECOMPRESSION); LUMBAR",
+   "listed_by": [
+    "A56396"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "22558",
+   "description": "ARTHRODESIS, ANTERIOR INTERBODY TECHNIQUE, INCLUDING MINIMAL DISCECTOMY TO PREPARE INTERSPACE (OTHER THAN FOR DECOMPRESSION); LUMBAR",
+   "listed_by": [
+    "A56396"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "22612",
+   "description": "ARTHRODESIS, POSTERIOR OR POSTEROLATERAL TECHNIQUE, SINGLE INTERSPACE; LUMBAR (WITH LATERAL TRANSVERSE TECHNIQUE, WHEN PERFORMED)",
+   "listed_by": [
+    "A56396"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "22630",
+   "description": "ARTHRODESIS, POSTERIOR INTERBODY TECHNIQUE, INCLUDING LAMINECTOMY AND&sol;OR DISCECTOMY TO PREPARE INTERSPACE (OTHER THAN FOR DECOMPRESSION), SINGLE INTERSPACE, LUMBAR;",
+   "listed_by": [
+    "A56396"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "22633",
+   "description": "ARTHRODESIS, COMBINED POSTERIOR OR POSTEROLATERAL TECHNIQUE WITH POSTERIOR INTERBODY TECHNIQUE INCLUDING LAMINECTOMY AND&sol;OR DISCECTOMY SUFFICIENT TO PREPARE INTERSPACE (OTHER THAN FOR DECOMPRESSION), SINGLE INTERSPACE, LUMBAR;",
+   "listed_by": [
+    "A56396"
+   ],
+   "n_articles": 1
+  }
+ ],
+ "note": "CMS links these articles to the LCD. The codes are the ones each article lists."
+}

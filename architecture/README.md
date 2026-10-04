@@ -9,6 +9,8 @@ Everything that explains how PA Desk is built, in one place. Open the HTML pages
 | [inner_workings.html](inner_workings.html) | Real input and output for each step. Steps A to E: how a policy becomes rules (the NCD 20.4 run). Steps 2 to 6: one scanned packet, step by step. Includes a map from each step to its file on GitHub. |
 | [PROCESS.md](PROCESS.md) | The process today (fax, manual reading) against the new process. |
 | [POLICY_BUILD.md](POLICY_BUILD.md) | How a policy becomes approved rules: fetch, parse, AI draft, code checks, compare, owner approval. What is built and what is not. |
+| [DEMO_NEW_SERVICE.md](DEMO_NEW_SERVICE.md) | The demo: a packet with no policy, then onboarding a new service, then the same packet checked again. |
+| [OWNER_SPEAKING_POINTS.md](OWNER_SPEAKING_POINTS.md) | What the policy owner does and why it is built that way, in plain words. |
 
 ## Engineering depth
 | Read this | What it is |

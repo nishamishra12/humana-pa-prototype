@@ -18,8 +18,10 @@
   },
   {
    "id": "B2-NotNYHA4",
-   "level": "pass",
-   "issues": [],
+   "level": "review",
+   "issues": [
+    "applies_if says 'only when lvef_percent is <=30_pathway', which that fact can never be. The engine would skip this rule."
+   ],
    "quote_found": true,
    "match": "exact"
   },
@@ -130,8 +132,8 @@
   }
  ],
  "counts": {
-  "pass": 17,
-  "review": 1,
+  "pass": 16,
+  "review": 2,
   "fail": 0
  },
  "total": 18,

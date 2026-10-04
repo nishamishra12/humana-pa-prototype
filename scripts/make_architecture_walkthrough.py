@@ -39,7 +39,7 @@ lane = [
     ("ETL + AI", ["Unstructured turns", "each policy into", "structured elements"], "ext", "OUTSIDE SERVICE + AI", False),
     ("AI drafts the rules", ["Claude fills a form:", "each rule carries its", "exact source quote"], "ai", "AI MODEL", False),
     ("Code checks", ["every quote, number", "and fact is checked;", "no AI in this step"], "code", "CODE", False),
-    ("Policy owner approves", ["NOT BUILT YET", "owner reviews, edits,", "and publishes a version"], "human", "PERSON", True),
+    ("Policy owner approves", ["owner screen: reviews,", "edits or rejects each rule,", "then publishes a version"], "human", "PERSON", False),
     ("Policy library", ["versioned: CPT code,", "policies, rules, and", "the source of each"], "code", "CODE + DATA", False),
 ]
 LX = []
@@ -49,7 +49,7 @@ for i, (t, lines, kind, tag, dsh) in enumerate(lane):
     box(x, 56, W, 100, t, lines, kind, tag, dashed=dsh)
     if i:
         arrow([(x - GAP + 2, 106), (x - 2, 106)])
-P.append(f'<text class="s" x="{X0}" y="184">Built and tested on 5 policies (15 of 17 approved rules reproduced). The gap: owner approval and publishing. The library in use today is still the hand-written one.</text>')
+P.append(f'<text class="s" x="{X0}" y="184">Built and tested on 5 policies (15 of 17 approved rules reproduced). The owner screen is built: review, edit, approve, publish, revert. The library in use today is still the hand-written one until an owner publishes a draft.</text>')
 P_lane, P = P, P_main
 Y = 70
 H = 118
@@ -121,12 +121,12 @@ cards = [
       "It catches what text matching cannot: 'no evidence of instability' quoted as if instability was found. Contradicts or unrelated turns the fact into 'not sure'. Insufficient keeps the fact but removes the green tick."]),
     ("6 - What the rules engine does, and where RAG appears",
      ["The rules are plain code. Each policy criterion names a fact and a test, such as 'LVEF is 35% or less'. The engine checks the facts, builds the checklist, and picks approve, pend, escalate or verify. The same facts give the same answer every time, and there is no 'deny' in its vocabulary.",
-      "<b>The decision path uses no RAG.</b> The packet is read whole and the policies are a curated, versioned library, each criterion tied to its source. Nothing is searched while a case runs. The policy library is built before any case: Unstructured parses the official policy, an AI drafts the rules, code checks them, and a policy owner approves them. The library in use today was written once by hand. The build now drafts rules from the official text, tested on five policies, and the owner approval is missing. The planned side branch for a service with no policy would search the 1,314 CMS policies and draft one for the owner to approve. In my test, embedding search found the right policy more often than keyword search (97.7% against 79.5%). It is measured and not connected."]),
+      "<b>The decision path uses no RAG.</b> The packet is read whole and the policies are a curated, versioned library, each criterion tied to its source. Nothing is searched while a case runs. The policy library is built before any case: Unstructured parses the official policy, an AI drafts the rules, code checks them, and a policy owner approves them. The library in use today was written once by hand. The build now drafts rules from the official text, tested on five policies, and a policy owner screen lets a person approve, edit or reject each rule and publish a new version. The planned side branch for a service with no policy would search the 1,314 CMS policies and draft one for the owner to approve. In my test, embedding search found the right policy more often than keyword search (97.7% against 79.5%). It is measured and not connected."]),
 ]
 card_html = "".join(f'<section class="card"><h3>{e(t)}</h3>' + "".join(f"<p>{p}</p>" for p in ps) + "</section>" for t, ps in cards)
 
 NOTCLAIM = [
-    "The policy library in use was written by Claude from the official text, with your review. The build pipeline drafts the same kind of rules and was tested on five policies. No policy owner has approved any of it yet.",
+    "The policy library in use was written by Claude from the official text, with your review. The build pipeline drafts the same kind of rules and was tested on five policies. The owner screen to approve and publish drafts is built and tested on my machine. No real policy owner has used it.",
     "The search over 1,314 CMS policies is not connected to the app. A code we do not cover goes to a person.",
     "The policies are public Medicare policies. The Humana policy and MCG slots are placeholders, marked illustrative.",
     "All packets are made up. Nothing here has seen a real patient.",

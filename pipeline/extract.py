@@ -79,7 +79,7 @@ def extract_header(full: str) -> dict:
     m = (re.search(r"Requesting facility:?\s*(.+?),\s*Utilization", full)
          or re.search(r"Practice:?\s*(.+?)(?=\s+Phone\b|\n|$)", full))  # longer packets label the facility "Practice:"
     facts["_facility"] = m.group(1).strip() if m else None
-    m = re.search(r"CPT:?\s*(\d{5})", full)
+    m = re.search(r"(?:CPT|HCPCS)(?:\s*/\s*(?:CPT|HCPCS))?:?\s*(\d{5}|[A-Z]\d{4})(?![\dA-Za-z])", full)
     facts["_cpt"] = m.group(1) if m else None
     m = (re.search(r"Requested service:?\s*(.+?)(?=\s+CPT\b|\n|$)", full)
          or re.search(r"^(Elective inpatient admission,.+?)(?=\s+CPT\b|\n|$)", full, re.M))  # same text, under a heading

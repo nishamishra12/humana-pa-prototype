@@ -11,3 +11,4 @@ test/
 evals/search/pipes_out/
 evals/search/cache_*.npy
 evals/search/*_run.txt
+app/policy_library.live.json

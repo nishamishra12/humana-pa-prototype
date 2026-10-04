@@ -105,3 +105,6 @@ Rule for the whole deck: every phase has a reason, and we say it out loud.
 - `deck/journey/build_value.js` builds `Value.pptx` (slide 6, a plain slide with no animation).
 - Each file is one slide with one click per step. Import into Google Slides with File, Import slides.
 - To build: `node build_friction.js`. It needs the `@resvg/resvg-js` package to draw the character art.
+- `deck/journey/build_onboarding.js` builds `Policy_Service_Onboarding.pptx` (first solution slide: building the policy library and onboarding a service, 9 clicks). Needs `@resvg/resvg-js` for the icons.
+- `deck/journey/build_packet.js` builds `Packet_Journey.pptx` (second solution slide: how a packet moves through PA Desk, 9 clicks).
+- `deck/solution/drafts/` holds an early set of nine slides that are not approved. We take one at a time.

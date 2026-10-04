@@ -55,7 +55,7 @@
   },
   {
    "type": "Title",
-   "text": "1. Roux-en-Y Gastric Bypass (RYGBP)",
+   "text": "1. Roux-en-Y Gastric Bypass (RYGB)",
    "page": 1,
    "id": "e9"
   },
@@ -127,7 +127,7 @@
   },
   {
    "type": "NarrativeText",
-   "text": "Effective for services performed on and after February 21, 2006, Open and laparoscopic Roux-en-Y gastric bypass\n(RYGBP), open and laparoscopic Biliopancreatic Diversion with Duodenal Switch (BPD/DS) or Gastric Reduction\nDuodenal Switch (BPD/GRDS), and laparoscopic adjustable gastric banding (LAGB) are covered for Medicare\nbeneficiaries who have a body-mass index >= 35, have at least one co-morbidity related to obesity, and have been\npreviously unsuccessful with medical treatment for obesity.",
+   "text": "Effective for services performed on and after February 21, 2006, Open and laparoscopic Roux-en-Y gastric bypass (RYGBP), open and laparoscopic Biliopancreatic Diversion with Duodenal Switch (BPD/DS) or Gastric Reduction Duodenal Switch (BPD/GRDS), and laparoscopic adjustable gastric banding (LAGB) are covered for Medicare beneficiaries who have a body-mass index >= 35, have at least one co-morbidity related to obesity, and have been previously unsuccessful with medical treatment for obesity.",
    "page": 2,
    "id": "e21"
   },
@@ -157,7 +157,7 @@
   },
   {
    "type": "NarrativeText",
-   "text": "Treatments for obesity alone remain non-covered.\n\nSupplemented fasting is not covered under the Medicare program as a general treatment for obesity (see section D.\nbelow for discretionary local coverage).\n\nThe following bariatric surgery procedures are non-covered for all Medicare beneficiaries:\nOpen adjustable gastric banding;\nOpen sleeve gastrectomy;\nLaparoscopic sleeve gastrectomy (prior to June 27, 2012);\nOpen and laparoscopic vertical banded gastroplasty;\nIntestinal bypass surgery; and,\nGastric balloon for treatment of obesity.",
+   "text": "Treatments for obesity alone remain non-covered.\n\nSupplemented fasting is not covered under the Medicare program as a general treatment for obesity (see section D.\nbelow for discretionary local coverage).\n\nThe following bariatric surgery procedures are non-covered for all Medicare beneficiaries:\n\nOpen adjustable gastric banding;\n\nOpen sleeve gastrectomy;\n\nLaparoscopic sleeve gastrectomy (prior to June 27, 2012);\n\nOpen and laparoscopic vertical banded gastroplasty;\n\nIntestinal bypass surgery; and,\n\nGastric balloon for treatment of obesity.",
    "page": 2,
    "id": "e26"
   },

@@ -1,8 +1,8 @@
 {
  "criteria": [
   {
-   "id": "BMI-35-COVERED",
-   "text": "Beneficiary has a body-mass index of 35 or greater.",
+   "id": "BMI-35",
+   "text": "The beneficiary must have a body-mass index (BMI) of 35 or greater.",
    "source_quote": "have a body-mass index >= 35",
    "cite": "B",
    "required_fact": "bmi",
@@ -16,7 +16,7 @@
   },
   {
    "id": "COMORBID-PRESENT",
-   "text": "Beneficiary has at least one co-morbidity related to obesity.",
+   "text": "The beneficiary must have at least one co-morbidity related to obesity.",
    "source_quote": "have at least one co-morbidity related to obesity",
    "cite": "B",
    "required_fact": "comorbidities",
@@ -24,25 +24,25 @@
     "type": "present"
    },
    "if_missing": "Does the patient have at least one documented obesity-related co-morbidity?",
-   "short": "No obesity-related co-morbidity documented",
+   "short": "No documented obesity-related co-morbidity",
    "confidence": "high"
   },
   {
    "id": "PRIOR-MED-TX-UNSUCCESSFUL",
-   "text": "Beneficiary has been previously unsuccessful with medical treatment for obesity.",
+   "text": "The beneficiary must have been previously unsuccessful with medical treatment for obesity.",
    "source_quote": "have been previously unsuccessful with medical treatment for obesity",
    "cite": "B",
    "required_fact": "prior_medical_treatment",
    "test": {
     "type": "present"
    },
-   "if_missing": "Has the patient undergone prior medical (non-surgical) treatment for obesity that was unsuccessful, and what was tried?",
-   "short": "No documented unsuccessful prior medical treatment for obesity",
+   "if_missing": "Was prior supervised medical treatment for obesity (diet, exercise, medication) tried and documented as unsuccessful?",
+   "short": "Prior unsuccessful medical treatment for obesity not documented",
    "confidence": "high"
   },
   {
    "id": "LSG-BMI-35",
-   "text": "For stand-alone laparoscopic sleeve gastrectomy, beneficiary has a BMI >= 35 kg/m2.",
+   "text": "For stand-alone laparoscopic sleeve gastrectomy coverage (MAC discretion), the beneficiary must have a BMI of 35 or greater.",
    "source_quote": "The beneficiary has a body-mass index (BMI) >= 35 kg/m 2",
    "cite": "D",
    "required_fact": "bmi",
@@ -54,75 +54,101 @@
    "short": "BMI not documented as >= 35 for LSG",
    "confidence": "high",
    "applies_if": {
-    "fact": "procedure_type",
+    "fact": "procedure",
     "equals": "laparoscopic sleeve gastrectomy"
    }
   },
   {
    "id": "LSG-COMORBID-PRESENT",
-   "text": "For stand-alone laparoscopic sleeve gastrectomy, beneficiary has at least one co-morbidity related to obesity.",
+   "text": "For stand-alone laparoscopic sleeve gastrectomy coverage (MAC discretion), the beneficiary must have at least one co-morbidity related to obesity.",
    "source_quote": "The beneficiary has at least one co-morbidity related to obesity",
    "cite": "D",
    "required_fact": "comorbidities",
    "test": {
     "type": "present"
    },
-   "if_missing": "Does the patient have at least one documented obesity-related co-morbidity for LSG?",
-   "short": "No obesity-related co-morbidity documented for LSG",
+   "if_missing": "Does the patient have at least one documented obesity-related co-morbidity?",
+   "short": "No documented obesity-related co-morbidity for LSG",
    "confidence": "high",
    "applies_if": {
-    "fact": "procedure_type",
+    "fact": "procedure",
     "equals": "laparoscopic sleeve gastrectomy"
    }
   },
   {
    "id": "LSG-PRIOR-MED-TX",
-   "text": "For stand-alone laparoscopic sleeve gastrectomy, beneficiary has been previously unsuccessful with medical treatment for obesity.",
+   "text": "For stand-alone laparoscopic sleeve gastrectomy coverage (MAC discretion), the beneficiary must have been previously unsuccessful with medical treatment for obesity.",
    "source_quote": "The beneficiary has been previously unsuccessful with medical treatment for obesity",
    "cite": "D",
    "required_fact": "prior_medical_treatment",
    "test": {
     "type": "present"
    },
-   "if_missing": "Has the patient undergone prior medical treatment for obesity that was unsuccessful, and what was tried, for LSG?",
-   "short": "No documented unsuccessful prior medical treatment for obesity for LSG",
+   "if_missing": "Was prior supervised medical treatment for obesity tried and documented as unsuccessful?",
+   "short": "Prior unsuccessful medical treatment not documented for LSG",
    "confidence": "high",
    "applies_if": {
-    "fact": "procedure_type",
+    "fact": "procedure",
     "equals": "laparoscopic sleeve gastrectomy"
    }
   },
   {
-   "id": "T2DM-COMORBIDITY",
-   "text": "Type 2 diabetes mellitus counts as a co-morbidity for this NCD.",
-   "source_quote": "Type 2 diabetes mellitus is a co-morbidity for purposes of this NCD",
-   "cite": "B",
-   "required_fact": null,
+   "id": "OTHER-PROCEDURE-BMI-35",
+   "text": "For any bariatric surgery procedure not specifically identified as covered or non-covered, the beneficiary must have a BMI of 35 or greater.",
+   "source_quote": "have a body-mass index >= 35",
+   "cite": "D",
+   "required_fact": "bmi",
    "test": {
-    "type": "informational"
+    "type": "gte",
+    "value": 35
    },
-   "if_missing": null,
-   "short": "Informational note on T2DM as co-morbidity",
-   "confidence": "high"
+   "if_missing": "What is the patient's most recent BMI?",
+   "short": "BMI not documented as >= 35 for unlisted procedure",
+   "confidence": "medium",
+   "applies_if": {
+    "fact": "procedure",
+    "equals": "other/unlisted bariatric procedure"
+   }
   },
   {
-   "id": "OBESITY-ALONE-NONCOVERED",
-   "text": "Treatment for obesity alone, without a qualifying co-morbidity, is not covered.",
-   "source_quote": "Treatments for obesity alone remain non-covered.",
-   "cite": "C",
-   "required_fact": null,
+   "id": "OTHER-PROCEDURE-COMORBID",
+   "text": "For any bariatric surgery procedure not specifically identified as covered or non-covered, the beneficiary must have at least one co-morbidity related to obesity.",
+   "source_quote": "have at least one co-morbidity related to obesity",
+   "cite": "D",
+   "required_fact": "comorbidities",
    "test": {
-    "type": "informational"
+    "type": "present"
    },
-   "if_missing": null,
-   "short": "Informational non-coverage note for obesity alone",
-   "confidence": "high"
+   "if_missing": "Does the patient have at least one documented obesity-related co-morbidity?",
+   "short": "No documented obesity-related co-morbidity for unlisted procedure",
+   "confidence": "medium",
+   "applies_if": {
+    "fact": "procedure",
+    "equals": "other/unlisted bariatric procedure"
+   }
+  },
+  {
+   "id": "OTHER-PROCEDURE-PRIOR-MED-TX",
+   "text": "For any bariatric surgery procedure not specifically identified as covered or non-covered, the beneficiary must have been previously unsuccessful with medical treatment for obesity.",
+   "source_quote": "have been previously unsuccessful with medical treatment for obesity",
+   "cite": "D",
+   "required_fact": "prior_medical_treatment",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Was prior supervised medical treatment for obesity tried and documented as unsuccessful?",
+   "short": "Prior unsuccessful medical treatment not documented for unlisted procedure",
+   "confidence": "medium",
+   "applies_if": {
+    "fact": "procedure",
+    "equals": "other/unlisted bariatric procedure"
+   }
   }
  ],
  "new_facts": [
   {
-   "key": "procedure_type",
-   "label": "Type of bariatric surgery procedure requested",
+   "key": "procedure",
+   "label": "Bariatric surgery procedure type",
    "kind": "enum",
    "values": [
     "RYGBP",
@@ -134,40 +160,33 @@
     "open adjustable gastric banding",
     "vertical banded gastroplasty",
     "intestinal bypass",
-    "gastric balloon"
+    "gastric balloon",
+    "other/unlisted bariatric procedure"
    ],
-   "ask": "Which specific bariatric surgery procedure is being requested?"
+   "ask": "What specific bariatric surgery procedure is being requested (e.g., RYGBP, BPD/DS, LAGB, sleeve gastrectomy, open vs laparoscopic)?"
   }
  ],
  "not_modeled": [
   {
-   "quote": "open and laparoscopic Biliopancreatic Diversion with Duodenal Switch (BPD/DS) or Gastric Reduction Duodenal Switch (BPD/GRDS), and laparoscopic adjustable gastric banding (LAGB) are covered",
-   "why": "This lists covered procedure types; coverage depends on procedure_type fact matching an approved category, which is a facility/procedure selection rule rather than a single clinical fact test, and is partially captured via procedure_type for LSG subgroup only."
+   "quote": "these procedures are only covered when performed at facilities that are: (1) certified by the American College of Surgeons as a Level 1 Bariatric Surgery Center ... or (2) certified by the American Society for Bariatric Surgery as a Bariatric Surgery Center of Excellence",
+   "why": "This facility certification requirement was in effect only for dates of service prior to September 24, 2013 and was removed thereafter; it requires a facility-certification fact not in the vocabulary and is time-period dependent, better handled as a business rule outside this per-patient checklist."
   },
   {
-   "quote": "facilities that are: (1) certified by the American College of Surgeons as a Level 1 Bariatric Surgery Center ... or (2) certified by the American Society for Bariatric Surgery as a Bariatric Surgery Center of Excellence",
-   "why": "Facility certification requirement was in effect only for a past date range and was removed effective 9/24/2013; not a current patient-level clinical fact and not in the fact vocabulary."
-  },
-  {
-   "quote": "Non-surgical services in connection with the treatment of obesity are covered when such services are an integral and necessary part of a course of treatment for one of these medical conditions.",
-   "why": "This describes coverage of non-surgical services tied to an underlying medical condition, not a bariatric surgery criterion, and requires facts about non-surgical service purpose not in vocabulary."
+   "quote": "Open adjustable gastric banding; Open sleeve gastrectomy; Laparoscopic sleeve gastrectomy (prior to June 27, 2012); Open and laparoscopic vertical banded gastroplasty; Intestinal bypass surgery; and, Gastric balloon for treatment of obesity.",
+   "why": "These are blanket non-covered procedure types based on procedure selection alone, not a testable clinical fact about the patient; best handled as a procedure-code exclusion list rather than a clinical criterion."
   },
   {
    "quote": "supplemented fasting with adequate monitoring of the patient is eligible for coverage on a case-by-case basis or pursuant to a local coverage determination",
-   "why": "This is a discretionary, case-by-case local coverage pathway requiring clinical judgment on alternative weight-loss methods tried, not a fixed testable criterion and no matching fact in vocabulary."
+   "why": "This is a discretionary, case-by-case local coverage pathway for supplemented fasting (not bariatric surgery) requiring clinical judgment on weight-loss necessity before surgery and lack of more conservative alternatives; not reducible to a simple fact test."
   },
   {
-   "quote": "The following bariatric surgery procedures are non-covered for all Medicare beneficiaries: Open adjustable gastric banding; Open sleeve gastrectomy; Laparoscopic sleeve gastrectomy (prior to June 27, 2012); Open and laparoscopic vertical banded gastroplasty; Intestinal bypass surgery; and, Gastric balloon for treatment of obesity.",
-   "why": "This is a list of categorically non-covered procedures determined solely by procedure type/date, better handled as a lookup/exclusion list in the PA tool rather than a clinical criterion with a testable fact."
-  },
-  {
-   "quote": "determination of coverage for any bariatric surgery procedures that are not specifically identified in an NCD as covered or non-covered ... is left to the local MACs",
-   "why": "This defers decision to local MAC discretion and cannot be reduced to a single testable fact."
+   "quote": "CMS determines that Type 2 diabetes mellitus is a co-morbidity for purposes of this NCD.",
+   "why": "This is informational guidance clarifying that Type 2 diabetes counts as a qualifying co-morbidity; it is already captured by the general comorbidity-present criterion and does not add a separate testable condition."
   }
  ],
  "_usage": {
-  "input_tokens": 5690,
-  "output_tokens": 2941
+  "input_tokens": 5685,
+  "output_tokens": 3193
  },
  "_model": "claude-sonnet-5"
 }

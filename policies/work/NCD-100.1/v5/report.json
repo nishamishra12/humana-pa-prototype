@@ -1,7 +1,7 @@
 {
  "criteria": [
   {
-   "id": "BMI-35-COVERED",
+   "id": "BMI-35",
    "level": "pass",
    "issues": [],
    "quote_found": true,
@@ -43,14 +43,21 @@
    "match": "exact"
   },
   {
-   "id": "T2DM-COMORBIDITY",
+   "id": "OTHER-PROCEDURE-BMI-35",
    "level": "pass",
    "issues": [],
    "quote_found": true,
    "match": "exact"
   },
   {
-   "id": "OBESITY-ALONE-NONCOVERED",
+   "id": "OTHER-PROCEDURE-COMORBID",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "OTHER-PROCEDURE-PRIOR-MED-TX",
    "level": "pass",
    "issues": [],
    "quote_found": true,
@@ -58,12 +65,13 @@
   }
  ],
  "counts": {
-  "pass": 8,
+  "pass": 9,
   "review": 0,
   "fail": 0
  },
- "total": 8,
+ "total": 9,
  "uncovered": [
+  "services in connection with the treatment of obesity are covered when such services are an integral and necessary part",
   "questions exist about the safety of prolonged adherence for 2 months or more to a very low calorie weight reduction",
   "pouch (30 cc) results in feelings of satiety following even small meals.",
   "The AGB achieves weight loss by gastric restriction only.",
@@ -71,15 +79,18 @@
   "was the first step in a two-stage procedure when performing RYGBP, but more recently has been offered as a",
   "The VGB achieves weight loss by gastric restriction only.",
   "Nationally Covered Indications",
-  "Effective for dates of service on and after February 21, 2006, these procedures are only covered when performed at",
   "Effective for dates of service on and after September 24, 2013, facilities are no longer required to be certified.",
   "Nationally Non-Covered Indications",
+  "Treatments for obesity alone remain non-covered.",
+  "Supplemented fasting is not covered under the Medicare program as a general treatment for obesity (see section D.",
+  "The following bariatric surgery procedures are non-covered for all Medicare beneficiaries:",
   "Effective for services performed on and after June 27, 2012, Medicare Administrative Contractors (MACs) acting within",
+  "treatment of co-morbid conditions related to obesity in Medicare beneficiaries only when all of the following conditions",
   "Where weight loss is necessary before surgery in order to ameliorate the complications posed by obesity when it",
   "The risks associated with the achievement of rapid weight loss must be carefully balanced against the risk posed by the"
  ],
  "new_facts": [
-  "procedure_type"
+  "procedure"
  ],
- "not_modeled": 6
+ "not_modeled": 4
 }

@@ -23,5 +23,5 @@ Source: the Humana case brief (Use Case 1) and the journey and friction decks in
 A person decides every case. The AI recommends and shows its evidence.
 
 ## What is new around it
-- A policy library built through a controlled process, approved by a policy owner (see POLICY_BUILD.md).
+- A policy library built through a controlled process, approved by a policy owner on the Policy library screen (see POLICY_BUILD.md).
 - Traces and evals in Honeycomb, and an executive and utilization management dashboard.

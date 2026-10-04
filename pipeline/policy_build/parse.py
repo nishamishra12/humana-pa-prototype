@@ -66,6 +66,8 @@ def parse(policy_id, version):
             to_pdf(open(src, encoding="utf-8").read(), pdf_path)
         els, info = parse_unstructured(pdf_path)
         info["engine"] = "unstructured"
+        if not os.path.exists(src):  # an uploaded PDF has no text version yet: save one so the owner can read the source beside each rule
+            open(src, "w", encoding="utf-8").write(chr(10).join(e["text"] for e in els))
     except Exception as e:
         els, info = parse_local(src)
         info["engine"] = "local"

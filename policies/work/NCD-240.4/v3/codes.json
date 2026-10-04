@@ -1,0 +1,299 @@
+{
+ "method": "ncd_title_match",
+ "retrieved_at": "2026-10-04T21:59:47+00:00",
+ "articles": [
+  {
+   "id": "A52467",
+   "version": 54,
+   "title": "Positive Airway Pressure (PAP) Devices for the Treatment of Obstructive Sleep Apnea",
+   "mac": "CGS Administrators, LLC (DME MAC) Noridian Healthcare Solutions, LLC (DME MAC)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=52467&ver=54",
+   "match_score": 81,
+   "cites_ncd": false,
+   "n_codes": 11
+  },
+  {
+   "id": "A52512",
+   "version": 46,
+   "title": "Oral Appliances for Obstructive Sleep Apnea",
+   "mac": "CGS Administrators, LLC (DME MAC) Noridian Healthcare Solutions, LLC (DME MAC)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=52512&ver=46",
+   "match_score": 77,
+   "cites_ncd": false,
+   "n_codes": 4
+  },
+  {
+   "id": "A52460",
+   "version": 16,
+   "title": "Cold Therapy",
+   "mac": "CGS Administrators, LLC (DME MAC) Noridian Healthcare Solutions, LLC (DME MAC)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=52460&ver=16",
+   "match_score": 74,
+   "cites_ncd": false,
+   "n_codes": 3
+  },
+  {
+   "id": "A56905",
+   "version": 20,
+   "title": "Surgical Treatment of Obstructive Sleep Apnea (OSA)",
+   "mac": "WPS Insurance Corporation (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56905&ver=20",
+   "match_score": 72,
+   "cites_ncd": false,
+   "n_codes": 15
+  }
+ ],
+ "codes": [
+  {
+   "code": "A4604",
+   "description": "Only mentioned in the article text: spontaneous inspiratory efforts fail to occur. HCPCS code A4604 describes tubing used with a heated humidifier and has a heated...",
+   "listed_by": [
+    "A52467"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "A7027",
+   "description": "Combination oral/nasal mask, used with continuous positive airway pressure device, each",
+   "listed_by": [
+    "A52467"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "A7031",
+   "description": "Face mask interface, replacement for full face mask, each",
+   "listed_by": [
+    "A52467"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "A7032",
+   "description": "Only mentioned in the article text: or face mask, nasal cannula, or oral interface. HCPCS code A7032 is used for a replacement nasal mask interface that goes around...",
+   "listed_by": [
+    "A52467"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "A7033",
+   "description": "Only mentioned in the article text: s. The unit of service for this code is “each”. HCPCS code A7033 is used for a replacement nasal cannula-type interface. This int...",
+   "listed_by": [
+    "A52467"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "A9270",
+   "description": "Only mentioned in the article text: liners used with a PAP mask. These products should be coded A9270 (Noncovered item or service) in accordance with the Medicare Ben...",
+   "listed_by": [
+    "A52467",
+    "A52512",
+    "A52460"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "A9279",
+   "description": "Only mentioned in the article text: al (CMS Pub. 100-02) Chapter 15, Section 110.1. Claims for A9279 (MONITORING FEATURE/DEVICE, STAND-ALONE OR INTEGRATED, ANY TYPE,...",
+   "listed_by": [
+    "A52467"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "E0470",
+   "description": "Only mentioned in the article text: upon request. For beneficiaries changing from an E0601 to E0470 due to ineffective therapy while on E0601 (either during a facil...",
+   "listed_by": [
+    "A52467"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "E0471",
+   "description": "Only mentioned in the article text: gs. A bi-level respiratory assist device with backup rate (E0471) allows independent setting of inspiratory and expiratory pressu...",
+   "listed_by": [
+    "A52467"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "E0601",
+   "description": "Only mentioned in the article text: available upon request. For beneficiaries changing from an E0601 to E0470 due to ineffective therapy while on E0601 (either durin...",
+   "listed_by": [
+    "A52467"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "E1399",
+   "description": "DURABLE MEDICAL EQUIPMENT, MISCELLANEOUS",
+   "listed_by": [
+    "A52467"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "D7880",
+   "description": "Only mentioned in the article text: to treat temporomandibular joint (TMJ) disorders are coded D7880 - occlusal orthotic appliance. Claims for these devices should n...",
+   "listed_by": [
+    "A52512"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "E0485",
+   "description": "Only mentioned in the article text: or more anterior position. A prefabricated oral appliance (E0485) is one, which is manufactured in quantity without a specific be...",
+   "listed_by": [
+    "A52512"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "E0486",
+   "description": "Only mentioned in the article text: oning appliances, etc. A custom fabricated oral appliance (E0486) is one that is uniquely made for an individual beneficiary. It...",
+   "listed_by": [
+    "A52512"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "A9273",
+   "description": "Only mentioned in the article text: self-made containers used to administer cold therapy. Code A9273 describes products such as insulated cold or hot bottles, ice ca...",
+   "listed_by": [
+    "A52460"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "E0218",
+   "description": "Only mentioned in the article text: heat and/or cold wraps of any type that are reusable. Code E0218 describes a device which has an electric pump that circulates co...",
+   "listed_by": [
+    "A52460"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "21110",
+   "description": "APPLICATION OF INTERDENTAL FIXATION DEVICE FOR CONDITIONS OTHER THAN FRACTURE OR DISLOCATION, INCLUDES REMOVAL",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "21141",
+   "description": "RECONSTRUCTION MIDFACE, LEFORT I; SINGLE PIECE, SEGMENT MOVEMENT IN ANY DIRECTION (EG, FOR LONG FACE SYNDROME), WITHOUT BONE GRAFT",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "21145",
+   "description": "RECONSTRUCTION MIDFACE, LEFORT I; SINGLE PIECE, SEGMENT MOVEMENT IN ANY DIRECTION, REQUIRING BONE GRAFTS (INCLUDES OBTAINING AUTOGRAFTS)",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "21196",
+   "description": "RECONSTRUCTION OF MANDIBULAR RAMI AND&sol;OR BODY, SAGITTAL SPLIT; WITH INTERNAL RIGID FIXATION",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "21199",
+   "description": "OSTEOTOMY, MANDIBLE, SEGMENTAL; WITH GENIOGLOSSUS ADVANCEMENT",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "21685",
+   "description": "HYOID MYOTOMY AND SUSPENSION",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "30140",
+   "description": "SUBMUCOUS RESECTION INFERIOR TURBINATE, PARTIAL OR COMPLETE, ANY METHOD",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "30802",
+   "description": "ABLATION, SOFT TISSUE OF INFERIOR TURBINATES, UNILATERAL OR BILATERAL, ANY METHOD (EG, ELECTROCAUTERY, RADIOFREQUENCY ABLATION, OR TISSUE VOLUME REDUCTION); INTRAMURAL (IE, SUBMUCOSAL)",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "31600",
+   "description": "TRACHEOSTOMY, PLANNED (SEPARATE PROCEDURE);",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "31610",
+   "description": "TRACHEOSTOMY, FENESTRATION PROCEDURE WITH SKIN FLAPS",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "41512",
+   "description": "TONGUE BASE SUSPENSION, PERMANENT SUTURE TECHNIQUE",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "41530",
+   "description": "SUBMUCOSAL ABLATION OF THE TONGUE BASE, RADIOFREQUENCY, 1 OR MORE SITES, PER SESSION",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "42145",
+   "description": "PALATOPHARYNGOPLASTY (EG, UVULOPALATOPHARYNGOPLASTY, UVULOPHARYNGOPLASTY)",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "42299",
+   "description": "UNLISTED PROCEDURE, PALATE, UVULA",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "C9727",
+   "description": "INSERTION OF IMPLANTS INTO THE SOFT PALATE; MINIMUM OF THREE IMPLANTS",
+   "listed_by": [
+    "A56905"
+   ],
+   "n_articles": 1
+  }
+ ],
+ "note": "CMS does not link an NCD to its billing articles. These are the Billing and Coding articles whose title matches this policy. Check that they are about the same service before you use a code."
+}

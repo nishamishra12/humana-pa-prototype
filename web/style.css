@@ -268,3 +268,24 @@ mark { background: var(--mark); color: inherit; padding: 1px 2px; border-radius:
 .reco.escalate .esc-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--esc); margin-top: 10px; }
 .tick { color: var(--ok); font-weight: 700; margin-left: 6px; }
 .pg.alt { border-style: dashed; color: var(--ink2); }
+
+/* ---------- policy owner ---------- */
+.pol-grid { display: grid; grid-template-columns: minmax(300px, 5fr) minmax(0, 7fr); gap: 16px; align-items: start; }
+@media (max-width: 960px) { .pol-grid { grid-template-columns: 1fr; } }
+.srcpane { position: sticky; top: 76px; background: var(--paper); border: 1px solid var(--line2); border-radius: 10px; padding: 14px 16px; max-height: calc(100vh - 100px); overflow: auto; }
+.src-el { margin: 0 0 9px; line-height: 1.55; font-size: 13.5px; white-space: pre-wrap; }
+.src-title { font-weight: 700; margin-top: 14px; }
+.card.rule { cursor: default; } .card.rule.sel { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.quote { border-left: 3px solid var(--line2); padding: 4px 10px; font-size: 12.5px; color: var(--ink2); background: var(--hover); border-radius: 0 6px 6px 0; }
+.plist { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+
+details.more summary { cursor: pointer; list-style: none; }
+details.more summary::-webkit-details-marker { display: none; }
+details.more summary u { color: var(--accent); white-space: nowrap; }
+details.more[open] summary { display: none; }
+
+.pickrow { display: flex; justify-content: space-between; gap: 12px; width: 100%; text-align: left; padding: 9px 12px; border: 1px solid var(--line2); border-radius: 8px; background: var(--paper); margin-bottom: 6px; cursor: pointer; font: inherit; color: var(--ink); }
+.pickrow:hover { border-color: var(--accent); background: var(--hover); }
+.pickpicked { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent-soft); }
+.bar { height: 6px; border-radius: 3px; background: var(--line2); margin-top: 4px; width: 140px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }

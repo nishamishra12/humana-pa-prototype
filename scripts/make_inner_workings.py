@@ -189,7 +189,9 @@ files = [
     ("B", "Parse the policy", "pipeline/policy_build/parse.py", "Sends the policy to Unstructured and keeps the elements."),
     ("C", "AI drafts the rules", "pipeline/policy_build/draft.py", "The drafting rules (SYSTEM) and the fixed form the AI fills in."),
     ("D", "Code checks the draft", "pipeline/policy_build/validate.py", "Checks every quote, number and fact in the draft."),
-    ("E", "Compare and approve", "pipeline/policy_build/compare.py", "Compares the draft with the approved rules. Owner review is not built yet."),
+    ("E", "Compare and approve", "pipeline/policy_build/compare.py", "Compares the draft with the approved rules, so the owner sees what is the same, different or new."),
+    ("F", "Owner approves and publishes", "app/policy_admin.py", "The owner screen's server side: start a build, save approve, edit or reject, publish a new version, revert, check for updates."),
+    ("F", "Owner screen", "web/policy.js", "The Policy library screen: source text beside each rule, the code-check result, and the publish step."),
     ("A-E", "Run the whole build", "pipeline/policy_build/build.py", "Runs steps A to E for one policy. Start it with scripts/build_policy.py."),
     ("2", "ETL + AI", "pipeline/ingest.py", "Calls Unstructured and keeps page, type and text for each element."),
     ("3", "Pick the policy", "pipeline/extract.py", "extract_header: finds the CPT code, planned date and member with pattern matching."),
@@ -260,7 +262,7 @@ for pid, ver in (("NCD-20.4", "v5"), ("CFR-42-412.3", "2026-10-01"), ("NCD-100.1
 prow = "".join(f"<tr><td><b>{e(p)}</b></td><td>{n}</td><td>{c['pass']} / {c['review']} / {c['fail']}</td><td>{nf}</td><td>{('same ' + str(cc['same']) + ', differs ' + str(cc['differs']) + ', missed ' + str(cc['missed'])) if cc else 'no hand-written set (a policy never modeled)'}</td></tr>" for p, n, c, nf, cc in allp)
 sE = f"""<div class="two"><div class="pane"><h4>Our own eval: the draft against the approved rules</h4><p>The rules in the live library were written by hand. The draft is matched to them by the fact each tests, then the tests are compared. {lc['counts']['same']} of {lc['approved_count']} match exactly for this policy.</p><div class="tw"><table><thead><tr><th>Approved rule</th><th>Fact</th><th>Approved test</th><th>Draft test</th><th></th></tr></thead><tbody>{crow}</tbody></table></div></div>
 <div class="pane"><h4>Across the five policies we ran</h4><div class="tw"><table><thead><tr><th>Policy</th><th>Drafted</th><th>Pass / review / fail</th><th>New facts</th><th>Against the approved rules</th></tr></thead><tbody>{prow}</tbody></table></div>
-<div class="callout" style="background:var(--ambersoft)"><b>Not built yet: the policy owner.</b> A person reviews each drafted rule with the source text beside it, edits or rejects it, and publishes a new versioned library. The library used by the steps below is still the hand-written one.</div></div></div>"""
+<div class="callout" style="background:var(--ambersoft)"><b>Step F is built: the policy owner screen.</b> A person reviews each drafted rule with the source text beside it, then approves, edits or rejects it. Publishing needs every rule decided and a tick that says "I reviewed every rule". Rules that failed a code check, or need a fact the reader cannot find yet, cannot be approved. Each publish makes a new library version, and the owner can go back to the last one. The library used by the steps below is still the hand-written one until an owner publishes.</div></div></div>"""
 
 STEPS = [("A", "Fetch the policy", sA), ("B", "Parse the policy", sB), ("C", "AI drafts the rules", sC), ("D", "Code checks the draft", sD), ("E", "Compare and approve", sE), ("2", "ETL + AI", s2), ("3", "Pick the policy", s3), ("4", "Read the packet", s4), ("5", "Check the evidence", s5), ("6", "Apply the rules", s6)]
 nav = "".join(f'<a href="#s{n}"><span class="n">{n}</span>{e(t)}</a>' for n, t, _ in STEPS)

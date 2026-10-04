@@ -7,7 +7,7 @@
    "result": "same",
    "approved": "gte 35",
    "draft": "gte 35",
-   "draft_id": "BMI-35-COVERED"
+   "draft_id": "BMI-35"
   },
   {
    "id": "BAR-CM",

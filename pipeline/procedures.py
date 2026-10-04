@@ -5,20 +5,32 @@ entry there (its facts, its policies), plus test packets. No code changes.
 """
 import json, os
 
-LIB_PATH = os.path.join(os.path.dirname(__file__), "..", "policies", "policy_library.json")
+LIB_PATH = os.path.join(os.path.dirname(__file__), "..", "policies", "policy_library.json")  # the library shipped with the app
+DATA_DIR = os.getenv("PA_DATA_DIR") or os.path.join(os.path.dirname(__file__), "..", "app")
+LIVE_PATH = os.path.join(DATA_DIR, "policy_library.live.json")  # written when a policy owner publishes a version. It wins over the shipped one.
 _LIB = None
 
 
 def library():
     global _LIB
     if _LIB is None:
-        _LIB = json.load(open(LIB_PATH, encoding="utf-8"))
+        path = LIVE_PATH if os.path.exists(LIVE_PATH) else LIB_PATH
+        _LIB = json.load(open(path, encoding="utf-8"))
     return _LIB
+
+
+def reload():
+    """Drop the cached library so the next call reads the live file. The engine refreshes its own copy (engine.refresh)."""
+    global _LIB
+    _LIB = None
+    return library()
 
 
 def procedure_for_cpt(cpt):
     """Returns (key, procedure) for a procedure code, or (None, None) when no policy is curated for it."""
     for key, p in library()["procedures"].items():
+        if p.get("status") == "planned":  # on the rollout list, not switched on
+            continue
         if cpt in p["cpts"]:
             return key, p
     return None, None

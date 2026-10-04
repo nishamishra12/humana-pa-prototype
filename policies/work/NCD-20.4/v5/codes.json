@@ -1,0 +1,544 @@
+{
+ "method": "ncd_title_match",
+ "retrieved_at": "2026-10-04T21:09:17+00:00",
+ "articles": [
+  {
+   "id": "A56391",
+   "version": 40,
+   "title": "Implantable Automatic Defibrillators",
+   "mac": "WPS Insurance Corporation (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56391&ver=40",
+   "match_score": 84,
+   "cites_ncd": true,
+   "n_codes": 40
+  },
+  {
+   "id": "A57994",
+   "version": 7,
+   "title": "Implantable Automatic Defibrillators",
+   "mac": "CGS Administrators, LLC (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57994&ver=7",
+   "match_score": 84,
+   "cites_ncd": true,
+   "n_codes": 25
+  },
+  {
+   "id": "A56326",
+   "version": 28,
+   "title": "Implantable Automatic Defibrillators",
+   "mac": "National Government Services, Inc. (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56326&ver=28",
+   "match_score": 84,
+   "cites_ncd": true,
+   "n_codes": 29
+  },
+  {
+   "id": "A56340",
+   "version": 32,
+   "title": "Implantable Automatic Defibrillators",
+   "mac": "Noridian Healthcare Solutions, LLC (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56340&ver=32",
+   "match_score": 84,
+   "cites_ncd": true,
+   "n_codes": 29
+  },
+  {
+   "id": "A57038",
+   "version": 17,
+   "title": "Surveillance of Implantable or Wearable Cardioverter Defibrillators (ICDs): Office, Hospital, Web, or Non-Web Based",
+   "mac": "CGS Administrators, LLC (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57038&ver=17",
+   "match_score": 92,
+   "cites_ncd": false,
+   "n_codes": 8
+  },
+  {
+   "id": "A53018",
+   "version": 14,
+   "title": "Surveillance of Implantable or Wearable Cardioverter Defibrillators (ICDs): Office, Hospital, Web, or Non-Web Based",
+   "mac": "Wellpoint Federal (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=53018&ver=14",
+   "match_score": 92,
+   "cites_ncd": false,
+   "n_codes": 8
+  }
+ ],
+ "codes": [
+  {
+   "code": "33202",
+   "description": "INSERTION OF EPICARDIAL ELECTRODE(S); OPEN INCISION (EG, THORACOTOMY, MEDIAN STERNOTOMY, SUBXIPHOID APPROACH)",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33203",
+   "description": "INSERTION OF EPICARDIAL ELECTRODE(S); ENDOSCOPIC APPROACH (EG, THORACOSCOPY, PERICARDIOSCOPY)",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33215",
+   "description": "REPOSITIONING OF PREVIOUSLY IMPLANTED TRANSVENOUS PACEMAKER OR IMPLANTABLE DEFIBRILLATOR (RIGHT ATRIAL OR RIGHT VENTRICULAR) ELECTRODE",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33216",
+   "description": "INSERTION OF A SINGLE TRANSVENOUS ELECTRODE, PERMANENT PACEMAKER OR IMPLANTABLE DEFIBRILLATOR",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33217",
+   "description": "INSERTION OF 2 TRANSVENOUS ELECTRODES, PERMANENT PACEMAKER OR IMPLANTABLE DEFIBRILLATOR",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33218",
+   "description": "REPAIR OF SINGLE TRANSVENOUS ELECTRODE, PERMANENT PACEMAKER OR IMPLANTABLE DEFIBRILLATOR",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33220",
+   "description": "REPAIR OF 2 TRANSVENOUS ELECTRODES FOR PERMANENT PACEMAKER OR IMPLANTABLE DEFIBRILLATOR",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33223",
+   "description": "RELOCATION OF SKIN POCKET FOR IMPLANTABLE DEFIBRILLATOR",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33224",
+   "description": "INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, WITH ATTACHMENT TO PREVIOUSLY PLACED PACEMAKER OR IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR (INCLUDING REVISION OF POCKET, REMOVAL, INSERTION, AND&sol;OR REPLACEMENT OF EXISTING GENERATOR)",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33225",
+   "description": "INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, AT TIME OF INSERTION OF IMPLANTABLE DEFIBRILLATOR OR PACEMAKER PULSE GENERATOR (EG, FOR UPGRADE TO DUAL CHAMBER SYSTEM) (LIST SEPARATELY IN ADDITION TO CODE FOR PRIMARY PROCEDURE)",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33230",
+   "description": "INSERTION OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR ONLY; WITH EXISTING DUAL LEADS",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33231",
+   "description": "INSERTION OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR ONLY; WITH EXISTING MULTIPLE LEADS",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33240",
+   "description": "INSERTION OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR ONLY; WITH EXISTING SINGLE LEAD",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33241",
+   "description": "REMOVAL OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR ONLY",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33243",
+   "description": "REMOVAL OF SINGLE OR DUAL CHAMBER IMPLANTABLE DEFIBRILLATOR ELECTRODE(S); BY THORACOTOMY",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33244",
+   "description": "REMOVAL OF SINGLE OR DUAL CHAMBER IMPLANTABLE DEFIBRILLATOR ELECTRODE(S); BY TRANSVENOUS EXTRACTION",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33249",
+   "description": "INSERTION OR REPLACEMENT OF PERMANENT IMPLANTABLE DEFIBRILLATOR SYSTEM, WITH TRANSVENOUS LEAD(S), SINGLE OR DUAL CHAMBER",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33262",
+   "description": "REMOVAL OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR WITH REPLACEMENT OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR; SINGLE LEAD SYSTEM",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33263",
+   "description": "REMOVAL OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR WITH REPLACEMENT OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR; DUAL LEAD SYSTEM",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33264",
+   "description": "REMOVAL OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR WITH REPLACEMENT OF IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR; MULTIPLE LEAD SYSTEM",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33270",
+   "description": "INSERTION OR REPLACEMENT OF PERMANENT SUBCUTANEOUS IMPLANTABLE DEFIBRILLATOR SYSTEM, WITH SUBCUTANEOUS ELECTRODE, INCLUDING DEFIBRILLATION THRESHOLD EVALUATION, INDUCTION OF ARRHYTHMIA, EVALUATION OF SENSING FOR ARRHYTHMIA TERMINATION, AND PROGRAMMING OR REPROGRAMMING OF SENSING OR THERAPEUTIC PARAMETERS, WHEN PERFORMED",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33271",
+   "description": "INSERTION OF SUBCUTANEOUS IMPLANTABLE DEFIBRILLATOR ELECTRODE",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33272",
+   "description": "REMOVAL OF SUBCUTANEOUS IMPLANTABLE DEFIBRILLATOR ELECTRODE",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "33273",
+   "description": "REPOSITIONING OF PREVIOUSLY IMPLANTED SUBCUTANEOUS IMPLANTABLE DEFIBRILLATOR ELECTRODE",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "G0448",
+   "description": "INSERTION OR REPLACEMENT OF A PERMANENT PACING CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH TRANSVENOUS LEAD(S), SINGLE OR DUAL CHAMBER WITH INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING",
+   "listed_by": [
+    "A56391",
+    "A57994",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 4
+  },
+  {
+   "code": "C7537",
+   "description": "INSERTION OF NEW OR REPLACEMENT OF PERMANENT PACEMAKER WITH ATRIAL TRANSVENOUS ELECTRODE(S), WITH INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, AT TIME OF INSERTION OF IMPLANTABLE DEFIBRILLATOR OR PACEMAKER PULSE GENERATOR (E.G., FOR UPGRADE TO DUAL CHAMBER SYSTEM)",
+   "listed_by": [
+    "A56391",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "C7538",
+   "description": "INSERTION OF NEW OR REPLACEMENT OF PERMANENT PACEMAKER WITH VENTRICULAR TRANSVENOUS ELECTRODE(S), WITH INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, AT TIME OF INSERTION OF IMPLANTABLE DEFIBRILLATOR OR PACEMAKER PULSE GENERATOR (E.G., FOR UPGRADE TO DUAL CHAMBER SYSTEM)",
+   "listed_by": [
+    "A56391",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "C7539",
+   "description": "INSERTION OF NEW OR REPLACEMENT OF PERMANENT PACEMAKER WITH ATRIAL AND VENTRICULAR TRANSVENOUS ELECTRODE(S), WITH INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, AT TIME OF INSERTION OF IMPLANTABLE DEFIBRILLATOR OR PACEMAKER PULSE GENERATOR (EG, FOR UPGRADE TO DUAL CHAMBER SYSTEM)",
+   "listed_by": [
+    "A56391",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "C7540",
+   "description": "REMOVAL OF PERMANENT PACEMAKER PULSE GENERATOR WITH REPLACEMENT OF PACEMAKER PULSE GENERATOR, DUAL LEAD SYSTEM, WITH INSERTION OF PACING ELECTRODE, CARDIAC VENOUS SYSTEM, FOR LEFT VENTRICULAR PACING, AT TIME OF INSERTION OF IMPLANTABLE DEFIBRILLATOR OR PACEMAKER PULSE GENERATOR (EG, FOR UPGRADE TO DUAL CHAMBER SYSTEM)",
+   "listed_by": [
+    "A56391",
+    "A56326",
+    "A56340"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "93282",
+   "description": "PROGRAMMING DEVICE EVALUATION (IN PERSON) WITH ITERATIVE ADJUSTMENT OF THE IMPLANTABLE DEVICE TO TEST THE FUNCTION OF THE DEVICE AND SELECT OPTIMAL PERMANENT PROGRAMMED VALUES WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL; SINGLE LEAD TRANSVENOUS IMPLANTABLE DEFIBRILLATOR SYSTEM",
+   "listed_by": [
+    "A57038",
+    "A53018"
+   ],
+   "n_articles": 2
+  },
+  {
+   "code": "93283",
+   "description": "PROGRAMMING DEVICE EVALUATION (IN PERSON) WITH ITERATIVE ADJUSTMENT OF THE IMPLANTABLE DEVICE TO TEST THE FUNCTION OF THE DEVICE AND SELECT OPTIMAL PERMANENT PROGRAMMED VALUES WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL; DUAL LEAD TRANSVENOUS IMPLANTABLE DEFIBRILLATOR SYSTEM",
+   "listed_by": [
+    "A57038",
+    "A53018"
+   ],
+   "n_articles": 2
+  },
+  {
+   "code": "93284",
+   "description": "PROGRAMMING DEVICE EVALUATION (IN PERSON) WITH ITERATIVE ADJUSTMENT OF THE IMPLANTABLE DEVICE TO TEST THE FUNCTION OF THE DEVICE AND SELECT OPTIMAL PERMANENT PROGRAMMED VALUES WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL; MULTIPLE LEAD TRANSVENOUS IMPLANTABLE DEFIBRILLATOR SYSTEM",
+   "listed_by": [
+    "A57038",
+    "A53018"
+   ],
+   "n_articles": 2
+  },
+  {
+   "code": "93287",
+   "description": "PERI-PROCEDURAL DEVICE EVALUATION (IN PERSON) AND PROGRAMMING OF DEVICE SYSTEM PARAMETERS BEFORE OR AFTER A SURGERY, PROCEDURE, OR TEST WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL; SINGLE, DUAL, OR MULTIPLE LEAD IMPLANTABLE DEFIBRILLATOR SYSTEM",
+   "listed_by": [
+    "A57038",
+    "A53018"
+   ],
+   "n_articles": 2
+  },
+  {
+   "code": "93289",
+   "description": "INTERROGATION DEVICE EVALUATION (IN PERSON) WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL, INCLUDES CONNECTION, RECORDING AND DISCONNECTION PER PATIENT ENCOUNTER; SINGLE, DUAL, OR MULTIPLE LEAD TRANSVENOUS IMPLANTABLE DEFIBRILLATOR SYSTEM, INCLUDING ANALYSIS OF HEART RHYTHM DERIVED DATA ELEMENTS",
+   "listed_by": [
+    "A57038",
+    "A53018"
+   ],
+   "n_articles": 2
+  },
+  {
+   "code": "93292",
+   "description": "INTERROGATION DEVICE EVALUATION (IN PERSON) WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL, INCLUDES CONNECTION, RECORDING AND DISCONNECTION PER PATIENT ENCOUNTER; WEARABLE DEFIBRILLATOR SYSTEM",
+   "listed_by": [
+    "A57038",
+    "A53018"
+   ],
+   "n_articles": 2
+  },
+  {
+   "code": "93295",
+   "description": "INTERROGATION DEVICE EVALUATION(S) (REMOTE), UP TO 90 DAYS; SINGLE, DUAL, OR MULTIPLE LEAD IMPLANTABLE DEFIBRILLATOR SYSTEM WITH INTERIM ANALYSIS, REVIEW(S) AND REPORT(S) BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL",
+   "listed_by": [
+    "A57038",
+    "A53018"
+   ],
+   "n_articles": 2
+  },
+  {
+   "code": "93296",
+   "description": "INTERROGATION DEVICE EVALUATION(S) (REMOTE), UP TO 90 DAYS; SINGLE, DUAL, OR MULTIPLE LEAD PACEMAKER SYSTEM, LEADLESS PACEMAKER SYSTEM, OR IMPLANTABLE DEFIBRILLATOR SYSTEM, REMOTE DATA ACQUISITION(S), RECEIPT OF TRANSMISSIONS AND TECHNICIAN REVIEW, TECHNICAL SUPPORT AND DISTRIBUTION OF RESULTS",
+   "listed_by": [
+    "A57038",
+    "A53018"
+   ],
+   "n_articles": 2
+  },
+  {
+   "code": "0571T",
+   "description": "INSERTION OR REPLACEMENT OF IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH SUBSTERNAL ELECTRODE(S), INCLUDING ALL IMAGING GUIDANCE AND ELECTROPHYSIOLOGICAL EVALUATION (INCLUDES DEFIBRILLATION THRESHOLD EVALUATION, INDUCTION OF ARRHYTHMIA, EVALUATION OF SENSING FOR ARRHYTHMIA TERMINATION, AND PROGRAMMING OR REPROGRAMMING OF SENSING OR THERAPEUTIC PARAMETERS), WHEN PERFORMED",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "0572T",
+   "description": "INSERTION OF SUBSTERNAL IMPLANTABLE DEFIBRILLATOR ELECTRODE",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "0573T",
+   "description": "REMOVAL OF SUBSTERNAL IMPLANTABLE DEFIBRILLATOR ELECTRODE",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "0574T",
+   "description": "REPOSITIONING OF PREVIOUSLY IMPLANTED SUBSTERNAL IMPLANTABLE DEFIBRILLATOR-PACING ELECTRODE",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "0575T",
+   "description": "PROGRAMMING DEVICE EVALUATION (IN PERSON) OF IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH SUBSTERNAL ELECTRODE, WITH ITERATIVE ADJUSTMENT OF THE IMPLANTABLE DEVICE TO TEST THE FUNCTION OF THE DEVICE AND SELECT OPTIMAL PERMANENT PROGRAMMED VALUES WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "0576T",
+   "description": "INTERROGATION DEVICE EVALUATION (IN PERSON) OF IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH SUBSTERNAL ELECTRODE, WITH ANALYSIS, REVIEW AND REPORT BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL, INCLUDES CONNECTION, RECORDING AND DISCONNECTION PER PATIENT ENCOUNTER",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "0577T",
+   "description": "ELECTROPHYSIOLOGIC EVALUATION OF IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH SUBSTERNAL ELECTRODE (INCLUDES DEFIBRILLATION THRESHOLD EVALUATION, INDUCTION OF ARRHYTHMIA, EVALUATION OF SENSING FOR ARRHYTHMIA TERMINATION, AND PROGRAMMING OR REPROGRAMMING OF SENSING OR THERAPEUTIC PARAMETERS)",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "0578T",
+   "description": "INTERROGATION DEVICE EVALUATION(S) (REMOTE), UP TO 90 DAYS, SUBSTERNAL LEAD IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM WITH INTERIM ANALYSIS, REVIEW(S) AND REPORT(S) BY A PHYSICIAN OR OTHER QUALIFIED HEALTH CARE PROFESSIONAL",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "0579T",
+   "description": "INTERROGATION DEVICE EVALUATION(S) (REMOTE), UP TO 90 DAYS, SUBSTERNAL LEAD IMPLANTABLE CARDIOVERTER-DEFIBRILLATOR SYSTEM, REMOTE DATA ACQUISITION(S), RECEIPT OF TRANSMISSIONS AND TECHNICIAN REVIEW, TECHNICAL SUPPORT AND DISTRIBUTION OF RESULTS",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "0580T",
+   "description": "REMOVAL OF SUBSTERNAL IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR ONLY",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "0614T",
+   "description": "REMOVAL AND REPLACEMENT OF SUBSTERNAL IMPLANTABLE DEFIBRILLATOR PULSE GENERATOR",
+   "listed_by": [
+    "A56391"
+   ],
+   "n_articles": 1
+  }
+ ],
+ "note": "CMS does not link an NCD to its billing articles. These are the Billing and Coding articles whose title matches this policy. Check that they are about the same service before you use a code."
+}

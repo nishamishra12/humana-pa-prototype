@@ -67,7 +67,7 @@ function clock(c) {
 }
 const STATUS = { new: "New", in_review: "In review", pended: "Pended", escalated: "Escalated", approved: "Approved", denied: "Denied" };
 const AI = { approve: ["Recommends approve", "ok", "✓"], pend: ["Missing info", "warn", "?"], escalate: ["Needs a physician", "escalated", "↑"], no_policy: ["No policy yet", "bad", "!"], verify: ["Check the packet", "warn", "?"] };
-const ROLE_CHIP = { admin: ["Intake", "plain"], nurse: ["Nurse", "new"], medical_director: ["Medical director", "escalated"] };
+const ROLE_CHIP = { admin: ["Intake", "plain"], nurse: ["Nurse", "new"], medical_director: ["Medical director", "escalated"], policy_owner: ["Policy owner", "plain"] };
 const OPEN = ["new", "in_review", "pended", "escalated"];
 
 /* ---------- login ---------- */
@@ -91,12 +91,13 @@ async function renderLogin() {
   document.getElementById("lf").onsubmit = (e) => { e.preventDefault(); doLogin(document.getElementById("em").value, document.getElementById("pw").value); };
   document.querySelectorAll(".demo-btn").forEach((b) => (b.onclick = () => doLogin(b.dataset.email, "demo1234")));
 }
-const homeView = () => (S.user.role === "medical_director" ? "decide" : S.user.role === "admin" ? "unassigned" : "attention");
+const homeView = () => (S.user.role === "policy_owner" ? "policies" : S.user.role === "medical_director" ? "decide" : S.user.role === "admin" ? "unassigned" : "attention");
 
 /* ---------- loading ---------- */
 async function boot() {
   const [me, users] = await Promise.all([api("/me"), api("/users")]);
   S.user = me; S.users = users;
+  if (me.role === "policy_owner") { S.view = "policies"; S.caseId = null; await loadPolicies(); render(); return; }
   parseHash();
   if (S.view === "evals") await runEvals();
   else await loadList();
@@ -116,7 +117,7 @@ window.addEventListener("hashchange", guard(async () => {
   render();
 }));
 async function loadList() {
-  if (S.view === "evals") return;
+  if (S.view === "evals" || S.user.role === "policy_owner") return;
   const v = S.q || S.view === "team" ? "all" : S.view;
   const d = await api(`/cases?view=${v}&q=${encodeURIComponent(S.q)}`);
   S.cases = d.cases; S.counts = d.counts;
@@ -142,6 +143,7 @@ function go(hash) { history.replaceState(null, "", hash); }
 /* ---------- shell ---------- */
 function viewsFor() {
   const r = S.user.role;
+  if (r === "policy_owner") return [["demand", "Requests without a policy", "alert"], ["policies", "Policy library", "book"], ["review", "Policies to review", "inbox"], ["services", "Services", "list"], ["history", "Version history", "clock"]];
   if (r === "admin") return [["unassigned", "Needs assignment", "inbox"], ["team", "Team", "users"], ["pended", "Waiting on provider", "clock"], ["escalated", "With a physician", "up"], ["done", "Decided", "checkc"], ["all", "Everything", "list"]];
   if (r === "nurse") return [["attention", "Needs my review", "inbox"], ["at_risk", "At risk", "alert"], ["pended", "Waiting on provider", "clock"], ["escalated", "With a physician", "up"], ["done", "Decided", "checkc"], ["mine", "All my cases", "list"]];
   return [["decide", "Waiting for my decision", "inbox"], ["done", "Decided", "checkc"], ["all", "Everything", "list"]];
@@ -151,7 +153,7 @@ const VIEW_HELP = { attention: "Sorted by time left. The case closest to its clo
 
 function render() {
   if (!S.user) return renderLogin();
-  const isMD = S.user.role === "medical_director", isAdmin = S.user.role === "admin";
+  const isMD = S.user.role === "medical_director", isAdmin = S.user.role === "admin", isOwner = S.user.role === "policy_owner";
   const views = viewsFor();
   const risk = S.counts.at_risk;
   const railBtn = ([v, l, i]) => {
@@ -159,24 +161,28 @@ function render() {
     const red = v === "at_risk" && n > 0;
     return `<button class="rail-item ${S.view === v ? "on" : ""}" data-view="${v}" aria-label="${esc(l)}${n !== "" ? ", " + n : ""}" title="${esc(l)}">${ic(i, 20)}<span class="lab">${l}</span><span class="n ${red ? "red" : ""}">${n}</span>${n !== "" && n > 0 ? `<span class="rb ${red ? "red" : ""}">${n}</span>` : ""}</button>`;
   };
+  const el0 = document.getElementById("content"), sp0 = document.querySelector(".srcpane");
+  const keepScroll = S.user.role === "policy_owner" && el0 && S._scrollKey === S.view + "|" + (S.pol.build ? S.pol.build.id : "") ? { c: el0.scrollTop, w: window.scrollY, s: sp0 ? sp0.scrollTop : 0 } : null;
+  S._scrollKey = S.view + "|" + (S.user.role === "policy_owner" && S.pol.build ? S.pol.build.id : "");
   $app.innerHTML = `<div class="shell">
     <header class="topbar">
       <button class="icon-btn" id="burger" aria-label="${S.railOpen ? "Collapse the menu" : "Expand the menu"}" aria-expanded="${S.railOpen}">${ic("menu", 22)}</button>
       <div class="brand"><span class="brand-mark">PA</span><span class="hide-sm">PA Desk</span></div>
-      <label class="search">${ic("search", 18)}<input id="q" type="search" placeholder="Search by member, case number, or procedure" value="${esc(S.q)}" aria-label="Search cases"><kbd>/</kbd></label>
+      ${isOwner ? "" : `<label class="search">${ic("search", 18)}<input id="q" type="search" placeholder="Search by member, case number, or procedure" value="${esc(S.q)}" aria-label="Search cases"><kbd>/</kbd></label>`}
       <div class="spacer"></div>
-      ${isMD ? "" : `<label class="btn primary" style="cursor:pointer">${ic("upload", 16)}Upload packet<input type="file" id="up" accept="application/pdf" class="sr"></label>`}
+      ${isMD || isOwner ? "" : `<label class="btn primary" style="cursor:pointer">${ic("upload", 16)}Upload packet<input type="file" id="up" accept="application/pdf" class="sr"></label>`}
       <div class="menu-wrap"><button class="icon-btn" id="bell" aria-label="Notifications${S.user.unread ? ", " + S.user.unread + " new" : ""}">${ic("bell", 22)}${S.user.unread ? `<span class="badge-dot">${S.user.unread}</span>` : ""}</button>${S.pop === "notif" ? notifPop() : ""}</div>
       <div class="menu-wrap"><button class="profile" id="prof" aria-haspopup="menu"><span class="avatar ${isMD ? "md" : isAdmin ? "admin" : ""}">${esc(initials(S.user.name))}</span><span class="who"><b>${esc(S.user.name)}</b><small>${esc(S.user.title)}</small></span>${ic("down", 16)}</button>
         ${S.pop === "profile" ? `<div class="pop menu" role="menu"><div class="pop-head">${esc(S.user.name)}<div class="faint" style="font-weight:400;font-size:12.5px">${esc(S.user.title)}</div></div><button class="menu-item" id="out" role="menuitem">${ic("logout", 18)}Sign out</button></div>` : ""}</div>
     </header>
     <div class="main">
-      <nav class="rail ${S.railOpen ? "open" : ""}" aria-label="Queues"><h4>${isAdmin ? "Intake" : isMD ? "Decisions" : "My queues"}</h4>
+      <nav class="rail ${S.railOpen ? "open" : ""}" aria-label="Queues"><h4>${isOwner ? "Policy" : isAdmin ? "Intake" : isMD ? "Decisions" : "My queues"}</h4>
         ${views.map(railBtn).join("")}
-        ${S.user.role === "nurse" ? "" : `<h4>Quality</h4><button class="rail-item ${S.view === "evals" ? "on" : ""}" data-view="evals" aria-label="Quality" title="Quality">${ic("flask", 20)}<span class="lab">Quality</span><span class="n"></span></button>`}</nav>
-      <main class="content" id="content">${S.view === "evals" ? evalsHtml() : S.caseId && S.detail ? caseHtml() : S.view === "team" && !S.q ? teamHtml() : queueHtml()}</main>
+        ${S.user.role === "nurse" || isOwner ? "" : `<h4>Quality</h4><button class="rail-item ${S.view === "evals" ? "on" : ""}" data-view="evals" aria-label="Quality" title="Quality">${ic("flask", 20)}<span class="lab">Quality</span><span class="n"></span></button>`}</nav>
+      <main class="content" id="content">${isOwner ? policyHtml() : S.view === "evals" ? evalsHtml() : S.caseId && S.detail ? caseHtml() : S.view === "team" && !S.q ? teamHtml() : queueHtml()}</main>
     </div>${S.upload ? uploadModal() : ""}</div>`;
   bind();
+  if (keepScroll) { const c = document.getElementById("content"), sp = document.querySelector(".srcpane"); if (c) c.scrollTop = keepScroll.c; if (sp) sp.scrollTop = keepScroll.s; window.scrollTo(0, keepScroll.w); }
 }
 
 /* ---------- queue ---------- */
@@ -330,9 +336,9 @@ function reviewHtml(d, a, done) {
   const canFix = !done && ["nurse", "medical_director"].includes(S.user.role);
   const mk = { met: "✓", missing: "?", unsure: "?", advisory: "!", not_met: "✕", info: "i" };
   const stLabel = { met: "Met", missing: "Missing", unsure: "Not sure", advisory: "Advisory", not_met: "Not met", info: "Info" };
-  const reco = `<div class="reco ${a.action}"><span class="mk big ${RECO_MARK[a.action][0]}">${RECO_MARK[a.action][1]}</span><div><h3>${RECO_TITLE(a)}</h3><p>${esc(a.rationale)}</p></div></div>`;
+  const reco = `<div class="reco ${a.action}"><span class="mk big ${RECO_MARK[a.action][0]}">${RECO_MARK[a.action][1]}</span><div><h3>${RECO_TITLE(a)}</h3><p>${esc(a.rationale)}</p>${a.procedure && a.procedure.status === "pilot" ? `<p class="faint" style="font-size:12.5px;margin-top:6px"><span class="chip warn">Pilot service</span> This service is new. Check every recommendation yourself before you act on it.</p>` : ""}</div></div>`;
   if (a.action === "no_policy") {
-    return `<div class="stack" style="max-width:860px">${reco}<div class="card"><h3>What happens next</h3><p class="muted" style="line-height:1.6;margin:0">A reviewer needs to find the right policy for this procedure before anything can be checked. PA Desk checks a short list of procedures today (CPT ${esc((a.covered_cpt_codes || []).join(", "))}). You can still approve, ask the provider, or escalate below.</p></div></div>`;
+    return `<div class="stack" style="max-width:860px">${reco}<div class="card"><h3>What happens next</h3><p class="muted" style="line-height:1.6;margin:0">No policy is set up for this procedure code yet, so nothing was checked. The policy owner can add it. When it is added, check this case again. Until then you can still approve, ask the provider, or escalate below. PA Desk checks these codes today: ${esc((a.covered_cpt_codes || []).join(", "))}.</p>${done ? "" : `<button class="btn primary" data-recheck style="margin-top:12px">Check again with the current policies</button>`}</div></div>`;
   }
   const groups = {};
   a.checklist.forEach((c) => (groups[c.policy_id] ||= { c, items: [] }).items.push(c));
@@ -538,9 +544,11 @@ async function openCase(id) {
 }
 function bind() {
   const on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));
-  on("[data-view]", async (el) => { S.pop = null; S.pick = null; S.view = el.dataset.view; S.caseId = null; S.detail = null; S.act = null; S.q = ""; go("#/view/" + S.view); if (S.view === "evals") await runEvals(); else { await loadList(); if (S.user.role === "admin") await loadTeam(); } render(); });
+  on("[data-view]", async (el) => { S.pop = null; S.pick = null; S.view = el.dataset.view; S.caseId = null; S.detail = null; S.act = null; S.q = ""; go("#/view/" + S.view);
+    if (S.user.role === "policy_owner") { clearInterval(polTimer); S.pol.build = null; S.pol.msg = null; S.pol.revert = null; await loadPolicies(); render(); window.scrollTo(0, 0); return; } if (S.view === "evals") await runEvals(); else { await loadList(); if (S.user.role === "admin") await loadTeam(); } render(); });
   on("[data-back]", async () => { S.pick = null; S.caseId = null; S.detail = null; S.act = null; go("#/view/" + S.view); await refresh(); render(); });
   on("[data-case]", (el) => openCase(el.dataset.case));
+  on("[data-recheck]", async (el) => { el.disabled = true; el.textContent = "Reading the packet again…"; const d = await api(`/cases/${S.caseId}/recheck`, { method: "POST" }); S.detail = d; await refresh(); toast("Checked again: " + (d.analysis ? RECO_TITLE(d.analysis) : "done")); render(); });
   document.querySelectorAll(".qrow").forEach((r) => (r.onkeydown = (e) => { if ((e.key === "Enter" || e.key === " ") && e.target === r) { e.preventDefault(); openCase(r.dataset.case); } }));
   on("[data-tab]", (el) => { S.tab = el.dataset.tab; render(); const c = document.getElementById("cbody-scroll"); if (c) c.scrollTop = 0; });
   on("[data-cite]", (el) => { const c = S.cites[+el.dataset.cite]; S.highlight = c; S.pageNo = c.page; S.activeKey = c.key; render(); const p = document.getElementById("paper"); if (p && window.innerWidth <= 1100) p.scrollIntoView({ block: "center" }); });
@@ -576,6 +584,7 @@ function bind() {
     await loadList(); render(); const nq = document.getElementById("q"); nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length);
   }, 250));
   const up = document.getElementById("up"); if (up) up.onchange = guard(async () => { const file = up.files[0]; if (!file) return; await startUpload(file); });
+  if (S.user.role === "policy_owner" && typeof bindPolicy === "function") bindPolicy();
   const bell = document.getElementById("bell"); if (bell) bell.onclick = guard(async (e) => { e.stopPropagation(); if (S.pop === "notif") { S.pop = null; return render(); } S.notifs = await api("/notifications"); S.pop = "notif"; render(); await api("/notifications/read", { method: "POST" }); S.user.unread = 0; });
   const prof = document.getElementById("prof"); if (prof) prof.onclick = (e) => { e.stopPropagation(); S.pop = S.pop === "profile" ? null : "profile"; render(); };
   const rr = document.getElementById("rerun"); if (rr) rr.onclick = guard(async () => { await runEvals(); render(); toast("Checks run again"); });

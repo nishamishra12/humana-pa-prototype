@@ -5,7 +5,7 @@
     run("lcd", "L37848")          # CMS local coverage determination
     run("cfr", (42, 412, "412.3"))  # eCFR section
 
-Output files in the work folder: source.txt, source.pdf, meta.json, elements.json, draft.json, report.json, compare.json.
+Output files in the work folder: source.txt, source.pdf, meta.json, codes.json, elements.json, draft.json, report.json, compare.json.
 The draft goes to a policy owner for review. It does not change the live library.
 """
 import json, os, time
@@ -14,6 +14,7 @@ from . import sources as S
 from .parse import parse
 from .draft import draft as make_draft
 from .validate import validate
+from . import codes as C
 from .compare import compare
 
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
@@ -22,7 +23,8 @@ ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 def vocab_for(policy_id):
     """Facts the packet reader can already find for the services that use this policy. A policy shared by all services (the regulation)
     gets the union. For a service we have not built yet this is empty and the AI proposes the facts."""
-    lib = json.load(open(os.path.join(ROOT, "policies", "policy_library.json"), encoding="utf-8"))
+    from pipeline import procedures
+    lib = procedures.library()
     out = {}
     for proc in lib["procedures"].values():
         if policy_id in proc.get("policies", []):
@@ -31,9 +33,17 @@ def vocab_for(policy_id):
     return list(out.values())
 
 
-def run(kind, ident, fetch=True, vocab=None, version=None, log=print):
+def run(kind, ident, fetch=True, vocab=None, version=None, log=print, file=None, meta_in=None):
+    """kind: ncd, lcd, cfr, or file. For file, pass file (a PDF path) and meta_in (policy_id, level, title)."""
     t0 = time.time()
-    if fetch:
+    if kind == "file":
+        src = S.from_file(file, meta_in["policy_id"], meta_in["level"], meta_in["title"])
+        folder = S.save(src)
+        import shutil
+        shutil.copyfile(file, os.path.join(folder, "source.pdf"))
+        meta = {k: v for k, v in src.items() if k not in ("text", "html")}
+        log(f"1 fetched   {src['policy_id']} {src['version']} from an uploaded file")
+    elif fetch:
         src = {"ncd": S.fetch_ncd, "lcd": S.fetch_lcd}[kind](ident) if kind in ("ncd", "lcd") else S.fetch_cfr(*ident)
         folder = S.save(src)
         meta = {k: v for k, v in src.items() if k not in ("text", "html")}
@@ -44,6 +54,9 @@ def run(kind, ident, fetch=True, vocab=None, version=None, log=print):
         folder = os.path.join(S.WORK, pid, ver)
         meta = json.load(open(os.path.join(folder, "meta.json"), encoding="utf-8"))
     pid, ver = meta["policy_id"], meta["version"]
+    cd = C.find(kind, ident if kind in ("ncd", "lcd") else None, meta.get("title"))
+    json.dump(cd, open(os.path.join(folder, "codes.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    log(f"1 codes     {len(cd['codes'])} procedure codes from {len(cd['articles'])} CMS billing articles ({cd['method']})")
     els, info = parse(pid, ver)
     log(f"2 parsed    {len(els)} elements with {info['engine']}" + (f" ({info.get('note')})" if info.get("note") else ""))
     vocab = vocab_for(pid) if vocab is None else vocab

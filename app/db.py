@@ -33,13 +33,33 @@ def hash_pw(pw, salt):
     return hashlib.pbkdf2_hmac("sha256", pw.encode(), salt.encode(), 60_000).hex()
 
 
+POLICY_SCHEMA = """
+CREATE TABLE IF NOT EXISTS policy_builds(id TEXT PRIMARY KEY, policy_id TEXT, kind TEXT, ident TEXT, service TEXT, status TEXT, stage TEXT, error TEXT,
+  folder TEXT, version TEXT, created_by INTEGER, created_at TEXT, summary TEXT);
+CREATE TABLE IF NOT EXISTS policy_decisions(build_id TEXT, criterion_id TEXT, decision TEXT, edited TEXT, decided_by INTEGER, decided_at TEXT, PRIMARY KEY(build_id, criterion_id));
+CREATE TABLE IF NOT EXISTS policy_versions(n INTEGER PRIMARY KEY AUTOINCREMENT, library_version TEXT, kind TEXT, policy_id TEXT, build_id TEXT,
+  published_by INTEGER, published_at TEXT, changelog TEXT, note TEXT);
+CREATE TABLE IF NOT EXISTS policy_audit(id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT, user_id INTEGER, action TEXT, policy_id TEXT, build_id TEXT, detail TEXT);
+"""
+
+
+def ensure_policy_owner(c):
+    """The policy owner is added to databases created before this role existed."""
+    if c.execute("SELECT COUNT(*) FROM users WHERE role='policy_owner'").fetchone()[0] == 0:
+        salt = secrets.token_hex(8)
+        c.execute("INSERT INTO users(email,handle,name,role,title,salt,pw) VALUES(?,?,?,?,?,?,?)",
+                  ("dana.whitfield@humana-demo.test", "dana", "Dana Whitfield", "policy_owner", "Policy Owner", salt, hash_pw("demo1234", salt)))
+
+
 def init():
     c = conn()
     c.executescript(SCHEMA)
     c.execute("CREATE TABLE IF NOT EXISTS sessions(sid TEXT PRIMARY KEY, user_id INTEGER, created_at TEXT)")  # sign-ins survive a restart
+    c.executescript(POLICY_SCHEMA)
     if c.execute("SELECT COUNT(*) FROM users").fetchone()[0] == 0:
         seed(c)
     seed_multi(c)
+    ensure_policy_owner(c)  # after seeding: an empty users table is what triggers the seed
     c.commit()
     c.close()
 

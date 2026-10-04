@@ -36,7 +36,8 @@ def _approved_test(c):
 
 
 def load_approved(policy_id):
-    lib = json.load(open(os.path.join(ROOT, "policies", "policy_library.json"), encoding="utf-8"))
+    from pipeline import procedures
+    lib = procedures.library()  # the live library, so a published version is what a new draft is compared with
     pols = lib["policies"] if isinstance(lib["policies"], list) else list(lib["policies"].values())
     p = next((x for x in pols if x["id"] == policy_id), None)
     return p["criteria"] if p else None

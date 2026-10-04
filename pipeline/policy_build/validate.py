@@ -98,12 +98,17 @@ def validate(draft, elements, vocab):
             if not fact:
                 bad("a testable criterion needs a fact")
             elif fact not in keys and fact not in new_keys:
-                bad(f"the fact {fact} is not in the vocabulary and was not declared as new")
+                bad(f"the packet detail {fact} is not one the reader knows and was not declared as new")
             elif fact in new_keys:
-                bad(f"uses a NEW fact ({fact}): the packet reader needs this fact added", "review")
+                bad(f"needs a new packet detail ({fact}): the packet reader does not look for it yet", "review")
         ai = c.get("applies_if")
         if ai and ai.get("fact") not in keys and ai.get("fact") not in new_keys:
-            bad(f"applies_if names an unknown fact {ai.get('fact')}")
+            bad(f"applies_if names an unknown packet detail {ai.get('fact')}")
+        elif ai and ai.get("fact") in keys:
+            af = keys[ai["fact"]]
+            allowed = [str(v).lower() for v in (af.get("values") or [])]
+            if af.get("kind") != "enum" or (allowed and str(ai.get("equals")).lower() not in allowed):
+                bad(f"applies_if says 'only when {ai['fact']} is {ai.get('equals')}', which that detail can never be. The engine would skip this rule.", "review")
         if c.get("confidence") == "low":
             bad("the AI marked its own confidence low", "review")
         rows.append(dict(id=c["id"], level=level, issues=issues, quote_found=bool(hit), match=hit["method"] if hit else None))

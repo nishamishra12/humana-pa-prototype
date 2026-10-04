@@ -12,6 +12,7 @@ from pipeline.run import process, extract as run_extract
 from pipeline.procedures import procedure_for_cpt, defs_by_key, display_for
 from pipeline import telemetry as tel
 from . import dashboard as dash_mod
+from . import policy_admin
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 UPLOADS = os.path.join(db.DATA_DIR if os.getenv("PA_DATA_DIR") else ROOT, "uploads")
@@ -22,6 +23,8 @@ db.init()
 def _reanalyze_all():
     c = db.conn()
     for r in c.execute("SELECT id, facts, analysis FROM cases").fetchall():
+        if json.loads(r["analysis"]).get("action") == "no_policy":
+            continue  # the packet was never read for a service. A nurse checks it again (the packet is read then), so do not guess here
         res = json.dumps(analyze(json.loads(r["facts"])))
         if res != r["analysis"]:
             c.execute("UPDATE cases SET analysis=? WHERE id=?", (res, r["id"]))
@@ -59,6 +62,8 @@ def check_case_access(c, u, cid):
     """A nurse works only her own cases. Another nurse's case answers the same 404 as a case
     that does not exist, so the API never confirms it is there. Admin and medical directors
     keep their wider view."""
+    if u["role"] == "policy_owner":
+        raise HTTPException(404, "Case not found")  # the policy owner works on policies, not cases
     if u["role"] != "nurse":
         return
     r = c.execute("SELECT assignee_id FROM cases WHERE id=?", (cid,)).fetchone()
@@ -154,6 +159,8 @@ def list_cases(request: Request, view: str = "all", q: str = ""):
     rows = [row_case(r, names, last) for r in c.execute("SELECT * FROM cases ORDER BY received_at DESC")]
     if mine_only:
         rows = [r for r in rows if r["assignee_id"] == u["id"]]
+    if u["role"] == "policy_owner":
+        rows = []
     open_ = ("new", "in_review", "pended", "escalated")
     at_risk = ("soon", "breached")
     def keep(r):
@@ -458,6 +465,29 @@ def addendum(cid: str, body: Addendum, request: Request):
     return case_detail(c, cid)
 
 
+@app.post("/api/cases/{cid}/recheck")
+def recheck(cid: str, request: Request):
+    """Reads the packet again and checks it against the policy library as it is now. Used when a case arrived before its policy existed."""
+    c = db.conn()
+    u = me(request, c)
+    check_case_access(c, u, cid)
+    if u["role"] not in ("nurse", "medical_director", "admin"):
+        raise HTTPException(403, "Not allowed")
+    r = c.execute("SELECT * FROM cases WHERE id=?", (cid,)).fetchone()
+    if not r:
+        raise HTTPException(404, "Case not found")
+    if r["status"] in ("approved", "denied"):
+        raise HTTPException(400, "This case already has a decision")
+    els = [Element(page=e["page"], type=e["type"], text=e["text"]) for e in c.execute("SELECT * FROM elements WHERE case_id=? ORDER BY page,id", (cid,))]
+    before = json.loads(r["analysis"]).get("action")
+    facts = run_extract(els)
+    res = analyze(facts)
+    c.execute("UPDATE cases SET facts=?, analysis=? WHERE id=?", (json.dumps(facts), json.dumps(res), cid))
+    db.audit(c, cid, u["id"], "rechecked", f"Case checked again against policy library {res.get('library_version')}. Recommendation: {before} to {res['action']}")
+    c.commit()
+    return case_detail(c, cid)
+
+
 class FixFact(BaseModel):
     kind: str  # found | none | missing
     value: str = ""
@@ -542,7 +572,7 @@ def job_status(job: str, request: Request):
 def upload(request: Request, file: UploadFile = File(...), assignee_id: int | None = Form(None), job: str | None = Form(None)):
     c = db.conn()
     u = me(request, c)
-    if u["role"] == "medical_director":
+    if u["role"] in ("medical_director", "policy_owner"):
         raise HTTPException(403, "Intake uploads packets. Medical directors decide escalated cases.")
     if not (file.filename or "").lower().endswith(".pdf"):
         raise HTTPException(400, "Upload a PDF packet")
@@ -665,4 +695,5 @@ def dashboard_data(request: Request):
     return dash_mod.compute(c)
 
 
+policy_admin.setup(app, me)
 app.mount("/", StaticFiles(directory=os.path.join(ROOT, "web"), html=True), name="web")

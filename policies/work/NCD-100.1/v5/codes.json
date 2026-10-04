@@ -1,0 +1,189 @@
+{
+ "method": "ncd_title_match",
+ "retrieved_at": "2026-10-04T21:09:45+00:00",
+ "articles": [
+  {
+   "id": "A54923",
+   "version": 45,
+   "title": "Bariatric Surgery for Treatment of Co-Morbidities Conditions Related to Morbid Obesity",
+   "mac": "WPS Insurance Corporation (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54923&ver=45",
+   "match_score": 97,
+   "cites_ncd": true,
+   "n_codes": 8
+  },
+  {
+   "id": "A53026",
+   "version": 65,
+   "title": "Bariatric Surgery Coverage",
+   "mac": "Noridian Healthcare Solutions, LLC (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=53026&ver=65",
+   "match_score": 79,
+   "cites_ncd": true,
+   "n_codes": 7
+  },
+  {
+   "id": "A56422",
+   "version": 50,
+   "title": "Bariatric Surgical Management of Morbid Obesity",
+   "mac": "Novitas Solutions, Inc. (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56422&ver=50",
+   "match_score": 73,
+   "cites_ncd": false,
+   "n_codes": 16
+  }
+ ],
+ "codes": [
+  {
+   "code": "43644",
+   "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; WITH GASTRIC BYPASS AND ROUX-EN-Y GASTROENTEROSTOMY (ROUX LIMB 150 CM OR LESS)",
+   "listed_by": [
+    "A54923",
+    "A53026",
+    "A56422"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "43645",
+   "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; WITH GASTRIC BYPASS AND SMALL INTESTINE RECONSTRUCTION TO LIMIT ABSORPTION",
+   "listed_by": [
+    "A54923",
+    "A53026",
+    "A56422"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "43770",
+   "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; PLACEMENT OF ADJUSTABLE GASTRIC RESTRICTIVE DEVICE (EG, GASTRIC BAND AND SUBCUTANEOUS PORT COMPONENTS)",
+   "listed_by": [
+    "A54923",
+    "A53026",
+    "A56422"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "43775",
+   "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; LONGITUDINAL GASTRECTOMY (IE, SLEEVE GASTRECTOMY)",
+   "listed_by": [
+    "A54923",
+    "A53026",
+    "A56422"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "43845",
+   "description": "GASTRIC RESTRICTIVE PROCEDURE WITH PARTIAL GASTRECTOMY, PYLORUS-PRESERVING DUODENOILEOSTOMY AND ILEOILEOSTOMY (50 TO 100 CM COMMON CHANNEL) TO LIMIT ABSORPTION (BILIOPANCREATIC DIVERSION WITH DUODENAL SWITCH)",
+   "listed_by": [
+    "A54923",
+    "A53026",
+    "A56422"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "43846",
+   "description": "GASTRIC RESTRICTIVE PROCEDURE, WITH GASTRIC BYPASS FOR MORBID OBESITY; WITH SHORT LIMB (150 CM OR LESS) ROUX-EN-Y GASTROENTEROSTOMY",
+   "listed_by": [
+    "A54923",
+    "A53026",
+    "A56422"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "43847",
+   "description": "GASTRIC RESTRICTIVE PROCEDURE, WITH GASTRIC BYPASS FOR MORBID OBESITY; WITH SMALL INTESTINE RECONSTRUCTION TO LIMIT ABSORPTION",
+   "listed_by": [
+    "A54923",
+    "A53026",
+    "A56422"
+   ],
+   "n_articles": 3
+  },
+  {
+   "code": "43659",
+   "description": "UNLISTED LAPAROSCOPY PROCEDURE, STOMACH",
+   "listed_by": [
+    "A56422"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "43771",
+   "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; REVISION OF ADJUSTABLE GASTRIC RESTRICTIVE DEVICE COMPONENT ONLY",
+   "listed_by": [
+    "A56422"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "43772",
+   "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; REMOVAL OF ADJUSTABLE GASTRIC RESTRICTIVE DEVICE COMPONENT ONLY",
+   "listed_by": [
+    "A56422"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "43773",
+   "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; REMOVAL AND REPLACEMENT OF ADJUSTABLE GASTRIC RESTRICTIVE DEVICE COMPONENT ONLY",
+   "listed_by": [
+    "A56422"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "43774",
+   "description": "LAPAROSCOPY, SURGICAL, GASTRIC RESTRICTIVE PROCEDURE; REMOVAL OF ADJUSTABLE GASTRIC RESTRICTIVE DEVICE AND SUBCUTANEOUS PORT COMPONENTS",
+   "listed_by": [
+    "A56422"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "43848",
+   "description": "REVISION, OPEN, OF GASTRIC RESTRICTIVE PROCEDURE FOR MORBID OBESITY, OTHER THAN ADJUSTABLE GASTRIC RESTRICTIVE DEVICE (SEPARATE PROCEDURE)",
+   "listed_by": [
+    "A56422"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "43886",
+   "description": "GASTRIC RESTRICTIVE PROCEDURE, OPEN; REVISION OF SUBCUTANEOUS PORT COMPONENT ONLY",
+   "listed_by": [
+    "A56422"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "43887",
+   "description": "GASTRIC RESTRICTIVE PROCEDURE, OPEN; REMOVAL OF SUBCUTANEOUS PORT COMPONENT ONLY",
+   "listed_by": [
+    "A56422"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "43888",
+   "description": "GASTRIC RESTRICTIVE PROCEDURE, OPEN; REMOVAL AND REPLACEMENT OF SUBCUTANEOUS PORT COMPONENT ONLY",
+   "listed_by": [
+    "A56422"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "43999",
+   "description": "UNLISTED PROCEDURE, STOMACH",
+   "listed_by": [
+    "A54923"
+   ],
+   "n_articles": 1
+  }
+ ],
+ "note": "CMS does not link an NCD to its billing articles. These are the Billing and Coding articles whose title matches this policy. Check that they are about the same service before you use a code."
+}
