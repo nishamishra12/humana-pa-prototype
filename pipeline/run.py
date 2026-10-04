@@ -16,7 +16,13 @@ def extract(elements, local=False):
     return extract_facts_rule_based(elements)
 
 
-def process(path, local=False):
+def process(path, local=False, progress=None):
+    """progress, if given, is called as progress(stage, **info) at the start of each stage:
+    reading, facts, policy. The upload screen polls these to show what is happening."""
+    say = progress or (lambda *a, **k: None)
+    say("reading")
     elements, engine = (_ingest_local(path), "local") if local else ingest(path)
+    say("facts", pages=len({e.page for e in elements}))
     facts = extract(elements, local=local)
+    say("policy")
     return elements, engine, facts, analyze(facts)

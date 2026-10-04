@@ -93,7 +93,7 @@ def create_case(c, elements, engine, facts, analysis, packet_file, priority="sta
         "new", None, None, priority, received, due, None, packet_file, engine, json.dumps(facts), json.dumps(analysis)))
     for e in elements:
         c.execute("INSERT INTO elements(case_id,page,type,text) VALUES(?,?,?,?)", (case_id, e.page, e.type, e.text))
-    audit(c, case_id, None, "received", f"Packet received ({len(elements)} elements, {engine} ingestion)", received)
+    audit(c, case_id, None, "received", f"Packet received ({len({e.page for e in elements})} pages)", received)
     audit(c, case_id, None, "analyzed", f"Recommendation: {analysis['action']}", received)
     return case_id
 

@@ -198,6 +198,24 @@ def get_case(cid: str, request: Request):
     return case_detail(c, cid)
 
 
+@app.get("/api/cases/{cid}/pdf")
+def original_pdf(cid: str, request: Request):
+    """The packet exactly as it arrived, for a nurse who wants to read it on her own."""
+    c = db.conn()
+    check_case_access(c, me(request, c), cid)
+    r = c.execute("SELECT packet_file FROM cases WHERE id=?", (cid,)).fetchone()
+    if not r or not r["packet_file"]:
+        raise HTTPException(404, "No original file for this case")
+    name = os.path.basename(r["packet_file"])
+    for folder in (UPLOADS, os.path.join(ROOT, "packets"), os.path.join(ROOT, "packets", "demo"), os.path.join(ROOT, "packets", "holdout")):
+        p = os.path.join(folder, name)
+        if os.path.isfile(p):
+            with open(p, "rb") as f:
+                return Response(content=f.read(), media_type="application/pdf",
+                                headers={"Content-Disposition": f'inline; filename="{cid}_packet.pdf"'})
+    raise HTTPException(404, "The original file is no longer on this server")
+
+
 @app.get("/api/cases/{cid}/export")
 def export_case(cid: str, request: Request):
     """The full case record: facts, criteria checklist, decision, and the complete append-only
@@ -255,8 +273,18 @@ def add_comment(cid: str, body: Comment, request: Request):
     return case_detail(c, cid)
 
 
+RETURN_REASONS = {
+    "reconsider": "Please look at this again",
+    "info_enough": "The packet already has what we need",
+    "ask_provider": "Ask the provider for more first",
+    "wrong_policy": "A different policy applies",
+    "other": "Other",
+}
+
+
 class Act(BaseModel):
     action: str
+    reason: str = ""
     note: str = ""
     md_id: int | None = None
     question: str = ""
@@ -287,10 +315,10 @@ def act(cid: str, body: Act, request: Request):
             db.notify(c, r["assignee_id"], cid, f"{u['name']} denied {cid}")
     elif a == "approve":
         if ai != "approve" and not note:
-            raise HTTPException(400, "The system did not recommend approval. Add your reason to override.")
+            raise HTTPException(400, "PA Desk did not recommend approval. Add your reason to approve anyway.")
         c.execute("UPDATE cases SET status='approved', decided_at=? WHERE id=?", (db.now(), cid))
         db.audit(c, cid, u["id"], "approved" if ai == "approve" else "approved_override",
-                 "Approved. Matched the recommendation." if ai == "approve" else f"Override of recommendation '{ai}': {note}")
+                 "Approved. Matched the recommendation." if ai == "approve" else f"Approved against the recommendation ({ai}). Reason: {note}")
         if u["role"] == "medical_director" and r["assignee_id"] and r["assignee_id"] != u["id"]:
             db.notify(c, r["assignee_id"], cid, f"{u['name']} approved {cid}")
     elif a == "pend":
@@ -315,10 +343,15 @@ def act(cid: str, body: Act, request: Request):
     elif a == "return":
         if u["role"] != "medical_director":
             raise HTTPException(403, "Only a medical director returns escalated cases")
+        if body.reason and body.reason not in RETURN_REASONS:
+            raise HTTPException(400, "Choose one of the listed reasons")
+        label = RETURN_REASONS.get(body.reason, "")
+        if not (label or note):
+            raise HTTPException(400, "Say why you are returning this case")
         c.execute("UPDATE cases SET status='in_review' WHERE id=?", (cid,))
-        if note:
-            post_comment(c, cid, u, note, "comment")
-        db.audit(c, cid, u["id"], "returned", note or "Returned to nurse")
+        text = (label + (": " if label and note else "") + note)
+        post_comment(c, cid, u, text, "comment")
+        db.audit(c, cid, u["id"], "returned", text)
         if r["assignee_id"]:
             db.notify(c, r["assignee_id"], cid, f"{u['name']} returned {cid} to you")
     else:
@@ -349,7 +382,7 @@ def addendum(cid: str, body: Addendum, request: Request):
     c.execute("UPDATE cases SET facts=?, analysis=?, status='in_review' WHERE id=?", (json.dumps(facts), json.dumps(res), cid))
     c.execute("INSERT INTO comments(case_id,user_id,kind,body,created_at) VALUES(?,?,?,?,?)",
               (cid, None, "provider_reply", body.text.strip(), db.now()))
-    db.audit(c, cid, u["id"], "provider_reply", f"Provider response added as page {page}; re-analyzed. Recommendation: {res['action']}")
+    db.audit(c, cid, u["id"], "provider_reply", f"Provider response added as page {page}. Case checked again. Recommendation: {res['action']}")
     if r["assignee_id"]:
         db.notify(c, r["assignee_id"], cid, f"The provider replied on {cid}. It is back in your queue")
     c.commit()
@@ -357,6 +390,8 @@ def addendum(cid: str, body: Addendum, request: Request):
 
 
 FACT_KEYS = ("expected_los_days", "comorbidities", "post_op_needs", "indication_evidence", "conservative_treatment", "shared_decision_making")
+FACT_NAMES = dict(expected_los_days="Expected stay", comorbidities="Comorbidities", post_op_needs="Post-op care needs",
+                 indication_evidence="Surgical indication", conservative_treatment="Conservative care", shared_decision_making="Shared decision making")
 INDICATIONS = ("instability", "deformity", "pseudarthrosis", "neural compression")
 CAN_BE_NONE = ("comorbidities", "post_op_needs", "indication_evidence")
 
@@ -375,7 +410,7 @@ def fix_fact(cid: str, key: str, body: FixFact, request: Request):
     u = me(request, c)
     check_case_access(c, u, cid)
     if u["role"] not in ("nurse", "medical_director"):
-        raise HTTPException(403, "Only a nurse or medical director can correct what the AI read.")
+        raise HTTPException(403, "Only a nurse or medical director can correct what we read.")
     if key not in FACT_KEYS:
         raise HTTPException(404, "Unknown fact")
     r = c.execute("SELECT * FROM cases WHERE id=?", (cid,)).fetchone()
@@ -419,13 +454,23 @@ def fix_fact(cid: str, key: str, body: FixFact, request: Request):
     facts.setdefault("_corrections", []).append(dict(fact=key, was=old, now=fact["status"], by=u["name"], at=db.now()))
     res = analyze(facts)
     c.execute("UPDATE cases SET facts=?, analysis=? WHERE id=?", (json.dumps(facts), json.dumps(res), cid))
-    db.audit(c, cid, u["id"], "fact_corrected", f"{key}: {old} -> {fact['status']}. Recommendation is now: {res['action']}")
+    db.audit(c, cid, u["id"], "fact_corrected", f"{FACT_NAMES[key]}: changed from \"{old}\" to \"{fact['status']}\". Recommendation is now: {res['action']}")
     c.commit()
     return case_detail(c, cid)
 
 
+JOBS: dict[str, dict] = {}
+
+
+@app.get("/api/jobs/{job}")
+def job_status(job: str, request: Request):
+    c = db.conn()
+    me(request, c)
+    return JOBS.get(job, dict(stage="waiting"))
+
+
 @app.post("/api/cases")
-def upload(request: Request, file: UploadFile = File(...), assignee_id: int | None = Form(None)):
+def upload(request: Request, file: UploadFile = File(...), assignee_id: int | None = Form(None), job: str | None = Form(None)):
     c = db.conn()
     u = me(request, c)
     if u["role"] == "medical_director":
@@ -435,7 +480,10 @@ def upload(request: Request, file: UploadFile = File(...), assignee_id: int | No
     dest = os.path.join(UPLOADS, f"{secrets.token_hex(4)}_{os.path.basename(file.filename)}")
     with open(dest, "wb") as out:
         shutil.copyfileobj(file.file, out)
-    els, engine, facts, res = process(dest)
+    def progress(stage, **info):
+        if job:
+            JOBS[job] = dict(stage=stage, **info)
+    els, engine, facts, res = process(dest, progress=progress)
     cid = db.create_case(c, els, engine, facts, res, os.path.basename(dest))
     if u["role"] == "admin":
         if assignee_id:
@@ -450,6 +498,8 @@ def upload(request: Request, file: UploadFile = File(...), assignee_id: int | No
         c.execute("UPDATE cases SET assignee_id=? WHERE id=?", (u["id"], cid))
         db.audit(c, cid, u["id"], "assigned", "Assigned to uploader")
     c.commit()
+    if job:
+        JOBS[job] = dict(stage="done", case_id=cid)
     return case_detail(c, cid)
 
 
@@ -486,7 +536,7 @@ def evals(request: Request):
                             never_denied=res["action"] in ("approve", "pend", "escalate", "verify")))
     return dict(results=results, passed=sum(r["passed"] for r in results), total=len(results),
                 zero_denials=all(r["never_denied"] for r in results),
-                caveat="These packets and the rule-based extractor were written together, so a pass shows the pipeline works, not that it is accurate. Accuracy needs messier packets and the model extractor.")
+                caveat="We wrote these packets alongside the checker, so a pass shows the flow works. It does not prove accuracy. Real accuracy needs messier packets.")
 
 
 @app.get("/api/evals/holdout")
@@ -498,8 +548,8 @@ def evals_holdout(request: Request):
     me(request, c)
     from pipeline.holdout_eval import run_holdout
     out = run_holdout(local_only=not os.getenv("UNSTRUCTURED_API_KEY"))
-    out["caveat"] = ("This set was written to be hard, not representative. A failure here names a specific gap in "
-                      "extract.py; it is not a claim about how often that gap fires on real packets.")
+    out["caveat"] = ("We wrote these packets to be hard, not typical. A miss here points to one specific weakness. "
+                      "It does not say how often that weakness shows up on real packets.")
     return out
 
 

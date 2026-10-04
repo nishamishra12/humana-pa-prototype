@@ -160,3 +160,20 @@ Done and tested (scripts/flow_test.py, scripts/unsure_test.py):
 Not done yet: finding 3 (decision workspace: evidence beside the action, packet page beside
 the citation), admin home (F-002, F-003), the visual pass (F-001, F-004 to F-006), and the
 remaining metric events (provider reply type, director return reason, packet page opened).
+
+## Redesign built (2026-10-04)
+
+Built from the approved canvas. The nurse follows Direction A. Everyone else has one direction.
+
+- **Menu.** The hamburger opens and closes the side menu. Closed shows icons with counts. Open shows icons with labels. The choice is remembered.
+- **Top bar.** Large search (press `/` to jump to it), notifications, and one profile menu with Sign out.
+- **Queue first.** Each queue is a list of cases. Opening a case shows the workspace. Previous and Next walk the queue.
+- **Nurse case screen.** Facts and criteria on the left. The packet page they cite on the right, with the exact sentence highlighted. A decision bar stays at the bottom. Approve is green, Deny is red, every other main button is blue.
+- **Read everything.** A "Full packet" tab shows all pages in order. A button opens the original PDF.
+- **Intake.** Assign comes first: pick a nurse, who sees their open count. A Team page shows who has what.
+- **Director.** Decision bar with Approve, Deny, and Return. Returning asks for a reason from a short list.
+- **Upload.** A progress card with three real steps: Reading the packet, Finding the key facts, Checking against policy. The server reports each step as it happens.
+- **Plain language.** No technical terms on screen, including the Quality page, notes, and the activity log.
+- **Login.** Two-column sign-in with the demo accounts.
+
+Checked by scripts/redesign_test.py (original PDF access, upload progress, return reasons) plus the earlier test scripts.

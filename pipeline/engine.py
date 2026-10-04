@@ -43,9 +43,8 @@ def analyze(facts: dict) -> dict:
     if cpt not in covered:
         return dict(
             checklist=[], gate=dict(complete=False, questions=[]), action="no_policy",
-            rationale=(f"No curated policy covers CPT {cpt or 'unknown'} ({facts.get('_procedure') or 'procedure not identified'}). "
-                      "The curated table only covers lumbar spinal fusion today. This case cannot be scored against the wrong "
-                      "policy, so it is routed for a policy lookup before any criteria can be checked."),
+            rationale=(f"We do not have a policy for CPT {cpt or 'unknown'} ({facts.get('_procedure') or 'procedure not identified'}). "
+                      "Today PA Desk checks lumbar spinal fusion only. We will not judge this case against the wrong policy."),
             policies=[], cannot_deny=True, cpt_covered=False, covered_cpt_codes=covered)
     checklist, questions, unsure = [], {}, {}
     policies = sorted(POLICIES.values(), key=lambda p: ORDER[p["level"]])
@@ -86,7 +85,7 @@ def analyze(facts: dict) -> dict:
     not_met = [c for c in checklist if c["status"] == "not_met"]
     if unsure:
         action = "verify"
-        rationale = ("The AI could not confirm " + ", ".join(_label(k) for k in unsure) +
+        rationale = ("We could not confirm " + ", ".join(_label(k) for k in unsure) +
                      ". Check the packet and confirm it before you decide. Do not ask the provider yet.")
     elif questions:
         action = "pend"
@@ -98,7 +97,7 @@ def analyze(facts: dict) -> dict:
                      ". This needs a physician's clinical judgment, so it goes to a medical director.")
     else:
         action = "approve"
-        rationale = "The packet is complete and every criterion is supported by the record."
+        rationale = "The packet is complete and every criterion is supported."
     return dict(checklist=checklist, gate=gate, action=action, rationale=rationale,
                 policies=[dict(id=p["id"], level=LEVEL_LABEL[p["level"]], title=p["title"], source=p["source"],
                                url=p["url"], verified=p["verified"]) for p in policies if p["criteria"]],

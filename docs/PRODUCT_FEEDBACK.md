@@ -161,3 +161,11 @@ assigned to her.
 
 Also fixed in this change: scripts/smoke_test.py now runs on a temporary database. It used to
 write to the live demo database, which is how a regression run changed demo cases earlier.
+
+## Round 3 (2026-10-04), after the canvas review
+
+- **Menu.** It should open and close, icons only or icons with labels. Done.
+- **Button colors.** Approve green, Deny red, other main buttons blue. Done.
+- **Read the whole packet.** A nurse can read all pages on her own, not only cited pages. Done (Full packet tab and original PDF).
+- **Upload screen.** Keep "Reading the packet". Remove technical wording. Done.
+- **No technical words anywhere.** The UM team does not care how the check works. Done across the screens, notes, and activity log.
