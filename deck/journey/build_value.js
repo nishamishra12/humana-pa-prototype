@@ -55,15 +55,15 @@ const add = (o) => items.push(o);
 add({ name: "eyebrow", kind: "text", x: 0.5, y: 0.3, w: 4, h: 0.28, runs: [{ text: "THE VALUE", options: { bold: true, fontSize: 11, color: C.green, fontFace: B, charSpacing: 3 } }] });
 add({ name: "title", kind: "text", x: 0.5, y: 0.55, w: 9.2, h: 0.75, valign: "middle", runs: [{ text: "Right the first time pays off on both sides.", options: { fontSize: 26, color: C.ink, fontFace: H } }] });
 add({ name: "sub", kind: "text", x: 8.3, y: 0.55, w: 4.53, h: 0.75, align: "right", valign: "middle", runs: [{ text: "What solving this gets us", options: { fontSize: 13, color: C.muted, fontFace: B } }] });
-add({ name: "footer", kind: "text", x: 0.5, y: 7.15, w: 12.33, h: 0.25, runs: [{ text: "Sources: Humana Q4 2025 financial tables (SEC). KFF. AMA 2025 survey. CMS-0057-F. Revenue figures are the size of the prize, not a forecast.", options: { fontSize: 9, color: C.muted, fontFace: B } }] });
+add({ name: "footer", kind: "text", x: 0.5, y: 7.22, w: 12.33, h: 0.22, runs: [{ text: "Sources: Humana Q4 2025 financial tables (SEC). KFF. AMA 2025 survey. CMS-0057-F. 42 CFR 422.2410 (85% minimum medical loss ratio). Revenue figures are the size of the prize, not a forecast.", options: { fontSize: 9, color: C.muted, fontFace: B } }] });
 
 const PW = 6.08, PX = [0.5, 6.75];
 const panel = (name, i, color, soft, head) => {
-  add({ name, kind: "node", x: PX[i], y: 1.5, w: PW, h: 5.0, fill: soft, line: color, lineW: 1.25, radius: 0.1, runs: [{ text: " ", options: { fontSize: 8 } }] });
-  add({ name: name + "H", kind: "text", x: PX[i] + 0.2, y: 1.58, w: PW - 0.4, h: 0.32, valign: "middle", runs: [{ text: head, options: { bold: true, fontSize: 12, color, fontFace: B, charSpacing: 2 } }] });
+  add({ name, kind: "node", x: PX[i], y: 1.45, w: PW, h: 4.85, fill: soft, line: color, lineW: 1.25, radius: 0.1, runs: [{ text: " ", options: { fontSize: 8 } }] });
+  add({ name: name + "H", kind: "text", x: PX[i] + 0.2, y: 1.52, w: PW - 0.4, h: 0.32, valign: "middle", runs: [{ text: head, options: { bold: true, fontSize: 12, color, fontFace: B, charSpacing: 2 } }] });
 };
 const card = (name, i, row, color, big, line, note) => add({
-  name, kind: "node", x: PX[i] + 0.16, y: 2.0 + row * 1.5, w: PW - 0.32, h: 1.4, fill: C.white, line: C.line, lineW: 1, radius: 0.08, valign: "top", margin: [0.1, 0.18, 0.08, 0.18],
+  name, kind: "node", x: PX[i] + 0.16, y: 1.95 + row * 1.45, w: PW - 0.32, h: 1.38, fill: C.white, line: C.line, lineW: 1, radius: 0.08, valign: "top", margin: [0.1, 0.18, 0.08, 0.18],
   runs: [
     { text: big, options: { fontSize: 22, color, fontFace: H, breakLine: true } },
     { text: line, options: { bold: true, fontSize: 12, color: C.ink, fontFace: B, breakLine: true, paraSpaceAfter: 3 } },
@@ -72,7 +72,7 @@ const card = (name, i, row, color, big, line, note) => add({
 });
 
 panel("PanelB", 0, C.green, C.greenSoft, "VALUE TO HUMANA");
-card("B1", 0, 0, C.green, "+20%", "more members in one month, so about 20% more requests to read.", "Humana, January 2026 against the end of 2025. Nurses do not grow that fast.");
+card("B1", 0, 0, C.green, "+2.3 million", "more requests a year, and a nurse reads every one.", "1.03 million new members (+20%, 5.25M to 6.28M) × 2.2 requests each (KFF, highest of the big plans). Nurses do not grow 20% in a month.");
 card("B2", 0, 1, C.green, "Public", "Prior authorization results are posted every year and compared by name.", "Right the first time becomes a number anyone can check.");
 card("B3", 0, 2, C.green, "$8 billion", "of yearly premium is in play as members choose to stay or leave.", "If Humana looks like the industry: 9% leave each year. Winning back 1 in 90 is about $90 million. A pilot would measure the link.");
 
@@ -81,14 +81,14 @@ card("C1", 1, 0, C.purple, "Care on time", "A right first decision means no wait
 card("C2", 1, 1, C.purple, "One clear ask", "If something is missing, the provider gets one specific question, not a fax loop.", "Fewer rounds for the provider, and a shorter wait for the member.");
 card("C3", 1, 2, C.purple, "A reason you can see", "Every recommendation shows the page behind it.", "Next, members see where their request stands. That is phase 2 (CMS rule, January 2027).");
 
-add({ name: "Point", kind: "node", x: 0.5, y: 6.6, w: 12.33, h: 0.5, fill: C.green, line: C.green, lineW: 1, radius: 0.08, align: "center", margin: [0.04, 0.2, 0.04, 0.2], runs: [{ text: "Same goal on both sides: right the first time.", options: { fontSize: 16, bold: true, color: C.white, fontFace: B } }] });
+add({ name: "Point", kind: "node", x: 0.5, y: 6.4, w: 12.33, h: 0.78, fill: C.green, line: C.green, lineW: 1, radius: 0.08, align: "center", margin: [0.05, 0.25, 0.05, 0.25], runs: [{ text: "Same goal on both sides: right the first time.", options: { fontSize: 16, bold: true, color: C.white, fontFace: B, breakLine: true, paraSpaceAfter: 2 } }, { text: "Medicare pays Humana per member, and at least 85% must go to care. So the room to save is in admin work like re-reading and rework, not in paying for less care.", options: { fontSize: 11.5, color: "D5EBE3", fontFace: B } }] });
 
 const slots = [];
 const STEP_NOTES = [
   "The last slide said fast is not the same as right. So what do we get if we get it right? I like to answer that two ways: value to the business, and value to the customer.",
-  "For Humana, three things. First, the work is growing. Humana added about a million members in one month, roughly twenty percent more. Each member makes about two prior authorization requests a year, so that is roughly twenty percent more requests. Nurses do not grow twenty percent in a month. Second, everything is public now. Results are posted every year and compared by name, so right the first time becomes a number anyone can check. Third, revenue. If Humana looks like the industry, about nine percent of members leave each year. That is about eight billion dollars of premium in play. Winning back just one in ninety of those leavers is about ninety million dollars. I want to be honest here: I do not know how much of that leaving comes from prior authorization. So this is the size of the prize, and a pilot is how we would measure it.",
+  "For Humana, three things. First, the work is growing. Humana added about a million members in one month, roughly twenty percent more. KFF found a Humana member makes about 2.2 prior authorization requests a year, the highest of the big plans. So a million new members is about 2.3 million more requests, and a nurse reads every one individually. Nurses do not grow twenty percent in a month. Second, everything is public now. Results are posted every year and compared by name, so right the first time becomes a number anyone can check. Third, revenue. If Humana looks like the industry, about nine percent of members leave each year. That is about eight billion dollars of premium in play. Winning back just one in ninety of those leavers is about ninety million dollars. I want to be honest here: I do not know how much of that leaving comes from prior authorization. So this is the size of the prize, and a pilot is how we would measure it.",
   "For the member and the provider, three things. Care starts on time, because a right first decision means no wait for a second look. Ninety-three percent of physicians say prior authorization can delay care. If something is missing, the provider gets one specific question, not a fax loop. And every recommendation shows the page behind it. Next, in phase two, members see where their request stands.",
-  "Both sides want the same thing: right the first time.",
+  "Both sides want the same thing: right the first time. And here is why this is not about denying more. Medicare pays Humana a fixed amount per member, and at least eighty-five percent has to go to care. So the room to save is in admin work, like re-reading and rework. It is not in paying for less care. (If asked: how utilization costs are classified under that rule varies, so I would not quote a dollar split.)",
 ];
 const NOTES = "";
 const OUT_STEPS_UNUSED = true;

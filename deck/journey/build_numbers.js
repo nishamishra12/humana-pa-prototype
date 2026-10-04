@@ -73,7 +73,7 @@ const stat = (name, i, y, h, color, soft, big, label, src, tagline) => add({
 sect("S1", 1.45, "HUMANA IS FAST, AT SCALE", C.ok);
 stat("A1", 0, 1.72, 1.3, C.ok, C.okSoft, "1 day", "standard decisions take, on average", "Humana Medicare Advantage, 2025. Federal limit: 7 days.");
 stat("A2", 1, 1.72, 1.3, C.ok, C.okSoft, "4 to 11 hours", "expedited decisions take, on average", "Depends on the contract, 2025. Federal limit: 72 hours.");
-stat("A3", 2, 1.72, 1.3, C.green, C.greenSoft, "9.5 million", "standard requests decided in one year", "Humana, 32 Medicare Advantage contracts, 2025.");
+stat("A3", 2, 1.72, 1.3, C.green, C.greenSoft, "9.5 million", "standard requests decided in one year", "Humana, 2025. And about 2.3 million more are coming: 1.03M new members × 2.2 requests each (KFF).");
 
 // row 2: but a denial that is appealed is often reversed. Humana first, then the wider picture
 sect("S2", 3.14, "BUT WHEN A DENIAL IS APPEALED, IT IS OFTEN REVERSED", C.coral);
@@ -90,7 +90,7 @@ add({ name: "Gap", kind: "text", x: 0.5, y: 6.8, w: 12.33, h: 0.28, valign: "mid
 
 const slots = [];
 const STEP_NOTES = [
-  "I read Humana's own public reports, and Humana is fast. A standard decision takes one day on average. The federal limit is seven. An expedited decision takes four to eleven hours, and the federal limit is seventy-two. And that is across nine and a half million requests. That is real operational strength.",
+  "I read Humana's own public reports, and Humana is fast. A standard decision takes one day on average. The federal limit is seven. An expedited decision takes four to eleven hours, and the federal limit is seventy-two. And that is across nine and a half million requests. That is real operational strength. And the pile is growing. Humana added about a million members in a month, and a Humana member makes about 2.2 requests a year, so about 2.3 million more requests are coming, each one read by a nurse.",
   "But fast is not the same as right. Sixty-five percent of appealed Humana denials were overturned. That comes from Humana's own federal report for 2025. I do not claim sixty-five percent of denials are wrong. Only about three percent of denials are appealed. But the ones that are appealed get reversed most of the time, and an overturn often comes from new information. That is my point. The first look was missing something.",
   "Zoom out and the problem is bigger. Across all of Medicare Advantage, eighty-one percent of appealed denials were overturned in 2024. And the Inspector General found ninety-five percent of appealed skilled nursing denials were overturned.",
   "There is another side of the coin. We may not solve this one directly, but it adds color to the problem. Physicians feel it, and they are the people closest to the patient. Ninety-three percent say prior authorization can delay care. Twenty-six percent report a serious adverse event for a patient.",

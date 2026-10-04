@@ -101,7 +101,7 @@ pin("Pin6", 6, XS[5] + NW / 2, pinY);
 const CW = 4.0, CH = 1.72, GX = 0.165, CY = [3.38, 5.28];
 const CX = [0.5, 0.5 + CW + GX, 0.5 + 2 * (CW + GX)];
 const CARDS = [
-  [1, "Reading by hand", "The nurse reads all 14 pages to find the same few facts. Clear-cut cases take almost as long as hard ones.", "Felt by: the nurse"],
+  [1, "Reading by hand", "The nurse reads all 14 pages to find the same few facts. Clear-cut cases take almost as long as hard ones. And the pile just grew by about 20%.", "Felt by: the nurse"],
   [2, "Messy input", "Packets arrive by fax or portal. Format and quality change from one office to the next.", "Felt by: intake and the nurse"],
   [3, "Hunting, not deciding", "Benefits, eligibility, policy, and provider systems sit apart. No one view holds the full picture.", "Felt by: the nurse"],
   [4, "Decisions vary", "Two reviewers, nurse or physician, can read the same packet and reach different decisions.", "Felt by: the plan and the provider"],

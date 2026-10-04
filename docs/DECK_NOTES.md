@@ -79,6 +79,8 @@ Three reasons for Humana, in order of strength. The AI-only-denial laws are NOT 
    - We cannot prove prior authorization causes members to leave. Say "size of the prize, a pilot would measure the link."
    - The two "90" figures differ: $90.4 billion is all premium, $90 million is 0.1% of it.
    - CMS is dropping the Part C appeals Star measures for 2027, so do not say overturned appeals hurt Stars.
+Where the volume math appears: slide 3 (friction 1: "the pile just grew by about 20%"), slide 5 (next to the 9.5 million: "about 2.3 million more are coming"), slide 6 (first value point: +2.3 million requests, a nurse reads every one).
+The old "Where the money actually is" slide is retired. Its good idea now sits visibly on slide 6, in the closing bar: Medicare pays per member and at least 85% must go to care (42 CFR 422.2410), so the room to save is in admin work like re-reading and rework, not in paying for less care. Do NOT say "denying more earns Humana nothing": revenue does not change, but denying care would lower medical cost, so the honest point is the 85% floor. Rebuild the old slide's worked example in the business case section (the brief asks for a business case and return-on-investment formula), with clearly labeled placeholder numbers. How utilization costs are classified under the 85% rule varies, so do not quote a dollar split.
 Member and provider value: care on time, one clear ask instead of a fax loop, a reason you can see. Phase 2: members see where their request stands.
 
 ## Phase two: why not build member visibility now?
