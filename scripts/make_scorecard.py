@@ -96,6 +96,21 @@ if audit:
 else:
     audit_html = "<p>Pending: 30 cited sentences (24 real, 6 planted errors) are waiting for a human to judge them.</p>"
 
+import sys
+sys.path.insert(0, ROOT)
+from pipeline.multi_eval import decision_metrics
+_adv = []
+for _f in sorted(glob.glob(os.path.join(ROOT, "evals", "reports", "adversarial_2*.json"))):
+    _r = json.load(open(_f, encoding="utf-8"))
+    _adv.append((_f, _r["results"], decision_metrics(_r["results"]), _r))
+_rows = []
+for i, (_f, _res, _d, _r) in enumerate(_adv):
+    _c = _d["counts"]
+    _label = "First run (independent)" if i == 0 else f"Run {i + 1} (after fixes)"
+    _rows.append([_label, f"{_d['exact_match']}%", f"{_d['recall_needs_person']}% ({_c['TP']} of {_c['TP'] + _c['FN']})", f"{_d['precision_needs_person']}% ({_c['TP']} of {_c['TP'] + _c['FP']})",
+                  str(_d['wrong_approvals']), str(_d['over_flags']), f"{_d['approve_recall']}%", f"{_r['hallucination_rate']['count']} of {_r['hallucination_rate']['total']}"])
+ADV_TABLE = table(["Run", "Right recommendation", "Recall (needs a person)", "Precision", "Wrong approvals", "Over-flags", "Clean cases approved", "False claims on absent facts"], _rows) if _rows else "<p>No runs yet.</p>"
+
 PAGE = f"""<title>Eval Scorecard</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
@@ -131,7 +146,9 @@ th,td{{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vert
 {audit_html}
 
 <h2>5. Hard cases from a separate author</h2>
-<p>Pending. A prompt for a separate AI session to write 40 adversarial packets is ready (docs/ADVERSARIAL_PACKET_PROMPT.md), and the converter and scoring are built. That author never sees our reader's code.</p>
+<p class="lead">40 packets written by a separate AI session that never saw our code: 12 hard categories, 28 of the 40 needing a person. The first run is the honest independent score. Later runs were fixed against these same packets, so they show what I improved, not a clean accuracy. A fresh set will be the final test.</p>
+{ADV_TABLE}
+<div class="caveat">Positive group is "needs a person" (pend, escalate or verify). Recall = of those, how many the AI flagged. A miss is a wrong approval, the dangerous failure. Precision = of the cases flagged, how many really needed a person. A miss is an over-flag, which costs nurse time. The set is small: one more miss moves recall by about 3.5 points.</div>
 
 <h2>What these numbers do not show</h2>
 <ul>

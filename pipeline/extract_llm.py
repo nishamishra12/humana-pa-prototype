@@ -195,7 +195,7 @@ def _run_once(packet_text, proc, client, header=None):
     raise last
 
 
-DATE_COUNTED = {"optimal_medical_therapy_months": 0.5}  # months counted from a start date: reads within half a month agree
+DATE_COUNTED = {"optimal_medical_therapy_months": 0.1}  # months counted from a start date: reads within about 3 days agree. Wider would hide a 2.9 vs 3.1 straddle of the 3-month rule.
 
 
 def _same(a, b, kind, key=None):
