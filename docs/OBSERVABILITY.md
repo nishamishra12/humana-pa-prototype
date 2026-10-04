@@ -63,3 +63,8 @@ The board shows this name in the first column of every history table. A run with
 - **Top = right now.** Current recall, current precision, speed (p50, p95, p99), estimated cost per case, errors. Each uses the latest run only.
 - **Middle = live app.** Nurse and director decisions, once cases are decided in the app.
 - **Bottom = history.** Every run, then every packet in every run, with a link to the trace.
+
+## Known Honeycomb quirks
+
+- Tables and cards add an **OTHER** and a **TOTAL** row. For a rate (recall, precision) the TOTAL row adds the rates of every group together, so it is meaningless (for example 3.96). Ignore it. Cards that show one number have no breakdown, so they are clean.
+- The "Right now" cards use a start time (the start of the latest run), so they cover that run only. After a new run, the start time is moved to the new run.
