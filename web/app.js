@@ -193,7 +193,10 @@ function nurseLoad() {
 }
 function assignButtons(cid) {
   const load = nurseLoad();
-  return Object.values(load).map((o) => `<button class="btn small" data-assignto="${o.u.id}" data-for="${cid}" title="${o.open} open, ${o.risk} at risk">${esc(o.u.name)} · ${o.open} open</button>`).join("");
+  const pick = S.pick && S.pick.cid === cid ? S.pick.uid : null;
+  const chosen = pick && load[pick];
+  return Object.values(load).map((o) => `<button class="btn small ${pick === o.u.id ? "primary" : ""}" data-pick="${o.u.id}" data-for="${cid}" aria-pressed="${pick === o.u.id}" title="${o.open} open, ${o.risk} at risk">${esc(o.u.name)} · ${o.open} open</button>`).join("") +
+    (chosen ? `<button class="btn small approve" data-confirm="${cid}">Assign to ${esc(chosen.u.name)}</button>` : "");
 }
 function queueHtml() {
   const searching = !!S.q;
@@ -279,11 +282,13 @@ function justActedHtml(d) {
 function adminHtml(d, a) {
   const load = nurseLoad();
   const urgent = d.priority === "expedited";
+  const pick = S.pick && S.pick.cid === d.id ? S.pick.uid : null;
   const unassignedNext = S.team.find((c) => c.id !== d.id && OPEN.includes(c.status) && !c.assignee_id);
   return `<div class="stack" style="max-width:860px">
     ${S.justAssigned === d.id ? `<div class="banner ok row"><span><b>Assigned.</b> ${esc(d.assignee ? d.assignee.name : "The nurse")} has been told.</span>${unassignedNext ? `<button class="btn small primary" data-case="${unassignedNext.id}">Next to assign: ${esc(unassignedNext.member_name)}</button>` : `<span>Nothing else waits for assignment.</span>`}</div>` : ""}
     <div class="card assign-card"><div><h3 style="margin-bottom:2px">${d.assignee ? "Assigned to " + esc(d.assignee.name) : "Who should review this packet?"}</h3><div class="faint">${urgent ? "This one is expedited. It has a 72-hour clock. " : ""}Pick the nurse with room. Each one is told right away.</div></div>
-      ${Object.values(load).map((o) => `<button class="nurse-opt ${d.assignee_id === o.u.id ? "on" : ""}" data-assignto="${o.u.id}" data-for="${d.id}"><span class="avatar">${esc(initials(o.u.name))}</span><span><b>${esc(o.u.name)}</b><br><span class="faint" style="font-size:12.5px">${o.open} open · ${o.risk} at risk · ${o.pended} pended</span></span><span class="chip ${d.assignee_id === o.u.id ? "ok" : "plain"}">${d.assignee_id === o.u.id ? "Assigned" : "Assign"}</span></button>`).join("")}</div>
+      ${Object.values(load).map((o) => { const sel = pick === o.u.id, cur = d.assignee_id === o.u.id; return `<button class="nurse-opt ${sel || (cur && !pick) ? "on" : ""}" data-pick="${o.u.id}" data-for="${d.id}" aria-pressed="${sel}"><span class="avatar">${esc(initials(o.u.name))}</span><span><b>${esc(o.u.name)}</b><br><span class="faint" style="font-size:12.5px">${o.open} open · ${o.risk} at risk · ${o.pended} pended</span></span><span class="chip ${sel ? "new" : cur ? "ok" : "plain"}">${sel ? "Selected" : cur ? "Assigned now" : "Select"}</span></button>`; }).join("")}
+      <div class="action-row"><button class="btn primary lg" data-confirm="${d.id}" ${pick && pick !== d.assignee_id ? "" : "disabled"}>${pick && load[pick] ? (d.assignee_id ? "Reassign to " : "Assign to ") + esc(load[pick].u.name) : "Pick a nurse first"}</button>${pick ? `<button class="btn ghost" data-pick="">Cancel</button>` : ""}</div></div>
     <div class="card"><h3>The packet in brief</h3><div class="muted" style="line-height:1.7">${esc(d.member_name)}, ${d.age ? d.age + " years old, " : ""}member ${esc(d.member_id)}<br>${esc(d.procedure)} at ${esc(d.facility)}<br>${new Set(d.elements.map((e) => e.page)).size} pages · received ${ago(d.received_at)}</div>
       <div class="note">Intake routes cases. Nurses make the clinical calls.</div></div></div>`;
 }
@@ -508,15 +513,15 @@ async function startUpload(file) {
 
 /* ---------- events ---------- */
 async function openCase(id) {
-  S.pop = null; S.caseId = id; S.tab = "review"; S.act = null; S.fix = null; S.justAssigned = null;
+  S.pop = null; S.pick = null; S.caseId = id; S.tab = "review"; S.act = null; S.fix = null; S.justAssigned = null;
   go("#/case/" + id);
   await loadList(); await loadCase(id); render();
   const c = document.getElementById("content"); if (c) c.scrollTop = 0;
 }
 function bind() {
   const on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));
-  on("[data-view]", async (el) => { S.pop = null; S.view = el.dataset.view; S.caseId = null; S.detail = null; S.act = null; S.q = ""; go("#/view/" + S.view); if (S.view === "evals") await runEvals(); else { await loadList(); if (S.user.role === "admin") await loadTeam(); } render(); });
-  on("[data-back]", async () => { S.caseId = null; S.detail = null; S.act = null; go("#/view/" + S.view); await refresh(); render(); });
+  on("[data-view]", async (el) => { S.pop = null; S.pick = null; S.view = el.dataset.view; S.caseId = null; S.detail = null; S.act = null; S.q = ""; go("#/view/" + S.view); if (S.view === "evals") await runEvals(); else { await loadList(); if (S.user.role === "admin") await loadTeam(); } render(); });
+  on("[data-back]", async () => { S.pick = null; S.caseId = null; S.detail = null; S.act = null; go("#/view/" + S.view); await refresh(); render(); });
   on("[data-case]", (el) => openCase(el.dataset.case));
   document.querySelectorAll(".qrow").forEach((r) => (r.onkeydown = (e) => { if ((e.key === "Enter" || e.key === " ") && e.target === r) { e.preventDefault(); openCase(r.dataset.case); } }));
   on("[data-tab]", (el) => { S.tab = el.dataset.tab; render(); const c = document.getElementById("cbody-scroll"); if (c) c.scrollTop = 0; });
@@ -527,9 +532,12 @@ function bind() {
   on("[data-go]", (el) => submit(el.dataset.go));
   on("[data-fix]", (el) => { S.fix = S.fix === el.dataset.fix ? null : el.dataset.fix; render(); });
   on("[data-teamopen]", (el) => { S.teamOpen = S.teamOpen === +el.dataset.teamopen ? null : +el.dataset.teamopen; render(); });
-  on("[data-assignto]", async (el) => {
-    const cid = el.dataset.for;
-    const d = await api(`/cases/${cid}/assign`, { method: "POST", body: { user_id: +el.dataset.assignto } });
+  on("[data-pick]", (el) => { const same = S.pick && S.pick.cid === el.dataset.for && S.pick.uid === +el.dataset.pick; S.pick = el.dataset.pick && !same ? { cid: el.dataset.for || S.caseId, uid: +el.dataset.pick } : null; render(); });
+  on("[data-confirm]", async (el) => {
+    const cid = el.dataset.confirm;
+    if (!S.pick || S.pick.cid !== cid) return;
+    const d = await api(`/cases/${cid}/assign`, { method: "POST", body: { user_id: S.pick.uid } });
+    S.pick = null;
     if (S.detail && S.detail.id === cid) S.detail = d;
     S.justAssigned = cid;
     await refresh(); render();
