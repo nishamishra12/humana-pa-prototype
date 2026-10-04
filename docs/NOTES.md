@@ -782,3 +782,60 @@ this matches the known, already-documented M7 behavior (the voting safety net oc
 flags a borderline fact for review rather than guessing), just a more visible instance of it.
 Noting here rather than treating it as a new bug: if this shows up again during her testing,
 it's expected behavior, not something broken.
+
+## D-009 Three illnesses, and matching that goes beyond Ctrl+F (2026-10-04)
+
+**Why.** The product only knew lumbar fusion, and its quote check was an exact-text search. An AI PM demo has to
+show the design generalizes and that the checking is real. So: a procedure registry, two more illnesses, and a
+better evidence step.
+
+**Procedure registry** (`policies/policy_library.json`, key `procedures`). Each procedure lists its facts (kind,
+allowed statuses, the instruction the AI gets) and the policies that apply, in order of authority. The engine,
+the AI reader, the correction form and the screen all read from it. Adding a service means adding an entry and
+test packets, not code. Three procedures today:
+- Lumbar spinal fusion (CPT 22612): 42 CFR 412.3(d), LCD L37848, Humana illustrative policy, MCG stub.
+- ICD for heart failure (CPT 33249): 42 CFR 412.3(d), NCD 20.4. Only the primary-prevention cardiomyopathy
+  pathways (B3, B4) are modeled. Other pathways route to a physician.
+- Bariatric surgery, Roux-en-Y bypass (CPT 43644): 42 CFR 412.3(d), NCD 100.1. Sleeve gastrectomy is decided by
+  each Medicare contractor and is not modeled.
+The new checklists were written from the NCD text (saved in `policies/raw/`) and are NOT signed off by a
+clinical policy owner.
+
+**Engine** (`pipeline/engine.py`). Criteria can now test a number (gte, lte), a choice (in), presence, or absence
+(`mode: absent`, for "no recent heart attack"), and can apply only when another fact has a value
+(`applies_if`, for "on medical therapy 3 months, non-ischemic only"). Still plain code, so the same facts give
+the same recommendation. The old lumbar behavior is unchanged (all earlier test scripts pass).
+
+**Matching** (`pipeline/evidence.py`, `pipeline/extract_llm.py`).
+1. The AI returns every sentence that states a fact, with dates, including conflicting ones. Three reads must
+   agree on status and, for numbers and choices, on value. Otherwise the fact is "not sure".
+2. Each quote is located in the packet. Exact match first. Then a fuzzy match that survives scan noise,
+   line breaks and spacing, but is refused if any number differs ("LVEF 28%" never matches "LVEF 38%").
+   The screen highlights the real text on the page, not the AI's copy.
+3. A second, independent AI call (Haiku) reads each sentence in context and says whether it states the fact.
+   It catches a negation quoted as a finding and a quote with a different value. If every sentence found says
+   something else, the fact becomes "not sure". If the checker is unavailable, the fact is kept without the tick.
+4. Conflicts: the later or more specific statement wins. The nurse sees both, the other with a dashed page chip.
+No embeddings and no vector search: a packet fits in one request, and a retrieval miss would look like "missing".
+
+**Tests.**
+- `scripts/matching_test.py` (no AI calls): fuzzy match, number guard, real text span.
+- `scripts/meaning_test.py` (AI): negation, wrong value, unrelated sentence.
+- `scripts/run_evals.py`: 9 packets (`packets/multi/`, truth in `evals/multi_manifest.json`) with approve, pend and
+  escalate cases for both new illnesses, a conflicting-value packet for each, a negated-comorbidity packet,
+  a recent-heart-attack packet, and one image-only noisy scan read through real OCR.
+- First run: 9 of 9 recommendations matched, 53 of 53 present facts found, 0 of 13 absent or ruled-out facts
+  claimed, 0 wrong values, 0 sent to "not sure". Caveat: the packets were written by us and are clean, so this is
+  a floor for plumbing, not a claim about real packets.
+
+**Robustness fixes found while testing.** The AI sometimes returns a nested field as a JSON string (repaired,
+one retry). The meaning checker was too strict on long free-text facts (the claim no longer asks one sentence to
+carry a whole summary). A transient error in the checker is retried once.
+
+**Demo data.** Five new seeded cases (PA-1011 to PA-1015) come from `packets/fixtures/` (built once by
+`scripts/build_fixtures.py`, so starting the app needs no network). Four upload-demo PDFs are in `packets/demo/`
+(`demo_icd_scanned`, `demo_icd_pend`, `demo_bariatric_pend`, `demo_bariatric_negated`).
+
+**Not built yet.** Page images beside each fact; per-stage traces and the Honeycomb and Snowflake dashboards
+(no metrics screen inside the product, by decision); a "who signs off on a policy" step; the evals page does
+not show the new set (CLI only).

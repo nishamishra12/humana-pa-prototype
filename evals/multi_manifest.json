@@ -1,0 +1,544 @@
+[
+  {
+    "file": "multi/icd1_complete_nonischemic.pdf",
+    "procedure": "icd",
+    "label": "Complete packet, clearly meets every criterion",
+    "member": "Gerald Fitzpatrick",
+    "needs_ocr": false,
+    "note": "Every NCD 20.4 non-ischemic criterion is documented in varied clinical phrasing (EF 28% by TTE, NYHA III, 8 months GDMT with dated drug list, SDM with decision aid), so the right answer is approve.",
+    "expected_action": "approve",
+    "expected_missing": [],
+    "facts": {
+      "expected_los_days": {
+        "truth": "present",
+        "value": 2,
+        "why": "EP surgeon plan, p8: 'Anticipated inpatient stay: 2 midnights'.",
+        "critical": null
+      },
+      "comorbidities": {
+        "truth": "present",
+        "value": [
+          "heart failure",
+          "hypertension",
+          "CKD stage 3"
+        ],
+        "why": "p8 lists chronic heart failure, hypertension, CKD stage 3 (eGFR 48); p2 PMH agrees.",
+        "critical": null
+      },
+      "lvef_percent": {
+        "truth": "present",
+        "value": 28,
+        "why": "Echo report, p3: 'Left ventricular ejection fraction 28% by TTE' (study 2026-08-12); impression repeats LVEF 28%.",
+        "critical": null
+      },
+      "lvef_method": {
+        "truth": "present",
+        "value": "echocardiography",
+        "why": "p3: transthoracic echocardiogram, biplane method of discs.",
+        "critical": null
+      },
+      "nyha_class": {
+        "truth": "present",
+        "value": "III",
+        "why": "Cardiology consult, p2: marked limitation of ordinary activity, 'consistent with NYHA functional class III'.",
+        "critical": null
+      },
+      "cardiomyopathy_type": {
+        "truth": "present",
+        "value": "non-ischemic",
+        "why": "p2 'non-ischemic dilated cardiomyopathy'; cath p4 shows no obstructive coronary disease.",
+        "critical": null
+      },
+      "recent_mi_revasc": {
+        "truth": "negated",
+        "value": null,
+        "why": "p2: 'No myocardial infarction, CABG or PCI in the past 12 months, and none before that either'; cath p4 no intervention.",
+        "critical": null
+      },
+      "optimal_medical_therapy_months": {
+        "truth": "present",
+        "value": 8,
+        "why": "Medication list, p5: start dates 2026-02-02 to 2026-03-16 and the comment 'a total of 8 months of guideline-directed medical therapy'.",
+        "critical": null
+      },
+      "shared_decision_making": {
+        "truth": "present",
+        "value": null,
+        "why": "SDM visit note, p7: 2026-09-24, 38 minutes, evidence-based ICD decision aid (booklet and video) reviewed before the implant.",
+        "critical": null
+      },
+      "limiting_conditions": {
+        "truth": "negated",
+        "value": [],
+        "why": "p8: clinically stable, no condition limiting survival under 1 year, no severe neurologic impairment, no atrial fibrillation, 'No conditions that would rule out an ICD were identified'.",
+        "critical": null
+      }
+    }
+  },
+  {
+    "file": "multi/icd2_missing_therapy_and_sdm.pdf",
+    "procedure": "icd",
+    "label": "Missing therapy duration and shared decision making",
+    "member": "Loretta Vasquez-Moyer",
+    "needs_ocr": false,
+    "note": "Medication list has no start dates and no SDM visit is documented, so the packet should pend with questions on both items.",
+    "expected_action": "pend",
+    "expected_missing": [
+      "optimal_medical_therapy_months",
+      "shared_decision_making"
+    ],
+    "facts": {
+      "expected_los_days": {
+        "truth": "present",
+        "value": 2,
+        "why": "EP plan, p7: 'Two midnights of inpatient care are expected'.",
+        "critical": null
+      },
+      "comorbidities": {
+        "truth": "present",
+        "value": [
+          "heart failure",
+          "hypertension",
+          "type 2 diabetes",
+          "hypothyroidism"
+        ],
+        "why": "p7 comorbidities; also p2 other history.",
+        "critical": null
+      },
+      "lvef_percent": {
+        "truth": "present",
+        "value": 30,
+        "why": "Echo report, p3: 'moderately to severely reduced, with an estimated LVEF of 30%' (2026-08-26).",
+        "critical": null
+      },
+      "lvef_method": {
+        "truth": "present",
+        "value": "echocardiography",
+        "why": "p3: transthoracic echocardiography, biplane Simpson.",
+        "critical": null
+      },
+      "nyha_class": {
+        "truth": "present",
+        "value": "II",
+        "why": "H&P, p2: mild dyspnea on two flights of stairs, ordinary housework fine, 'corresponds to NYHA class II'.",
+        "critical": null
+      },
+      "cardiomyopathy_type": {
+        "truth": "present",
+        "value": "non-ischemic",
+        "why": "p2 and CT angiography p4: no coronary stenosis, 'Non-ischemic dilated cardiomyopathy'.",
+        "critical": null
+      },
+      "recent_mi_revasc": {
+        "truth": "negated",
+        "value": null,
+        "why": "p2: 'She has not had a heart attack. No stents, no bypass surgery. No recent MI, PCI or CABG.'",
+        "critical": null
+      },
+      "optimal_medical_therapy_months": {
+        "truth": "absent",
+        "value": null,
+        "why": "Medication list, p5, gives names and doses only: no start dates, and nothing anywhere says how long she has taken heart failure therapy.",
+        "critical": null
+      },
+      "shared_decision_making": {
+        "truth": "absent",
+        "value": null,
+        "why": "No shared decision making visit or decision aid anywhere; p7 says only 'Consent will be obtained on the day of admission'.",
+        "critical": null
+      },
+      "limiting_conditions": {
+        "truth": "negated",
+        "value": [],
+        "why": "p7: clinically stable, euvolemic, 'No limiting conditions', sinus rhythm, no severe neurologic injury.",
+        "critical": null
+      }
+    }
+  },
+  {
+    "file": "multi/icd3_conflicting_lvef.pdf",
+    "procedure": "icd",
+    "label": "Conflicting ejection fractions: newer echo is above 35%",
+    "member": "Raymond Okafor",
+    "needs_ocr": false,
+    "note": "A newer echo (p3, LVEF 42%) contradicts an older echo (p7, LVEF 30%); the newer value governs and fails the LVEF 35% criterion, so a physician must decide.",
+    "expected_action": "escalate",
+    "expected_missing": [],
+    "facts": {
+      "expected_los_days": {
+        "truth": "present",
+        "value": 2,
+        "why": "EP plan, p6: 'Expected length of stay: 2 midnights'.",
+        "critical": null
+      },
+      "comorbidities": {
+        "truth": "present",
+        "value": [
+          "heart failure",
+          "hypertension",
+          "hyperlipidemia",
+          "CKD stage 2",
+          "gout"
+        ],
+        "why": "p6 comorbidities (CKD stage 2); p2 PMH.",
+        "critical": null
+      },
+      "lvef_percent": {
+        "truth": "present",
+        "value": 42,
+        "why": "CONFLICT. Newer echo 2026-08-20 on p3 says LVEF 42%; older outside echo 2025-11-04 on p7 says LVEF 30%. The newer date governs, so 42% (above 35%, criterion not met). p2 also notes 'His EF has improved on therapy'.",
+        "critical": null
+      },
+      "lvef_method": {
+        "truth": "present",
+        "value": "echocardiography",
+        "why": "p3: complete transthoracic echocardiogram with contrast (the older p7 study is also an echo).",
+        "critical": null
+      },
+      "nyha_class": {
+        "truth": "present",
+        "value": "II",
+        "why": "Consult, p2: slight breathlessness only with brisk uphill walking, 'NYHA class II'.",
+        "critical": null
+      },
+      "cardiomyopathy_type": {
+        "truth": "present",
+        "value": "non-ischemic",
+        "why": "p2 and cath p4 (2025-11-18): no obstructive coronary disease.",
+        "critical": null
+      },
+      "recent_mi_revasc": {
+        "truth": "negated",
+        "value": null,
+        "why": "p2: 'has not had a myocardial infarction, bypass surgery or stent at any time, certainly not within the last year'.",
+        "critical": null
+      },
+      "optimal_medical_therapy_months": {
+        "truth": "present",
+        "value": 9,
+        "why": "p4 clinic med list with start dates (2025-12-08 and 2026-01-12) and 'Total time on guideline-directed medical therapy: 9 months'.",
+        "critical": null
+      },
+      "shared_decision_making": {
+        "truth": "present",
+        "value": null,
+        "why": "p5: SDM visit 2026-09-18, 30 minutes, evidence-based ICD decision aid (video and worksheet).",
+        "critical": null
+      },
+      "limiting_conditions": {
+        "truth": "negated",
+        "value": [],
+        "why": "p6: clinically stable, no conditions limiting survival, no severe neurologic impairment, no AF, 'No exclusion identified'.",
+        "critical": null
+      }
+    }
+  },
+  {
+    "file": "multi/icd4_scanned_noisy.pdf",
+    "procedure": "icd",
+    "label": "Scanned, rotated, noisy copy of a complete packet",
+    "member": "Beverly Tanaka-Holt",
+    "needs_ocr": true,
+    "note": "Same clinical content and truth as icd1 for a different patient, delivered as an image-only degraded scan (rotation 1-3 degrees, noise, blur, low contrast), so OCR must work before the answer is approve.",
+    "expected_action": "approve",
+    "expected_missing": [],
+    "facts": {
+      "expected_los_days": {
+        "truth": "present",
+        "value": 2,
+        "why": "EP surgeon plan, p8: 'Anticipated inpatient stay: 2 midnights'.",
+        "critical": null
+      },
+      "comorbidities": {
+        "truth": "present",
+        "value": [
+          "heart failure",
+          "hypertension",
+          "CKD stage 3"
+        ],
+        "why": "p8 lists chronic heart failure, hypertension, CKD stage 3 (eGFR 48); p2 PMH agrees.",
+        "critical": null
+      },
+      "lvef_percent": {
+        "truth": "present",
+        "value": 28,
+        "why": "Echo report, p3: 'Left ventricular ejection fraction 28% by TTE' (study 2026-08-12); impression repeats LVEF 28%.",
+        "critical": null
+      },
+      "lvef_method": {
+        "truth": "present",
+        "value": "echocardiography",
+        "why": "p3: transthoracic echocardiogram, biplane method of discs.",
+        "critical": null
+      },
+      "nyha_class": {
+        "truth": "present",
+        "value": "III",
+        "why": "Cardiology consult, p2: marked limitation of ordinary activity, 'consistent with NYHA functional class III'.",
+        "critical": null
+      },
+      "cardiomyopathy_type": {
+        "truth": "present",
+        "value": "non-ischemic",
+        "why": "p2 'non-ischemic dilated cardiomyopathy'; cath p4 shows no obstructive coronary disease.",
+        "critical": null
+      },
+      "recent_mi_revasc": {
+        "truth": "negated",
+        "value": null,
+        "why": "p2: 'No myocardial infarction, CABG or PCI in the past 12 months, and none before that either'; cath p4 no intervention.",
+        "critical": null
+      },
+      "optimal_medical_therapy_months": {
+        "truth": "present",
+        "value": 8,
+        "why": "Medication list, p5: start dates 2026-02-02 to 2026-03-16 and the comment 'a total of 8 months of guideline-directed medical therapy'.",
+        "critical": null
+      },
+      "shared_decision_making": {
+        "truth": "present",
+        "value": null,
+        "why": "SDM visit note, p7: 2026-09-24, 38 minutes, evidence-based ICD decision aid (booklet and video) reviewed before the implant.",
+        "critical": null
+      },
+      "limiting_conditions": {
+        "truth": "negated",
+        "value": [],
+        "why": "p8: clinically stable, no condition limiting survival under 1 year, no severe neurologic impairment, no atrial fibrillation, 'No conditions that would rule out an ICD were identified'.",
+        "critical": null
+      }
+    }
+  },
+  {
+    "file": "multi/icd5_recent_mi.pdf",
+    "procedure": "icd",
+    "label": "Recent heart attack inside the 40-day window",
+    "member": "Dennis Kowalczyk",
+    "needs_ocr": false,
+    "note": "Ischemic cardiomyopathy with LVEF 31% and SDM is otherwise fine, but an NSTEMI on 2026-09-09 (25 days before the request) fails the waiting-period criterion, so a physician must decide.",
+    "expected_action": "escalate",
+    "expected_missing": [],
+    "facts": {
+      "expected_los_days": {
+        "truth": "present",
+        "value": 2,
+        "why": "EP plan, p8: 'Expected stay: 2 midnights'.",
+        "critical": null
+      },
+      "comorbidities": {
+        "truth": "present",
+        "value": [
+          "coronary artery disease",
+          "heart failure",
+          "type 2 diabetes",
+          "hypertension",
+          "hyperlipidemia"
+        ],
+        "why": "p8 comorbidities; p2 PMH.",
+        "critical": null
+      },
+      "lvef_percent": {
+        "truth": "present",
+        "value": 31,
+        "why": "Echo, p3 (2026-09-11, inpatient limited TTE): 'Quantitative LVEF 31% (biplane Simpson)'.",
+        "critical": null
+      },
+      "lvef_method": {
+        "truth": "present",
+        "value": "echocardiography",
+        "why": "p3: limited transthoracic echocardiogram.",
+        "critical": null
+      },
+      "nyha_class": {
+        "truth": "present",
+        "value": "II",
+        "why": "Consult, p2: dyspnea only on a slope or more than two blocks, 'NYHA II'; discharge summary p6 also 'NYHA II'.",
+        "critical": null
+      },
+      "cardiomyopathy_type": {
+        "truth": "present",
+        "value": "ischemic",
+        "why": "p2 and cath p4: multivessel coronary artery disease with ischemic cardiomyopathy.",
+        "critical": null
+      },
+      "recent_mi_revasc": {
+        "truth": "present",
+        "value": "NSTEMI 2026-09-09, 25 days before the 2026-10-04 request",
+        "why": "p2 interval history, cath p4 (2026-09-10) and discharge summary p6: NSTEMI onset 2026-09-09, inside the 40-day window. No PCI or CABG was done, but the MI alone triggers the criterion.",
+        "critical": null
+      },
+      "optimal_medical_therapy_months": {
+        "truth": "present",
+        "value": 14,
+        "why": "p5 med list with start dates from 2025-08-04 and 'on guideline-directed HF therapy for more than a year (14 months)'. Not required for ischemic cardiomyopathy.",
+        "critical": null
+      },
+      "shared_decision_making": {
+        "truth": "present",
+        "value": null,
+        "why": "p7: SDM visit 2026-09-30, 35 minutes, evidence-based ICD decision aid (pamphlet and web tool).",
+        "critical": null
+      },
+      "limiting_conditions": {
+        "truth": "negated",
+        "value": [],
+        "why": "p8: clinically stable since discharge, no other conditions limiting survival, no AF, no severe neurologic impairment.",
+        "critical": null
+      }
+    }
+  },
+  {
+    "file": "multi/bar1_complete.pdf",
+    "procedure": "bariatric",
+    "label": "Complete packet, clearly meets every criterion",
+    "member": "Marcia Delgado-Finch",
+    "needs_ocr": false,
+    "note": "BMI 42.3, three comorbidities, a documented unsuccessful 12-month dietitian-supervised program plus anti-obesity drug, psych clearance and a 2-midnight stay, so approve.",
+    "expected_action": "approve",
+    "expected_missing": [],
+    "facts": {
+      "expected_los_days": {
+        "truth": "present",
+        "value": 2,
+        "why": "Surgeon plan, p7: 'Expected length of stay: 2 midnights'.",
+        "critical": null
+      },
+      "comorbidities": {
+        "truth": "present",
+        "value": [
+          "type 2 diabetes",
+          "hypertension",
+          "obstructive sleep apnea"
+        ],
+        "why": "H&P p2 and surgeon plan p7: T2DM, hypertension, OSA requiring CPAP (also knee osteoarthritis, p2).",
+        "critical": null
+      },
+      "bmi": {
+        "truth": "present",
+        "value": 42.3,
+        "why": "H&P, p2: height 65 in, weight 254 lb, 'BMI 42.3 kg/m2 (measured in clinic 2026-09-15)'. Older program BMIs on p3 are higher and earlier.",
+        "critical": null
+      },
+      "prior_medical_treatment": {
+        "truth": "present",
+        "value": null,
+        "why": "p3: 12-month physician-supervised program with registered dietitian, 12 of 12 monthly visits, weight regained, 'unsuccessful'; p4: liraglutide 3 mg started 2025-09-15, continued 11 months, weight regained. Psych clearance p5.",
+        "critical": null
+      }
+    }
+  },
+  {
+    "file": "multi/bar2_missing_prior_treatment.pdf",
+    "procedure": "bariatric",
+    "label": "BMI and diabetes fine, prior treatment never documented",
+    "member": "Thomas Eberhardt",
+    "needs_ocr": false,
+    "note": "BMI 39.4, type 2 diabetes and a 2-midnight stay are documented but no prior medical weight-loss treatment appears anywhere, so pend and ask for it.",
+    "expected_action": "pend",
+    "expected_missing": [
+      "prior_medical_treatment"
+    ],
+    "facts": {
+      "expected_los_days": {
+        "truth": "present",
+        "value": 2,
+        "why": "Surgeon plan, p7: 'Inpatient stay of 2 midnights anticipated'.",
+        "critical": null
+      },
+      "comorbidities": {
+        "truth": "present",
+        "value": [
+          "type 2 diabetes"
+        ],
+        "why": "H&P p2, PCP note p3 and surgeon plan p7: type 2 diabetes on oral agents.",
+        "critical": null
+      },
+      "bmi": {
+        "truth": "present",
+        "value": 39.4,
+        "why": "H&P, p2: height 68 in, weight 259 lb, 'BMI 39.4 kg/m2 today'.",
+        "critical": null
+      },
+      "prior_medical_treatment": {
+        "truth": "absent",
+        "value": null,
+        "why": "Nothing anywhere in the packet documents any supervised or medical weight-loss treatment (no diets, programs or obesity drugs are mentioned).",
+        "critical": null
+      }
+    }
+  },
+  {
+    "file": "multi/bar3_bmi_changed.pdf",
+    "procedure": "bariatric",
+    "label": "BMI fell below 35 during the program",
+    "member": "Yolanda Prescott",
+    "needs_ocr": false,
+    "note": "Intake BMI 36.1 (p5, Mar 2026) is older than the latest BMI 33.8 (p2, Sep 2026); the latest value governs and falls under the 35 threshold, so a physician must decide.",
+    "expected_action": "escalate",
+    "expected_missing": [],
+    "facts": {
+      "expected_los_days": {
+        "truth": "present",
+        "value": 2,
+        "why": "Surgeon plan, p7: 'will need to stay in hospital for 2 midnights'.",
+        "critical": null
+      },
+      "comorbidities": {
+        "truth": "present",
+        "value": [
+          "type 2 diabetes"
+        ],
+        "why": "p2 PMH, PCP p3, surgeon plan p7: type 2 diabetes.",
+        "critical": null
+      },
+      "bmi": {
+        "truth": "present",
+        "value": 33.8,
+        "why": "CONFLICT. Most recent BMI 33.8 (2026-09-14, p2, weight 191 lb) governs; the program-intake BMI 36.1 (2026-03-09) on p5 is older. 33.8 is below 35, so the BMI criterion is not met.",
+        "critical": null
+      },
+      "prior_medical_treatment": {
+        "truth": "present",
+        "value": null,
+        "why": "p5: six months of supervised program with monthly dietitian visits plus phentermine (April to June 2026), judged unsuccessful; p2 'six months in our supervised weight management program'.",
+        "critical": null
+      }
+    }
+  },
+  {
+    "file": "multi/bar4_negated_comorbidity.pdf",
+    "procedure": "bariatric",
+    "label": "Explicitly no obesity-related comorbidities",
+    "member": "Franklin Adeyemi",
+    "needs_ocr": false,
+    "note": "BMI 38.2 and prior supervised treatment are documented, but the H&P explicitly states no diabetes, hypertension, sleep apnea or other obesity-related conditions, so the comorbidity criterion fails and a physician must decide.",
+    "expected_action": "escalate",
+    "expected_missing": [],
+    "facts": {
+      "expected_los_days": {
+        "truth": "present",
+        "value": 2,
+        "why": "Surgeon plan, p7: 'Two midnights anticipated'.",
+        "critical": null
+      },
+      "comorbidities": {
+        "truth": "negated",
+        "value": [],
+        "why": "H&P, p2: 'no diabetes, no hypertension, and no sleep apnea ... no other obesity-related medical conditions'; impression 'no obesity-related comorbidities'. PCP note p4 and labs p6 agree.",
+        "critical": null
+      },
+      "bmi": {
+        "truth": "present",
+        "value": 38.2,
+        "why": "H&P, p2: height 70 in, weight 266 lb, 'BMI 38.2 kg/m2'.",
+        "critical": null
+      },
+      "prior_medical_treatment": {
+        "truth": "present",
+        "value": null,
+        "why": "p3: 9-month supervised nutrition and weight management program (2025-09-08 to 2026-06-08), nine dietitian visits, weight not sustained, 'unsuccessful'; p2 also mentions it.",
+        "critical": null
+      }
+    }
+  }
+]

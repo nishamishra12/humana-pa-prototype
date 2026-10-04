@@ -1,0 +1,86 @@
+"""Scores the multi-illness test packets (ICD and bariatric) against hand-written ground truth.
+
+Same idea as the held-out set (pipeline/holdout_eval.py): completeness recall and hallucination rate are
+reported separately, never blended. Ground truth lives in evals/multi_manifest.json. For each fact the
+packet either has it (present), says nothing (absent), or rules it out (negated).
+
+Outcomes per fact:
+  correct                    read it right (right value if present; "missing" if absent; "none" if negated)
+  flagged_uncertain          the AI said "not sure" and sent it to the nurse. Safe, but a cost.
+  false_negative             it was there, and we said missing (or missed that it was ruled out)
+  wrong_value                found, but the wrong number or choice
+  false_positive             it was absent or ruled out, and we claimed it was found. The dangerous one.
+"""
+import json, os, time
+from concurrent.futures import ThreadPoolExecutor
+from .ingest import _ingest_local, ingest
+from .run import extract
+from .engine import analyze
+from .procedures import library, defs_by_key
+
+ROOT = os.path.join(os.path.dirname(__file__), "..")
+MANIFEST = os.path.join(ROOT, "evals", "multi_manifest.json")
+
+
+def _value_ok(kind, want, got):
+    if want is None:
+        return True
+    if kind == "number":
+        try:
+            return abs(float(want) - float(got)) < 0.051
+        except (TypeError, ValueError):
+            return False
+    if kind == "enum":
+        return str(want).lower() == str(got).lower()
+    if kind == "list":
+        got_l = [str(x).lower() for x in (got or [])]
+        return any(str(w).lower() in g or g in str(w).lower() for w in want for g in got_l) if want else True
+    return True  # free text is judged by the status, and a human reads the page
+
+
+def classify(kind, truth, want, status, got):
+    if status == "unsure":
+        return "flagged_uncertain"
+    if truth == "present":
+        if status != "found":
+            return "false_negative"
+        return "correct" if _value_ok(kind, want, got) else "wrong_value"
+    if truth == "negated":
+        return "correct" if status == "none" else "false_positive" if status == "found" else "false_negative"
+    return "correct" if status == "missing" else "false_positive"  # absent
+
+
+def run_one(m):
+    t0 = time.time()
+    path = os.path.join(ROOT, "packets", m["file"])
+    els = ingest(path)[0] if m.get("needs_ocr") else _ingest_local(path)
+    facts = extract(els)
+    res = analyze(facts)
+    defs = defs_by_key(library()["procedures"][m["procedure"]])
+    rows = []
+    for key, gt in m["facts"].items():
+        f = facts.get(key, {"status": "missing"})
+        rows.append(dict(fact=key, truth=gt["truth"], expected=gt.get("value"), why=gt.get("why"), status=f["status"], got=f.get("value"),
+                         page=f.get("page"), checked=bool(f.get("checked")), outcome=classify(defs[key]["kind"], gt["truth"], gt.get("value"), f["status"], f.get("value"))))
+    return dict(file=m["file"], label=m["label"], member=m["member"], procedure=m["procedure"], note=m["note"], seconds=round(time.time() - t0, 1),
+                expected_action=m["expected_action"], actual_action=res["action"], action_matches=res["action"] == m["expected_action"],
+                extractor=facts.get("_extractor"), facts=rows)
+
+
+def run_multi(workers=3):
+    manifest = json.load(open(MANIFEST, encoding="utf-8"))
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        results = list(pool.map(run_one, manifest))
+    allf = [f for r in results for f in r["facts"]]
+    present = [f for f in allf if f["truth"] == "present"]
+    guarded = [f for f in allf if f["truth"] in ("absent", "negated")]
+    hits = sum(1 for f in present if f["outcome"] == "correct")
+    flagged = sum(1 for f in allf if f["outcome"] == "flagged_uncertain")
+    halluc = [f for f in guarded if f["outcome"] == "false_positive"]
+    return dict(
+        results=results, packets_total=len(results), action_matches=sum(1 for r in results if r["action_matches"]),
+        completeness_recall=dict(correct=hits, total=len(present), pct=round(100 * hits / len(present), 1) if present else None),
+        hallucination_rate=dict(count=len(halluc), total=len(guarded), pct=round(100 * len(halluc) / len(guarded), 1) if guarded else None),
+        flagged_uncertain=dict(count=flagged, total=len(allf), pct=round(100 * flagged / len(allf), 1) if allf else None),
+        wrong_values=sum(1 for f in allf if f["outcome"] == "wrong_value"),
+        zero_denials=all(r["actual_action"] in ("approve", "pend", "escalate", "verify") for r in results))

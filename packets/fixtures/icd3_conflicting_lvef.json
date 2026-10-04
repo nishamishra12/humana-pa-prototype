@@ -1,0 +1,712 @@
+{
+ "file": "icd3_conflicting_lvef.pdf",
+ "engine": "unstructured",
+ "elements": [
+  {
+   "page": 1,
+   "type": "Header",
+   "text": "FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 1 of 7"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Prior Authorization Request - Inpatient Admission"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Health Plan"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Humana Medicare Advantage. Plan ID: H5216-014-000. Request type: standard pre-service review.\nDate of request: 2026-10-04"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Member Information"
+  },
+  {
+   "page": 1,
+   "type": "Form",
+   "text": "Member: Raymond Okafor\nDOB: 1954-01-30 (age 72)\nMember ID: MBR-30502\nAddress: 2290 Lakeshore Blvd, Cleveland, OH 44108\nPhone: (216) 555-0119\nSex: M\nPrimary insurance: Humana Medicare Advantage (primary).\nSecondary: none on file."
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Requesting Provider"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Dr. Priya Venkataraman, MD -- Cardiac Electrophysiology\nNPI: 1830417562\nPractice: Lakeshore Cardiovascular Specialists\nPhone: (216) 555-0140   Fax: (216) 555-0141"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Requested Service"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Requested service: Elective inpatient admission, implantation of a transvenous implantable cardioverter defibrillator (ICD)\nCPT 33249   ICD-10: I42.0 (Dilated cardiomyopathy); I50.22\nPlanned admit date: 2026-11-17\nLevel of care requested: INPATIENT\nPlace of service: Hospital, inpatient (acute care)."
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Submission Contact"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Submitted through the provider portal by Tomas Ibarra, Authorization Coordinator.\nCallback: (216) 555-0140. Supporting clinical documentation attached (7 pages including this request)."
+  },
+  {
+   "page": 1,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 2,
+   "type": "Header",
+   "text": "FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 2 of 7"
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Cardiology Consultation Note"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Date of service: 2026-09-09.   Patient: Raymond Okafor   Age: 72   Sex: M"
+  },
+  {
+   "page": 2,
+   "type": "Image",
+   "text": "HPI"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "72-year-old man with a non-ischemic dilated cardiomyopathy diagnosed last year. He was started on heart\nfailure medications after the diagnosis. He walks his dog daily and can climb a flight of stairs; he notes\nslight breathlessness with brisk walking uphill but not with ordinary activity. No orthopnea. No syncope. No\nICD discharges (no device). Symptoms put him in NYHA class II."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Ischemic work-up and events"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Cardiac catheterization (see page 4) showed no obstructive coronary disease. He has not had a\nmyocardial infarction, bypass surgery or stent at any time, certainly not within the last year."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "PMH"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Hypertension. Hyperlipidemia. Gout. Chronic kidney disease stage 2. Left rotator cuff repair 2017.\nNon-smoker. Occasional wine."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Exam"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "BP 122/76, HR 64, SpO2 98%, BMI 31. No JVD. Clear lungs. Regular rhythm, no gallop. No edema."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Assessment and plan"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Non-ischemic dilated cardiomyopathy with HFrEF, NYHA II. His EF has improved on therapy. Continue GDMT. Discussed ICD candidacy with EP; formal shared decision making visit on 2026-09-18 (page 5).\nSurgical plan on page 6."
+  },
+  {
+   "page": 2,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 3,
+   "type": "Header",
+   "text": "FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 3 of 7"
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Echocardiogram Report - Most Recent"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Study date: 2026-08-20.    Type: complete transthoracic echocardiogram with contrast (Definity).\nPatient: Raymond Okafor   DOB: 1954-01-30   Interpreting: A Nwosu, MD, FACC.\nComparison: no prior study available for comparison at the time of this interpretation."
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Findings"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Left ventricle mildly dilated, LVIDd 5.6 cm. Mild global hypokinesis, worse in the inferolateral wall. Overall left ventricular systolic function is mildly reduced, LVEF 42% (biplane Simpson, contrast-enhanced).\nNormal LV wall thickness. Grade I diastolic dysfunction. Left atrium mildly dilated. RV normal size and function. Trivial MR and TR. No pericardial effusion. No thrombus."
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Impresion"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Mild LV dilatation with mildly reduced systolic function, LVEF 42%."
+  },
+  {
+   "page": 3,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 4,
+   "type": "Header",
+   "text": "FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 4 of 7"
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Cardiac Catheterization and Hemodynamic Report"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Date: 2025-11-18.   Operator: J. Petrakis, MD.   Access: right radial.\nPatient: Raymond Okafor."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Coronary angiography"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Left main normal. LAD with minimal luminal irregularities, no flow-limiting stenosis. LCx normal. RCA\ndominant, normal. No obstructive coronary artery disease."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Hemodynamics"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "LVEDP 20 mmHg. PCWP 18 mmHg. No gradient across the aortic valve. Right heart pressures mildly\nelevated."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Impression"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Non-ischemic cardiomyopathy. No intervention performed."
+  },
+  {
+   "page": 4,
+   "type": "FigureCaption",
+   "text": "Heart failure medications on file (clinic list, updated 2026-09-09)"
+  },
+  {
+   "page": 4,
+   "type": "Table",
+   "text": "Drug Dose Start date sacubitril/valsartan 97/103 mg BID 2025-12-08 carvedilol 25 mg BID 2025-12-08 spironolactone 25 mg daily 2026-01-12 empagliflozin 10 mg daily 2026-01-12 amlodipine 5 mg daily 2018 atorvastatin 40 mg daily 2020 allopurinol 100 mg daily 2019"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Total time on guideline-directed medical therapy: 9 months, adherence confirmed."
+  },
+  {
+   "page": 4,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 5,
+   "type": "Header",
+   "text": "FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 5 of 7"
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Shared Decision Making Visit - ICD"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Date: 2026-09-18.   Clinician: Dr. P. Venkataraman.   Patient: Raymond Okafor; wife present."
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Patient-facing evidence-based ICD decision aid (video and printed worksheet from the national heart failure\ndecision-support program) was reviewed together at this visit. Benefits (lower risk of sudden cardiac death),\nrisks (infection, shocks, lead failure, bleeding), alternatives (medical therapy alone, wearable defibrillation),\nand personal values were discussed for 30 minutes. The patient asked good questions and understood the\ncontent."
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "The patient wishes to proceed. Decision made jointly with the clinician, before scheduling the implant."
+  },
+  {
+   "page": 5,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 6,
+   "type": "Header",
+   "text": "FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 6 of 7"
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Electrophysiology Surgeon Operative Plan"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Date: 2026-09-29.   Surgeon: Dr. Priya Venkataraman, MD, electrophysiology.   Patient: Raymond Okafor."
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Planned procedure"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Transvenous ICD implant, CPT 33249, left subclavian access."
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Indication as submitted"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Primary-prevention ICD for non-ischemic dilated cardiomyopathy, on a background of HFrEF, NYHA II. See\nimaging in this packet for the most current ventricular function."
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Hospital course"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Expected length of stay: 2 midnights for post-implant telemetry and device check."
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Comorbidities"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Heart failure, hypertension, hyperlipidemia, chronic kidney disease stage 2, gout."
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Condition"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Clinically stable, euvolemic, no conditions limiting survival, no severe neurologic impairment, no atrial\nfibrillation. No exclusion identified."
+  },
+  {
+   "page": 6,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 7,
+   "type": "Header",
+   "text": "FAX Lakeshore Cardiovascular Specialists | Fax (216) 555-0141 | Received 2026-10-04 | Page 7 of 7"
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Outside Records - Echocardiogram (prior)"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Records received from: Fairview Regional Medical Center, Cardiology Lab. Released 2026-09-02."
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Study date: 2025-11-04.   Patient: Raymond Okafor   DOB: 1954-01-30\nIndication: new dyspnea and elevated BNP, evaluate LV function."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Findings"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Left ventricle moderately dilated (LVIDd 6.1 cm). Global hypokinesis. LVEF 30% by biplane Simpson.\nModerate functional mitral regurgitation. LA moderately enlarged. RVSP 41 mmHg. No effusion."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Impression"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Dilated cardiomyopathy with moderately to severely reduced LVEF (30%). Recommend ischemic\nevaluation and initiation of guideline-directed medical therapy."
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Signed: Dr. E. Ramaswamy, 2025-11-04."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "ECG, 2026-09-09 (this practice)"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Sinus rhythm 62 bpm, PR 174 ms, QRS 96 ms, no pathologic Q waves, QTc 430 ms."
+  },
+  {
+   "page": 7,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  }
+ ],
+ "facts": {
+  "_member": {
+   "name": "Raymond Okafor",
+   "dob": "1954-01-30",
+   "age": 72,
+   "member_id": "MBR-30502"
+  },
+  "_facility": "Lakeshore Cardiovascular Specialists",
+  "_cpt": "33249",
+  "_procedure": "Elective inpatient admission, implantation of a transvenous implantable cardioverter defibrillator (ICD)",
+  "_admit": "2026-11-17",
+  "_setting": "inpatient",
+  "_extractor": "llm",
+  "_procedure_key": "icd",
+  "expected_los_days": {
+   "status": "found",
+   "value": 2,
+   "page": 6,
+   "quote": "Expected length of stay: 2 midnights for post-implant telemetry and device check.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 6,
+     "quote": "Expected length of stay: 2 midnights for post-implant telemetry and device check.",
+     "model_quote": "Expected length of stay: 2 midnights for post-implant telemetry and device check.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-29",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'Expected length of stay: 2 midnights,' confirming the value of 2 days."
+    }
+   ],
+   "checked": true
+  },
+  "comorbidities": {
+   "status": "found",
+   "value": [
+    "heart failure",
+    "hypertension",
+    "hyperlipidemia",
+    "chronic kidney disease stage 2",
+    "gout"
+   ],
+   "page": 6,
+   "quote": "Heart failure, hypertension, hyperlipidemia, chronic kidney disease stage 2, gout.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 6,
+     "quote": "Heart failure, hypertension, hyperlipidemia, chronic kidney disease stage 2, gout.",
+     "model_quote": "Heart failure, hypertension, hyperlipidemia, chronic kidney disease stage 2, gout.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-29",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage lists all five conditions mentioned in the claim: heart failure, hypertension, hyperlipidemia, chronic kidney disease stage 2, and gout."
+    },
+    {
+     "page": 2,
+     "quote": "Hypertension. Hyperlipidemia. Gout. Chronic kidney disease stage 2. Left rotator cuff repair 2017.",
+     "model_quote": "Hypertension. Hyperlipidemia. Gout. Chronic kidney disease stage 2. Left rotator cuff repair 2017.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-09",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage lists hypertension, hyperlipidemia, gout, and chronic kidney disease stage 2, meeting the requirement of mentioning at least one."
+    }
+   ],
+   "checked": true
+  },
+  "lvef_percent": {
+   "status": "found",
+   "value": 42,
+   "page": 3,
+   "quote": "Overall left ventricular systolic function is mildly reduced, LVEF 42% (biplane Simpson, contrast-enhanced).",
+   "note": "An outside echocardiogram from 2025-11-04 showed LVEF 30%, but the most recent study on 2026-08-20 showed improved LVEF of 42%; the later study is used as current.",
+   "evidence": [
+    {
+     "page": 3,
+     "quote": "Overall left ventricular systolic function is mildly reduced, LVEF 42% (biplane Simpson, contrast-enhanced).",
+     "model_quote": "Overall left ventricular systolic function is mildly reduced, LVEF 42% (biplane Simpson, contrast-enhanced).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-08-20",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'LVEF 42%' confirming the ejection fraction value of 42."
+    },
+    {
+     "page": 7,
+     "quote": "LVEF 30% by biplane Simpson.",
+     "model_quote": "LVEF 30% by biplane Simpson.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2025-11-04",
+     "supports": false
+    }
+   ],
+   "checked": true
+  },
+  "lvef_method": {
+   "status": "found",
+   "value": "echocardiography",
+   "page": 3,
+   "quote": "Type: complete transthoracic echocardiogram with contrast (Definity).",
+   "note": null,
+   "evidence": [
+    {
+     "page": 3,
+     "quote": "Type: complete transthoracic echocardiogram with contrast (Definity).",
+     "model_quote": "Type: complete transthoracic echocardiogram with contrast (Definity).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-08-20",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage identifies the study type as a 'complete transthoracic echocardiogram,' which is echocardiography."
+    },
+    {
+     "page": 3,
+     "quote": "Study date: 2026-08-20.    Type: complete transthoracic echocardiogram with contrast (Definity).",
+     "model_quote": "Study date: 2026-08-20.    Type: complete transthoracic echocardiogram with contrast (Definity).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-08-20",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage specifies 'Type: complete transthoracic echocardiogram with contrast (Definity),' confirming echocardiography as the method."
+    },
+    {
+     "page": 3,
+     "quote": "Overall left ventricular systolic function is mildly reduced, LVEF 42% (biplane Simpson, contrast-enhanced).",
+     "model_quote": "Overall left ventricular systolic function is mildly reduced, LVEF 42% (biplane Simpson, contrast-enhanced).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-08-20",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The surrounding context explicitly states 'Type: complete transthoracic echocardiogram with contrast (Definity),' confirming echocardiography as the measurement method."
+    }
+   ],
+   "checked": true
+  },
+  "nyha_class": {
+   "status": "found",
+   "value": "II",
+   "page": 2,
+   "quote": "Symptoms put him in NYHA class II.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "Symptoms put him in NYHA class II.",
+     "model_quote": "Symptoms put him in NYHA class II.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-09",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'Symptoms put him in NYHA class II,' confirming the NYHA class value of II."
+    },
+    {
+     "page": 2,
+     "quote": "Non-ischemic dilated cardiomyopathy with HFrEF, NYHA II.",
+     "model_quote": "Non-ischemic dilated cardiomyopathy with HFrEF, NYHA II.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-09",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'Non-ischemic dilated cardiomyopathy with HFrEF, NYHA II,' confirming the NYHA class value of II."
+    }
+   ],
+   "checked": true
+  },
+  "cardiomyopathy_type": {
+   "status": "found",
+   "value": "non-ischemic",
+   "page": 2,
+   "quote": "72-year-old man with a non-ischemic dilated cardiomyopathy diagnosed last year.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "72-year-old man with a non-ischemic dilated cardiomyopathy diagnosed last year.",
+     "model_quote": "72-year-old man with a non-ischemic dilated cardiomyopathy diagnosed last year.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-09",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'non-ischemic dilated cardiomyopathy,' confirming the cardiomyopathy cause is non-ischemic."
+    },
+    {
+     "page": 4,
+     "quote": "Non-ischemic cardiomyopathy. No intervention performed.",
+     "model_quote": "Non-ischemic cardiomyopathy. No intervention performed.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2025-11-18",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'Non-ischemic cardiomyopathy,' confirming the cardiomyopathy cause is non-ischemic."
+    }
+   ],
+   "checked": true
+  },
+  "recent_mi_revasc": {
+   "status": "none",
+   "value": null,
+   "page": 2,
+   "quote": "He has not had a\nmyocardial infarction, bypass surgery or stent at any time, certainly not within the last year.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "He has not had a\nmyocardial infarction, bypass surgery or stent at any time, certainly not within the last year.",
+     "model_quote": "He has not had a myocardial infarction, bypass surgery or stent at any time, certainly not within the last year.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-09",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'He has not had a myocardial infarction, bypass surgery or stent at any time, certainly not within the last year,' confirming the absence of recent MI or revascularization."
+    }
+   ],
+   "checked": true
+  },
+  "optimal_medical_therapy_months": {
+   "status": "found",
+   "value": 9,
+   "page": 4,
+   "quote": "Total time on guideline-directed medical therapy: 9 months, adherence confirmed.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 4,
+     "quote": "Total time on guideline-directed medical therapy: 9 months, adherence confirmed.",
+     "model_quote": "Total time on guideline-directed medical therapy: 9 months, adherence confirmed.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-09",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'Total time on guideline-directed medical therapy: 9 months, adherence confirmed,' confirming the value of 9 months."
+    }
+   ],
+   "checked": true
+  },
+  "shared_decision_making": {
+   "status": "found",
+   "value": "Formal shared decision making visit on 2026-09-18 using an evidence-based ICD decision aid, decision made jointly with clinician before scheduling implant.",
+   "page": 5,
+   "quote": "Patient-facing evidence-based ICD decision aid (video and printed worksheet from the national heart failure\ndecision-support program) was reviewed together at this visit.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 5,
+     "quote": "Patient-facing evidence-based ICD decision aid (video and printed worksheet from the national heart failure\ndecision-support program) was reviewed together at this visit.",
+     "model_quote": "Patient-facing evidence-based ICD decision aid (video and printed worksheet from the national heart failure\ndecision-support program) was reviewed together at this visit.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-18",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents that an evidence-based ICD decision aid was reviewed together at the shared decision making visit."
+    },
+    {
+     "page": 5,
+     "quote": "The patient wishes to proceed. Decision made jointly with the clinician, before scheduling the implant.",
+     "model_quote": "The patient wishes to proceed. Decision made jointly with the clinician, before scheduling the implant.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-18",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'The patient wishes to proceed. Decision made jointly with the clinician,' confirming a documented shared decision making discussion."
+    }
+   ],
+   "checked": true
+  },
+  "limiting_conditions": {
+   "status": "none",
+   "value": null,
+   "page": 6,
+   "quote": "Clinically stable, euvolemic, no conditions limiting survival, no severe neurologic impairment, no atrial\nfibrillation. No exclusion identified.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 6,
+     "quote": "Clinically stable, euvolemic, no conditions limiting survival, no severe neurologic impairment, no atrial\nfibrillation. No exclusion identified.",
+     "model_quote": "Clinically stable, euvolemic, no conditions limiting survival, no severe neurologic impairment, no atrial\nfibrillation. No exclusion identified.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-29",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'No exclusion identified,' confirming that no conditions rule out an ICD."
+    }
+   ],
+   "checked": true
+  }
+ }
+}

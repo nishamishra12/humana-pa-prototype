@@ -5,14 +5,28 @@ from pydantic import BaseModel
 
 from . import db
 from pipeline.ingest import Element
-from pipeline.extract import extract_facts, _months
+from pipeline.extract import _months
 from pipeline.engine import analyze
-from pipeline.run import process
+from pipeline.run import process, extract as run_extract
+from pipeline.procedures import procedure_for_cpt, defs_by_key, display_for
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 UPLOADS = os.path.join(ROOT, "uploads")
 os.makedirs(UPLOADS, exist_ok=True)
 db.init()
+
+
+def _reanalyze_all():
+    c = db.conn()
+    for r in c.execute("SELECT id, facts, analysis FROM cases").fetchall():
+        res = json.dumps(analyze(json.loads(r["facts"])))
+        if res != r["analysis"]:
+            c.execute("UPDATE cases SET analysis=? WHERE id=?", (res, r["id"]))
+    c.commit()
+    c.close()
+
+
+_reanalyze_all()
 
 app = FastAPI(title="PA Decision Support")
 SESSIONS: dict[str, int] = {}
@@ -182,6 +196,11 @@ def case_detail(c, cid):
     d = row_case(r, names, last_events(c))
     d["facts"] = json.loads(r["facts"])
     d["analysis"] = json.loads(r["analysis"])
+    _, proc = procedure_for_cpt(d["facts"].get("_cpt"))
+    for df in (proc["facts"] if proc else []):
+        f = d["facts"].get(df["key"])
+        if isinstance(f, dict):
+            f["display"] = display_for(df, f)
     d["elements"] = [dict(page=e["page"], type=e["type"], text=e["text"]) for e in
                      c.execute("SELECT * FROM elements WHERE case_id=? ORDER BY page,id", (cid,))]
     d["comments"] = [dict(id=x["id"], kind=x["kind"], body=x["body"], created_at=x["created_at"], user=names.get(x["user_id"]))
@@ -207,7 +226,7 @@ def original_pdf(cid: str, request: Request):
     if not r or not r["packet_file"]:
         raise HTTPException(404, "No original file for this case")
     name = os.path.basename(r["packet_file"])
-    for folder in (UPLOADS, os.path.join(ROOT, "packets"), os.path.join(ROOT, "packets", "demo"), os.path.join(ROOT, "packets", "holdout")):
+    for folder in (UPLOADS, os.path.join(ROOT, "packets"), os.path.join(ROOT, "packets", "demo"), os.path.join(ROOT, "packets", "holdout"), os.path.join(ROOT, "packets", "multi")):
         p = os.path.join(folder, name)
         if os.path.isfile(p):
             with open(p, "rb") as f:
@@ -377,7 +396,7 @@ def addendum(cid: str, body: Addendum, request: Request):
     c.execute("INSERT INTO elements(case_id,page,type,text) VALUES(?,?,?,?)", (cid, page, "NarrativeText", body.text.strip()))
     els = [Element(page=e["page"], type=e["type"], text=e["text"]) for e in
            c.execute("SELECT * FROM elements WHERE case_id=? ORDER BY page,id", (cid,))]
-    facts = extract_facts(els)
+    facts = run_extract(els, fast=True)
     res = analyze(facts)
     c.execute("UPDATE cases SET facts=?, analysis=?, status='in_review' WHERE id=?", (json.dumps(facts), json.dumps(res), cid))
     c.execute("INSERT INTO comments(case_id,user_id,kind,body,created_at) VALUES(?,?,?,?,?)",
@@ -389,13 +408,6 @@ def addendum(cid: str, body: Addendum, request: Request):
     return case_detail(c, cid)
 
 
-FACT_KEYS = ("expected_los_days", "comorbidities", "post_op_needs", "indication_evidence", "conservative_treatment", "shared_decision_making")
-FACT_NAMES = dict(expected_los_days="Expected stay", comorbidities="Comorbidities", post_op_needs="Post-op care needs",
-                 indication_evidence="Surgical indication", conservative_treatment="Conservative care", shared_decision_making="Shared decision making")
-INDICATIONS = ("instability", "deformity", "pseudarthrosis", "neural compression")
-CAN_BE_NONE = ("comorbidities", "post_op_needs", "indication_evidence")
-
-
 class FixFact(BaseModel):
     kind: str  # found | none | missing
     value: str = ""
@@ -405,20 +417,24 @@ class FixFact(BaseModel):
 @app.post("/api/cases/{cid}/facts/{key}")
 def fix_fact(cid: str, key: str, body: FixFact, request: Request):
     """The nurse's feedback on what the AI read. Saves her answer, logs it, and re-checks the case.
-    Every correction is a signal about how well the AI reads (see docs/METRICS_FRAMEWORK.md)."""
+    Every correction is a signal about how well the AI reads (see docs/METRICS_FRAMEWORK.md).
+    The facts and their allowed answers come from the procedure's definition, so this works for every illness."""
     c = db.conn()
     u = me(request, c)
     check_case_access(c, u, cid)
     if u["role"] not in ("nurse", "medical_director"):
         raise HTTPException(403, "Only a nurse or medical director can correct what we read.")
-    if key not in FACT_KEYS:
-        raise HTTPException(404, "Unknown fact")
     r = c.execute("SELECT * FROM cases WHERE id=?", (cid,)).fetchone()
     if not r:
         raise HTTPException(404, "Case not found")
+    facts = json.loads(r["facts"])
+    _, proc = procedure_for_cpt(facts.get("_cpt"))
+    defs = defs_by_key(proc) if proc else {}
+    if key not in defs:
+        raise HTTPException(404, "Unknown fact")
+    d = defs[key]
     if r["status"] in ("approved", "denied"):
         raise HTTPException(400, "This case already has a decision")
-    facts = json.loads(r["facts"])
     old = facts.get(key, {}).get("status", "missing")
     kind, v = body.kind, body.value.strip()
     if kind == "found":
@@ -426,26 +442,29 @@ def fix_fact(cid: str, key: str, body: FixFact, request: Request):
             v = v or "Documented"
         if not v:
             raise HTTPException(400, "Write what the packet says")
-        if key == "expected_los_days":
+        k = d["kind"]
+        if k == "number":
             try:
-                value = int(v)
+                num = float(v)
             except ValueError:
-                raise HTTPException(400, "Enter the number of midnights, like 3")
-        elif key == "comorbidities":
+                raise HTTPException(400, "Enter a number" + (f", like {d['hint'].split('like')[-1].strip()}" if "like" in d.get("hint", "") else ""))
+            value = int(num) if num == int(num) else num
+        elif k == "list":
             value = [x.strip() for x in re.split(r"[,;]", v) if x.strip()]
-        elif key == "indication_evidence":
-            if v.lower() not in INDICATIONS:
-                raise HTTPException(400, "Choose one: " + ", ".join(INDICATIONS))
-            value = v.lower()
+        elif k == "enum":
+            match = next((o for o in d["values"] if o.lower() == v.lower()), None)
+            if not match:
+                raise HTTPException(400, "Choose one: " + ", ".join(d["values"]))
+            value = match
         else:
             value = v
         fact = dict(status="found", value=value, page=body.page, quote=f"Confirmed by {u['name']}: {v}", note=None, confirmed_by=u["name"])
         if key == "conservative_treatment":
             fact["duration_months"] = _months(v)
     elif kind == "none":
-        if key not in CAN_BE_NONE:
+        if "none" not in d["statuses"]:
             raise HTTPException(400, "This fact cannot be marked as none")
-        fact = dict(status="none", value=[] if key == "comorbidities" else None, page=body.page, quote=f"Confirmed by {u['name']}: the packet says there is none", note=None, confirmed_by=u["name"])
+        fact = dict(status="none", value=[] if d["kind"] == "list" else None, page=body.page, quote=f"Confirmed by {u['name']}: the packet says there is none", note=None, confirmed_by=u["name"])
     elif kind == "missing":
         fact = dict(status="missing", value=None, page=None, quote=None, note=f"Confirmed missing by {u['name']}", confirmed_by=u["name"])
     else:
@@ -454,7 +473,7 @@ def fix_fact(cid: str, key: str, body: FixFact, request: Request):
     facts.setdefault("_corrections", []).append(dict(fact=key, was=old, now=fact["status"], by=u["name"], at=db.now()))
     res = analyze(facts)
     c.execute("UPDATE cases SET facts=?, analysis=? WHERE id=?", (json.dumps(facts), json.dumps(res), cid))
-    db.audit(c, cid, u["id"], "fact_corrected", f"{FACT_NAMES[key]}: changed from \"{old}\" to \"{fact['status']}\". Recommendation is now: {res['action']}")
+    db.audit(c, cid, u["id"], "fact_corrected", f"{d['label']}: changed from \"{old}\" to \"{fact['status']}\". Recommendation is now: {res['action']}")
     c.commit()
     return case_detail(c, cid)
 

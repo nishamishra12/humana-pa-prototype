@@ -36,6 +36,7 @@ def init():
     c.executescript(SCHEMA)
     if c.execute("SELECT COUNT(*) FROM users").fetchone()[0] == 0:
         seed(c)
+    seed_multi(c)
     c.commit()
     c.close()
 
@@ -149,3 +150,31 @@ def seed(c):
         cid = create_case(c, els, eng, facts, res, f, pr, off)
         c.execute("UPDATE cases SET assignee_id=? WHERE id=?", (uid["maria"], cid))
         audit(c, cid, None, "assigned", "Assigned to maria", now(off))
+
+MULTI_PLAN = [  # fixture, offset days, priority, assignee. New cases for the other illnesses, left for the nurse to work.
+    ("icd1_complete_nonischemic", -0.9, "standard", "maria"),
+    ("icd3_conflicting_lvef", -0.6, "standard", "james"),
+    ("icd5_recent_mi", -0.4, "standard", "maria"),
+    ("bar1_complete", -0.7, "standard", "james"),
+    ("bar3_bmi_changed", -0.2, "expedited", "maria"),
+]
+
+
+def seed_multi(c):
+    """Adds the ICD and bariatric demo cases from packets/fixtures/ (built by scripts/build_fixtures.py).
+    Safe to run on every start: a case is added only once. Skipped quietly if the fixtures are not built."""
+    from pipeline.ingest import Element
+    from pipeline.engine import analyze
+    fx = os.path.join(ROOT, "packets", "fixtures")
+    uid = {r["handle"]: r["id"] for r in c.execute("SELECT id, handle FROM users")}
+    if not uid:
+        return
+    for name, off, pr, who in MULTI_PLAN:
+        path = os.path.join(fx, name + ".json")
+        if not os.path.exists(path) or c.execute("SELECT 1 FROM cases WHERE packet_file=?", (name + ".pdf",)).fetchone():
+            continue
+        d = json.load(open(path, encoding="utf-8"))
+        els = [Element(page=e["page"], type=e["type"], text=e["text"]) for e in d["elements"]]
+        cid = create_case(c, els, d["engine"], d["facts"], analyze(d["facts"]), d["file"], pr, off)
+        c.execute("UPDATE cases SET assignee_id=? WHERE id=?", (uid[who], cid))
+        audit(c, cid, None, "assigned", f"Assigned to {who}", now(off))

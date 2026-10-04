@@ -4,11 +4,16 @@ Takes extracted facts + the policy library and produces a criteria checklist, th
 completeness gate (what is missing, phrased as one specific question), and a
 recommendation. The engine can recommend approve, pend (ask for missing info) or
 escalate. It has no deny value: only a medical director can deny.
+
+Works for every procedure in the registry (policies/policy_library.json `procedures`). The CPT code picks
+the procedure; the procedure lists its facts and the policies that apply, in order of authority.
+Criteria can test a number (gte, lte), a choice (in), presence (default), or absence (mode "absent").
+This is plain code, not AI, so the same facts always give the same recommendation.
 """
 import json, os
+from .procedures import library, procedure_for_cpt, defs_by_key, ui_schema
 
-LIB_PATH = os.path.join(os.path.dirname(__file__), "..", "policies", "policy_library.json")
-LIBRARY = json.load(open(LIB_PATH, encoding="utf-8"))
+LIBRARY = library()
 POLICIES = {p["id"]: p for p in LIBRARY["policies"]}
 ORDER = {lvl: i for i, lvl in enumerate(LIBRARY["hierarchy"])}
 
@@ -16,49 +21,90 @@ LEVEL_LABEL = {"REGULATION": "Regulation", "NCD": "NCD", "LCD": "LCD",
                "HUMANA_INTERNAL": "Humana policy (illustrative)", "MCG": "MCG"}
 
 
+def _check(chk, value):
+    op, want = chk["op"], chk["value"]
+    if value is None:
+        return False
+    try:
+        if op == "gte":
+            return float(value) >= want
+        if op == "lte":
+            return float(value) <= want
+        if op == "in":
+            return str(value).lower() in [str(w).lower() for w in want]
+    except (TypeError, ValueError):
+        return False
+    return False
+
+
+def _applies(crit, facts):
+    cond = crit.get("applies_if")
+    if not cond:
+        return True
+    f = facts.get(cond["fact"], {})
+    return f.get("status") == "found" and str(f.get("value")).lower() == str(cond["equals"]).lower()
+
+
 def _judge(crit, facts):
-    """Return (status, fact_key) with status in met | not_met | missing | info."""
+    """Return (status, fact_key) with status in met | not_met | missing | unsure | info."""
     key = crit.get("required_fact")
-    test = crit.get("test")
-    if test == "informational" or not key:
+    if crit.get("test") == "informational" or not key:
         return "info", key
     f = facts.get(key, {"status": "missing"})
     st = f["status"]
     if st == "unsure":
         return "unsure", key
-    if key == "expected_los_days":
-        if st == "found":
-            return ("met" if f["value"] >= 2 else "not_met"), key
-        return "missing", key
+    if crit.get("mode") == "absent":  # satisfied when the packet says there is none
+        return ("met" if st == "none" else "not_met" if st == "found" else "missing"), key
     if st == "found":
+        chk = crit.get("check")
+        if chk:
+            return ("met" if _check(chk, f.get("value")) else "not_met"), key
         return "met", key
     if st == "none":
         return "not_met", key
     return "missing", key
 
 
+def _evidence_list(f):
+    if not f:
+        return []
+    ev = [dict(page=e["page"], quote=e["quote"], match=e.get("match"), score=e.get("score"), date=e.get("date"), supports=e.get("supports", True))
+          for e in f.get("evidence", []) if e.get("page")]
+    if not ev and f.get("page"):
+        ev = [dict(page=f["page"], quote=f.get("quote"), match="exact", score=100.0, date=None, supports=True)]
+    return ev
+
+
 def analyze(facts: dict) -> dict:
     cpt = facts.get("_cpt")
+    pkey, proc = procedure_for_cpt(cpt)
     covered = LIBRARY.get("covered_cpt_codes", [])
-    if cpt not in covered:
+    if not proc:
+        names = ", ".join(p["short"].lower() for p in LIBRARY["procedures"].values())
         return dict(
             checklist=[], gate=dict(complete=False, questions=[]), action="no_policy",
             rationale=(f"We do not have a policy for CPT {cpt or 'unknown'} ({facts.get('_procedure') or 'procedure not identified'}). "
-                      "Today PA Desk checks lumbar spinal fusion only. We will not judge this case against the wrong policy."),
-            policies=[], cannot_deny=True, cpt_covered=False, covered_cpt_codes=covered)
+                      f"Today PA Desk checks {names}. We will not judge this case against the wrong policy."),
+            policies=[], cannot_deny=True, cpt_covered=False, covered_cpt_codes=covered, procedure=None, fact_schema=[])
+    defs = defs_by_key(proc)
     checklist, questions, unsure = [], {}, {}
-    policies = sorted(POLICIES.values(), key=lambda p: ORDER[p["level"]])
+    policies = sorted((POLICIES[pid] for pid in proc["policies"]), key=lambda p: ORDER[p["level"]])
     for pol in policies:
         for c in pol["criteria"]:
+            if not _applies(c, facts):
+                continue
             status, key = _judge(c, facts)
             f = facts.get(key) if key else None
             soft = c.get("severity") == "soft"
+            evl = _evidence_list(f)
             item = dict(
                 policy_id=pol["id"], layer=LEVEL_LABEL[pol["level"]], policy_title=pol["title"],
-                verified=pol["verified"], cite=c["cite"], criterion_id=c["id"], text=c["text"],
+                verified=pol["verified"], cite=c["cite"], criterion_id=c["id"], text=c["text"], short=c.get("short"),
                 status=("advisory" if (soft and status == "missing") else status),
                 fact_key=key,
-                evidence=dict(page=f["page"], quote=f["quote"]) if f and f.get("page") else None,
+                evidence=dict(page=evl[0]["page"], quote=evl[0]["quote"]) if evl else None,
+                evidence_all=evl,
                 note=(f or {}).get("note"),
             )
             checklist.append(item)
@@ -68,9 +114,9 @@ def analyze(facts: dict) -> dict:
                 q = questions.setdefault(key, dict(fact=key, question=_provider_facing(c["if_missing"]), affects=[], note=(f or {}).get("note")))
                 q["affects"].append(c["id"])
 
-    # LCD indication 2 (deformity): non-operative treatment for at least 12 months
+    # lumbar LCD indication 2 (deformity): non-operative treatment for at least 12 months
     ind, cons = facts.get("indication_evidence", {}), facts.get("conservative_treatment", {})
-    if ind.get("status") == "found" and ind.get("value") == "deformity" and cons.get("status") == "found":
+    if pkey == "lumbar_fusion" and ind.get("status") == "found" and ind.get("value") == "deformity" and cons.get("status") == "found":
         months = cons.get("duration_months")
         if months is not None:
             ok = months >= 12
@@ -78,22 +124,26 @@ def analyze(facts: dict) -> dict:
                 policy_id="LCD-L37848", layer="LCD", policy_title=POLICIES["LCD-L37848"]["title"], verified=True,
                 cite="LCD L37848, Indication 2b", criterion_id="LCD-DEF-12M",
                 text="For deformity without instability or neural compression: nonresponse to at least 1 year of non-operative treatment.",
+                short="non-operative treatment was under 12 months",
                 status="met" if ok else "not_met", fact_key="conservative_treatment",
-                evidence=dict(page=cons["page"], quote=cons["quote"]), note=f"{months:g} months documented."))
+                evidence=dict(page=cons["page"], quote=cons["quote"]), evidence_all=_evidence_list(cons), note=f"{months:g} months documented."))
+
+    def label(key):
+        return (defs.get(key) or {}).get("phrase") or key
 
     gate = dict(complete=not questions and not unsure, questions=list(questions.values()), unsure=list(unsure.values()))
     not_met = [c for c in checklist if c["status"] == "not_met"]
     if unsure:
         action = "verify"
-        rationale = ("We could not confirm " + ", ".join(_label(k) for k in unsure) +
+        rationale = ("We could not confirm " + ", ".join(label(k) for k in unsure) +
                      ". Check the packet and confirm it before you decide. Do not ask the provider yet.")
     elif questions:
         action = "pend"
-        rationale = ("The packet is missing " + ", ".join(_label(q["fact"]) for q in questions.values()) +
+        rationale = ("The packet is missing " + ", ".join(label(q["fact"]) for q in questions.values()) +
                      ". Ask the provider for exactly that before judging the case.")
     elif not_met:
         action = "escalate"
-        rationale = ("The packet is complete, but " + "; ".join(_short(c) for c in not_met) +
+        rationale = ("The packet is complete, but " + "; ".join((c.get("short") or c["text"][:60]) for c in not_met) +
                      ". This needs a physician's clinical judgment, so it goes to a medical director.")
     else:
         action = "approve"
@@ -101,22 +151,11 @@ def analyze(facts: dict) -> dict:
     return dict(checklist=checklist, gate=gate, action=action, rationale=rationale,
                 policies=[dict(id=p["id"], level=LEVEL_LABEL[p["level"]], title=p["title"], source=p["source"],
                                url=p["url"], verified=p["verified"]) for p in policies if p["criteria"]],
-                cannot_deny=True, cpt_covered=True)
+                cannot_deny=True, cpt_covered=True, covered_cpt_codes=covered,
+                procedure=dict(key=pkey, name=proc["name"], short=proc["short"], cpts=proc["cpts"]),
+                fact_schema=ui_schema(proc))
 
 
 def _provider_facing(text):
     t = text[5:] if text.startswith("Ask: ") else text
     return t[:1].upper() + t[1:]
-
-
-def _label(key):
-    return {"expected_los_days": "the expected length of stay", "comorbidities": "comorbidity documentation",
-            "post_op_needs": "post-operative care needs", "indication_evidence": "imaging or exam evidence for the surgical indication",
-            "conservative_treatment": "the conservative treatment history", "shared_decision_making": "shared decision making"}.get(key, key)
-
-
-def _short(c):
-    return {"LOC-1": "the expected stay does not cross 2 midnights", "LOC-2": "no risk factors are documented",
-            "HUM-1": "no risk-raising comorbidities are documented", "HUM-2": "no post-operative needs beyond routine recovery are documented",
-            "LCD-DEF-12M": "non-operative treatment was under 12 months",
-            "LCD-IND": "no qualifying indication is documented", "LCD-CONS": "conservative treatment is not documented"}.get(c["criterion_id"], c["text"][:60])

@@ -1,0 +1,26 @@
+NCD 100.1: Bariatric Surgery for Treatment of Co-Morbid Conditions Related to Morbid Obesity
+Version 5, effective 09/24/2013
+https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=57
+
+B. Nationally Covered Indications 
+ Effective for services performed on and after February 21, 2006, Open and laparoscopic Roux-en-Y gastric bypass (RYGBP), open and laparoscopic Biliopancreatic Diversion with Duodenal Switch (BPD/DS) or Gastric Reduction Duodenal Switch (BPD/GRDS), and laparoscopic adjustable gastric banding (LAGB) are covered for Medicare beneficiaries who have a body-mass index ≥ 35, have at least one co-morbidity related to obesity, and have been previously unsuccessful with medical treatment for obesity.
+ Effective for dates of service on and after February 21, 2006, these procedures are only covered when performed at facilities that are: (1) certified by the American College of Surgeons as a Level 1 Bariatric Surgery Center (program standards and requirements in effect on February 15, 2006); or (2) certified by the American Society for Bariatric Surgery as a Bariatric Surgery Center of Excellence (program standards and requirements in effect on February 15, 2006). Effective for dates of service on and after September 24, 2013, facilities are no longer required to be certified.
+ Effective for services performed on and after February 12, 2009, the Centers for Medicare & Medicaid Services (CMS) determines that Type 2 diabetes mellitus is a co-morbidity for purposes of this NCD.
+ A list of approved facilities and their approval dates are listed and maintained on the CMS Coverage Web site at http://www.cms.gov/Medicare/Medicare-General-Information/MedicareApprovedFacilitie/Bariatric-Surgery.html, and published in the Federal Register for services provided up to and including date of service September 23, 2013.
+ C. Nationally Non-Covered Indications 
+ Treatments for obesity alone remain non-covered.
+ Supplemented fasting is not covered under the Medicare program as a general treatment for obesity (see section D. below for discretionary local coverage).
+ The following bariatric surgery procedures are non-covered for all Medicare beneficiaries:
+ Open adjustable gastric banding;
+ Open sleeve gastrectomy;
+ Laparoscopic sleeve gastrectomy (prior to June 27, 2012);
+ Open and laparoscopic vertical banded gastroplasty;
+ Intestinal bypass surgery; and,
+ Gastric balloon for treatment of obesity.
+ D. Other 
+ Effective for services performed on and after June 27, 2012, Medicare Administrative Contractors (MACs) acting within their respective jurisdictions may determine coverage of stand-alone laparoscopic sleeve gastrectomy (LSG) for the treatment of co-morbid conditions related to obesity in Medicare beneficiaries only when all of the following conditions a.-c. are satisfied.
+ The beneficiary has a body-mass index (BMI) ≥ 35 kg/m 2 , 
+ The beneficiary has at least one co-morbidity related to obesity, and, 
+ The beneficiary has been previously unsuccessful with medical treatment for obesity. 
+ The determination of coverage for any bariatric surgery procedures that are not specifically identified in an NCD as covered or non-covered, for Medicare beneficiaries who have a body-mass index ≥ 35, have at least one co-morbidity related to obesity, and have been previously unsuccessful with medical treatment for obesity, is left to the local MACs.
+ Where weight loss is necessary before surgery in order to ameliorate the complications posed by obesity when it coexists with pathological conditions such as cardiac and respiratory diseases, diabetes, or hypertension (and other more conservative techniques to achieve this end are not regarded as appropriate), supplemented fasting with adequate monitoring of the patient is eligible for coverage on a case-by-case basis or pursuant to a local coverage determination. The risks associated with the achievement of rapid weight loss must be carefully balanced against the risk posed by the condition requiring surgical treatment.

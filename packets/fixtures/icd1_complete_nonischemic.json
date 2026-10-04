@@ -1,0 +1,815 @@
+{
+ "file": "icd1_complete_nonischemic.pdf",
+ "engine": "unstructured",
+ "elements": [
+  {
+   "page": 1,
+   "type": "Header",
+   "text": "FAX Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 1 of 8"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Prior Authorization Request - Inpatient Admission"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Health Plan"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Humana Medicare Advantage. Plan ID: H5216-014-000. Request type: standard pre-service review.\nDate of request: 2026-10-04"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Member Information"
+  },
+  {
+   "page": 1,
+   "type": "Form",
+   "text": "Member: Gerald Fitzpatrick\nDOB: 1959-03-12 (age 67)\nMember ID: MBR-30417\nAddress: 812 Orchard Ridge Rd, Akron, OH 44313\nPhone: (330) 555-0142\nSex: M\nPrimary insurance: Humana Medicare Advantage (primary).\nSecondary: none on file."
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Requesting Provider"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Dr. Anita Rao, MD -- Cardiac Electrophysiology\nNPI: 1578043926\nPractice: Heartland Cardiac Electrophysiology Associates\nPhone: (330) 555-0170   Fax: (330) 555-0171"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Requested Service"
+  },
+  {
+   "page": 1,
+   "type": "Form",
+   "text": "Requested service: Elective inpatient admission, implantation of a transvenous implantable cardioverter defibrillator (ICD)\nCPT: 33249\nICD-10: I42.0 (Dilated cardiomyopathy); I50.22 (Chronic systolic HF)\nPlanned admit date: 2026-11-10\nLevel of care requested: INPATIENT\nPlace of service: Hospital, inpatient (acute care)."
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Submission Contact"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Submitted through the provider portal by Pamela Duarte, Authorization Coordinator.\nCallback: (330) 555-0170. Supporting clinical documentation attached (8 pages including this request)."
+  },
+  {
+   "page": 1,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 2,
+   "type": "Header",
+   "text": "FAX Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 2 of 8"
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Cardiology Consultation - Heart Failure Clinic"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Date of visit: 2026-09-16.   Patient: Gerald Fitzpatrick   Age/Sex: 67 M\nReferred by: Dr. L. Mbeki (PCP) for evaluation of primary-prevention ICD candidacy."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Reason for visit"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Follow-up of dilated cardiomyopathy with chronic heart failure with reduced ejection fraction (HFrEF)."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "History of present illness"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "67-year-old man with a non-ischemic dilated cardiomyopathy, first recognized after an admission for decompensated heart failure earlier this year. He reports dyspnea after walking about one block on level ground or climbing one flight of stairs, two-pillow orthopnea, and ankle swelling by the end of the day. He is comfortable at rest. No syncope or presyncope. No palpitations, no ICD shocks (no device in place). Weight is stable on diuretic. He has not needed an ED visit or admission for HF since the spring. Symptom burden has been stable over the last 3 months: marked limitation of ordinary activity, comfortable at rest, consistent with NYHA functional class III."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Cardiac history"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Ischemic evaluation: left heart catheterization 2026-07-21 without obstructive coronary disease (report on\nfile). No myocardial infarction, CABG or PCI in the past 12 months, and none before that either. No stent.\nNo history of sustained VT, VF or cardiac arrest."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Past medical history"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Heart failure as above. Hypertension, long-standing. Chronic kidney disease stage 3a (baseline eGFR in\nthe high 40s). Remote appendectomy. Cataract extraction OU 2021. Seasonal allergies. Former smoker,\nquit 2008, 10 pack-years. Alcohol: 1-2 beers on weekends; counseled. No illicit drug use."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Exam"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "BP 118/72, HR 70 regular, SpO2 97% RA, BMI 29. JVP about 8 cm. Lungs clear. S3 present, soft apical\nMR murmur. Trace bilateral ankle edema. Warm extremities."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Assesment and plan"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Dilated cardiomyopathy, non-ischemic, symptomatic HFrEF, NYHA III, on guideline-directed therapy (see\nmedication list). LVEF remains severely reduced on the latest echocardiogram (page 3). Candidate for\nprimary-prevention ICD. Referred to EP for implantation. Continue current regimen, daily weights, 2 g\nsodium diet. Return in 6 weeks."
+  },
+  {
+   "page": 2,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 3,
+   "type": "Header",
+   "text": "FAX  Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 3 of 8"
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Transthoracic Echocardiogram Report"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Study date: 2026-08-12.   Indication: cardiomyopathy, reassessment of LV function on therapy.\nPatient: Gerald Fitzpatrick    DOB: 1959-03-12    Sonographer: K. Yamada, RDCS.    Interpreting physician:\nR. Castellano, MD, FASE."
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Findings"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Left ventricle: moderately to severely dilated (LVIDd 6.3 cm, LVIDs 5.6 cm). Wall thickness normal. Global\nhypokinesis with no discrete regional wall motion abnormality. No LV thrombus on contrast-enhanced\nviews.\nLeft ventricular ejection fraction 28% by TTE (biplane method of discs, apical 4- and 2-chamber).\nDiastolic function: restrictive filling pattern, E/e' 17.\nLeft atrium: moderately enlarged, LA volume index 44 mL/m2.\nRight ventricle: normal size, mildly reduced longitudinal function, TAPSE 15 mm.\nValves: mild-to-moderate functional mitral regurgitation. Mild tricuspid regurgitation. Aortic valve trileaflet,\nno stenosis.\nEstimated RVSP 38 mmHg. IVC 2.0 cm with less than 50% collapse. No pericardial effusion."
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Impression"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "1. Dilated left ventricle with severely reduced systolic function, LVEF 28%.\n2. Mild-to-moderate functional MR. 3. Elevated filling pressures. 4. No thrombus."
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Electronically signed 2026-08-12 16:41."
+  },
+  {
+   "page": 3,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 4,
+   "type": "Header",
+   "text": "FAX Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 4 of 8"
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Cardiac Catheterization Report"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Procedure date: 2026-07-21.  Operator: T. Branigan, MD.  Access: right radial.\nIndication: new cardiomyopathy with reduced EF; define coronary anatomy before device decisions."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Hemodynamics"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "RA mean 9 mmHg. PA 42/22, mean 30 mmHg. PCWP 21 mmHg. Aortic pressure 124/70. LVEDP 22\nmmHg. Fick cardiac index 2.1 L/min/m2."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Coronary angiography"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Left main: normal. LAD: smooth, mild luminal irregularity, maximum 20% proximal stenosis. LCx: normal.\nRCA: dominant, normal. No obstructive coronary artery disease in any vessel. TIMI 3 flow throughout."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Intervention"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "None performed. No stent placed. Radial hemostasis band removed without incident."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Impression"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Angiographically normal-to-minimal coronary arteries. Findings support a non-ischemic etiology for the\npatient's dilated cardiomyopathy. Elevated biventricular filling pressures. Continue medical therapy."
+  },
+  {
+   "page": 4,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 5,
+   "type": "Header",
+   "text": "FAX  Heartland Cardiac Electrophysiology Associates  |  Fax (330) 555-0171  |  Received 2026-10-04  |  Page 5 of 8"
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Medication Reconciliation - Heart Failure Clinic"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Reconciled 2026-09-16 with patient and pharmacy fill history.\nAllergies: sulfa (rash)."
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Guideline-directed medical therapy for HFREF"
+  },
+  {
+   "page": 5,
+   "type": "Table",
+   "text": "Drug Dose Start date Status sacubitril/valsartan 97/103 mg BID 2026-02-02 active (titrated up 04-2026) carvedilol 25 mg BID 2026-02-02 active (titrated up 05-2026) spironolactone 25 mg daily 2026-03-02 active dapagliflozin 10 mg daily 2026-03-16 active furosemide 40 mg daily 2026-01-20 active, dose adjusted PRN"
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Other medications"
+  },
+  {
+   "page": 5,
+   "type": "Table",
+   "text": "amlodipine 5 mg daily 2019 active atorvastatin 20 mg nightly 2022 active omeprazole 20 mg daily 2023 active"
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Comment"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Patient has remained on optimal tolerated doses of ARNI, beta blocker, MRA and SGLT2 inhibitor continuously since early February 2026, a total of 8 months of guideline-directed medical therapy at today's date. Adherence good per pharmacy refills; no missed fills. No drug intolerance. Potassium and creatinine monitored at each titration."
+  },
+  {
+   "page": 5,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 6,
+   "type": "Header",
+   "text": "FAX Heartland Cardiac Electrophysiology Associates  |  Fax (330) 555-0171  |  Received 2026-10-04  |  Page 6 of 8"
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "ECG Report and Laboratory Results"
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "12-lead ECG, 2026-09-16"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Sinus rhythm, rate 71. PR 206 ms (first-degree AV block). QRS 104 ms, no bundle branch block. QTc 452\nms. Nonspecific T-wave flattening laterally. No atrial fibrillation or flutter. No pathologic Q waves. Read by:\nS. Okonjo, MD."
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Laboratory results, collected 2026-09-16"
+  },
+  {
+   "page": 6,
+   "type": "Table",
+   "text": "Test Result Reference Sodium 139 135–145 mmol/L Potassium 4.5 3.5–5.0 mmol/L BUN 29 (H) 8–23 mg/dL Creatinine 1.5 (H) 0.6–1.2 mg/dL eGFR 48 (L) >60 mL/min/1.73m2 NT-proBNP 2,140 (H) <450 pg/mL Hemoglobin 13.1 13.5–17.5 g/dL TSH 1.9 0.4–4.5 mIU/L HbA1c 5.6%"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Comment: CKD stage 3a, stable over three measurements since April 2026. TSH normal. Iron studies\nadequate."
+  },
+  {
+   "page": 6,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 7,
+   "type": "Header",
+   "text": "FAX Heartland Cardiac Electrophysiology Associates | Fax (330) 555-0171 | Received 2026-10-04 | Page 7 of 8"
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Shared Decision Making Visit Note - ICD"
+  },
+  {
+   "page": 7,
+   "type": "Form",
+   "text": "Date: 2026-09-24.\nDuration: 38 minutes.\nClinician: Dr. M. Aldaine, cardiology (not the implanting physician).\nPatient: Gerald Fitzpatrick.\nAccompanied by: spouse."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Purpose"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Formal shared decision making encounter before any decision on primary-prevention ICD implantation."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Decision tool"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Reviewed the patient decision aid 'Should I get an ICD? A guide for people with heart failure'\n(evidence-based, patient-facing decision aid, booklet and short video). Patient and spouse viewed the\nvideo in clinic and walked through the booklet with the clinician."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Discussion"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Discussed the absolute reduction in risk of sudden cardiac death with an ICD versus medical therapy\nalone, the chance of appropriate and inappropriate shocks, device infection, lead problems, bleeding,\npneumothorax, battery replacement, and the option of declining the device. Discussed driving and activity\nguidance. Teach-back performed; patient restated risks and benefits correctly."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Outcome"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Gerald values the chance of avoiding sudden death and prefers to proceed with ICD implantation.\nQuestions answered. Decision made jointly. This visit took place before the planned implant."
+  },
+  {
+   "page": 7,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 8,
+   "type": "Header",
+   "text": "FAX  Heartland Cardiac Electrophysiology Associates  |  Fax (330) 555-0171  |  Received 2026-10-04  |  Page 8 of 8"
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Electrophysiology Surgeon Operative Plan"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Date: 2026-09-30.   Surgeon: Dr. Anita Rao, MD, cardiac electrophysiology.\nPatient: Gerald Fitzpatrick."
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Planned procedure"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Insertion of a transvenous single-chamber ICD (CPT 33249), left subclavian approach under conscious\nsedation, with defibrillation testing per protocol. Pre-op: hold nothing; INR not applicable (no anticoagulant)."
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Indication"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Primary prevention of sudden cardiac death in non-ischemic dilated cardiomyopathy with chronic systolic\nheart failure."
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Expected hospital course"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Anticipated inpatient stay: 2 midnights, for post-implant rhythm monitoring on telemetry, pocket and\nlead-position surveillance with a repeat chest film, device interrogation, and renal function and volume\nstatus monitoring given CKD and diuretic dosing. Discharge on post-op day 2 if device checks are normal."
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Comorbidities relevant to peri-procedural risk"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Chronic heart failure, hypertension, and CKD stage 3 (eGFR 48)."
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Pre-procedure assessment"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Patient is clinically stable: euvolemic, NYHA III unchanged over 3 months, no admission since spring. No\ncondition limiting life expectancy to under one year, no severe neurologic impairment, no atrial fibrillation\n(sinus rhythm on ECG), no active infection. No conditions that would rule out an ICD were identified."
+  },
+  {
+   "page": 8,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  }
+ ],
+ "facts": {
+  "_member": {
+   "name": "Gerald Fitzpatrick",
+   "dob": "1959-03-12",
+   "age": 67,
+   "member_id": "MBR-30417"
+  },
+  "_facility": "Heartland Cardiac Electrophysiology Associates",
+  "_cpt": "33249",
+  "_procedure": "Elective inpatient admission, implantation of a transvenous implantable cardioverter defibrillator (ICD)",
+  "_admit": "2026-11-10",
+  "_setting": "inpatient",
+  "_extractor": "llm",
+  "_procedure_key": "icd",
+  "expected_los_days": {
+   "status": "found",
+   "value": 2,
+   "page": 8,
+   "quote": "Anticipated inpatient stay: 2 midnights, for post-implant rhythm monitoring on telemetry, pocket and\nlead-position surveillance with a repeat chest film, device interrogation, and renal function and volume\nstatus monitoring given CKD and diuretic dosing.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 8,
+     "quote": "Anticipated inpatient stay: 2 midnights, for post-implant rhythm monitoring on telemetry, pocket and\nlead-position surveillance with a repeat chest film, device interrogation, and renal function and volume\nstatus monitoring given CKD and diuretic dosing.",
+     "model_quote": "Anticipated inpatient stay: 2 midnights, for post-implant rhythm monitoring on telemetry, pocket and lead-position surveillance with a repeat chest film, device interrogation, and renal function and volume status monitoring given CKD and diuretic dosing.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'Anticipated inpatient stay: 2 midnights,' which corresponds to an expected length of stay of 2 days."
+    }
+   ],
+   "checked": true
+  },
+  "comorbidities": {
+   "status": "found",
+   "value": [
+    "hypertension",
+    "chronic kidney disease stage 3a",
+    "heart failure"
+   ],
+   "page": 8,
+   "quote": "Chronic heart failure, hypertension, and CKD stage 3 (eGFR 48).",
+   "note": null,
+   "evidence": [
+    {
+     "page": 8,
+     "quote": "Chronic heart failure, hypertension, and CKD stage 3 (eGFR 48).",
+     "model_quote": "Chronic heart failure, hypertension, and CKD stage 3 (eGFR 48).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage lists 'Chronic heart failure, hypertension, and CKD stage 3,' which includes all three conditions mentioned in the claim."
+    },
+    {
+     "page": 2,
+     "quote": "Hypertension, long-standing. Chronic kidney disease stage 3a (baseline eGFR in\nthe high 40s).",
+     "model_quote": "Hypertension, long-standing. Chronic kidney disease stage 3a (baseline eGFR in\nthe high 40s).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-16",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'Hypertension, long-standing' and 'Chronic kidney disease stage 3a,' meeting the claim's requirement of at least one comorbidity."
+    }
+   ],
+   "checked": true
+  },
+  "lvef_percent": {
+   "status": "found",
+   "value": 28,
+   "page": 3,
+   "quote": "Left ventricular ejection fraction 28% by TTE (biplane method of discs, apical 4- and 2-chamber).",
+   "note": null,
+   "evidence": [
+    {
+     "page": 3,
+     "quote": "Left ventricular ejection fraction 28% by TTE (biplane method of discs, apical 4- and 2-chamber).",
+     "model_quote": "Left ventricular ejection fraction 28% by TTE (biplane method of discs, apical 4- and 2-chamber).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-08-12",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'Left ventricular ejection fraction 28% by TTE,' matching the claimed value."
+    }
+   ],
+   "checked": true
+  },
+  "lvef_method": {
+   "status": "found",
+   "value": "echocardiography",
+   "page": 3,
+   "quote": "Left ventricular ejection fraction 28% by TTE (biplane method of discs, apical 4- and 2-chamber).",
+   "note": null,
+   "evidence": [
+    {
+     "page": 3,
+     "quote": "Left ventricular ejection fraction 28% by TTE (biplane method of discs, apical 4- and 2-chamber).",
+     "model_quote": "Left ventricular ejection fraction 28% by TTE (biplane method of discs, apical 4- and 2-chamber).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-08-12",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage indicates the ejection fraction was measured 'by TTE (transthoracic echocardiography),' which is a form of echocardiography."
+    }
+   ],
+   "checked": true
+  },
+  "nyha_class": {
+   "status": "found",
+   "value": "III",
+   "page": 2,
+   "quote": "Symptom burden has been stable over the last 3 months: marked limitation of ordinary activity, comfortable at rest, consistent with NYHA functional class III.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "Symptom burden has been stable over the last 3 months: marked limitation of ordinary activity, comfortable at rest, consistent with NYHA functional class III.",
+     "model_quote": "Symptom burden has been stable over the last 3 months: marked limitation of ordinary activity, comfortable at rest, consistent with NYHA functional class III.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-16",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'consistent with NYHA functional class III.'"
+    },
+    {
+     "page": 8,
+     "quote": "Patient is clinically stable: euvolemic, NYHA III unchanged over 3 months, no admission since spring.",
+     "model_quote": "Patient is clinically stable: euvolemic, NYHA III unchanged over 3 months, no admission since spring.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'NYHA III unchanged over 3 months,' confirming NYHA class III."
+    },
+    {
+     "page": 2,
+     "quote": "Dilated cardiomyopathy, non-ischemic, symptomatic HFrEF, NYHA III, on guideline-directed therapy",
+     "model_quote": "Dilated cardiomyopathy, non-ischemic, symptomatic HFrEF, NYHA III, on guideline-directed therapy",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-16",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'NYHA III,' confirming NYHA class III."
+    }
+   ],
+   "checked": true
+  },
+  "cardiomyopathy_type": {
+   "status": "found",
+   "value": "non-ischemic",
+   "page": 2,
+   "quote": "67-year-old man with a non-ischemic dilated cardiomyopathy, first recognized after an admission for decompensated heart failure earlier this year.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "67-year-old man with a non-ischemic dilated cardiomyopathy, first recognized after an admission for decompensated heart failure earlier this year.",
+     "model_quote": "67-year-old man with a non-ischemic dilated cardiomyopathy, first recognized after an admission for decompensated heart failure earlier this year.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-16",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'non-ischemic dilated cardiomyopathy,' matching the claimed cause."
+    },
+    {
+     "page": 4,
+     "quote": "Findings support a non-ischemic etiology for the\npatient's dilated cardiomyopathy.",
+     "model_quote": "Findings support a non-ischemic etiology for the\npatient's dilated cardiomyopathy.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-07-21",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'Findings support a non-ischemic etiology for the patient's dilated cardiomyopathy,' confirming the non-ischemic cause."
+    },
+    {
+     "page": 4,
+     "quote": "Angiographically normal-to-minimal coronary arteries. Findings support a non-ischemic etiology for the\npatient's dilated cardiomyopathy.",
+     "model_quote": "Angiographically normal-to-minimal coronary arteries. Findings support a non-ischemic etiology for the\npatient's dilated cardiomyopathy.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-07-21",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'Findings support a non-ischemic etiology for the patient's dilated cardiomyopathy,' confirming the non-ischemic cause."
+    },
+    {
+     "page": 8,
+     "quote": "Primary prevention of sudden cardiac death in non-ischemic dilated cardiomyopathy with chronic systolic\nheart failure.",
+     "model_quote": "Primary prevention of sudden cardiac death in non-ischemic dilated cardiomyopathy with chronic systolic\nheart failure.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'non-ischemic dilated cardiomyopathy,' matching the claimed cause."
+    }
+   ],
+   "checked": true
+  },
+  "recent_mi_revasc": {
+   "status": "none",
+   "value": null,
+   "page": 2,
+   "quote": "No myocardial infarction, CABG or PCI in the past 12 months, and none before that either. No stent.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "No myocardial infarction, CABG or PCI in the past 12 months, and none before that either. No stent.",
+     "model_quote": "No myocardial infarction, CABG or PCI in the past 12 months, and none before that either. No stent.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-16",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'No myocardial infarction, CABG or PCI in the past 12 months,' which covers the claimed 40-day and 3-month periods."
+    },
+    {
+     "page": 4,
+     "quote": "None performed. No stent placed. Radial hemostasis band removed without incident.",
+     "model_quote": "None performed. No stent placed. Radial hemostasis band removed without incident.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-07-21",
+     "supports": true,
+     "verdict": "insufficient",
+     "reason": "While the passage states 'No stent placed,' it does not address whether there was a myocardial infarction or CABG in the relevant timeframes."
+    }
+   ],
+   "checked": true
+  },
+  "optimal_medical_therapy_months": {
+   "status": "found",
+   "value": 8,
+   "page": 5,
+   "quote": "Patient has remained on optimal tolerated doses of ARNI, beta blocker, MRA and SGLT2 inhibitor continuously since early February 2026, a total of 8 months of guideline-directed medical therapy at today's date.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 5,
+     "quote": "Patient has remained on optimal tolerated doses of ARNI, beta blocker, MRA and SGLT2 inhibitor continuously since early February 2026, a total of 8 months of guideline-directed medical therapy at today's date.",
+     "model_quote": "Patient has remained on optimal tolerated doses of ARNI, beta blocker, MRA and SGLT2 inhibitor continuously since early February 2026, a total of 8 months of guideline-directed medical therapy at today's date.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-16",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states the patient has been on guideline-directed medical therapy 'a total of 8 months of guideline-directed medical therapy at today's date.'"
+    }
+   ],
+   "checked": true
+  },
+  "shared_decision_making": {
+   "status": "found",
+   "value": "Formal shared decision making encounter before any decision on primary-prevention ICD implantation using the patient decision aid 'Should I get an ICD? A guide for people with heart failure' on 2026-09-24.",
+   "page": 7,
+   "quote": "Formal shared decision making encounter before any decision on primary-prevention ICD implantation.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 7,
+     "quote": "Formal shared decision making encounter before any decision on primary-prevention ICD implantation.",
+     "model_quote": "Formal shared decision making encounter before any decision on primary-prevention ICD implantation.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-24",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents a 'Formal shared decision making encounter before any decision on primary-prevention ICD implantation.'"
+    },
+    {
+     "page": 7,
+     "quote": "Reviewed the patient decision aid 'Should I get an ICD? A guide for people with heart failure'\n(evidence-based, patient-facing decision aid, booklet and short video).",
+     "model_quote": "Reviewed the patient decision aid 'Should I get an ICD? A guide for people with heart failure'\n(evidence-based, patient-facing decision aid, booklet and short video).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-24",
+     "supports": true,
+     "verdict": "insufficient",
+     "reason": "While the passage documents that a decision aid was reviewed, it does not fully establish a complete shared decision making visit without additional context."
+    }
+   ],
+   "checked": true
+  },
+  "limiting_conditions": {
+   "status": "none",
+   "value": null,
+   "page": 8,
+   "quote": "No\ncondition limiting life expectancy to under one year, no severe neurologic impairment, no atrial fibrillation\n(sinus rhythm on ECG), no active infection. No conditions that would rule out an ICD were identified.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 8,
+     "quote": "No\ncondition limiting life expectancy to under one year, no severe neurologic impairment, no atrial fibrillation\n(sinus rhythm on ECG), no active infection. No conditions that would rule out an ICD were identified.",
+     "model_quote": "No condition limiting life expectancy to under one year, no severe neurologic impairment, no atrial fibrillation\n(sinus rhythm on ECG), no active infection. No conditions that would rule out an ICD were identified.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'No conditions that would rule out an ICD were identified,' directly addressing the claim."
+    },
+    {
+     "page": 8,
+     "quote": "Patient is clinically stable: euvolemic, NYHA III unchanged over 3 months, no admission since spring.",
+     "model_quote": "Patient is clinically stable: euvolemic, NYHA III unchanged over 3 months, no admission since spring.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "insufficient",
+     "reason": "While the passage indicates clinical stability, it does not directly state whether conditions rule out an ICD."
+    },
+    {
+     "page": 8,
+     "quote": "Patient is clinically stable: euvolemic, NYHA III unchanged over 3 months, no admission since spring. No\ncondition limiting life expectancy to under one year, no severe neurologic impairment, no atrial fibrillation\n(sinus rhythm on ECG), no active infection. No conditions that would rule out an ICD were identified.",
+     "model_quote": "Patient is clinically stable: euvolemic, NYHA III unchanged over 3 months, no admission since spring. No\ncondition limiting life expectancy to under one year, no severe neurologic impairment, no atrial fibrillation\n(sinus rhythm on ECG), no active infection. No conditions that would rule out an ICD were identified.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'No conditions that would rule out an ICD were identified,' directly answering the claim."
+    }
+   ],
+   "checked": true
+  }
+ }
+}

@@ -1,0 +1,523 @@
+{
+ "file": "bar3_bmi_changed.pdf",
+ "engine": "unstructured",
+ "elements": [
+  {
+   "page": 1,
+   "type": "Header",
+   "text": "FAX Capital Bariatric Surgery Associates | Fax (614) 555-0196 | Received 2026-10-04 | Page 1 of 7"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Prior Authorization Request - Inpatient Admission"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Health Plan"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Humana Medicare Advantage. Plan ID: H5216-014-000. Request type: standard pre-service review.\nDate of request: 2026-10-04"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Member Information"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Member: Yolanda Prescott    DOB: 1961-06-03 (age 65)    Member ID: MBR-30701\nAddress: 2114 Foxglove Ave, Columbus, OH 43211\nPhone: (614) 555-0127   Sex: F\nPrimary insurance: Humana Medicare Advantage (primary). Secondary: none on file."
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Requesting Provider"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Dr. Raymond Teague, MD -- Bariatric Surgery\nNPI: 1720458391\nPractice: Capital Bariatric Surgery Associates\nPhone: (614) 555-0195   Fax: (614) 555-0196"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Requested Service"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Requested service: Elective inpatient admission, laparoscopic Roux-en-Y gastric bypass\nCPT 43644   ICD-10: E66.01; E11.9\nPlanned admit date: 2026-11-18\nLevel of care requested: INPATIENT\nPlace of service: Hospital, inpatient (acute care)."
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Submission Contact"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Submitted through the provider portal by Imani Whitfield, Authorization Coordinator.\nCallback: (614) 555-0195. Supporting clinical documentation attached (7 pages including this request)."
+  },
+  {
+   "page": 1,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 2,
+   "type": "Header",
+   "text": "FAX Capital Bariatric Surgery Associates | Fax (614) 555-0196 | Received 2026-10-04 | Page 2 of 7"
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Bariatric Surgeon Pre-operative Visit"
+  },
+  {
+   "page": 2,
+   "type": "Form",
+   "text": "Date: 2026-09-14.\nPatient: Yolanda Prescott\nAge: 65\nSex: F"
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Interval history"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Ms. Prescott is a 65-year-old woman with obesity and type 2 diabetes, seen after six months in our\nsupervised weight management program. She has lost some weight but remains symptomatic: diabetes not\nat goal (HbA1c 7.8%), joint pain, fatigue."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Measurements today"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Height 63 in, weight 191 lb, BMI 33.8 kg/m2."
+  },
+  {
+   "page": 2,
+   "type": "Image",
+   "text": "PMH"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Type 2 diabetes mellitus. Hypothyroidism. Cesarean section 1992. Cataract surgery 2024. Never smoker."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Medications"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Metformin 1000 mg BID, empagliflozin 10 mg daily, levothyroxine 88 mcg daily, phentermine discontinued\n2026-06."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Exam"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "BP 122/74, HR 80, SpO2 98%. Abdomen soft, no hernia. No edema."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Plan"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Proceed with the surgical pathway as planned; request authorization for laparoscopic Roux-en-Y gastric\nbypass. Operative plan on page 7."
+  },
+  {
+   "page": 2,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 3,
+   "type": "Header",
+   "text": "FAX Capital Bariatric Surgery Associates | Fax (614) 555-0196 | Received 2026-10-04 | Page 3 of 7"
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Primary Care Note"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Date: 2026-08-19.   Patient: Yolanda Prescott.   PCP: Dr. T. Wong."
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Type 2 diabetes: HbA1c 7.8%, on metformin and empagliflozin, no hypoglycemia. Retinopathy screen\nnegative 2026-04. Kidney function normal (eGFR 84). Hypothyroidism: TSH 2.0. Blood pressure 120s/70s\nwithout treatment. Lipids: LDL 104. Discussed bariatric surgery goals and glycemic outcomes.\n\nHealth maintenance: mammogram 2026-05 normal, DEXA 2025 osteopenia, shingles vaccine complete."
+  },
+  {
+   "page": 3,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 4,
+   "type": "Header",
+   "text": "FAX Capital Bariatric Surgery Associates | Fax (614) 555-0196 | Received 2026-10-04 | Page 4 of 7"
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Psychological Evaluation"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Date: 2026-07-30.   Evaluator: Dr. E. Navarro, PhD.   Patient: Yolanda Prescott"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Interview and screening instruments reviewed. PHQ-9 4, GAD-7 2, no disordered eating (EDE-Q below\ncut-off), no substance use disorder. Good insight into the lifelong commitments of bariatric surgery.\nPsychologically cleared to proceed."
+  },
+  {
+   "page": 4,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 5,
+   "type": "Header",
+   "text": "FAX  Capital Bariatric Surgery Associates  |  Fax (614) 555-0196  |  Received 2026-10-04  |  Page 5 of 7"
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Weight Management Program - Dietitian Intake and Progress Notes"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Program: supervised weight management program, Capital Bariatric Surgery Associates.    Dietitian: M.\nOkoye, RD.\nPatient: Yolanda Prescott."
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Program intake, 2026-03-09"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Height 63 in, weight 204 lb, BMI 36.1 kg/m2 at intake. Comorbid type 2 diabetes. Baseline 24-hour recall\nshows frequent sweetened beverages and late-evening eating. Goals: 1,300-kcal plan, protein target 70\ng/day, 30 min walking 5 days/week."
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Follow-up"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Monthly visits 2026-04 through 2026-09 attended. Intermediate weights: 2026-05 200 lb, 2026-07 195 lb.\nPhysician-supervised, with phentermine 37.5 mg daily added 2026-04 and stopped 2026-06 for\npalpitations."
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Assessment"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Six months of supervised dietary and medication-assisted treatment with partial, non-durable weight loss;\nglycemic control not adequate. Medical treatment judged unsuccessful."
+  },
+  {
+   "page": 5,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 6,
+   "type": "Header",
+   "text": "FAX  Capital Bariatric Surgery Associates  |  Fax (614) 555-0196  |  Received 2026-10-04  |  Page 6 of 7"
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Laboratory and Pre-operative Testing"
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Labs 2026-09-08"
+  },
+  {
+   "page": 6,
+   "type": "Table",
+   "text": "HbA1c 7.8% Fasting glucose 141 mg/dL Creatinine 0.8 mg/dL ALT / AST 30 / 27 U/L TSH 2.0 mIU/L Ferritin 58 ng/mL Vitamin B12 498 pg/mL"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Upper endoscopy 2026-08-28: normal, no hiatal hernia, H. pylori negative."
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "ECG 2026-09-02: normal sinus rhythm. Echocardiogram not indicated."
+  },
+  {
+   "page": 6,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 7,
+   "type": "Header",
+   "text": "FAX  Capital Bariatric Surgery Associates | Fax (614) 555-0196 | Received 2026-10-04 | Page 7 of 7"
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Bariatric Surgeon Operative Plan"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Date: 2026-09-21.   Surgeon: Dr. Raymond Teague, MD, bariatric surgery.   Patient: Yolanda Prescott."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Procedure"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Laparoscopic Roux-en-Y gastric bypass, CPT 43644."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Expected length of stay"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "The patient will need to stay in hospital for 2 midnights: glucose monitoring and insulin coverage, pain\ncontrol, VTE prophylaxis, ambulation, diet advancement."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Comorbidity"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Type 2 diabetes mellitus."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Readiness"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Work-up complete, psychological clearance obtained, patient educated."
+  },
+  {
+   "page": 7,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  }
+ ],
+ "facts": {
+  "_member": {
+   "name": "Yolanda Prescott",
+   "dob": "1961-06-03",
+   "age": 65,
+   "member_id": "MBR-30701"
+  },
+  "_facility": "Capital Bariatric Surgery Associates",
+  "_cpt": "43644",
+  "_procedure": "Elective inpatient admission, laparoscopic Roux-en-Y gastric bypass",
+  "_admit": "2026-11-18",
+  "_setting": "inpatient",
+  "_extractor": "llm",
+  "_procedure_key": "bariatric",
+  "expected_los_days": {
+   "status": "found",
+   "value": 2,
+   "page": 7,
+   "quote": "The patient will need to stay in hospital for 2 midnights: glucose monitoring and insulin coverage, pain\ncontrol, VTE prophylaxis, ambulation, diet advancement.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 7,
+     "quote": "The patient will need to stay in hospital for 2 midnights: glucose monitoring and insulin coverage, pain\ncontrol, VTE prophylaxis, ambulation, diet advancement.",
+     "model_quote": "The patient will need to stay in hospital for 2 midnights: glucose monitoring and insulin coverage, pain\ncontrol, VTE prophylaxis, ambulation, diet advancement.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-21",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states the patient will stay for '2 midnights,' which corresponds to 2 days of hospital stay."
+    }
+   ],
+   "checked": true
+  },
+  "comorbidities": {
+   "status": "found",
+   "value": [
+    "type 2 diabetes mellitus",
+    "hypothyroidism"
+   ],
+   "page": 2,
+   "quote": "Type 2 diabetes mellitus. Hypothyroidism. Cesarean section 1992. Cataract surgery 2024. Never smoker.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "Type 2 diabetes mellitus. Hypothyroidism. Cesarean section 1992. Cataract surgery 2024. Never smoker.",
+     "model_quote": "Type 2 diabetes mellitus. Hypothyroidism. Cesarean section 1992. Cataract surgery 2024. Never smoker.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-14",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage mentions both type 2 diabetes mellitus and hypothyroidism, satisfying the requirement of at least one."
+    },
+    {
+     "page": 7,
+     "quote": "Comorbidity",
+     "model_quote": "Comorbidity",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-21",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'Type 2 diabetes mellitus' under the Comorbidity section, meeting the requirement of at least one condition."
+    },
+    {
+     "page": 2,
+     "quote": "Type 2 diabetes mellitus.",
+     "model_quote": "Type 2 diabetes mellitus.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-21",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly mentions 'Type 2 diabetes mellitus,' which is one of the required comorbidities."
+    },
+    {
+     "page": 2,
+     "quote": "Ms. Prescott is a 65-year-old woman with obesity and type 2 diabetes, seen after six months in our\nsupervised weight management program.",
+     "model_quote": "Ms. Prescott is a 65-year-old woman with obesity and type 2 diabetes, seen after six months in our\nsupervised weight management program.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-14",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states the patient has 'type 2 diabetes,' which is one of the required comorbidities."
+    }
+   ],
+   "checked": true
+  },
+  "bmi": {
+   "status": "found",
+   "value": 33.8,
+   "page": 2,
+   "quote": "Height 63 in, weight 191 lb, BMI 33.8 kg/m2.",
+   "note": "BMI decreased from 36.1 kg/m2 at program intake (2026-03-09) to 33.8 kg/m2 at the most recent pre-op visit (2026-09-14); the later, more current value is used.",
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "Height 63 in, weight 191 lb, BMI 33.8 kg/m2.",
+     "model_quote": "Height 63 in, weight 191 lb, BMI 33.8 kg/m2.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-14",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage directly states 'BMI 33.8 kg/m2' matching the claimed value exactly."
+    },
+    {
+     "page": 5,
+     "quote": "Height 63 in, weight 204 lb, BMI 36.1 kg/m2 at intake.",
+     "model_quote": "Height 63 in, weight 204 lb, BMI 36.1 kg/m2 at intake.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-03-09",
+     "supports": false
+    }
+   ],
+   "checked": true
+  },
+  "prior_medical_treatment": {
+   "status": "found",
+   "value": "Six months (2026-03 to 2026-09) of a physician-supervised weight management program including a 1,300-kcal diet, 70 g/day protein target, walking 30 min 5 days/week, and phentermine 37.5 mg daily added 2026-04 and stopped 2026-06 for palpitations; weight decreased from 204 lb to 195 lb but glycemic control remained inadequate (HbA1c 7.8%), and the treatment was judged unsuccessful.",
+   "page": 5,
+   "quote": "Six months of supervised dietary and medication-assisted treatment with partial, non-durable weight loss;\nglycemic control not adequate. Medical treatment judged unsuccessful.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 5,
+     "quote": "Six months of supervised dietary and medication-assisted treatment with partial, non-durable weight loss;\nglycemic control not adequate. Medical treatment judged unsuccessful.",
+     "model_quote": "Six months of supervised dietary and medication-assisted treatment with partial, non-durable weight loss;\nglycemic control not adequate. Medical treatment judged unsuccessful.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents six months of supervised treatment with specific details about dietary and medication-assisted approaches for obesity."
+    },
+    {
+     "page": 5,
+     "quote": "Monthly visits 2026-04 through 2026-09 attended. Intermediate weights: 2026-05 200 lb, 2026-07 195 lb.\nPhysician-supervised, with phentermine 37.5 mg daily added 2026-04 and stopped 2026-06 for\npalpitations.",
+     "model_quote": "Monthly visits 2026-04 through 2026-09 attended. Intermediate weights: 2026-05 200 lb, 2026-07 195 lb.\nPhysician-supervised, with phentermine 37.5 mg daily added 2026-04 and stopped 2026-06 for\npalpitations.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents monthly supervised visits, intermediate weights, and medication (phentermine) for obesity treatment from April through September 2026."
+    },
+    {
+     "page": 5,
+     "quote": "Height 63 in, weight 204 lb, BMI 36.1 kg/m2 at intake. Comorbid type 2 diabetes. Baseline 24-hour recall\nshows frequent sweetened beverages and late-evening eating. Goals: 1,300-kcal plan, protein target 70\ng/day, 30 min walking 5 days/week.",
+     "model_quote": "Height 63 in, weight 204 lb, BMI 36.1 kg/m2 at intake. Comorbid type 2 diabetes. Baseline 24-hour recall\nshows frequent sweetened beverages and late-evening eating. Goals: 1,300-kcal plan, protein target 70\ng/day, 30 min walking 5 days/week.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-03-09",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents the weight management program intake with specific dietary goals and plans for obesity treatment."
+    },
+    {
+     "page": 2,
+     "quote": "seen after six months in our\nsupervised weight management program.",
+     "model_quote": "seen after six months in our\nsupervised weight management program.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-14",
+     "supports": true,
+     "verdict": "insufficient",
+     "reason": "The passage only mentions that the patient was 'seen after six months in our supervised weight management program' but does not detail the actual history or specifics of the medical treatment itself."
+    }
+   ],
+   "checked": true
+  }
+ }
+}

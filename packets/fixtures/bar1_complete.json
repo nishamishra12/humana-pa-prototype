@@ -1,0 +1,588 @@
+{
+ "file": "bar1_complete.pdf",
+ "engine": "unstructured",
+ "elements": [
+  {
+   "page": 1,
+   "type": "Header",
+   "text": "FAX Lakeview Bariatric & Metabolic Surgery Center  |  Fax (937) 555-0161  |  Received 2026-10-04  |  Page 1 of 7"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Prior Authorization Request - Inpatient Admission"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Health Plan"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Humana Medicare Advantage. Plan ID: H5216-014-000. Request type: standard pre-service review.\nDate of request: 2026-10-04"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Member Information"
+  },
+  {
+   "page": 1,
+   "type": "Form",
+   "text": "Member: Marcia Delgado-Finch\nDOB: 1960-02-17 (age 66)\nMember ID: MBR-30644\nAddress: 903 Cobblestone Way, Dayton, OH 45419\nPhone: (937) 555-0133\nSex: F\nPrimary insurance: Humana Medicare Advantage (primary).\nSecondary: none on file."
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Requesting Provider"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Dr. Joel Hartmann, MD -- Bariatric Surgery\nNPI: 1086392745\nPractice: Lakeview Bariatric & Metabolic Surgery Center\nPhone: (937) 555-0160    Fax: (937) 555-0161"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Requested Service"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Requested service: Elective inpatient admission, laparoscopic Roux-en-Y gastric bypass\nCPT 43644   ICD-10: E66.01 (Morbid obesity); E11.9; G47.33\nPlanned admit date: 2026-11-09\nLevel of care requested: INPATIENT\nPlace of service: Hospital, inpatient (acute care)."
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Submission Contact"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Submitted through the provider portal by Sheila Brandt, Authorization Coordinator.\nCallback: (937) 555-0160. Supporting clinical documentation attached (7 pages including this request)."
+  },
+  {
+   "page": 1,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 2,
+   "type": "Header",
+   "text": "FAX Lakeview Bariatric & Metabolic Surgery Center  |  Fax (937) 555-0161  |  Received 2026-10-04  |  Page 2 of 7"
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Bariatric Surgery Consultation / History and Physical"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Date: 2026-09-15.   Patient: Marcia Delgado-Finch   Age: 66   Sex: F"
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Chief complaint"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Severe obesity with obesity-related disease; evaluation for surgical weight loss."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "HPI"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Ms. Delgado-Finch is a 66-year-old woman with class III obesity of more than twenty years' duration. She\nhas type 2 diabetes, hypertension and obstructive sleep apnea, each of which is worsening. Knee and back\npain now limit walking. She completed a 12-month physician-supervised weight management program\n(details on pages 3 and 4) and, despite full participation, has regained the weight she lost."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Anthropometrics"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Height 65 in. Weight 254 lb. BMI 42.3 kg/m2 (measured in clinic 2026-09-15)."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Past medical history"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Type 2 diabetes mellitus (on metformin, HbA1c 8.1%). Hypertension. Obstructive sleep apnea on CPAP.\nOsteoarthritis of the knees. Hysterectomy 2004. Cholecystectomy 2012."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Medications"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Metformin 1000 mg BID, lisinopril 20 mg daily, amlodipine 5 mg daily, liraglutide 3 mg daily (weight management), atorvastatin 20 mg nightly, acetaminophen PRN. NKDA."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Social"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Never smoker, no alcohol. Lives with husband. Retired bookkeeper."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Exam"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "BP 134/82, HR 78, SpO2 96%. Neck circumference 17 in. Abdomen obese, soft, no hernia. Mild bilateral\nknee crepitus. No edema."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Assessment and plan"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Class III obesity with T2DM, hypertension and OSA, previously unsuccessful with medical treatment.\nCandidate for laparoscopic Roux-en-Y gastric bypass. Pre-op workup completed."
+  },
+  {
+   "page": 2,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 3,
+   "type": "Header",
+   "text": "FAX Lakeview Bariatric & Metabolic Surgery Center  |  Fax (937) 555-0161  |  Received 2026-10-04  |  Page 3 of 7"
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Registered Dietitian Notes - Supervised Weight Management Program"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Program: Physician-supervised medical weight management program, enrolled 2025-08-12, completed\n2026-08-12."
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Patient: Marcia Delgado-Finch.    Dietitian: Ruth Calloway, RD, LDN.    Supervising physician: Dr. A. Mehra."
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Structure"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Monthly visits with the registered dietitian, 12 consecutive monthly visits, all attended (12 of 12).\n1,200-1,400 kcal meal plan, food and activity logs reviewed at each visit, structured walking program,\nbehavioral counseling, and physician review quarterly."
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Weight trajectory"
+  },
+  {
+   "page": 3,
+   "type": "Table",
+   "text": "Visit Weight (lb) BMI 2025-08-12 268 44.6 (program intake) 2025-11-11 259 43.1 2026-02-10 252 41.9 (nadir) 2026-05-12 258 42.9 2026-08-12 266 44.3 (program exit)"
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Outcome"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Initial loss of 16 lb over six months, followed by regain of 14 lb despite adherence; the patient plateaued\nafter month 6. Program judged unsuccessful for sustained weight loss. No further benefit expected from\ncontinuing non-surgical care. Recommend surgical consultation."
+  },
+  {
+   "page": 3,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 4,
+   "type": "Header",
+   "text": "FAX Lakeview Bariatric & Metabolic Surgery Center  |  Fax (937) 555-0161  |  Received 2026-10-04  |  Page 4 of 7"
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Primary Care Notes and Anti-Obesity Medication"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Patient: Marcia Delgado-Finch.   PCP: Dr. L. Osei.   Visits 2025-09 through 2026-07 summarized."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Anti-obesity pharmacotherapy"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Liraglutide 3 mg daily (Saxenda) started 2025-09-15 as an adjunct to the dietitian program; titrated over 5 weeks. Continued 11 months. Early loss of about 9 lb then plateau; nausea mild. Weight regained while still on full dose. Considered unsuccessful."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Comorbidity management"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Type 2 diabetes: metformin, HbA1c 8.3% (2025-08), 8.1% (2026-07). Hypertension: lisinopril and amlodipine, BP 130s/80s. Sleep apnea: diagnosed on polysomnography (AHI 34/hr), on CPAP with good adherence."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Other"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Influenza vaccine given 2025-10. Colonoscopy 2024 normal. Mammogram 2026-03 normal. Statin\ncontinued."
+  },
+  {
+   "page": 4,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 5,
+   "type": "Header",
+   "text": "FAX Lakeview Bariatric & Metabolic Surgery Center  |  Fax (937) 555-0161  |  Received 2026-10-04  |  Page 5 of 7"
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Psychological Evaluation - Pre-Bariatric"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Date: 2026-08-26.   Evaluator: Dr. S. Landry, PhD, clinical psychologist.   Patient: Marcia Delgado-Finch"
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Method"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "90-minute clinical interview, MMPI-3, BDI-II, structured eating disorder screen."
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Findings"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Mood euthymic. BDl-II score 7 (minimal). No binge-eating disorder, no bulimia, no active substance use.\nUnderstands the procedure, lifelong vitamin supplementation, and dietary changes. Realistic expectations.\nSupportive spouse. No history of psychiatric hospitalization."
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Opinion"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Psychologically cleared for bariatric surgery. No contraindication identified. Recommend post-operative support group."
+  },
+  {
+   "page": 5,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 6,
+   "type": "Header",
+   "text": "FAX Lakeview Bariatric & Metabolic Surgery Center | Fax (937) 555-0161 | Received 2026-10-04 | Page 6 of 7"
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Laboratory, Sleep Study and Pre-Operative Testing"
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Labs 2026-09-02"
+  },
+  {
+   "page": 6,
+   "type": "Table",
+   "text": "HbA1c 8.1% Fasting glucose 158 mg/dL Creatinine 0.8 mg/dL ALT / AST 38 / 31 U/L Vitamin D 25-OH 19 ng/mL (L) B12 412 pg/mL Hemoglobin 13.4 g/dL"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Polysomnography (2024-11): AHI 34 events/hour, moderate-to-severe OSA. CPAP prescribed.\nUpper endoscopy 2026-08-20: mild gastritis, H. pylori negative, no hiatal hernia.\nECG 2026-08-28: normal sinus rhythm. Chest X-ray: clear."
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Comment: pre-operative clearance from cardiology not required; low risk by RCRI."
+  },
+  {
+   "page": 6,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 7,
+   "type": "Header",
+   "text": "FAX Lakeview Bariatric & Metabolic Surgery Center  |  Fax (937) 555-0161  |  Received 2026-10-04  |  Page 7 of 7"
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Bariatric Surgeon Operative Plan"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Date: 2026-09-22.   Surgeon: Dr. Joel Hartmann, MD, bariatric surgery.   Patient: Marcia Delgado-Finch."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Procedure"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Laparoscopic Roux-en-Y gastric bypass (CPT 43644). Five ports, 30 mL gastric pouch, 100 cm Roux limb,\nstapled gastrojejunostomy, leak test with methylene blue."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Expected hospital course"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Expected length of stay: 2 midnights. Day 0 monitoring with CPAP, DVT prophylaxis, glucose management. Upper GI series post-op day 1 as needed. Discharge on post-operative day 2 if tolerating liquids."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Comorbidities driving peri-operative risk"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Type 2 diabetes, hypertension, obstructive sleep apnea requiring CPAP."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Readiness"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Dietitian-supervised program completed, psychological clearance obtained, patient educated, and consent\ndiscussion scheduled for admission day."
+  },
+  {
+   "page": 7,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  }
+ ],
+ "facts": {
+  "_member": {
+   "name": "Marcia Delgado-Finch",
+   "dob": "1960-02-17",
+   "age": 66,
+   "member_id": "MBR-30644"
+  },
+  "_facility": "Lakeview Bariatric & Metabolic Surgery Center",
+  "_cpt": "43644",
+  "_procedure": "Elective inpatient admission, laparoscopic Roux-en-Y gastric bypass",
+  "_admit": "2026-11-09",
+  "_setting": "inpatient",
+  "_extractor": "llm",
+  "_procedure_key": "bariatric",
+  "expected_los_days": {
+   "status": "found",
+   "value": 2,
+   "page": 7,
+   "quote": "Expected length of stay: 2 midnights.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 7,
+     "quote": "Expected length of stay: 2 midnights.",
+     "model_quote": "Expected length of stay: 2 midnights.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-22",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage directly states 'Expected length of stay: 2 midnights,' confirming the expected length of stay is 2 days."
+    }
+   ],
+   "checked": true
+  },
+  "comorbidities": {
+   "status": "found",
+   "value": [
+    "type 2 diabetes mellitus",
+    "hypertension",
+    "obstructive sleep apnea"
+   ],
+   "page": 2,
+   "quote": "Type 2 diabetes mellitus (on metformin, HbA1c 8.1%). Hypertension. Obstructive sleep apnea on CPAP.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "Type 2 diabetes mellitus (on metformin, HbA1c 8.1%). Hypertension. Obstructive sleep apnea on CPAP.",
+     "model_quote": "Type 2 diabetes mellitus (on metformin, HbA1c 8.1%). Hypertension. Obstructive sleep apnea on CPAP.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-15",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly lists all three conditions: type 2 diabetes mellitus, hypertension, and obstructive sleep apnea."
+    },
+    {
+     "page": 7,
+     "quote": "Type 2 diabetes, hypertension, obstructive sleep apnea requiring CPAP.",
+     "model_quote": "Type 2 diabetes, hypertension, obstructive sleep apnea requiring CPAP.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-22",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly lists all three conditions: type 2 diabetes, hypertension, and obstructive sleep apnea."
+    },
+    {
+     "page": 2,
+     "quote": "She\nhas type 2 diabetes, hypertension and obstructive sleep apnea, each of which is worsening.",
+     "model_quote": "She has type 2 diabetes, hypertension and obstructive sleep apnea, each of which is worsening.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-15",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states the patient 'has type 2 diabetes, hypertension and obstructive sleep apnea.'"
+    }
+   ],
+   "checked": true
+  },
+  "bmi": {
+   "status": "found",
+   "value": 42.3,
+   "page": 2,
+   "quote": "Height 65 in. Weight 254 lb. BMI 42.3 kg/m2 (measured in clinic 2026-09-15).",
+   "note": "Multiple BMI values recorded over time during the weight management program; the most recent clinic measurement (2026-09-15, consultation H&P) of 42.3 is used as current, superseding earlier program weigh-ins.",
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "Height 65 in. Weight 254 lb. BMI 42.3 kg/m2 (measured in clinic 2026-09-15).",
+     "model_quote": "Height 65 in. Weight 254 lb. BMI 42.3 kg/m2 (measured in clinic 2026-09-15).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-15",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage directly states 'BMI 42.3 kg/m2,' confirming the patient's BMI value."
+    },
+    {
+     "page": 3,
+     "quote": "Visit Weight (lb) BMI 2025-08-12 268 44.6 (program intake) 2025-11-11 259 43.1 2026-02-10 252 41.9 (nadir) 2026-05-12 258 42.9 2026-08-12 266 44.3 (program exit)",
+     "model_quote": "Visit Weight (lb) BMI 2025-08-12 268 44.6 (program intake) 2025-11-11 259 43.1 2026-02-10 252 41.9 (nadir) 2026-05-12 258 42.9 2026-08-12 266 44.3 (program exit)",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-08-12",
+     "supports": false
+    }
+   ],
+   "checked": true
+  },
+  "prior_medical_treatment": {
+   "status": "found",
+   "value": "12-month physician-supervised weight management program (2025-08-12 to 2026-08-12) with monthly dietitian visits (12 of 12 attended), 1,200-1,400 kcal meal plan, structured walking program, and behavioral counseling, plus concurrent anti-obesity pharmacotherapy with liraglutide 3 mg daily for 11 months. Initial weight loss was followed by regain/plateau; both the dietitian program and medication were judged unsuccessful.",
+   "page": 3,
+   "quote": "Initial loss of 16 lb over six months, followed by regain of 14 lb despite adherence; the patient plateaued\nafter month 6. Program judged unsuccessful for sustained weight loss.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 3,
+     "quote": "Initial loss of 16 lb over six months, followed by regain of 14 lb despite adherence; the patient plateaued\nafter month 6. Program judged unsuccessful for sustained weight loss.",
+     "model_quote": "Initial loss of 16 lb over six months, followed by regain of 14 lb despite adherence; the patient plateaued after month 6. Program judged unsuccessful for sustained weight loss.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-08-12",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents a 12-month physician-supervised weight management program with detailed weight trajectory and outcomes, constituting history of medical treatment for obesity."
+    },
+    {
+     "page": 4,
+     "quote": "Early loss of about 9 lb then plateau; nausea mild. Weight regained while still on full dose. Considered unsuccessful.",
+     "model_quote": "Early loss of about 9 lb then plateau; nausea mild. Weight regained while still on full dose. Considered unsuccessful.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-07",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents anti-obesity pharmacotherapy with liraglutide, including outcomes and efficacy assessment, constituting history of medical treatment for obesity."
+    },
+    {
+     "page": 2,
+     "quote": "She completed a 12-month physician-supervised weight management program\n(details on pages 3 and 4) and, despite full participation, has regained the weight she lost.",
+     "model_quote": "She completed a 12-month physician-supervised weight management program (details on pages 3 and 4) and, despite full participation, has regained the weight she lost.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-15",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states the patient 'completed a 12-month physician-supervised weight management program,' documenting history of medical treatment for obesity."
+    },
+    {
+     "page": 4,
+     "quote": "Liraglutide 3 mg daily (Saxenda) started 2025-09-15 as an adjunct to the dietitian program; titrated over 5 weeks. Continued 11 months. Early loss of about 9 lb then plateau; nausea mild. Weight regained while still on full dose. Considered unsuccessful.",
+     "model_quote": "Liraglutide 3 mg daily (Saxenda) started 2025-09-15 as an adjunct to the dietitian program; titrated over 5 weeks. Continued 11 months. Early loss of about 9 lb then plateau; nausea mild. Weight regained while still on full dose. Considered unsuccessful.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2025-09-15",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents anti-obesity medication therapy with detailed clinical course and outcomes, constituting history of medical treatment for obesity."
+    }
+   ],
+   "checked": true
+  }
+ }
+}

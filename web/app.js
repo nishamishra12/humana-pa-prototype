@@ -236,14 +236,20 @@ function citeBtn(page, quote, key) {
   S.cites.push({ page, quote, key });
   return `<button class="pg ${S.highlight && S.highlight.page == page && S.activeKey === key ? "on" : ""}" data-cite="${S.cites.length - 1}" title="Show page ${page} of the packet">p.${page}</button>`;
 }
-const FACTS = [
-  ["expected_los_days", "Expected stay", (f) => (f.status === "found" ? `${f.value} midnight${f.value === 1 ? "" : "s"}` : null)],
-  ["comorbidities", "Comorbidities", (f) => (f.status === "found" ? f.value.join(", ") : f.status === "none" ? "None documented as present" : null)],
-  ["post_op_needs", "Post-op care needs", (f) => (f.status === "found" ? f.quote : f.status === "none" ? "Routine recovery only" : null)],
-  ["indication_evidence", "Surgical indication", (f) => (f.status === "found" ? `Imaging shows ${f.value}` : null)],
-  ["conservative_treatment", "Conservative care", (f) => (f.status === "found" ? f.quote : null)],
-  ["shared_decision_making", "Shared decision making", (f) => (f.status === "found" ? "Documented" : null)],
-];
+const schemaOf = (d) => (d.analysis && d.analysis.fact_schema) || [];
+const factLabel = (d, key) => (schemaOf(d).find((x) => x.key === key) || {}).label || "this fact";
+// one chip per page that backs a fact. A dashed chip is another statement in the packet that the AI did not choose.
+function evidenceChips(f, key) {
+  const ev = (f.evidence || []).filter((e) => e.page), seen = new Set(), out = [];
+  ev.forEach((e) => {
+    const sup = e.supports !== false, id = e.page + "|" + sup;
+    if (seen.has(id) || out.length >= 4) return;
+    seen.add(id); S.cites.push({ page: e.page, quote: e.quote, key });
+    const on = S.highlight && S.highlight.page == e.page && S.activeKey === key;
+    out.push(`<button class="pg ${on ? "on" : ""} ${sup ? "" : "alt"}" data-cite="${S.cites.length - 1}" title="${sup ? "Show page " + e.page : "Another statement in the packet. Show page " + e.page}${e.match === "fuzzy" ? ". Matched despite scan noise" : ""}">p.${e.page}</button>`);
+  });
+  return out.length ? out.join("") : citeBtn(f.page, f.quote, key);
+}
 const FSTATUS = { found: "Stated", implied: "Implied only", none: "Stated: none", missing: "Not in packet", unsure: "Not sure. Check the packet" };
 const dotClass = (f, key) => (f.status === "found" ? "" : f.status === "none" ? (key === "indication_evidence" ? "n" : "g") : "w");
 
@@ -264,7 +270,7 @@ function caseHtml() {
       <div class="chead-row">
         <div><div class="mono faint">${esc(d.id)}</div>
           <h1>${esc(d.member_name)} <span class="faint" style="font-size:15px;font-weight:500">${d.age ? d.age + "y · " : ""}${esc(d.member_id)}</span></h1>
-          <div class="muted">${esc(d.procedure.replace("Elective inpatient admission, ", "Inpatient admission, "))} · CPT ${esc(d.cpt || "-")} · ${esc(d.facility)}</div></div>
+          <div class="muted">${esc(d.procedure.replace("Elective inpatient admission, ", "Inpatient admission, "))} · CPT ${esc(d.cpt || "-")} · ${esc(d.facility)} ${a.procedure ? `<span class="chip plain" style="margin-left:6px">${esc(a.procedure.short)}</span>` : ""}</div></div>
         <div class="chead-right"><span class="chip ${d.status}">${STATUS[d.status]}</span>${d.priority === "expedited" ? `<span class="chip bad">Expedited</span>` : ""}<span class="chip">${ic("clock", 14)}${esc(k.text)}</span>
           <span class="muted" style="font-size:13px">${d.assignee ? esc(d.assignee.name) : "Not assigned"}</span></div></div>
       <div class="tabs" role="tablist">${[["review", isAdmin ? "Assign" : "Review"], ["packet", `Full packet · ${pages} page${pages === 1 ? "" : "s"}`], ["activity", `Chat · ${d.comments.length}`]].map(([t, l]) => `<button class="tab ${S.tab === t ? "on" : ""}" role="tab" data-tab="${t}">${l}</button>`).join("")}</div></div>
@@ -301,16 +307,18 @@ function questionCardHtml(d) {
   const by = q.user ? q.user.name : "the nurse", toMd = S.user.role === "medical_director";
   return `<div class="reco escalate"><span class="mk big up">↑</span><div><h3>${toMd ? "Escalated by " + esc(by) : "Escalated to " + esc(d.md ? d.md.name : "a medical director")}</h3><div class="esc-when">${ago(q.created_at)}</div><div class="esc-label">Reason</div><p>${esc(q.body.replace(/^@\w+\s*/, ""))}</p></div></div>`;
 }
-const FIX_HINT = { expected_los_days: "Number of midnights, like 3", comorbidities: "For example: heart failure, diabetes", post_op_needs: "What care is needed after surgery", conservative_treatment: "What was tried and for how long", shared_decision_making: "Optional note", indication_evidence: "" };
 function fixForm(key) {
-  const none = ["comorbidities", "post_op_needs", "indication_evidence"].includes(key);
+  const def = schemaOf(S.detail).find((x) => x.key === key) || { kind: "text", hint: "", can_be_none: false };
+  const input = def.kind === "enum"
+    ? `<select id="fixvalue" style="width:auto">${(def.values || []).map((v) => `<option>${esc(v)}</option>`).join("")}</select>`
+    : def.kind === "number"
+      ? `<input id="fixvalue" type="number" step="any" placeholder="${esc(def.hint || "")}" style="width:170px">`
+      : `<input id="fixvalue" type="text" placeholder="${esc(def.hint || "")}" style="flex:1;min-width:200px">`;
   return `<div class="fixform"><b>What does the packet say?</b>
     <label><input type="radio" name="fixkind" value="found" checked> It is in the packet</label>
-    ${none ? `<label><input type="radio" name="fixkind" value="none"> The packet says there is none</label>` : ""}
+    ${def.can_be_none ? `<label><input type="radio" name="fixkind" value="none"> The packet says there is none</label>` : ""}
     <label><input type="radio" name="fixkind" value="missing"> It is not in the packet</label>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">${key === "indication_evidence"
-      ? `<select id="fixvalue" style="width:auto"><option>instability</option><option>deformity</option><option>pseudarthrosis</option><option>neural compression</option></select>`
-      : `<input id="fixvalue" type="text" placeholder="${esc(FIX_HINT[key] || "")}" style="flex:1;min-width:200px">`}
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${input}
       <input id="fixpage" type="number" min="1" placeholder="Page" style="width:90px"></div>
     <div class="faint" style="font-size:12.5px">This saves your answer and updates the recommendation. It also tells us how well we read the packet.</div>
     <div style="display:flex;gap:8px"><button class="btn small primary" data-savefix="${key}">Save</button><button class="btn small" data-fix="${key}">Cancel</button></div></div>`;
@@ -324,7 +332,7 @@ function reviewHtml(d, a, done) {
   const stLabel = { met: "Met", missing: "Missing", unsure: "Not sure", advisory: "Advisory", not_met: "Not met", info: "Info" };
   const reco = `<div class="reco ${a.action}"><span class="mk big ${RECO_MARK[a.action][0]}">${RECO_MARK[a.action][1]}</span><div><h3>${RECO_TITLE(a)}</h3><p>${esc(a.rationale)}</p></div></div>`;
   if (a.action === "no_policy") {
-    return `<div class="stack" style="max-width:860px">${reco}<div class="card"><h3>What happens next</h3><p class="muted" style="line-height:1.6;margin:0">A reviewer needs to find the right policy for this procedure before anything can be checked. PA Desk checks lumbar spinal fusion today (CPT ${esc((a.covered_cpt_codes || []).join(", "))}). You can still approve, ask the provider, or escalate below.</p></div></div>`;
+    return `<div class="stack" style="max-width:860px">${reco}<div class="card"><h3>What happens next</h3><p class="muted" style="line-height:1.6;margin:0">A reviewer needs to find the right policy for this procedure before anything can be checked. PA Desk checks a short list of procedures today (CPT ${esc((a.covered_cpt_codes || []).join(", "))}). You can still approve, ask the provider, or escalate below.</p></div></div>`;
   }
   const groups = {};
   a.checklist.forEach((c) => (groups[c.policy_id] ||= { c, items: [] }).items.push(c));
@@ -334,12 +342,13 @@ function reviewHtml(d, a, done) {
       ${d.sla === "breached" ? `<div class="banner">This case is past its ${d.priority === "expedited" ? "72-hour expedited" : "7-day standard"} CMS decision clock. It needs attention now.</div>` : ""}
       ${d.status === "escalated" && questionCardHtml(d) ? "" : reco}
       <div class="card"><h3>What the packet says</h3>
-        ${FACTS.map(([key, label, fmt]) => { const f = d.facts[key] || { status: "missing" }; const v = fmt(f);
-          return `<div class="fr ${S.activeKey === key ? "on" : ""}"><b>${label}</b><div><span class="sd ${dotClass(f, key)}"></span>${v ? esc(v) : `<span class="muted">${FSTATUS[f.status]}</span>`}${f.status === "implied" ? `<div class="q">“${esc(f.quote)}” ${esc(f.note || "")}</div>` : ""}${["unsure", "missing"].includes(f.status) && f.note ? `<div class="q">${esc(f.note)}</div>` : ""}${f.confirmed_by ? `<div class="faint" style="font-size:12.5px">Confirmed by ${esc(f.confirmed_by)}</div>` : ""}</div><div class="acts">${citeBtn(f.page, f.quote, key)}${canFix ? `<button class="btn small ${f.status === "unsure" ? "primary" : "ghost"}" data-fix="${key}">${f.status === "unsure" ? "Check" : "Fix"}</button>` : ""}</div>${S.fix === key ? fixForm(key) : ""}</div>`; }).join("")}</div>
+        ${schemaOf(d).map(({ key, label }) => { const f = d.facts[key] || { status: "missing" }; const v = f.display;
+          const fuzzy = (f.evidence || []).some((e) => e.match === "fuzzy" && e.supports !== false);
+          return `<div class="fr ${S.activeKey === key ? "on" : ""}"><b>${esc(label)}</b><div><span class="sd ${dotClass(f, key)}"></span>${v ? esc(v) : `<span class="muted">${FSTATUS[f.status]}</span>`}${f.checked ? `<span class="tick" title="A second check read the sentence in context and confirmed it states this">✓</span>` : ""}${f.status === "implied" ? `<div class="q">“${esc(f.quote)}” ${esc(f.note || "")}</div>` : f.note && !f.confirmed_by ? `<div class="q">${esc(f.note)}</div>` : ""}${fuzzy ? `<div class="faint" style="font-size:12px">Matched despite scan noise. Check the page.</div>` : ""}${f.confirmed_by ? `<div class="faint" style="font-size:12.5px">Confirmed by ${esc(f.confirmed_by)}</div>` : ""}</div><div class="acts">${evidenceChips(f, key)}${canFix ? `<button class="btn small ${f.status === "unsure" ? "primary" : "ghost"}" data-fix="${key}">${f.status === "unsure" ? "Check" : "Fix"}</button>` : ""}</div>${S.fix === key ? fixForm(key) : ""}</div>`; }).join("")}</div>
       <div class="card"><h3>Criteria, in order of authority</h3>
         ${Object.values(groups).map(({ c, items }) => { const p = pol[c.policy_id]; return `<div class="group"><div class="group-head"><b>${esc(c.layer)}: ${esc(c.policy_title)}</b>
           <span>${p && p.verified ? `<span class="chip ok">Verified source</span>` : `<span class="chip plain">Illustrative</span>`} ${p && p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">Open policy</a>` : ""}</span></div>
-          ${items.map((i) => `<div class="crit"><span class="mk ${i.status}" title="${stLabel[i.status]}">${mk[i.status]}</span><div><div class="crit-text">${esc(i.text)}</div><div class="crit-cite">${esc(i.cite)}${i.note ? " · " + esc(i.note) : ""}</div>${i.evidence ? `<div class="q">“${esc(i.evidence.quote)}”</div>` : ""}</div><div>${i.evidence ? citeBtn(i.evidence.page, i.evidence.quote, i.fact_key) : `<span class="chip ${i.status === "not_met" ? "bad" : i.status === "info" ? "plain" : "warn"}">${stLabel[i.status]}</span>`}</div></div>`).join("")}</div>`; }).join("")}
+          ${items.map((i) => `<div class="crit"><span class="mk ${i.status}" title="${stLabel[i.status]}">${mk[i.status]}</span><div><div class="crit-text">${esc(i.text)}</div><div class="crit-cite">${esc(i.cite)}${i.note ? " · " + esc(i.note) : ""}</div>${i.evidence ? `<div class="q">“${esc(i.evidence.quote)}”</div>` : ""}</div><div class="acts">${i.evidence ? (i.evidence_all || [i.evidence]).filter((e, n, arr) => e.supports !== false && arr.findIndex((x) => x.page === e.page) === n).slice(0, 3).map((e) => citeBtn(e.page, e.quote, i.fact_key)).join("") : `<span class="chip ${i.status === "not_met" ? "bad" : i.status === "info" ? "plain" : "warn"}">${stLabel[i.status]}</span>`}</div></div>`).join("")}</div>`; }).join("")}
         <div class="note">MCG and InterQual are licensed content and are not included. A licensed feed would plug in here.</div></div>
       ${d.status === "pended" ? simulateReplyCard(a) : ""}
     </div>
@@ -352,17 +361,20 @@ function pagesOf(d) {
   return byPage;
 }
 function pageBody(els, p) {
-  const hl = S.highlight;
+  const qs = [];
+  if (S.highlight && S.highlight.page == p && S.highlight.quote) qs.push(S.highlight.quote.trim());
+  const af = S.detail && S.activeKey ? S.detail.facts[S.activeKey] : null;
+  ((af && af.evidence) || []).forEach((e) => { if (e.page == p && e.quote && !qs.includes(e.quote.trim())) qs.push(e.quote.trim()); });
   return els.map((e) => {
     let t = esc(e.text);
-    if (hl && hl.page == p && hl.quote) { const q = esc(hl.quote.trim()); t = t.split(q).join(`<mark>${q}</mark>`); }
+    qs.forEach((q) => { const eq = esc(q); t = t.split(eq).join(`<mark>${eq}</mark>`); });
     return e.type === "Title" ? `<div class="h">${t}</div>` : `<div>${t}</div>`;
   }).join("");
 }
 function viewerHtml(d) {
   const byPage = pagesOf(d), nums = Object.keys(byPage).map(Number).sort((a, b) => a - b);
   const i = nums.indexOf(S.pageNo);
-  const label = S.activeKey ? (FACTS.find((f) => f[0] === S.activeKey) || [0, "this fact"])[1] : null;
+  const label = S.activeKey ? factLabel(d, S.activeKey) : null;
   return `<div class="vhead"><div><b>Packet</b> <span class="faint">${label ? "· showing the evidence for " + esc(label) : "· page by page"}</span></div>
       <div style="display:flex;align-items:center;gap:6px"><button class="btn small" data-page="${nums[i - 1] ?? ""}" ${i > 0 ? "" : "disabled"} aria-label="Previous page">${ic("left", 14)}</button><span class="faint" style="font-size:13px">Page ${S.pageNo} of ${nums.length}</span><button class="btn small" data-page="${nums[i + 1] ?? ""}" ${i >= 0 && i < nums.length - 1 ? "" : "disabled"} aria-label="Next page">${ic("right", 14)}</button></div></div>
     <div class="chips">${nums.map((n) => `<button class="pg ${n === S.pageNo ? "on" : ""}" data-page="${n}">${n}</button>`).join("")}</div>
@@ -404,6 +416,11 @@ const SAMPLE_REPLY = {
   conservative_treatment: "Failed 8 months of conservative care: physical therapy, NSAIDs and epidural injections.",
   comorbidities: "Past medical history: heart failure, type 2 diabetes.",
   post_op_needs: "Post-operative plan: telemetry monitoring and cardiology co-management.",
+  optimal_medical_therapy_months: "Medication history: on sacubitril-valsartan, carvedilol, spironolactone and dapagliflozin for 7 months.",
+  shared_decision_making: "A shared decision making visit using an ICD decision aid was completed on 2026-09-30 and documented in the chart.",
+  prior_medical_treatment: "Completed a 9-month physician-supervised weight management program with a registered dietitian and an anti-obesity medication. Weight was regained.",
+  bmi: "Most recent BMI 39.4 kg/m2, measured 2026-09-22.",
+  lvef_percent: "Repeat echocardiogram 2026-09-25: LVEF 30%.",
 };
 function simulateReplyCard(a) {
   const reply = a.gate.questions.map((q) => SAMPLE_REPLY[q.fact]).filter(Boolean).join(" ");
@@ -440,7 +457,7 @@ function decisionBar(d, a) {
 
 /* ---------- quality page ---------- */
 const PLAIN_PACKET = { h1: "Odd phrasing", h2: "Two different stay lengths", h3: "A finding ruled out", h4: "Blurry scan" };
-const PLAIN_FACT = { expected_los_days: "Expected stay", comorbidities: "Comorbidities", post_op_needs: "Post-op care needs", indication_evidence: "Surgical indication", conservative_treatment: "Conservative care", shared_decision_making: "Shared decision making" };
+const PLAIN_FACT = { lvef_percent: "Ejection fraction", lvef_method: "How it was measured", nyha_class: "NYHA class", cardiomyopathy_type: "Cause of heart failure", recent_mi_revasc: "Recent heart attack, bypass, or stent", optimal_medical_therapy_months: "Months on heart failure medicines", limiting_conditions: "Conditions that rule out an ICD", bmi: "BMI", prior_medical_treatment: "Prior medical treatment", expected_los_days: "Expected stay", comorbidities: "Comorbidities", post_op_needs: "Post-op care needs", indication_evidence: "Surgical indication", conservative_treatment: "Conservative care", shared_decision_making: "Shared decision making" };
 const plainPacket = (file) => PLAIN_PACKET[(file.match(/h\d/) || [])[0]] || file;
 function evalsHtml() {
   const e = S.evals, h = S.holdout;

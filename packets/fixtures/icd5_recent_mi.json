@@ -1,0 +1,789 @@
+{
+ "file": "icd5_recent_mi.pdf",
+ "engine": "unstructured",
+ "elements": [
+  {
+   "page": 1,
+   "type": "Header",
+   "text": "FAX  Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 1 of 8"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Prior Authorization Request - Inpatient Admission"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Health Plan"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Humana Medicare Advantage. Plan ID: H5216-014-000. Request type: standard pre-service review.\nDate of request: 2026-10-04"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Member Information"
+  },
+  {
+   "page": 1,
+   "type": "Form",
+   "text": "Member: Dennis Kowalczyk\nDOB: 1955-12-14 (age 70)\nMember ID: MBR-30619\nAddress: 630 Harbor View Dr, Lorain, OH 44052\nPhone: (440) 555-0174\nSex: M\nPrimary insurance: Humana Medicare Advantage (primary).\nSecondary: none on file."
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Requesting Provider"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Dr. Helen Abernathy, MD -- Cardiac Electrophysiology\nNPI: 1417258093\nPractice: Erie Shores Heart Institute\nPhone: (440) 555-0190   Fax: (440) 555-0191"
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Requested Service"
+  },
+  {
+   "page": 1,
+   "type": "Form",
+   "text": "Requested service: Elective inpatient admission, implantation of a transvenous implantable cardioverter defibrillator (ICD)\nCPT: 33249\nICD-10: I25.5 (Ischemic cardiomyopathy); I50.22\nPlanned admit date: 2026-10-14\nLevel of care requested: INPATIENT\nPlace of service: Hospital, inpatient (acute care)."
+  },
+  {
+   "page": 1,
+   "type": "Title",
+   "text": "Submission Contact"
+  },
+  {
+   "page": 1,
+   "type": "NarrativeText",
+   "text": "Submitted through the provider portal by Wanda Oyleran, Authorization Coordinator.\nCallback: (440) 555-0190. Supporting clinical documentation attached (8 pages including this request)."
+  },
+  {
+   "page": 1,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 2,
+   "type": "Header",
+   "text": "FAX  Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 2 of 8"
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Cardiology Consultation - ICD Evaluation"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Date: 2026-09-29.   Patient: Dennis Kowalczyk   Age: 70   Sex: M"
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Reason for referral"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Primary-prevention ICD evaluation, ischemic cardiomyopathy with reduced ejection fraction."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "History of present illness"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "70-year-old man with long-standing multivessel coronary artery disease managed medically, and ischemic cardiomyopathy with chronic systolic heart failure. He reports dyspnea on walking up a slope or more than two blocks, with no symptoms during routine household tasks and none at rest (NYHA II). No syncope. No sustained ventricular arrhythmia documented.\nHe was hospitalized earlier this month; see the interval history below and the discharge summary on page 6."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Interval history"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Admitted 2026-09-09 to Erie Shores Medical Center with chest pressure and a troponin rise, diagnosed\nwith an NSTEMI. Coronary angiography the next day showed known multivessel disease without a target\nfor PCI; managed medically. Discharged 2026-09-12 free of angina."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "PMH"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Coronary artery disease, ischemic cardiomyopathy, hypertension, hyperlipidemia, type 2 diabetes\n(metformin). No CABG. No prior stent. Former smoker, quit 2015. Left inguinal hernia repair 2012."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Exam"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "BP 124/70, HR 66, SpO2 96%. Lungs with minimal bibasilar crackles. No edema. Regular rhythm."
+  },
+  {
+   "page": 2,
+   "type": "Title",
+   "text": "Assessment and plan"
+  },
+  {
+   "page": 2,
+   "type": "NarrativeText",
+   "text": "Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI. Planned ICD per EP. SDM\nvisit completed (page 7). Continue GDMT and antiplatelet therapy."
+  },
+  {
+   "page": 2,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 3,
+   "type": "Header",
+   "text": "FAX Erie Shores Heart Institute | Fax (440) 555-0191 | Received 2026-10-04 | Page 3 of 8"
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Echocardiogram Report"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Study date: 2026-09-11 (inpatient, post-NSTEMI day 2).    Type: limited TTE.\nPatient: Dennis Kowalczyk.    Reader: C. Hoffmeyer, MD."
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Findings"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Left ventricle dilated, LVEDD 6.1 cm. Akinesis of the basal-to-mid inferior and inferolateral segments with hypokinesis of the anterior wall. Quantitative LVEF 31% (biplane Simpson).\nMild-to-moderate ischemic mitral regurgitation. RV function preserved. LA mildly dilated. No LV thrombus.\nNo pericardial effusion."
+  },
+  {
+   "page": 3,
+   "type": "Title",
+   "text": "Impression"
+  },
+  {
+   "page": 3,
+   "type": "NarrativeText",
+   "text": "Ischemic cardiomyopathy with LVEF 31% by echocardiography. Regional wall-motion abnormalities in the RCA/LCx territory."
+  },
+  {
+   "page": 3,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 4,
+   "type": "Header",
+   "text": "FAX  Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 4 of 8"
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Cardiac Catheterization Report"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Date: 2026-09-10.  Indication: NSTEMI, troponin I peak 14.2 ng/mL.  Operator: R. Ingram, MD."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Angiographic findings"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Left main: 30% distal stenosis. LAD: diffuse 60-70% mid disease, small caliber distal vessel. LCx: 80%\nproximal OM1 stenosis, diffusely diseased distal vessel. RCA: chronic total occlusion proximal,\ncollateralized from the left system. Presumed culprit: subtotal OM1 lesion with small territory."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Decision"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "Heart team review: no suitable target for PCI given diffuse small-vessel disease; CABG not recommended\nat this time (poor distal targets, patient preference). Medical management intensified. No stent deployed."
+  },
+  {
+   "page": 4,
+   "type": "Title",
+   "text": "Hemodynamics"
+  },
+  {
+   "page": 4,
+   "type": "NarrativeText",
+   "text": "LVEDP 24 mmHg. Aortic 128/74."
+  },
+  {
+   "page": 4,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 5,
+   "type": "Header",
+   "text": "FAX Erie Shores Heart Institute | Fax (440) 555-0191 | Received 2026-10-04 | Page 5 of 8"
+  },
+  {
+   "page": 5,
+   "type": "Title",
+   "text": "Heart Failure Medication List with Start Dates"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Patient: Dennis Kowalczyk.   Reconciled 2026-09-29."
+  },
+  {
+   "page": 5,
+   "type": "Table",
+   "text": "Drug Dose Start date sacubitril/valsartan 49/51 mg BID 2025-08-04 metoprolol succinate 100 mg daily 2025-08-04 eplerenone 25 mg daily 2025-09-15 dapagliflozin 10 mg daily 2025-10-20 furosemide 40 mg daily 2025-08-04 aspirin 81 mg daily 2012 clopidogrel 75 mg daily 2026-09-10 (post NSTEMI) rosuvastatin 40 mg daily 2026-09-10 (increased) metformin 1000 mg BID 2016"
+  },
+  {
+   "page": 5,
+   "type": "NarrativeText",
+   "text": "Patient has been on guideline-directed HF therapy for more than a year (14 months since 2025-08)."
+  },
+  {
+   "page": 5,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 6,
+   "type": "Header",
+   "text": "FAX Erie Shores Heart Institute | Fax (440) 555-0191 | Received 2026-10-04 | Page 6 of 8"
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Hospital Discharge Summary (Erie Shores Medical Center)"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Patient: Dennis Kowalczyk.   Admitted: 2026-09-09.   Discharged: 2026-09-12."
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Principal diagnosis"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Non-ST elevation myocardial infarction (NSTEMI), onset 2026-09-09."
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Hospital course"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Presented with 2 hours of substernal chest pressure. ECG with lateral ST depression, troponin I peak 14.2\nng/mL. Started on heparin, dual antiplatelet therapy and high-intensity statin. Cath 2026-09-10: multivessel\ndisease, no PCI or CABG possible (see page 4). Limited echo 2026-09-11 with LVEF 31%. Remained\nhemodynamically stable, no recurrent chest pain, no arrhythmia on telemetry."
+  },
+  {
+   "page": 6,
+   "type": "Title",
+   "text": "Disposition"
+  },
+  {
+   "page": 6,
+   "type": "NarrativeText",
+   "text": "Discharged home 2026-09-12 in stable condition, NYHA II. Follow up in cardiology within 2 weeks. ICD\nevaluation as an outpatient."
+  },
+  {
+   "page": 6,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 7,
+   "type": "Header",
+   "text": "FAX Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 7 of 8"
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Shared Decision Making Visit Note - ICD"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Date: 2026-09-30.   Clinician: Dr. H. Abernathy (EP).   Duration 35 minutes.   Patient and daughter present."
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "We used the ICD patient decision aid (illustrated pamphlet and interactive web tool, evidence-based) to\nreview the survival benefit of a primary-prevention ICD, procedural risk, shocks, and the alternative of\nmedical therapy alone. The patient described his own priorities and chose to move ahead with the device.\nInformed of the recent heart attack and the usual waiting period; patient states understanding."
+  },
+  {
+   "page": 7,
+   "type": "Title",
+   "text": "Outcome"
+  },
+  {
+   "page": 7,
+   "type": "NarrativeText",
+   "text": "Shared decision making visit completed and documented before implant scheduling."
+  },
+  {
+   "page": 7,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  },
+  {
+   "page": 8,
+   "type": "Header",
+   "text": "FAX Erie Shores Heart Institute  |  Fax (440) 555-0191  |  Received 2026-10-04  |  Page 8 of 8"
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Electrophysiology Surgeon Operative Plan"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Date: 2026-09-30.    Surgeon: Dr. Helen Abernathy, MD, cardiac electrophysiology.    Patient: Dennis\nKowalczyk."
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Procedure"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Transvenous ICD (single chamber), CPT 33249."
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Indication"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Primary prevention, ischemic cardiomyopathy with LVEF 31%, NYHA class II."
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Expected stay"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "2 midnights, telemetry and device interrogation, pocket check."
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Comorbidities"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Coronary artery disease, heart failure, type 2 diabetes, hypertension, hyperlipidemia."
+  },
+  {
+   "page": 8,
+   "type": "Title",
+   "text": "Status"
+  },
+  {
+   "page": 8,
+   "type": "NarrativeText",
+   "text": "Clinically stable since discharge on 09-12. No other conditions limiting survival; no atrial fibrillation; no severe neurologic impairment."
+  },
+  {
+   "page": 8,
+   "type": "Footer",
+   "text": "Made-up data for a software prototype. Not a real patient."
+  }
+ ],
+ "facts": {
+  "_member": {
+   "name": "Dennis Kowalczyk",
+   "dob": "1955-12-14",
+   "age": 70,
+   "member_id": "MBR-30619"
+  },
+  "_facility": "Erie Shores Heart Institute",
+  "_cpt": "33249",
+  "_procedure": "Elective inpatient admission, implantation of a transvenous implantable cardioverter defibrillator (ICD)",
+  "_admit": "2026-10-14",
+  "_setting": "inpatient",
+  "_extractor": "llm",
+  "_procedure_key": "icd",
+  "expected_los_days": {
+   "status": "found",
+   "value": 2,
+   "page": 8,
+   "quote": "2 midnights, telemetry and device interrogation, pocket check.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 8,
+     "quote": "2 midnights, telemetry and device interrogation, pocket check.",
+     "model_quote": "2 midnights, telemetry and device interrogation, pocket check.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states '2 midnights' which corresponds to an expected length of stay of 2 days."
+    }
+   ],
+   "checked": true
+  },
+  "comorbidities": {
+   "status": "found",
+   "value": [
+    "coronary artery disease",
+    "heart failure",
+    "type 2 diabetes",
+    "hypertension",
+    "hyperlipidemia"
+   ],
+   "page": 8,
+   "quote": "Coronary artery disease, heart failure, type 2 diabetes, hypertension, hyperlipidemia.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 8,
+     "quote": "Coronary artery disease, heart failure, type 2 diabetes, hypertension, hyperlipidemia.",
+     "model_quote": "Coronary artery disease, heart failure, type 2 diabetes, hypertension, hyperlipidemia.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly lists all five conditions: coronary artery disease, heart failure, type 2 diabetes, hypertension, and hyperlipidemia."
+    },
+    {
+     "page": 2,
+     "quote": "Coronary artery disease, ischemic cardiomyopathy, hypertension, hyperlipidemia, type 2 diabetes\n(metformin).",
+     "model_quote": "Coronary artery disease, ischemic cardiomyopathy, hypertension, hyperlipidemia, type 2 diabetes\n(metformin).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-29",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage lists all five required conditions including coronary artery disease, type 2 diabetes, hypertension, and hyperlipidemia, plus ischemic cardiomyopathy."
+    }
+   ],
+   "checked": true
+  },
+  "lvef_percent": {
+   "status": "found",
+   "value": 31,
+   "page": 3,
+   "quote": "Quantitative LVEF 31% (biplane Simpson).",
+   "note": null,
+   "evidence": [
+    {
+     "page": 3,
+     "quote": "Quantitative LVEF 31% (biplane Simpson).",
+     "model_quote": "Quantitative LVEF 31% (biplane Simpson).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-11",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'Quantitative LVEF 31% (biplane Simpson)' confirming the ejection fraction value of 31."
+    },
+    {
+     "page": 3,
+     "quote": "Ischemic cardiomyopathy with LVEF 31% by echocardiography.",
+     "model_quote": "Ischemic cardiomyopathy with LVEF 31% by echocardiography.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-11",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'LVEF 31% by echocardiography' confirming the ejection fraction value of 31."
+    },
+    {
+     "page": 2,
+     "quote": "Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI.",
+     "model_quote": "Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-29",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'LVEF 31%' in the assessment and plan section confirming the ejection fraction value of 31."
+    }
+   ],
+   "checked": true
+  },
+  "lvef_method": {
+   "status": "found",
+   "value": "echocardiography",
+   "page": 3,
+   "quote": "Quantitative LVEF 31% (biplane Simpson).",
+   "note": null,
+   "evidence": [
+    {
+     "page": 3,
+     "quote": "Quantitative LVEF 31% (biplane Simpson).",
+     "model_quote": "Quantitative LVEF 31% (biplane Simpson).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-11",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage appears in an 'Echocardiogram Report' section and describes the LVEF measurement, indicating echocardiography was the measurement method."
+    },
+    {
+     "page": 3,
+     "quote": "Ischemic cardiomyopathy with LVEF 31% by echocardiography.",
+     "model_quote": "Ischemic cardiomyopathy with LVEF 31% by echocardiography.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-11",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'LVEF 31% by echocardiography' directly confirming the measurement method."
+    }
+   ],
+   "checked": true
+  },
+  "nyha_class": {
+   "status": "found",
+   "value": "II",
+   "page": 8,
+   "quote": "Primary prevention, ischemic cardiomyopathy with LVEF 31%, NYHA class II.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 8,
+     "quote": "Primary prevention, ischemic cardiomyopathy with LVEF 31%, NYHA class II.",
+     "model_quote": "Primary prevention, ischemic cardiomyopathy with LVEF 31%, NYHA class II.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'NYHA class II' in the operative plan indication confirming the NYHA heart failure class is II."
+    },
+    {
+     "page": 2,
+     "quote": "He reports dyspnea on walking up a slope or more than two blocks, with no symptoms during routine household tasks and none at rest (NYHA II).",
+     "model_quote": "He reports dyspnea on walking up a slope or more than two blocks, with no symptoms during routine household tasks and none at rest (NYHA II).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-29",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states '(NYHA II)' after describing dyspnea on exertion, confirming the NYHA class is II."
+    }
+   ],
+   "checked": true
+  },
+  "cardiomyopathy_type": {
+   "status": "found",
+   "value": "ischemic",
+   "page": 2,
+   "quote": "Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI.",
+     "model_quote": "Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-29",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'Ischemic cardiomyopathy' confirming the cause of cardiomyopathy is ischemic."
+    },
+    {
+     "page": 8,
+     "quote": "Primary prevention, ischemic cardiomyopathy with LVEF 31%, NYHA class II.",
+     "model_quote": "Primary prevention, ischemic cardiomyopathy with LVEF 31%, NYHA class II.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'ischemic cardiomyopathy' confirming the cause of cardiomyopathy is ischemic."
+    },
+    {
+     "page": 2,
+     "quote": "Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI. Planned ICD per EP.",
+     "model_quote": "Ischemic cardiomyopathy, LVEF 31%, NYHA II, status post recent NSTEMI. Planned ICD per EP.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-29",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'Ischemic cardiomyopathy' confirming the cause of cardiomyopathy is ischemic."
+    }
+   ],
+   "checked": true
+  },
+  "recent_mi_revasc": {
+   "status": "found",
+   "value": "NSTEMI on 2026-09-09, within 40 days of planned implant on 2026-10-14; no PCI or CABG performed",
+   "page": 2,
+   "quote": "Admitted 2026-09-09 to Erie Shores Medical Center with chest pressure and a troponin rise, diagnosed\nwith an NSTEMI.",
+   "note": "MI occurred 2026-09-09, only 35 days before planned admit 2026-10-14, within the 40-day window; no revascularization (PCI/CABG) was performed.",
+   "evidence": [
+    {
+     "page": 2,
+     "quote": "Admitted 2026-09-09 to Erie Shores Medical Center with chest pressure and a troponin rise, diagnosed\nwith an NSTEMI.",
+     "model_quote": "Admitted 2026-09-09 to Erie Shores Medical Center with chest pressure and a troponin rise, diagnosed\nwith an NSTEMI.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-29",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents that the patient was admitted 2026-09-09 with chest pressure and troponin rise, diagnosed with an NSTEMI, which is a heart attack occurring within the past 40 days."
+    },
+    {
+     "page": 6,
+     "quote": "Non-ST elevation myocardial infarction (NSTEMI), onset 2026-09-09.",
+     "model_quote": "Non-ST elevation myocardial infarction (NSTEMI), onset 2026-09-09.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-12",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents 'Non-ST elevation myocardial infarction (NSTEMI), onset 2026-09-09' confirming a heart attack within the past 40 days."
+    },
+    {
+     "page": 6,
+     "quote": "no PCI or CABG possible (see page 4)",
+     "model_quote": "no PCI or CABG possible (see page 4)",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-12",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents that 'no PCI or CABG possible' confirming that no stent or bypass was performed in the past 3 months."
+    },
+    {
+     "page": 4,
+     "quote": "Heart team review: no suitable target for PCI given diffuse small-vessel disease; CABG not recommended\nat this time (poor distal targets, patient preference). Medical management intensified. No stent deployed.",
+     "model_quote": "Heart team review: no suitable target for PCI given diffuse small-vessel disease; CABG not recommended\nat this time (poor distal targets, patient preference). Medical management intensified. No stent deployed.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-10",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'No stent deployed' confirming that no revascularization procedure was performed."
+    },
+    {
+     "page": 7,
+     "quote": "Informed of the recent heart attack and the usual waiting period; patient states understanding.",
+     "model_quote": "Informed of the recent heart attack and the usual waiting period; patient states understanding.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage documents the patient was informed of 'the recent heart attack' confirming that the packet documents a recent heart attack (meeting the 40-day criterion)."
+    }
+   ],
+   "checked": true
+  },
+  "optimal_medical_therapy_months": {
+   "status": "found",
+   "value": 14,
+   "page": 5,
+   "quote": "Patient has been on guideline-directed HF therapy for more than a year (14 months since 2025-08).",
+   "note": null,
+   "evidence": [
+    {
+     "page": 5,
+     "quote": "Patient has been on guideline-directed HF therapy for more than a year (14 months since 2025-08).",
+     "model_quote": "Patient has been on guideline-directed HF therapy for more than a year (14 months since 2025-08).",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-29",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'Patient has been on guideline-directed HF therapy for more than a year (14 months since 2025-08)' confirming 14 months of optimal heart failure medicines."
+    }
+   ],
+   "checked": true
+  },
+  "shared_decision_making": {
+   "status": "found",
+   "value": "SDM visit completed 2026-09-30 using ICD patient decision aid",
+   "page": 7,
+   "quote": "We used the ICD patient decision aid (illustrated pamphlet and interactive web tool, evidence-based) to\nreview the survival benefit of a primary-prevention ICD, procedural risk, shocks, and the alternative of\nmedical therapy alone.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 7,
+     "quote": "We used the ICD patient decision aid (illustrated pamphlet and interactive web tool, evidence-based) to\nreview the survival benefit of a primary-prevention ICD, procedural risk, shocks, and the alternative of\nmedical therapy alone.",
+     "model_quote": "We used the ICD patient decision aid (illustrated pamphlet and interactive web tool, evidence-based) to\nreview the survival benefit of a primary-prevention ICD, procedural risk, shocks, and the alternative of\nmedical therapy alone.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage describes the shared decision making visit in detail, including use of decision aid and the patient's choice to proceed with the device."
+    },
+    {
+     "page": 7,
+     "quote": "Shared decision making visit completed and documented before implant scheduling.",
+     "model_quote": "Shared decision making visit completed and documented before implant scheduling.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage explicitly states 'Shared decision making visit completed and documented before implant scheduling' confirming the visit was documented."
+    }
+   ],
+   "checked": true
+  },
+  "limiting_conditions": {
+   "status": "none",
+   "value": null,
+   "page": 8,
+   "quote": "Clinically stable since discharge on 09-12. No other conditions limiting survival; no atrial fibrillation; no severe neurologic impairment.",
+   "note": null,
+   "evidence": [
+    {
+     "page": 8,
+     "quote": "Clinically stable since discharge on 09-12. No other conditions limiting survival; no atrial fibrillation; no severe neurologic impairment.",
+     "model_quote": "Clinically stable since discharge on 09-12. No other conditions limiting survival; no atrial fibrillation; no severe neurologic impairment.",
+     "match": "exact",
+     "score": 100.0,
+     "date": "2026-09-30",
+     "supports": true,
+     "verdict": "supports",
+     "reason": "The passage states 'No other conditions limiting survival; no atrial fibrillation; no severe neurologic impairment' indicating there are no conditions that rule out an ICD."
+    }
+   ],
+   "checked": true
+  }
+ }
+}
