@@ -6,12 +6,13 @@ Rules for this file:
   Only ids we make up (case id), counts, codes (CPT), statuses, versions, timings and token counts.
 - Every trace carries version tags, so a change in behavior can be tied to the change that caused it.
 """
-import contextlib, hashlib, os
+import contextlib, hashlib, os, threading
 from functools import lru_cache
 
 SERVICE = "pa-desk"
 _tracer = None
 _ready = False
+_lock = threading.Lock()
 
 
 def _versions():
@@ -28,7 +29,12 @@ def _versions():
 
 
 def init():
-    """Call once at start. Safe to call again."""
+    """Call once at start. Safe to call again, and from several threads at once: the others wait for the first."""
+    with _lock:
+        return _init()
+
+
+def _init():
     global _tracer, _ready
     if _ready:
         return bool(_tracer)

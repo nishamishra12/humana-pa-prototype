@@ -1,0 +1,493 @@
+[
+{
+  "id": "adv_011",
+  "service": "icd",
+  "category": "family_or_history_confusion",
+  "difficulty": "hard",
+  "why_hard": "The referral letter frames this as ischemic cardiomyopathy because of the father's MI. The patient's own record shows nonobstructive coronaries and a resuscitated VF arrest, so the ICD is for secondary prevention.",
+  "member": {"name": "Desmond R. Achterberg", "dob": "1966-03-08", "age": 60, "member_id": "MBR-90031", "sex": "M"},
+  "practice": "Harborview Electrophysiology Partners",
+  "planned_admit_date": "2026-10-22",
+  "pages": [
+    {"title": "PCP referral letter", "lines": [
+      "TIDELINE FAMILY MEDICINE",
+      "08/20/2026",
+      "To: Harborview Electrophysiology Partners",
+      "Re: Desmond Achterberg, DOB 03/08/1966",
+      "",
+      "Dear colleagues,",
+      "I am referring Mr. Achterberg for ICD consideration. He has a cardiomyopathy with EF in the low 30s and a very strong family history of premature coronary disease - his father had an MI at 49 and later died of ischemic cardiomyopathy, and a paternal uncle had CABG at 55. I suspect ischemic cardiomyopathy. He has been wearing a LifeVest since the spring.",
+      "He also has HTN, OSA on CPAP, and obesity (BMI 34).",
+      "Thank you for seeing him.",
+      "Corinne Vasquez-Albee, DO"
+    ]},
+    {"title": "EP consultation", "lines": [
+      "HARBORVIEW ELECTROPHYSIOLOGY PARTNERS",
+      "Consultation   09/17/2026",
+      "Pt: Achterberg, Desmond R.   60M",
+      "",
+      "HPI: On 03/08/2026 pt collapsed while on a treadmill at his gym. Bystander CPR, AED analyzed VF and delivered 1 shock with ROSC. Emergent cath that day showed nonobstructive CAD, no culprit, no intervention. Troponin peak attributed to arrest/CPR, no MI. CMR 03/11: LVEF 31%, patchy mid-wall LGE, no myocarditis by T2. No reversible cause found (K, Mg normal, no drugs, no QT prolongation). Neurologically intact on discharge, no anoxic injury. Discharged 03/14 with wearable defibrillator and GDMT. No WCD shocks since.",
+      "Now: mild DOE on hills and stairs. NYHA class II. No syncope.",
+      "",
+      "FHx: father MI at 49 and died of ischemic CM; paternal uncle CABG. No family SCD.",
+      "",
+      "Data: TTE 09/12/26 LVEF 33%.",
+      "",
+      "Assessment: Resuscitated VF arrest without reversible cause, with persistent LV dysfunction. Coronaries nonobstructive - not ischemic CM despite family history.",
+      "Indication: SECONDARY prevention ICD (survivor of VF cardiac arrest).",
+      "Plan: transvenous single-chamber ICD; SDM visit; admit.",
+      "Signed: Ingrid Halloran-Obi, MD"
+    ]},
+    {"title": "Cardiac catheterization report", "lines": [
+      "HARBORVIEW MEDICAL CENTER - EMERGENT CARDIAC CATH",
+      "Date: 03/08/2026   Pt: ACHTERBERG, DESMOND  (post-arrest, intubated)",
+      "LM: normal. LAD: 30% mid. LCx: 20% OM1. RCA: minor irregularities.",
+      "No thrombus, no culprit. LVEDP 22.",
+      "Conclusion: Nonobstructive CAD. No PCI performed.",
+      "Operator: K. Sandoval, MD"
+    ]},
+    {"title": "Echocardiogram report", "lines": [
+      "HARBORVIEW ECHO LAB   09/12/2026",
+      "ACHTERBERG, DESMOND R",
+      "LVEF (3D): 33%",
+      "LVIDd 6.0. Global hypokinesis, no regional WMA.",
+      "RV normal. No significant valve disease.",
+      "Compared to CMR 03/2026 (31%): no meaningful change.",
+      "Read by: A. Fontaine, MD"
+    ]},
+    {"title": "Shared decision making visit", "lines": [
+      "Harborview EP - Shared Decision Making Encounter",
+      "09/24/2026   Desmond Achterberg (wife present)",
+      "Clinician: Lars Nygaard, PA-C",
+      "Tool: evidence-based ICD decision aid (video + booklet).",
+      "We reviewed recurrence risk after VF arrest, how the ICD treats VF, risks of implant, inappropriate shocks, driving rules, and that the LifeVest is not a long-term option.",
+      "Patient chose ICD; wife agrees.",
+      "L. Nygaard PA-C"
+    ]},
+    {"title": "Medication list", "lines": [
+      "Achterberg, Desmond - Medication list 09/17/2026",
+      "metoprolol succinate 100 mg daily    start 03/12/2026",
+      "sacubitril/valsartan 49/51 BID       start 03/12/2026",
+      "spironolactone 25 mg daily           start 03/12/2026",
+      "empagliflozin 10 mg daily            start 04/2026",
+      "atorvastatin 40 mg daily             start 2021",
+      "amlodipine                           stopped 03/2026"
+    ]},
+    {"title": "Pre-admission plan", "lines": [
+      "HARBORVIEW EP - PRE-ADMISSION PLAN   10/01/2026",
+      "Patient: Desmond R. Achterberg   MBR-90031",
+      "Procedure: ICD (CPT 33249)   Admit: 10/22/2026 inpatient",
+      "Expected stay: 2 midnights.",
+      "Supporting factors: severe OSA (AHI 46) on CPAP - post-sedation monitoring; obesity BMI 34 w/ difficult airway history; HTN; transition off WCD requires telemetry until device check POD1.",
+      "Limiting conditions: none. Neuro intact, no terminal illness, sinus rhythm (no AF), clinically stable.",
+      "No MI, PCI or CABG.",
+      "I. Halloran-Obi MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected stay: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["severe obstructive sleep apnea on CPAP", "obesity BMI 34", "hypertension"], "page": 8, "why": "Supporting factors on the pre-admission plan."},
+    "lvef_percent": {"truth": "present", "value": 33, "page": 5, "why": "CMR 03/11/2026 31%; TTE 09/12/2026 33%. The later one wins."},
+    "lvef_method": {"truth": "present", "value": "echocardiography", "page": 5, "why": "3D TTE."},
+    "nyha_class": {"truth": "present", "value": "II", "page": 3, "why": "EP consult: 'NYHA class II'."},
+    "cardiomyopathy_type": {"truth": "present", "value": "other", "page": 3, "why": "EP states the indication is secondary prevention after a resuscitated VF arrest, with nonobstructive coronaries. Per the definitions, a request resting on prior cardiac arrest is 'other'. The PCP's 'suspect ischemic' rests on the father's history, not the patient's."},
+    "recent_mi_revasc": {"truth": "negated", "value": null, "page": 4, "why": "Cath 03/08/2026: no PCI; troponin rise 'no MI'; page 8 'No MI, PCI or CABG.'"},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 7.3, "page": 7, "why": "Metoprolol, ARNI and MRA since 2026-03-12, about 7.3 months to the implant."},
+    "shared_decision_making": {"truth": "present", "value": null, "page": 6, "why": "SDM 09/24/2026 with an evidence-based decision aid."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 8, "why": "'Limiting conditions: none. Neuro intact' (no anoxic brain injury)."}
+  },
+  "expected_action": "escalate",
+  "action_reasoning": "Rule 1: the request rests on a prior cardiac arrest, so cardiomyopathy_type is 'other' and a physician must decide. All other facts are present (and would otherwise pass). Escalate."
+},
+{
+  "id": "adv_012",
+  "service": "icd",
+  "category": "planned_vs_done",
+  "difficulty": "medium",
+  "why_hard": "SDM is mentioned on three pages, but it is only scheduled (10/20/2026). The EP's brochure-and-discussion is not a formal SDM visit with a decision aid.",
+  "member": {"name": "Philippa N. Carrow", "dob": "1953-10-27", "age": 72, "member_id": "MBR-37709", "sex": "F"},
+  "practice": "Granite Bay Heart Center",
+  "planned_admit_date": "2026-11-03",
+  "pages": [
+    {"title": "EP consultation", "lines": [
+      "GRANITE BAY HEART CENTER - ELECTROPHYSIOLOGY CONSULT",
+      "Date of service: 09/21/2026",
+      "Patient: CARROW, PHILIPPA N.   DOB 10/27/1953",
+      "",
+      "72F, NSTEMI 05/2022 -> CABG x4 06/14/2022. Persistent LV dysfunction despite revasc + GDMT. Recent cardiac PET: LVEF 30%, large anterior scar, minimal viable myocardium.",
+      "Symptoms: walks to end of block and must rest; bathing tires her. No rest symptoms. NYHA III. No syncope.",
+      "No interval ACS. No PCI since CABG.",
+      "",
+      "Discussion: I explained the ICD, the procedure, and the main risks and benefits. Gave her our device brochure. She is leaning toward proceeding.",
+      "",
+      "Plan:",
+      "1. Formal SDM visit with HF NP using the ICD decision aid - scheduled 10/20/2026.",
+      "2. Tentatively book ICD 11/03/2026 pending SDM + auth.",
+      "3. Continue GDMT. Consider adding SGLT2i.",
+      "Dr. Ruairi Fennimore, MD"
+    ]},
+    {"title": "Cardiac PET report", "lines": [
+      "GRANITE BAY IMAGING - CARDIAC PET/CT (Rb-82 perfusion + FDG viability)",
+      "Exam date: 08/26/2026",
+      "Pt: Carrow, Philippa",
+      "",
+      "Rest/stress perfusion: large severe fixed defect LAD territory; no reversible ischemia.",
+      "FDG: matched defect - scar, no significant hibernating myocardium.",
+      "Gated LVEF: rest 30%, stress 31%.",
+      "Impression: Large anterior infarct, nonviable. LVEF 30%."
+    ]},
+    {"title": "Medication list", "lines": [
+      "Carrow, Philippa N.  Medication Reconciliation 09/21/2026",
+      "",
+      "- carvedilol 12.5 mg BID (start 07/05/2022)",
+      "- sacubitril/valsartan 24/26 BID (start 07/05/2022)",
+      "- eplerenone 25 mg daily (start 09/2022)",
+      "- aspirin 81 mg daily",
+      "- atorvastatin 80 mg daily",
+      "- furosemide 40 mg daily",
+      "- sertraline 50 mg daily",
+      "Planned: empagliflozin 10 mg - to start at 10/20 visit."
+    ]},
+    {"title": "Heart failure clinic telephone note", "lines": [
+      "GRANITE BAY HF CLINIC - TELEPHONE ENCOUNTER",
+      "09/28/2026  14:05",
+      "Spoke w/ pt. Confirmed appointment 10/20/2026 10:00 w/ Moira Tash, NP for ICD shared decision-making visit; decision aid will be reviewed at that visit. Pt asked to bring daughter.",
+      "Will also start empagliflozin at that visit if BMP ok.",
+      "- C. Penhaligon, RN"
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "GRANITE BAY LAB   09/22/2026",
+      "CARROW, PHILIPPA",
+      "Na 136  K 4.7  BUN 26  Cr 1.2  eGFR 47",
+      "Hgb 12.0  Plt 241  INR 1.1",
+      "NT-proBNP 1,780"
+    ]},
+    {"title": "Cardiac surgery operative summary (2022)", "lines": [
+      "GRANITE BAY MEDICAL CENTER - CARDIOTHORACIC SURGERY",
+      "Operative summary   Date of surgery: 06/14/2022",
+      "Procedure: CABG x4 (LIMA-LAD, SVG-D1, SVG-OM1, SVG-PDA)",
+      "Indication: NSTEMI 05/2022, 3-vessel CAD, LVEF 30%",
+      "Uncomplicated course, discharged POD 6.",
+      "Surgeon: T. Okwuosa, MD"
+    ]},
+    {"title": "Admission plan", "lines": [
+      "GRANITE BAY HEART CENTER - ICD ADMISSION PLAN",
+      "Prepared: 10/01/2026",
+      "Patient: Philippa N. Carrow  /  MBR-37709  /  CPT 33249",
+      "Admit: 11/03/2026 (inpatient)",
+      "",
+      "Anticipated LOS: 2 midnights",
+      "Supporting factors: prior sternotomy w/ L subclavian venous anatomy uncertain, may need contrast venogram; CKD 3a; depression on SSRI w/ procedural anxiety requiring deeper sedation and monitoring.",
+      "",
+      "SDM: scheduled 10/20/2026 (prior to implant).",
+      "Limiting conditions: none - cognitively intact, no illness limiting survival <1 yr, no AF, stable.",
+      "R. Fennimore MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Anticipated LOS: 2 midnights'."},
+    "comorbidities": {"truth": "present", "value": ["prior sternotomy", "CKD stage 3a", "depression"], "page": 8, "why": "Supporting factors on the admission plan."},
+    "lvef_percent": {"truth": "present", "value": 30, "page": 3, "why": "Cardiac PET 08/26/2026: rest LVEF 30%."},
+    "lvef_method": {"truth": "present", "value": "nuclear imaging", "page": 3, "why": "Rb-82 PET is nuclear imaging."},
+    "nyha_class": {"truth": "present", "value": "III", "page": 2, "why": "EP consult: 'NYHA III'."},
+    "cardiomyopathy_type": {"truth": "present", "value": "ischemic", "page": 2, "why": "Post-NSTEMI, CABG, large anterior scar."},
+    "recent_mi_revasc": {"truth": "negated", "value": null, "page": 2, "why": "NSTEMI 05/2022 and CABG 06/14/2022; 'No interval ACS. No PCI since CABG.'"},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 51.9, "page": 4, "why": "Carvedilol and ARNI since 2022-07-05. Not decisive (ischemic). Empagliflozin is only planned."},
+    "shared_decision_making": {"truth": "absent", "value": null, "page": null, "why": "The formal SDM visit with the decision aid is scheduled for 2026-10-20, which has not happened yet (today is 2026-10-04). The 09/21 brochure and verbal discussion is not a formal SDM visit with a decision tool."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 8, "why": "'Limiting conditions: none'."}
+  },
+  "expected_action": "pend",
+  "action_reasoning": "Rule 7 needs a documented SDM visit with a decision aid. It is only scheduled, so the fact is absent. Pend and ask for the SDM note after 10/20. All other rules pass."
+},
+{
+  "id": "adv_013",
+  "service": "icd",
+  "category": "hedged_language",
+  "difficulty": "hard",
+  "why_hard": "The most recent note says 'EF likely improved' and 'possibly no longer meets criteria', but there is no new measurement. The last measured LVEF is still 30%.",
+  "member": {"name": "Augustin F. Lemaire", "dob": "1951-12-12", "age": 74, "member_id": "MBR-22648", "sex": "M"},
+  "practice": "Pine Crest Cardiovascular Associates",
+  "planned_admit_date": "2026-10-28",
+  "pages": [
+    {"title": "Heart failure NP follow-up", "lines": [
+      "PINE CREST CARDIOVASCULAR ASSOCIATES - HF Clinic",
+      "Follow-up  09/30/2026",
+      "Augustin Lemaire  74M",
+      "",
+      "Feels better than in August. Doing his garden, still has to stop after carrying bags up the stairs. No orthopnea. Wt down 4 lb.",
+      "BP 104/62, HR 58.",
+      "",
+      "A/P:",
+      "- ICM, HFrEF. NYHA II.",
+      "- EF likely improved given clinical improvement and uptitration; we have not repeated the echo. Possibly he no longer meets ICD criteria if EF has recovered, but no new imaging to say so. Will defer to EP.",
+      "- Cont GDMT.",
+      "Noor Baptiste, NP"
+    ]},
+    {"title": "Echocardiogram report", "lines": [
+      "PINE CREST ECHO",
+      "Date of study: 08/19/2026",
+      "LEMAIRE, AUGUSTIN F",
+      "LVEF: 30% (biplane)",
+      "Inferior and inferoseptal AK; mild global HK otherwise.",
+      "LVIDd 5.9. Mild MR. RV nl.",
+      "Impression: LVEF 30%, unchanged vs 01/2026 (30%).",
+      "Read: G. Hollister-Ng, MD"
+    ]},
+    {"title": "EP consultation", "lines": [
+      "Pine Crest EP - Consultation 09/09/2026",
+      "Pt: Lemaire, Augustin F.",
+      "Hx: NSTEMI 11/2019 w/ PCI to RCA 11/2019. ICM. No events since.",
+      "Sx: DOE at 2-3 blocks; NYHA II.",
+      "Imaging: TTE 08/19/26 LVEF 30%; TTE 01/2026 LVEF 30%.",
+      "Imp: ICM, LVEF persistently <=35% for >6 yrs on GDMT. Primary prevention ICD indicated.",
+      "Plan: SDM then implant.",
+      "Signed: Delphine Arsenault, MD"
+    ]},
+    {"title": "Shared decision making note", "lines": [
+      "SDM - ICD   09/16/2026",
+      "Pt: Augustin Lemaire   Daughter (Celine) present",
+      "Clinician: Marcus Oyibo, PA-C",
+      "Decision aid: evidence-based ICD decision aid (French-language booklet at pt request).",
+      "Covered absolute benefit, risks, shocks, deactivation, option to repeat echo first and defer.",
+      "Pt prefers to proceed now rather than wait for repeat imaging.",
+      "M. Oyibo PA-C"
+    ]},
+    {"title": "Medication list", "lines": [
+      "Lemaire, Augustin  -  Meds  -  09/30/2026",
+      "metoprolol succinate 150 mg daily   since 11/18/2019 (titrated 08/2026)",
+      "sacubitril/valsartan 97/103 BID     since 06/2021",
+      "lisinopril                          11/18/2019 - 06/2021 (changed to ARNI)",
+      "spironolactone 25 mg                since 11/18/2019",
+      "empagliflozin 10 mg                 since 2023",
+      "clopidogrel 75 mg                   since 11/2019",
+      "rosuvastatin 20 mg",
+      "tamsulosin 0.4 mg"
+    ]},
+    {"title": "PCP visit note", "lines": [
+      "ELMWOOD PRIMARY CARE   09/02/2026",
+      "Lemaire, Augustin F.  annual wellness visit",
+      "Daughter wonders about memory - misplacing keys. MoCA today 26/30 (normal range). No dementia. Independent in all ADLs/IADLs, manages own meds and finances.",
+      "Other: BPH stable, CKD 3a (Cr 1.4), mild hearing loss.",
+      "Cancer screening up to date, no malignancy.",
+      "Hye-jin Calloway, MD"
+    ]},
+    {"title": "Pre-admission plan", "lines": [
+      "PRE-ADMISSION PLAN - EP LAB   10/01/2026",
+      "Patient: Lemaire, Augustin F.   MBR-22648   CPT 33249   Admit 10/28/2026",
+      "Proceed based on most recent measured LVEF (TTE 08/19/2026: 30%). No repeat imaging planned prior to implant.",
+      "Expected LOS: 2 midnights.",
+      "Factors: clopidogrel continued (prior RCA stent) - pocket hematoma risk; CKD 3a; bradycardia on high-dose BB (HR 58) - device check and telemetry overnight; BPH w/ prior retention.",
+      "Limiting conditions: none (cognition normal by MoCA, no terminal illness, no AF, stable).",
+      "No ACS or revascularization since 2019.",
+      "D. Arsenault MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["clopidogrel antiplatelet therapy", "CKD stage 3a", "bradycardia on beta blocker", "BPH with prior urinary retention"], "page": 8, "why": "Factors on the pre-admission plan."},
+    "lvef_percent": {"truth": "present", "value": 30, "page": 3, "why": "The last measurement is TTE 08/19/2026: 30%. 'EF likely improved' (page 2) is a guess, not a measurement, and does not replace it."},
+    "lvef_method": {"truth": "present", "value": "echocardiography", "page": 3, "why": "TTE biplane."},
+    "nyha_class": {"truth": "present", "value": "II", "page": 2, "why": "HF NP note 09/30: 'NYHA II'; same in EP consult."},
+    "cardiomyopathy_type": {"truth": "present", "value": "ischemic", "page": 4, "why": "ICM after NSTEMI and RCA PCI 2019."},
+    "recent_mi_revasc": {"truth": "negated", "value": null, "page": 8, "why": "NSTEMI and PCI 11/2019; 'No ACS or revascularization since 2019.'"},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 83.3, "page": 6, "why": "Metoprolol, ACEi/ARNI and spironolactone since 2019-11-18. Not decisive (ischemic)."},
+    "shared_decision_making": {"truth": "present", "value": null, "page": 5, "why": "SDM 09/16/2026 with an evidence-based decision aid."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 8, "why": "'Limiting conditions: none'. The memory concern was checked: MoCA 26/30, no dementia (page 7)."}
+  },
+  "expected_action": "approve",
+  "action_reasoning": "Hedged statements do not replace measurements. The last measured LVEF is 30% by echo, NYHA II, ischemic, no recent event, SDM done, no limiting condition, 2 midnights with documented factors. Approve."
+},
+{
+  "id": "adv_014",
+  "service": "icd",
+  "category": "hedged_language",
+  "difficulty": "hard",
+  "why_hard": "The cause of the cardiomyopathy is never settled. One cardiologist favors ischemic and the EP favors non-ischemic, both hedged. GDMT is 2.6 months, so the answer flips on etiology.",
+  "member": {"name": "Wilhelmina C. Asante", "dob": "1960-06-06", "age": 66, "member_id": "MBR-58172", "sex": "F"},
+  "practice": "Clearwater Heart & Vascular",
+  "planned_admit_date": "2026-10-20",
+  "pages": [
+    {"title": "General cardiology note", "lines": [
+      "CLEARWATER HEART & VASCULAR",
+      "Office note 09/10/2026   Provider: Jonas Whitfield, MD",
+      "Pt: Asante, Wilhelmina C.  66F",
+      "",
+      "HFrEF dx 07/2026 (presented w/ edema/DOE). Long-standing DM2 and CKD 4 (eGFR 24).",
+      "Ischemic eval: invasive angiography deferred due to CKD 4 and contrast risk; pt also prefers to avoid cath. SPECT 07/30 w/ small fixed inferior defect, read as attenuation vs prior silent infarct.",
+      "",
+      "Impression: Cardiomyopathy, etiology undetermined. I favor ischemic given long-standing diabetes and the fixed inferior defect, but cannot exclude a non-ischemic process.",
+      "GDMT started 08/01, tolerating.",
+      "Refer to EP re ICD.",
+      "J. Whitfield MD"
+    ]},
+    {"title": "Nuclear stress test report", "lines": [
+      "CLEARWATER NUCLEAR CARDIOLOGY",
+      "Regadenoson SPECT   07/30/2026",
+      "ASANTE, WILHELMINA",
+      "Perfusion: small, mild-intensity fixed defect of the basal inferior wall. Breast and diaphragmatic attenuation present; attenuation-corrected images partially normalize the defect.",
+      "No reversible defects.",
+      "Gated LVEF 29% (limited, irregular gating).",
+      "Impression: 1) Small fixed basal inferior defect - attenuation artifact vs small prior infarct; cannot exclude. 2) No ischemia. 3) Reduced LVEF.",
+      "Read: R. Castellano-Byrd, MD"
+    ]},
+    {"title": "Echocardiogram report", "lines": [
+      "CLEARWATER ECHO LAB",
+      "Date: 09/17/2026",
+      "Asante, Wilhelmina C.",
+      "LVEF 27% (biplane Simpson).",
+      "Global hypokinesis without clear regional pattern. LV dilated (LVIDd 6.3).",
+      "Mod functional MR. RV mildly reduced.",
+      "Impression: severe global LV dysfunction, LVEF 27%."
+    ]},
+    {"title": "EP consultation", "lines": [
+      "CLEARWATER HEART & VASCULAR - ELECTROPHYSIOLOGY",
+      "Consult 09/24/2026",
+      "Pt: Wilhelmina Asante",
+      "",
+      "Sx: SOB walking room to room on bad days, usually half a block; no rest dyspnea. NYHA III.",
+      "Echo 9/17: LVEF 27%, global HK, no regional WMA.",
+      "No known MI. No PCI or CABG ever.",
+      "",
+      "Assessment: Cardiomyopathy, likely non-ischemic given global pattern on echo; however ischemic etiology is not excluded without angiography (deferred for CKD 4).",
+      "On GDMT since 08/01/2026.",
+      "Plan: pt and family want ICD before winter travel. SDM visit, then implant 10/20.",
+      "Y. Mbatha-Rowe, MD"
+    ]},
+    {"title": "Medication list", "lines": [
+      "Asante, Wilhelmina - Current meds - 09/24/2026",
+      "carvedilol 6.25 mg BID ........ start 08/01/2026",
+      "valsartan 40 mg BID ........... start 08/01/2026 (ARNI not used - CKD 4/K)",
+      "dapagliflozin 10 mg ........... start 08/01/2026",
+      "hydralazine 25 mg TID ......... start 08/01/2026",
+      "isosorbide dinitrate 20 TID ... start 08/01/2026",
+      "torsemide 20 mg daily ......... start 07/2026",
+      "insulin detemir 22 u qHS ...... 2012",
+      "atorvastatin 40 ............... 2015"
+    ]},
+    {"title": "Shared decision making note", "lines": [
+      "Clearwater Device Clinic - SHARED DECISION MAKING (ICD)",
+      "Date: 09/29/2026",
+      "Patient: Wilhelmina Asante, with son",
+      "Facilitator: Precious Dube, NP",
+      "Decision aid: evidence-based ICD decision aid (booklet), reviewed fully.",
+      "Discussed that ICD benefit may be smaller with CKD 4; shocks; infection; dialysis-access considerations for venous anatomy; deactivation.",
+      "Decision: proceed.",
+      "P. Dube NP"
+    ]},
+    {"title": "Pre-admission plan", "lines": [
+      "PRE-ADMISSION PLAN   10/02/2026",
+      "Asante, Wilhelmina C.   MBR-58172   CPT 33249   Admit 10/20/2026",
+      "Expected LOS: 2 midnights.",
+      "Factors: CKD 4 (eGFR 24) - nephrology to follow, no contrast, daily BMP; insulin-requiring DM2 - glucose mgmt while NPO; preservation of L arm veins for future AV access (R-sided implant).",
+      "Limiting conditions screened: none (no dementia, no terminal illness, no AF, stable).",
+      "Y. Mbatha-Rowe MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["CKD stage 4", "type 2 diabetes on insulin"], "page": 8, "why": "Factors on the pre-admission plan."},
+    "lvef_percent": {"truth": "present", "value": 27, "page": 4, "why": "SPECT 07/30/2026 29%; TTE 09/17/2026 27%. The later one wins."},
+    "lvef_method": {"truth": "present", "value": "echocardiography", "page": 4, "why": "TTE biplane Simpson."},
+    "nyha_class": {"truth": "present", "value": "III", "page": 5, "why": "EP consult: 'NYHA III'."},
+    "cardiomyopathy_type": {"truth": "present", "value": null, "ambiguous": true, "page": 5, "why": "General cardiology (09/10) 'favor ischemic ... cannot exclude non-ischemic'. EP (09/24) 'likely non-ischemic ... ischemic etiology not excluded'. The SPECT defect is 'attenuation vs small prior infarct'. No angiography. No document settles it."},
+    "recent_mi_revasc": {"truth": "negated", "value": null, "page": 5, "why": "'No known MI. No PCI or CABG ever.' Even a possible old silent infarct is not within 40 days."},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 2.6, "page": 6, "why": "GDMT started 2026-08-01; 80 days (2.6 months) to the 2026-10-20 implant."},
+    "shared_decision_making": {"truth": "present", "value": null, "page": 7, "why": "SDM 09/29/2026 with an evidence-based decision aid."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 8, "why": "'Limiting conditions screened: none'."}
+  },
+  "expected_action": "verify",
+  "action_reasoning": "If ischemic, rule 6 does not apply and every rule passes (approve). If non-ischemic, 2.6 months of GDMT fails rule 6 (escalate). The packet has two hedged, opposing opinions on etiology and no angiography. A person must settle the etiology. Verify."
+},
+{
+  "id": "adv_015",
+  "service": "icd",
+  "category": "ambiguous_verify",
+  "difficulty": "hard",
+  "why_hard": "Two clinicians saw the patient on the same day: the EP wrote NYHA II and the HF clinic wrote NYHA IV with rest dyspnea. The later pre-op note only repeats the EP's class.",
+  "member": {"name": "Cornelius T. Vandermeer", "dob": "1956-02-29", "age": 70, "member_id": "MBR-46290", "sex": "M"},
+  "practice": "Highland Park Cardiology",
+  "planned_admit_date": "2026-10-27",
+  "pages": [
+    {"title": "EP consultation", "lines": [
+      "HIGHLAND PARK CARDIOLOGY - EP",
+      "Consult date: 09/24/2026",
+      "Pt: VANDERMEER, CORNELIUS T.  70M",
+      "",
+      "Hx: anterior MI + CABG x3 03/2016. ICM. No events since 2016.",
+      "Today: reports SOB w/ moderate exertion (yard work, 2 flights). Denies orthopnea. Denies syncope.",
+      "Exam: comfortable, no JVD noted, trace edema.",
+      "LVEF 25% (TTE 9/5).",
+      "Assessment: ICM, NYHA class II. Primary prevention ICD indicated.",
+      "Plan: SDM, book implant.",
+      "Dr. Ansel Prokopenko"
+    ]},
+    {"title": "Echocardiogram report", "lines": [
+      "Highland Park Echo   09/05/2026",
+      "Vandermeer, Cornelius",
+      "LVEF 25% by biplane.",
+      "Anterior/apical AK. LV dilated. Mod MR. RVSP 48.",
+      "IVC 2.3 cm, <50% collapse.",
+      "Impression: severe LV dysfunction, elevated filling pressures."
+    ]},
+    {"title": "Heart failure clinic note", "lines": [
+      "HIGHLAND PARK HEART FAILURE CLINIC",
+      "Visit date: 09/24/2026   Provider: Shira Galanis-Wood, NP",
+      "Pt: Cornelius Vandermeer",
+      "",
+      "S: Wife called in this AM - worse SOB x 10 days. Now SOB at rest sitting in chair, sleeping in recliner, 3-pillow orthopnea, PND twice this week. Wt up 9 lb.",
+      "O: BP 98/60, HR 92, SpO2 93% RA. JVP 14 cm. Bibasilar crackles. 3+ pitting edema to knees.",
+      "A: Acute on chronic HFrEF, ICM. NYHA class IV symptoms today.",
+      "P: Torsemide 20 -> 40 BID, metolazone 2.5 x 2 doses, BMP 48h, RTC 1 wk. ED precautions given. Discussed with EP - ICD timing to be reviewed.",
+      "S. Galanis-Wood NP"
+    ]},
+    {"title": "Medication list", "lines": [
+      "Vandermeer, C. - medication list 09/24/2026",
+      "carvedilol 12.5 BID (2016)",
+      "sacubitril/valsartan 49/51 BID (2019)",
+      "spironolactone 25 daily (2016)",
+      "empagliflozin 10 daily (2022)",
+      "torsemide 40 mg BID (increased 09/24/2026)",
+      "metolazone 2.5 mg x2 doses (09/2026)",
+      "aspirin 81, atorvastatin 80"
+    ]},
+    {"title": "Shared decision making note", "lines": [
+      "SDM VISIT FOR ICD - 09/26/2026",
+      "Patient: Cornelius Vandermeer + wife",
+      "Clinician: Tobias Ferreira, PA-C",
+      "Decision aid: evidence-based ICD decision aid (booklet + video).",
+      "Reviewed risks, benefits, shocks, deactivation, alternatives.",
+      "Pt chooses ICD.",
+      "T. Ferreira PA-C"
+    ]},
+    {"title": "Laboratory results", "lines": [
+      "Highland Park Lab   09/26/2026",
+      "Na 133 L  K 3.6  BUN 38 H  Cr 1.7 H  eGFR 41",
+      "NT-proBNP 6,850 H (prior 2,100 in 06/2026)",
+      "Hgb 12.6  INR 1.0"
+    ]},
+    {"title": "Pre-admission plan", "lines": [
+      "PRE-ADMISSION / PROCEDURE PLAN   10/01/2026",
+      "Vandermeer, Cornelius T.   MBR-46290   CPT 33249   Admit 10/27/2026",
+      "Indication: ICM, LVEF 25%, NYHA II (per EP consult 9/24), SDM done 9/26.",
+      "Expected LOS: 2 midnights. Factors: CKD 3b, active diuretic titration with electrolyte monitoring, hyponatremia.",
+      "Limiting conditions: none documented; clinically stable per EP consult.",
+      "No MI or revascularization since 2016.",
+      "A. Prokopenko MD"
+    ]}
+  ],
+  "truth": {
+    "expected_los_days": {"truth": "present", "value": 2, "page": 8, "why": "'Expected LOS: 2 midnights.'"},
+    "comorbidities": {"truth": "present", "value": ["CKD stage 3b", "active diuretic titration", "hyponatremia"], "page": 8, "why": "Factors on the pre-admission plan."},
+    "lvef_percent": {"truth": "present", "value": 25, "page": 3, "why": "TTE 09/05/2026: 25%."},
+    "lvef_method": {"truth": "present", "value": "echocardiography", "page": 3, "why": "TTE biplane."},
+    "nyha_class": {"truth": "present", "value": null, "ambiguous": true, "page": 4, "why": "Same date, two assessments: EP consult 09/24 'NYHA class II' (page 2) and HF clinic 09/24 'NYHA class IV' with rest dyspnea and volume overload (page 4). Neither is later. The 10/01 note only cites the EP consult and is not a new assessment. Class II passes rule 4; class IV fails it."},
+    "cardiomyopathy_type": {"truth": "present", "value": "ischemic", "page": 2, "why": "ICM after anterior MI and CABG 2016."},
+    "recent_mi_revasc": {"truth": "negated", "value": null, "page": 8, "why": "MI and CABG 03/2016; no events since."},
+    "optimal_medical_therapy_months": {"truth": "present", "value": 127, "page": 5, "why": "Carvedilol and spironolactone since 2016, roughly 10.5 years. Not decisive (ischemic)."},
+    "shared_decision_making": {"truth": "present", "value": null, "page": 6, "why": "SDM 09/26/2026 with an evidence-based decision aid."},
+    "limiting_conditions": {"truth": "negated", "value": [], "page": 8, "why": "Pre-admission plan states none, citing the EP consult. The HF clinic note's decompensation also raises a clinical-stability question, which a reviewer resolving the NYHA conflict would settle at the same time."}
+  },
+  "expected_action": "verify",
+  "action_reasoning": "Rule 4 turns on NYHA class, and the packet has two contradictory same-day assessments (II and IV). Neither is newer, so the 'later wins' rule cannot settle it. A person must decide (and should also check clinical stability). Verify."
+}
+]

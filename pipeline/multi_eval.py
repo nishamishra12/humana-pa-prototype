@@ -87,6 +87,7 @@ def _run_one(m):
 
 def run_multi(workers=3, manifest_path=MANIFEST):
     manifest = json.load(open(manifest_path, encoding="utf-8"))
+    tel.init()
     run_id = time.strftime("%Y%m%d-%H%M%S")
     eval_set = "adversarial" if manifest_path == ADVERSARIAL else "multi"
     with ThreadPoolExecutor(max_workers=workers) as pool:
