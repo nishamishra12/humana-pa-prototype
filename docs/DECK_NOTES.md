@@ -24,7 +24,8 @@ Thread that all four share: member visibility in phase two.
 3. Six friction points (built: one slide, 6 clicks)
 4. The federal rules that make them urgent (built: one plain slide, no animation)
 5. The numbers: fast is not the same as right (built: one plain slide, no animation)
-6. What the market is doing, then the solution
+6. The value: what solving this gets Humana and the member (built: one plain slide, no animation)
+7. What the market is doing, then the solution
 
 The separate "why now" slide is gone. Its content moved to slide 4, right after the friction
 points, so the federal rules land together with the pain. Slide 2 ends on "every step is
@@ -70,6 +71,16 @@ Careful wording:
 - Skilled nursing is a short stay for rehab and nursing care after a hospital stay. Approving it needs prior authorization, so these are the same kind of request. A medical-necessity denial must be reviewed by a physician or other appropriate professional (42 CFR 422.566(d)). In Humana's setup it is the medical director.
 - The 86% ("up to at some plans") figure for inpatient rehab in the old deck is not verified. Do not use it until checked.
 
+## The value slide (slide 6): the math, checked 2026-10-03
+Three reasons for Humana, in order of strength. The AI-only-denial laws are NOT a reason: they are a design rule (our tool never denies).
+1. **Workload.** Humana had 5.25 million individual Medicare Advantage members at the end of 2025 and about 6.28 million in January 2026: about 1.03 million more, about 20%. KFF found Humana had the highest requests per member of the big plans (2.2 a year, 2024). So about 20% more requests, roughly 2.3 million (our arithmetic). Nurses do not grow 20% in a month. This one needs no guess about denials or Stars.
+2. **Public and compared.** Results are posted yearly since March 2026, and KFF already compares plans by name.
+3. **Revenue, as the size of the prize.** Humana 2025 individual MA premiums $90.4 billion (Q4 2025 SEC exhibit) across 5.25 million members, about $17,000 per member per year. Medicare pays most of it as a fixed monthly amount per member. Industry voluntary switching is about 9% a year (KFF, 6% to 12%): about $8 billion of premium in play. Winning back 1 in 1,000 members (5,250 people) is about $90 million, about 1 in 90 leavers. Humana does not publish its own leaving rate. Humana says its retention improved by more than 5 points for the 2026 enrollment period.
+   - We cannot prove prior authorization causes members to leave. Say "size of the prize, a pilot would measure the link."
+   - The two "90" figures differ: $90.4 billion is all premium, $90 million is 0.1% of it.
+   - CMS is dropping the Part C appeals Star measures for 2027, so do not say overturned appeals hurt Stars.
+Member and provider value: care on time, one clear ask instead of a fax loop, a reason you can see. Phase 2: members see where their request stands.
+
 ## Phase two: why not build member visibility now?
 Someone will ask, "why not just build it now with AI?" Keep this answer for the solution section, not slides 3 or 4.
 - A status shown to a member is only as good as the decision data behind it. We build the trusted decision record first.
@@ -88,5 +99,6 @@ Rule for the whole deck: every phase has a reason, and we say it out loud.
 - `deck/journey/build_friction.js` builds `Friction_Click_Through.pptx` (slide 3).
 - `deck/journey/build_federal.js` builds `Federal_Rules.pptx` (slide 4, a plain slide with no animation).
 - `deck/journey/build_numbers.js` builds `Numbers.pptx` (slide 5, a plain slide with no animation).
+- `deck/journey/build_value.js` builds `Value.pptx` (slide 6, a plain slide with no animation).
 - Each file is one slide with one click per step. Import into Google Slides with File, Import slides.
 - To build: `node build_friction.js`. It needs the `@resvg/resvg-js` package to draw the character art.
