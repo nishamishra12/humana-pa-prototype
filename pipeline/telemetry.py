@@ -13,6 +13,7 @@ SERVICE = "pa-desk"
 _tracer = None
 _ready = False
 _lock = threading.Lock()
+_defaults = {}  # attributes added to every span while an eval run is going, so any step can be tied to its run
 
 
 def _versions():
@@ -81,7 +82,7 @@ def span(name, **attrs):
     if not _tracer:
         yield _Null()
         return
-    with _tracer.start_as_current_span(name, attributes=_clean(attrs)) as s:
+    with _tracer.start_as_current_span(name, attributes=_clean({**_defaults, **attrs})) as s:
         try:
             yield s
         except Exception as e:
@@ -89,6 +90,12 @@ def span(name, **attrs):
             s.set_attribute("error", True)
             s.set_attribute("error.type", type(e).__name__)
             raise
+
+
+def set_defaults(**attrs):
+    """Tag every span with these (for example the eval run id). Call with no arguments to clear."""
+    _defaults.clear()
+    _defaults.update({k: v for k, v in attrs.items() if v is not None})
 
 
 def packet_tags():

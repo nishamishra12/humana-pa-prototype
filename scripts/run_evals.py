@@ -6,8 +6,9 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 from pipeline.multi_eval import run_multi, ADVERSARIAL
 
+label = sys.argv[sys.argv.index("--label") + 1] if "--label" in sys.argv else None  # a human name for this run, shown in Honeycomb
 adv = "--adversarial" in sys.argv  # the hard packets written by a separate AI session
-out = run_multi(manifest_path=ADVERSARIAL) if adv else run_multi()
+out = run_multi(manifest_path=ADVERSARIAL, label=label) if adv else run_multi(label=label)
 os.makedirs("evals/reports", exist_ok=True)
 path = f"evals/reports/{'adversarial' if adv else 'multi'}_{time.strftime('%Y%m%d_%H%M')}.json"
 json.dump(out, open(path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)

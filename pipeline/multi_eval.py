@@ -76,10 +76,10 @@ def decision_metrics(results):
                 exact_match=pct(sum(1 for r in results if r["action_matches"]), len(results)))
 
 
-def run_one(m, run_id=None, eval_set="multi"):
+def run_one(m, run_id=None, eval_set="multi", label=None):
     """Runs one packet. When Honeycomb is on, the case trace and the scored result land in the same trace,
     so a wrong answer can be opened and read step by step."""
-    with tel.span("eval.packet", **{"eval.run_id": run_id, "eval.set": eval_set, "eval.file": m["file"], "eval.category": m.get("category"),
+    with tel.span("eval.packet", **{"eval.run_id": run_id, "eval.run_label": label, "eval.set": eval_set, "eval.file": m["file"], "eval.category": m.get("category"),
                                     "eval.expected_action": m["expected_action"]}):
         out = _run_one(m)
         cls = case_class(m["expected_action"], out["actual_action"])
@@ -111,14 +111,18 @@ def _run_one(m):
                 extractor=facts.get("_extractor"), category=m.get("category"), facts=rows)
 
 
-def run_multi(workers=3, manifest_path=MANIFEST):
+def run_multi(workers=3, manifest_path=MANIFEST, label=None):
     manifest = json.load(open(manifest_path, encoding="utf-8"))
     tel.init()
     run_id = time.strftime("%Y%m%d-%H%M%S")
     eval_set = "adversarial" if manifest_path == ADVERSARIAL else "multi"
-    with ThreadPoolExecutor(max_workers=workers) as pool:
-        results = list(pool.map(tel.bind(lambda m: run_one(m, run_id, eval_set)), manifest))
-    tel.flush()
+    tel.set_defaults(**{"eval.run_id": run_id, "eval.set": eval_set, "eval.run_label": label})
+    try:
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            results = list(pool.map(tel.bind(lambda m: run_one(m, run_id, eval_set, label)), manifest))
+    finally:
+        tel.flush()
+        tel.set_defaults()
     allf = [f for r in results for f in r["facts"]]
     present = [f for f in allf if f["truth"] == "present"]
     guarded = [f for f in allf if f["truth"] in ("absent", "negated")]

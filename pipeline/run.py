@@ -29,6 +29,7 @@ def extract(elements, local=False, fast=False):
             return extract_facts_llm(elements, proc_key, n_votes=1 if fast else 3)
         except Exception as e:
             print(f"[extract] AI reading failed ({type(e).__name__}: {str(e)[:150]})")
+            tel.event("extract.failed", error=True, **{"error.type": type(e).__name__})
     if proc_key in (None, "lumbar_fusion"):
         return extract_facts_rule_based(elements)
     return _unsure_all(proc_key, header, "The AI reader was not available for this packet. Read the packet and enter the facts.")

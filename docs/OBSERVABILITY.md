@@ -49,3 +49,17 @@ No names, dates of birth, member ids, packet text, quotes or free-text notes go 
 ## To test with people in the UI
 
 Save the right answers as `evals/live_truth.json`, for example `{"adv_041.pdf": "pend"}`. The app then records the AI's own class against the key (`truth.class`) and the nurse's decision against both (`human.class`, `truth.human_was_right`).
+
+## Naming a run
+
+Give every test run a human name, so the board reads in plain words:
+
+    python scripts/run_evals.py --adversarial --label "Run 6: what changed"
+
+The board shows this name in the first column of every history table. A run with no label shows as "Run" plus its id.
+
+## How the board is laid out
+
+- **Top = right now.** Current recall, current precision, speed (p50, p95, p99), estimated cost per case, errors. Each uses the latest run only.
+- **Middle = live app.** Nurse and director decisions, once cases are decided in the app.
+- **Bottom = history.** Every run, then every packet in every run, with a link to the trace.

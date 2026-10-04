@@ -315,10 +315,14 @@ def _cls(needs_person, flagged):
     return ("TP" if flagged else "FN") if needs_person else ("FP" if flagged else "TN")
 
 
+def _test_file(packet_file):
+    return re.sub(r"^[0-9a-f]{8}_", "", os.path.basename(packet_file or "")) if _truth_for(packet_file) else None
+
+
 def _tel_recommendation(cid, res, packet_file):
     """One event when the AI recommends. If the packet has a known right answer, also the AI's own TP/FN/FP/TN."""
     exp = _truth_for(packet_file)
-    a = dict(**{"case.id": cid, "ai.recommendation": res["action"], "ai.flagged": res["action"] != "approve"})
+    a = dict(**{"case.id": cid, "case.test_file": _test_file(packet_file), "ai.recommendation": res["action"], "ai.flagged": res["action"] != "approve"})
     if exp:
         a.update({"truth.expected_action": exp, "truth.needs_person": exp != "approve", "truth.class": _cls(exp != "approve", res["action"] != "approve")})
     tel.event("case.ai_recommendation", **a)
@@ -331,7 +335,7 @@ def _tel_decision(cid, packet_file, role, action, ai, reason=""):
         return
     human_flagged = action != "approve"
     ai_flagged = ai != "approve"
-    a = {"case.id": cid, "human.role": role, "human.action": action, "ai.recommendation": ai, "human.agrees_with_ai": human_flagged == ai_flagged,
+    a = {"case.id": cid, "case.test_file": _test_file(packet_file), "human.role": role, "human.action": action, "ai.recommendation": ai, "human.agrees_with_ai": human_flagged == ai_flagged,
          "human.class": _cls(human_flagged, ai_flagged) if action != "return" else None, "human.return_reason": reason or None}
     exp = _truth_for(packet_file)
     if exp:
