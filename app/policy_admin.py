@@ -897,7 +897,8 @@ def code_consensus(key: str, request: Request, q: str = ""):
     lib = procedures.library()
     p = _svc(lib, key)
     arts, note = cms_codes.search_articles(q or p["name"], "" if q else p.get("scope") or "")
-    rows, n = cms_codes.consensus(arts)
+    best = max((a["match_score"] for a in arts), default=0)
+    rows, n = cms_codes.consensus([a for a in arts if a["match_score"] >= best], top=20)  # every article that fits the name as well as the best one, and none that fit worse
     return dict(read=n, codes=_code_rows(lib, key, [dict(r, n_articles=r["n_articles"]) for r in rows[:40]]))
 
 
