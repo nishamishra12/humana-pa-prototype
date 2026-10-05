@@ -45,7 +45,7 @@ def _article_codes(tok, aid, ver):
     we read the HCPCS equipment and supply codes (a letter and four digits) from the text and say so."""
     rows = S._cms(f"/data/article/hcpc-code/?articleid={aid}&ver={ver}", tok)["data"]
     if rows:
-        return [dict(code=r["hcpc_code_id"], description=html.unescape((r.get("long_description") or r.get("short_description") or "").strip())) for r in rows]
+        return [dict(code=r["hcpc_code_id"], description=html.unescape((r.get("long_description") or r.get("short_description") or "").strip()), short=html.unescape((r.get("short_description") or "").strip()), group=int(r["hcpc_code_group"]) if str(r.get("hcpc_code_group") or "").isdigit() else None) for r in rows]
     try:
         r = S._cms(f"/data/article/?articleid={aid}&ver={ver}", tok)["data"][0]
     except Exception:
@@ -83,7 +83,9 @@ def _collect(found):
     by = {}
     for ref, codes in found:
         for c in codes:
-            row = by.setdefault(c["code"], dict(code=c["code"], description=c["description"], listed_by=[]))
+            row = by.setdefault(c["code"], dict(code=c["code"], description=c["description"], short=c.get("short", ""), group=c.get("group"), listed_by=[]))
+            if c.get("group") and (not row["group"] or c["group"] < row["group"]):
+                row["group"] = c["group"]  # the lowest group any article gives it
             if ref["id"] not in row["listed_by"]:
                 row["listed_by"].append(ref["id"])
     out = list(by.values())  # articles come best match first, so codes from the best-matching article come first
@@ -233,5 +235,5 @@ def consensus(articles, top=8):
     srcs = {a["id"]: a for a, _ in got}
     for r in rows:
         r["sources"] = [srcs[i] for i in r["listed_by"] if i in srcs][:3]
-    rows.sort(key=lambda r: (-r["n_articles"], r["code"]))
+    rows.sort(key=lambda r: ((r["group"] or 1) > 1, -r["n_articles"], r["code"]))  # the main group first, then the codes listed by more articles
     return rows, len(got)

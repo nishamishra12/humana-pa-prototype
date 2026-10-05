@@ -884,7 +884,7 @@ def code_suggestions(key: str, request: Request, q: str = ""):
         if cd.get("codes"):
             x = next((y for y in lib["policies"] if y["id"] == pid), {})
             arts = {a["id"]: a for a in cd.get("articles", [])}
-            rows = [dict(code=r["code"], description=r["description"], sources=[arts[i] for i in r["listed_by"] if i in arts][:3]) for r in cd["codes"]]
+            rows = [dict(code=r["code"], description=r["description"], short=r.get("short", ""), group=r.get("group"), sources=[arts[i] for i in r["listed_by"] if i in arts][:3]) for r in cd["codes"]]
             from_pol.append(dict(policy_id=pid, title=x.get("title", pid), note=cd.get("note", ""), codes=_code_rows(lib, key, rows)))
     arts, note = cms_codes.search_articles(q or p["name"], "" if q else p.get("scope") or "")
     return dict(from_policies=from_pol, articles=arts, note=note, asked=bool(q))
