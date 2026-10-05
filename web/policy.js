@@ -170,7 +170,7 @@ function codeSugHtml() {
       ${open && d.codes ? `<div style="margin-top:8px">${d.codes.length ? codeRows(d.codes) : `<div class="faint">CMS lists no codes on this article.</div>`}</div>` : ""}</div>`; }).join("");
   const n = Object.keys(cs.picked).length;
   return `${pol}${main}
-    ${arts ? `<details class="more" style="margin-top:8px" ${cs.cons && !found ? "open" : ""}><summary><u>See the ${g.articles.length} CMS articles these come from</u></summary><div style="margin-top:8px">${arts}</div></details>` : ""}
+    ${arts ? `<details class="more" style="margin-top:8px" ${cs.cons && !found ? "open" : ""}><summary><u>See the ${g.articles.length} CMS articles these come from</u></summary>${small("On the CMS page, the code table under \"CPT/HCPCS Codes\" stays hidden until you accept the AMA license. Click \"Accept\" there to see it.", "margin-top:6px")}<div style="margin-top:8px">${arts}</div></details>` : ""}
     <div style="margin-top:10px"><button class="btn primary small" id="csadd" ${n ? "" : "disabled"}>${n ? "Add " + n + " selected code" + (n > 1 ? "s" : "") : "Tick the codes to add"}</button></div>`;
 }
 function bindCodeSug() {
