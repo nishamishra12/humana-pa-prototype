@@ -755,17 +755,16 @@ def suggestions(key: str, request: Request, q: str = ""):
     lib = procedures.library()
     p = _svc(lib, key)
     mine = set(p.get("policies", []))
-    words = [w for w in re.findall(r"[a-z0-9.]+", (q or f"{p['name']} {p.get('scope') or ''}").lower()) if len(w) > 2 and w not in _STOP]
+    ns, ss = cms_codes.stems(q or p["name"]), cms_codes.stems("" if q else p.get("scope") or "")
     out = []
     for x in lib["policies"]:
         if x["id"] in mine:
             continue
-        hit = sum(1 for w in words if w in (x["id"] + " " + x["title"]).lower())
-        out.append(dict(policy_id=x["id"], title=x["title"], level=x["level"], in_library=True, rules=len(x.get("criteria", [])), verified=bool(x.get("verified")), kind=None, ident=None, effective=None, match=hit > 0))
-    out.sort(key=lambda o: not o["match"])
+        sc = cms_codes.rank(x["id"] + " " + x["title"], ns, ss)
+        out.append(dict(policy_id=x["id"], title=x["title"], level=x["level"], in_library=True, rules=len(x.get("criteria", [])), verified=bool(x.get("verified")), kind=None, ident=None, effective=None, match=sc > 0, _s=sc))
+    out.sort(key=lambda o: -o["_s"])
     cms = []
-    if words:
-        from rapidfuzz import fuzz
+    if ns:
         in_lib = {x["id"] for x in lib["policies"]}
         for kind in ("ncd", "lcd"):
             rows, as_of = _corpus(kind)
@@ -773,15 +772,21 @@ def suggestions(key: str, request: Request, q: str = ""):
             for r2 in rows:
                 if pre + r2["id"] in in_lib:
                     continue
-                hay = (r2["id"] + " " + r2["title"]).lower()
-                hit = sum(1 for w in words if w in hay)
-                sc = hit / len(words) * 100 if hit else fuzz.partial_token_set_ratio(" ".join(words), hay) * 0.6
-                if (q and hit) or sc >= 55:
+                sc = cms_codes.rank(r2["id"] + " " + r2["title"], ns, ss)
+                if sc:
                     cms.append((sc, dict(policy_id=pre + r2["id"], title=r2["title"], level=kind.upper(), in_library=False, rules=0, verified=False, kind=kind, ident=r2["id"], effective=r2.get("effective"))))
-        cms.sort(key=lambda t: -t[0])
+        cms.sort(key=lambda t: (-t[0], t[1]["title"]))
+        seen, uniq = set(), []
+        for sc, row in cms:  # one row per title: the same policy is published by several regional contractors
+            k = (row["kind"], row["title"].lower())
+            if k not in seen:
+                seen.add(k); uniq.append((sc, row))
+        cms = uniq
     if q:
         toks = [t for t in q.lower().split() if t]
         out = [o for o in out if all(t in (o["policy_id"] + " " + o["title"]).lower() for t in toks)]
+    for o in out:
+        o.pop("_s", None)
     return dict(library=out[:8], cms=[x[1] for x in cms[:8]], asked=bool(q))
 
 
@@ -881,8 +886,19 @@ def code_suggestions(key: str, request: Request, q: str = ""):
             arts = {a["id"]: a for a in cd.get("articles", [])}
             rows = [dict(code=r["code"], description=r["description"], sources=[arts[i] for i in r["listed_by"] if i in arts][:3]) for r in cd["codes"]]
             from_pol.append(dict(policy_id=pid, title=x.get("title", pid), note=cd.get("note", ""), codes=_code_rows(lib, key, rows)))
-    arts, note = cms_codes.search_articles(q or f"{p['name']} {p.get('scope') or ''}")
+    arts, note = cms_codes.search_articles(q or p["name"], "" if q else p.get("scope") or "")
     return dict(from_policies=from_pol, articles=arts, note=note, asked=bool(q))
+
+
+@router.get("/services/{key}/code-consensus")
+def code_consensus(key: str, request: Request, q: str = ""):
+    """The codes that most of the matching CMS articles list, most agreed first."""
+    c, u = _owner(request)
+    lib = procedures.library()
+    p = _svc(lib, key)
+    arts, note = cms_codes.search_articles(q or p["name"], "" if q else p.get("scope") or "")
+    rows, n = cms_codes.consensus(arts)
+    return dict(read=n, codes=_code_rows(lib, key, [dict(r, n_articles=r["n_articles"]) for r in rows[:40]]))
 
 
 @router.get("/services/{key}/code-article")

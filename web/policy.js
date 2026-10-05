@@ -4,7 +4,7 @@
    billing codes, policies, key facts, pilot, live. Key facts belong to the policy. A service shows the combined list.
    Views: Services (list, then one service), Requests without a policy, Policies (the catalog), Version history. A draft policy opens full screen. */
 S.pol = { data: null, svcKey: null, svc: null, sug: null, build: null, sel: null, edit: null, confirm: false, note: "", asks: {}, audit: null, demand: null, revert: null, check: {}, busy: null, msg: null,
-  newSvc: { open: false, name: "", scope: "", code: "", source: "" }, code: { code: "", source: "" }, cs: { q: "", data: null, art: {}, rows: {}, picked: {}, busy: null }, sv: { open: null, note: "" }, q: "", more: false, form: { source: "cfr", ident: "", pid: "", title: "", level: "HUMANA_INTERNAL" } };
+  newSvc: { open: false, name: "", scope: "", code: "", source: "" }, code: { code: "", source: "" }, cs: { q: "", data: null, cons: null, art: {}, rows: {}, picked: {}, busy: null }, sv: { open: null, note: "" }, q: "", more: false, form: { source: "cfr", ident: "", pid: "", title: "", level: "HUMANA_INTERNAL" } };
 let polTimer = null;
 
 const LEVEL = { REGULATION: "Federal regulation", NCD: "National coverage (NCD)", LCD: "Local coverage (LCD)", HUMANA_INTERNAL: "Humana policy", MCG: "MCG guideline" };
@@ -43,7 +43,7 @@ async function loadPolicies() {
 
 async function openService(key) {
   S.pol.svcKey = key; S.pol.build = null; S.pol.msg = null; S.pol.q = ""; S.pol.sug = null; S.pol.sv = { open: null, note: "" }; S.pol.more = false;
-  S.pol.cs = { q: "", data: null, art: {}, rows: {}, picked: {}, busy: null };
+  S.pol.cs = { q: "", data: null, cons: null, art: {}, rows: {}, picked: {}, busy: null };
   S.pol.svc = await api("/policies/services/" + key);
   render(); window.scrollTo(0, 0);
   loadSug(); loadCodeSug();
@@ -53,8 +53,15 @@ async function loadCodeSug() {
   const cs = S.pol.cs, key = S.pol.svcKey;
   const r = await api(`/policies/services/${key}/code-suggestions?q=${encodeURIComponent(cs.q || "")}`);
   if (key !== S.pol.svcKey) return;
-  cs.data = r;
+  cs.data = r; cs.cons = null;
   const box = document.getElementById("csbox"); if (box) { box.innerHTML = codeSugHtml(); bindCodeSug(); }
+  if (r.articles.length) {
+    const q = cs.q;
+    const c = await api(`/policies/services/${key}/code-consensus?q=${encodeURIComponent(q || "")}`);
+    if (key !== S.pol.svcKey || q !== cs.q) return;
+    cs.cons = c;
+    const b2 = document.getElementById("csbox"); if (b2) { b2.innerHTML = codeSugHtml(); bindCodeSug(); }
+  }
 }
 async function loadSug() {
   if (!S.pol.svcKey) return;
@@ -140,10 +147,10 @@ function sugHtml() {
 }
 
 /* Billing codes the owner can pick, each with its CMS source already attached. Nothing is typed. */
-function codeRows(rows, key) {
+function codeRows(rows, of) {
   const cs = S.pol.cs;
-  const mk = (r) => { cs.rows[r.code] = r; return `<tr><td style="width:34px"><input type="checkbox" data-cspick="${esc(r.code)}" ${cs.picked[r.code] ? "checked" : ""} ${r.taken ? "disabled" : ""} aria-label="Use code ${esc(r.code)}"></td>
-    <td style="width:80px"><b>${esc(r.code)}</b></td><td>${more(r.description, 90)}</td><td class="faint" style="font-size:12.5px">${r.taken === "this" ? "Already on this service" : r.taken ? "Sends packets to " + esc(r.taken) : (r.sources || []).slice(0, 2).map((z) => `<a href="${esc(z.url)}" target="_blank" rel="noopener">${esc(z.id)}</a>`).join(" · ")}</td></tr>`; };
+  const mk = (r0) => { const r = of ? Object.assign({}, r0, { of }) : r0; cs.rows[r.code] = r0; return `<tr><td style="width:34px"><input type="checkbox" data-cspick="${esc(r.code)}" ${cs.picked[r.code] ? "checked" : ""} ${r.taken ? "disabled" : ""} aria-label="Use code ${esc(r.code)}"></td>
+    <td style="width:80px"><b>${esc(r.code)}</b></td><td>${more(r.description, 90)}</td><td class="faint" style="font-size:12.5px">${r.of ? `<b>${r.n_articles} of ${r.of} articles</b><br>` : ""}${r.taken === "this" ? "Already on this service" : r.taken ? "Sends packets to " + esc(r.taken) : (r.sources || []).slice(0, 2).map((z) => `<a href="${esc(z.url)}" target="_blank" rel="noopener">${esc(z.id)}</a>`).join(" · ")}</td></tr>`; };
   const first = rows.slice(0, 10), rest = rows.slice(10);
   return `<div class="tbl"><table><tbody>${first.map(mk).join("")}</tbody></table></div>${rest.length ? `<details class="more" style="margin-top:6px"><summary><u>Show ${rest.length} more codes</u></summary><div class="tbl" style="margin-top:6px"><table><tbody>${rest.map(mk).join("")}</tbody></table></div></details>` : ""}`;
 }
@@ -151,18 +158,20 @@ function codeSugHtml() {
   const cs = S.pol.cs, g = cs.data;
   if (!g) return `<div class="faint" style="padding:8px 0">Looking for billing codes…</div>`;
   const head = (t, sub) => `<div style="margin:10px 0 4px"><b style="font-size:13.5px">${t}</b>${sub ? small(sub) : ""}</div>`;
+  const cons = g.articles.length ? (cs.cons ? (cs.cons.codes.length ? head("Codes most articles agree on", `Read from ${cs.cons.read} CMS articles. A code listed by more articles comes first. Check the descriptions before you add one.`) + codeRows(cs.cons.codes, cs.cons.read) : "") : `<div class="faint" style="padding:8px 0">Reading the articles to find the codes they agree on…</div>`) : "";
   const pol = g.from_policies.map((p) => head("Listed for " + esc(p.title), "CMS lists these codes beside the policy. Each one keeps its CMS article as its source.") + codeRows(p.codes)).join("");
   const arts = g.articles.map((a) => { const d = cs.art[a.aid], open = d && d.open;
     return `<div style="border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:6px"><div style="display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap"><div><b>${esc(a.title)}</b>${small(esc(a.id) + " · " + esc((a.mac || "").replace(/\s*\(.*$/, "")) + ` · <a href="${esc(a.url)}" target="_blank" rel="noopener">open on CMS</a>`)}</div>
       <button class="btn small" data-csart="${esc(a.aid)}" data-csver="${esc(a.version)}">${cs.busy === a.aid ? "Loading…" : open ? "Hide codes" : "See codes"}</button></div>
       ${open && d.codes ? `<div style="margin-top:8px">${d.codes.length ? codeRows(d.codes) : `<div class="faint">CMS lists no codes on this article.</div>`}</div>` : ""}</div>`; }).join("");
-  return `${pol}${arts || g.note ? head(g.asked ? "CMS articles that match" : "CMS articles that match the service name", "Billing and Coding articles are written by each regional Medicare contractor. Open one to see its codes. Check it is about the same service.") + (arts || `<div class="faint" style="padding:6px 0">${esc(g.note)}</div>`) : ""}
+  return `${pol}${cons}${arts || g.note ? head(g.asked ? "CMS articles that match" : "CMS articles that match the service name", "Billing and Coding articles are written by each regional Medicare contractor. Open one to see its codes. Check it is about the same service.") + (arts || `<div class="faint" style="padding:6px 0">${esc(g.note)}</div>`) : ""}
     <div style="margin-top:8px"><button class="btn primary small" id="csadd" ${Object.keys(cs.picked).length ? "" : "disabled"}>${Object.keys(cs.picked).length ? "Add " + Object.keys(cs.picked).length + " selected code" + (Object.keys(cs.picked).length > 1 ? "s" : "") : "Tick the codes to add"}</button></div>`;
 }
 function bindCodeSug() {
   const cs = S.pol.cs, on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));
   document.querySelectorAll("[data-cspick]").forEach((el) => (el.onchange = () => {
     if (el.checked) cs.picked[el.dataset.cspick] = cs.rows[el.dataset.cspick]; else delete cs.picked[el.dataset.cspick];
+    document.querySelectorAll(`[data-cspick="${el.dataset.cspick}"]`).forEach((o) => (o.checked = el.checked));
     const b = document.getElementById("csadd"), n = Object.keys(cs.picked).length; if (b) { b.disabled = !n; b.textContent = n ? `Add ${n} selected code${n > 1 ? "s" : ""}` : "Tick the codes to add"; }
   }));
   on("[data-csart]", async (el) => {

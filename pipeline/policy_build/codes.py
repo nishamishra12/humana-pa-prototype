@@ -8,7 +8,7 @@ A policy's own text rarely lists billing codes. CMS publishes them in separate "
 
 Nothing here decides anything. It lists codes with their sources. The owner picks which ones to use.
 """
-import re, time
+import html, re, time
 from datetime import datetime, timezone
 
 from rapidfuzz import fuzz
@@ -45,7 +45,7 @@ def _article_codes(tok, aid, ver):
     we read the HCPCS equipment and supply codes (a letter and four digits) from the text and say so."""
     rows = S._cms(f"/data/article/hcpc-code/?articleid={aid}&ver={ver}", tok)["data"]
     if rows:
-        return [dict(code=r["hcpc_code_id"], description=(r.get("long_description") or r.get("short_description") or "").strip()) for r in rows]
+        return [dict(code=r["hcpc_code_id"], description=html.unescape((r.get("long_description") or r.get("short_description") or "").strip())) for r in rows]
     try:
         r = S._cms(f"/data/article/?articleid={aid}&ver={ver}", tok)["data"][0]
     except Exception:
@@ -138,14 +138,38 @@ def find(kind, ident, title=None):
     return base
 
 
-_STOP = {"with", "from", "that", "this", "inpatient", "outpatient", "surgery", "procedure", "service", "treatment", "therapy", "for", "and", "the", "of", "acute", "chronic"}
+_STOP = {"with", "from", "that", "this", "inpatient", "outpatient", "surgery", "procedure", "procedures", "service", "services", "treatment", "therapy", "for", "and", "the", "of", "acute", "chronic",
+         "adults", "adult", "requests", "request", "not", "does", "cover", "covers", "only", "new"}
 
 
-def search_articles(query, limit=12):
-    """Billing and Coding and Policy articles whose title matches words from a service name. No codes yet: the owner opens an article to see them.
+def stems(text):
+    """The words of a service name, cut to five letters, so allergen, allergy and allergic all match 'allerg'."""
+    out = []
+    for w in re.findall(r"[a-z0-9]+", (text or "").lower()):
+        if len(w) > 2 and w not in _STOP:
+            st = w[:5] if len(w) > 5 else w
+            if st not in out:
+                out.append(st)
+    return out
+
+
+def rank(title, name_stems, scope_stems=()):
+    """How well a title fits a service. The service name decides. The description only breaks ties. Returns 0 when the name does not fit."""
+    t = (title or "").lower()
+    if not name_stems:
+        return 0
+    frac = sum(1 for w in name_stems if w in t) / len(name_stems)
+    if frac < 0.5:
+        return 0
+    extra = [w for w in scope_stems if w not in name_stems]
+    return frac + (0.3 * sum(1 for w in extra if w in t) / len(extra) if extra else 0)
+
+
+def search_articles(query, scope="", limit=14):
+    """Billing and Coding and Policy articles whose title fits the service name. No codes yet: the owner opens an article to see them.
     Returns (articles, note). Never raises."""
-    words = [w for w in re.findall(r"[a-z0-9]+", (query or "").lower()) if len(w) > 2 and w not in _STOP]
-    if not words:
+    ns, ss = stems(query), stems(scope)
+    if not ns:
         return [], "Type a word or two from the service name."
     try:
         tok = S._cms_token()
@@ -154,17 +178,21 @@ def search_articles(query, limit=12):
             t = (a.get("title") or "")
             if not (t.lower().startswith("billing and coding") or "policy article" in t.lower()):  # equipment (DME) policies list their codes in a Policy Article
                 continue
-            plain = _plain(t).lower()
-            hit = sum(1 for w in words if w in plain)
-            frac = hit / len(words)
-            if frac >= 0.5:
-                scored.append((frac, fuzz.token_set_ratio(" ".join(words), plain), a))
-        scored.sort(key=lambda x: (-x[0], -x[1], x[2].get("title") or ""))
-        out = []
-        for frac, sc, a in scored[:limit]:
-            ref = _ref(a, a["document_version"], score=round(frac * 100))
+            r = rank(_plain(t), ns, ss)
+            if r:
+                scored.append((r, a))
+        scored.sort(key=lambda x: (-x[0], x[1].get("title") or ""))
+        out, seen = [], set()
+        for r, a in scored:
+            key = (_plain(a["title"]).lower(), _mac(a))
+            if key in seen:
+                continue
+            seen.add(key)
+            ref = _ref(a, a["document_version"], score=round(r * 100))
             ref["aid"] = a["document_id"]
             out.append(ref)
+            if len(out) >= limit:
+                break
         return out, "" if out else "No Billing and Coding article matches these words. Try other words, or add the code yourself."
     except Exception as e:
         return [], f"Could not reach CMS ({type(e).__name__}). Add codes yourself, or try again later."
@@ -182,3 +210,28 @@ def codes_of_article(aid, ver):
         return ref, _article_codes(tok, a["document_id"], ver), ""
     except Exception as e:
         return None, [], f"Could not reach CMS ({type(e).__name__})."
+
+
+def consensus(articles, top=8):
+    """Reads the codes of the best-matching articles and counts how many articles list each code. Regional contractors write their own articles,
+    so a code listed by most of them is likely core to the service. Returns (rows, n_read). Never raises."""
+    from concurrent.futures import ThreadPoolExecutor
+    try:
+        tok = S._cms_token()
+    except Exception:
+        return [], 0
+    pick = articles[:top]
+
+    def one(a):
+        try:
+            return a, _article_codes(tok, a["aid"], a["version"])
+        except Exception:
+            return a, []
+    with ThreadPoolExecutor(max_workers=6) as ex:
+        got = [g for g in ex.map(one, pick) if g[1]]
+    rows = _collect([(a, cs) for a, cs in got])
+    srcs = {a["id"]: a for a, _ in got}
+    for r in rows:
+        r["sources"] = [srcs[i] for i in r["listed_by"] if i in srcs][:3]
+    rows.sort(key=lambda r: (-r["n_articles"], r["code"]))
+    return rows, len(got)
