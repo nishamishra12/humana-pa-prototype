@@ -39,6 +39,10 @@ CREATE TABLE IF NOT EXISTS policy_builds(id TEXT PRIMARY KEY, policy_id TEXT, ki
 CREATE TABLE IF NOT EXISTS policy_decisions(build_id TEXT, criterion_id TEXT, decision TEXT, edited TEXT, decided_by INTEGER, decided_at TEXT, PRIMARY KEY(build_id, criterion_id));
 CREATE TABLE IF NOT EXISTS policy_versions(n INTEGER PRIMARY KEY AUTOINCREMENT, library_version TEXT, kind TEXT, policy_id TEXT, build_id TEXT,
   published_by INTEGER, published_at TEXT, changelog TEXT, note TEXT);
+CREATE TABLE IF NOT EXISTS cms_articles(document_id INTEGER, version INTEGER, display_id TEXT, title TEXT, mac TEXT, updated_on TEXT, codes_at TEXT, PRIMARY KEY(document_id, version));
+CREATE TABLE IF NOT EXISTS cms_article_codes(document_id INTEGER, version INTEGER, code TEXT, description TEXT, short TEXT, grp INTEGER, PRIMARY KEY(document_id, version, code));
+CREATE INDEX IF NOT EXISTS cms_article_codes_code ON cms_article_codes(code);
+CREATE TABLE IF NOT EXISTS cms_meta(key TEXT PRIMARY KEY, value TEXT);
 CREATE TABLE IF NOT EXISTS policy_audit(id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT, user_id INTEGER, action TEXT, policy_id TEXT, build_id TEXT, detail TEXT);
 """
 

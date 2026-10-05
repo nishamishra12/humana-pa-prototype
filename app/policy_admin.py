@@ -17,7 +17,7 @@ from pipeline import engine, procedures, telemetry as tel
 from pipeline.policy_build import sources as S
 from pipeline.policy_build.build import run as run_build
 from pipeline.policy_build.compare import compare as compare_live
-from pipeline.policy_build import codes as cms_codes
+from pipeline.policy_build import codes as cms_codes, cms_index
 
 router = APIRouter(prefix="/api/policies")
 MAX_BUILDS_PER_DAY = int(os.getenv("PA_MAX_BUILDS_PER_DAY", "12"))  # each build is one AI call plus an Unstructured parse
@@ -886,8 +886,8 @@ def code_suggestions(key: str, request: Request, q: str = ""):
             arts = {a["id"]: a for a in cd.get("articles", [])}
             rows = [dict(code=r["code"], description=r["description"], short=r.get("short", ""), group=r.get("group"), sources=[arts[i] for i in r["listed_by"] if i in arts][:3]) for r in cd["codes"]]
             from_pol.append(dict(policy_id=pid, title=x.get("title", pid), note=cd.get("note", ""), codes=_code_rows(lib, key, rows)))
-    arts, note = cms_codes.search_articles(q or p["name"], "" if q else p.get("scope") or "")
-    return dict(from_policies=from_pol, articles=arts, note=note, asked=bool(q))
+    arts, note = cms_index.search_articles(c, q or p["name"], "" if q else p.get("scope") or "")
+    return dict(from_policies=from_pol, articles=arts, note=note, asked=bool(q), as_of=cms_index.as_of(c))
 
 
 @router.get("/services/{key}/code-consensus")
@@ -896,9 +896,9 @@ def code_consensus(key: str, request: Request, q: str = ""):
     c, u = _owner(request)
     lib = procedures.library()
     p = _svc(lib, key)
-    arts, note = cms_codes.search_articles(q or p["name"], "" if q else p.get("scope") or "")
+    arts, note = cms_index.search_articles(c, q or p["name"], "" if q else p.get("scope") or "")
     best = max((a["match_score"] for a in arts), default=0)
-    rows, n = cms_codes.consensus([a for a in arts if a["match_score"] >= best], top=20)  # every article that fits the name as well as the best one, and none that fit worse
+    rows, n = cms_index.consensus(c, [a for a in arts if a["match_score"] >= best], top=20)  # every article that fits the name as well as the best one, and none that fit worse
     return dict(read=n, codes=_code_rows(lib, key, [dict(r, n_articles=r["n_articles"]) for r in rows[:40]]))
 
 
@@ -907,7 +907,7 @@ def code_article(key: str, aid: str, ver: int, request: Request):
     c, u = _owner(request)
     lib = procedures.library()
     _svc(lib, key)
-    ref, rows, note = cms_codes.codes_of_article(aid, ver)
+    ref, rows, note = cms_index.codes_of_article(c, aid, ver)
     if not ref:
         raise HTTPException(502, note or "Could not read the article")
     return dict(article=ref, note=note, codes=_code_rows(lib, key, [dict(r, sources=[ref]) for r in rows]))

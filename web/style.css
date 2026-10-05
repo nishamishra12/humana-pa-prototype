@@ -292,3 +292,14 @@ details.more[open] summary { display: none; }
 
 .clickrow { cursor: pointer; }
 .clickrow:hover td { background: var(--hover); }
+
+/* setting up a service, one step at a time */
+.wiz { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.wizstep { display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px 5px 5px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--ink2); font-weight: 500; }
+.wizstep:disabled { opacity: .6; cursor: default; }
+.wizstep.on { border-color: var(--ink); color: var(--ink); font-weight: 600; }
+.wizdot { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--sel); font-size: 12.5px; font-weight: 700; }
+.wizstep.on .wizdot { background: var(--ink); color: var(--panel); }
+.wizstep.done:not(.on) .wizdot { background: var(--ok); color: #fff; }
+.wizbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding-top: 4px; }
+@media (max-width: 640px) { .wiztxt { display: none; } .wizstep.on .wiztxt { display: inline; } }

@@ -3,7 +3,7 @@
    The owner starts from a service (one kind of request, such as acute back pain) and builds it up in this order:
    billing codes, policies, key facts, pilot, live. Key facts belong to the policy. A service shows the combined list.
    Views: Services (list, then one service), Requests without a policy, Policies (the catalog), Version history. A draft policy opens full screen. */
-S.pol = { data: null, svcKey: null, svc: null, sug: null, build: null, sel: null, edit: null, confirm: false, note: "", asks: {}, audit: null, demand: null, revert: null, check: {}, busy: null, msg: null,
+S.pol = { data: null, svcKey: null, svc: null, step: 0, sug: null, build: null, sel: null, edit: null, confirm: false, note: "", asks: {}, audit: null, demand: null, revert: null, check: {}, busy: null, msg: null,
   newSvc: { open: false, name: "", scope: "", code: "", source: "" }, code: { code: "", source: "" }, cs: { q: "", data: null, cons: null, art: {}, rows: {}, picked: {}, busy: null }, sv: { open: null, note: "" }, q: "", more: false, form: { source: "cfr", ident: "", pid: "", title: "", level: "HUMANA_INTERNAL" } };
 let polTimer = null;
 
@@ -45,6 +45,7 @@ async function openService(key) {
   S.pol.svcKey = key; S.pol.build = null; S.pol.msg = null; S.pol.q = ""; S.pol.sug = null; S.pol.sv = { open: null, note: "" }; S.pol.more = false;
   S.pol.cs = { q: "", data: null, cons: null, art: {}, rows: {}, picked: {}, busy: null };
   S.pol.svc = await api("/policies/services/" + key);
+  S.pol.step = wizStart(S.pol.svc);
   render(); window.scrollTo(0, 0);
   loadSug(); loadCodeSug();
 }
@@ -108,19 +109,12 @@ function polServicesList() {
       <td>${s.cpts.length}</td><td>${s.policies.length}${s.n_drafts ? small(s.n_drafts + " to review") : ""}</td><td>${s.n_details}</td><td>${s.n_cases}</td>
       <td><span class="chip ${nx[1]}">${esc(nx[0])}</span></td></tr>`;
   }).join("");
-  const form = n.open ? `<div class="card" style="max-width:720px"><h3 style="margin:0 0 4px">New service</h3>
-      <p class="muted" style="margin:0 0 10px">Say what kind of request this is. You add its billing codes and policies on the next page.</p>
-      <div style="display:grid;gap:12px">
-        <div class="field" style="margin:0"><label for="nsname">Name</label><input id="nsname" type="text" placeholder="Acute low back pain" value="${esc(n.name)}"></div>
-        <div class="field" style="margin:0"><label for="nsscope">What requests does it cover? (one sentence)</label><input id="nsscope" type="text" placeholder="Imaging and procedures for new low back pain" value="${esc(n.scope)}"></div>
-        ${n.code ? `<div class="faint" style="font-size:12.5px">First billing code: <b>${esc(n.code)}</b>. ${esc(n.source)}</div>` : ""}</div>
-      <div style="display:flex;gap:8px;margin-top:14px"><button class="btn primary" id="nscreate">Create service</button><button class="btn" id="nscancel">Cancel</button></div></div>` : "";
+  if (n.open) return newServiceHtml();
   return `<div class="page" style="display:grid;gap:20px;max-width:1180px">
     <div class="page-head"><div><h1>Services</h1><p>A service is one kind of request, such as acute back pain. Start here: add the service, then its billing codes and policies.</p></div>
       <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap"><div class="stat" style="margin:0"><div><b>${d.services_detail.filter((s) => s.status === "live").length}</b><span>live</span></div><div><b>${d.services_detail.filter((s) => s.status === "pilot").length}</b><span>pilot</span></div><div><b>${d.services_detail.filter((s) => s.status === "planned").length}</b><span>planned</span></div></div>
       ${n.open ? "" : `<button class="btn primary" id="nsopen">+ New service</button>`}</div></div>
     ${S.pol.msg ? `<div class="banner">${esc(S.pol.msg)}</div>` : ""}
-    ${form}
     <div class="tbl"><table><thead><tr><th>Service</th><th>Status</th><th>Billing codes</th><th>Policies</th><th>Key facts</th><th>Requests seen</th><th>Next step</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
 }
 
@@ -171,7 +165,7 @@ function codeSugHtml() {
   const n = Object.keys(cs.picked).length;
   return `${pol}${main}
     ${arts ? `<details class="more" style="margin-top:8px" ${cs.cons && !found ? "open" : ""}><summary><u>See the ${g.articles.length} CMS articles these come from</u></summary>${small("On the CMS page, the code table under \"CPT/HCPCS Codes\" stays hidden until you accept the AMA license. Click \"Accept\" there to see it.", "margin-top:6px")}<div style="margin-top:8px">${arts}</div></details>` : ""}
-    <div style="margin-top:10px"><button class="btn primary small" id="csadd" ${n ? "" : "disabled"}>${n ? "Add " + n + " selected code" + (n > 1 ? "s" : "") : "Tick the codes to add"}</button></div>`;
+    ${g.as_of ? small("CMS data copied on " + esc(g.as_of) + ".", "margin-top:8px") : ""}<div style="margin-top:10px"><button class="btn primary small" id="csadd" ${n ? "" : "disabled"}>${n ? "Add " + n + " selected code" + (n > 1 ? "s" : "") : "Tick the codes to add"}</button></div>`;
 }
 function bindCodeSug() {
   const cs = S.pol.cs, on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));
@@ -194,13 +188,45 @@ function bindCodeSug() {
   });
 }
 
+/* ---------- setting up a service, one step at a time ---------- */
+const WIZ = ["Describe", "Billing codes", "Policies", "Key facts", "Go live"];
+function wizBar(cur, done, clickable) {
+  return `<div class="wiz" role="list" aria-label="Setup steps">${WIZ.map((l, i) => { const n = i + 1, on = n === cur, ok = done.includes(n);
+    return `<button class="wizstep ${on ? "on" : ""} ${ok ? "done" : ""}" role="listitem" ${on ? 'aria-current="step"' : ""} ${clickable && n > 1 ? `data-step="${n}"` : "disabled"}><span class="wizdot">${ok && !on ? "✓" : n}</span><span class="wiztxt">${l}</span></button>`; }).join("")}</div>`;
+}
+/* Where a service stands: which steps are finished. */
+function wizDone(s) {
+  const ok = [1];
+  if (s.codes.length) ok.push(2);
+  if (s.policies.some((p) => p.rules > 0)) ok.push(3);
+  if (s.facts.length) ok.push(4);
+  if (s.status !== "planned") ok.push(5);
+  return ok;
+}
+function wizStart(s) {
+  if (s.status !== "planned") return 5;
+  const ok = wizDone(s);
+  return [2, 3, 4].find((n) => !ok.includes(n)) || 5;
+}
+
+function newServiceHtml() {
+  const n = S.pol.newSvc;
+  return `<div class="page" style="display:grid;gap:18px;max-width:760px">
+    <div class="page-head"><div><button class="btn small ghost" id="nscancel" style="margin-left:-8px">${ic("left", 16)}Services</button><h1 style="margin-top:4px">New service</h1><p>A service is one kind of request, such as acute back pain.</p></div></div>
+    ${wizBar(1, [], false)}
+    <div class="card" style="display:grid;gap:14px">
+      <div><h3 style="margin:0">Describe the service</h3><p class="muted" style="margin:2px 0 0">Say what this service covers. You add its billing codes and policies on the next steps.</p></div>
+      <div class="field" style="margin:0"><label for="nsname">Name</label><input id="nsname" type="text" placeholder="Allergen immunotherapy" value="${esc(n.name)}" autofocus></div>
+      <div class="field" style="margin:0"><label for="nsscope">What requests does it cover? (one sentence)</label><textarea id="nsscope" style="min-height:64px" placeholder="Allergy shots and prepared allergen extracts for adults with confirmed allergies. It does not cover allergy testing.">${esc(n.scope)}</textarea></div>
+      ${n.code ? `<div class="faint" style="font-size:12.5px">First billing code, from the request that arrived: <b>${esc(n.code)}</b>. ${esc(n.source)}</div>` : ""}</div>
+    <div class="wizbar"><button class="btn" id="nscancel2">Cancel</button><button class="btn primary" id="nscreate" ${n.name.trim() ? "" : "disabled"}>Next: billing codes</button></div></div>`;
+}
+
 function serviceHtml() {
   const s = S.pol.svc;
   if (!s) return `<div class="page"><div class="empty">Loading…</div></div>`;
-  const st = SVC_STATUS[s.status] || SVC_STATUS.live, locked = s.status === "live", sv = S.pol.sv;
-  const ready = { codes: s.codes.length > 0, pol: s.policies.some((p) => p.rules > 0), facts: s.facts.length > 0 };
-  const steps = [["Billing codes", ready.codes], ["Policies", ready.pol], ["Key facts", ready.facts], ["Pilot", s.status !== "planned"], ["Live", s.status === "live"]];
-  const strip = steps.map(([l, ok]) => `<span class="chip ${ok ? "ok" : "plain"}">${ok ? "✓ " : ""}${l}</span>`).join(`<span class="faint">›</span>`);
+  const st = SVC_STATUS[s.status] || SVC_STATUS.live, locked = s.status === "live", sv = S.pol.sv, step = S.pol.step || wizStart(s);
+  const done = wizDone(s), ready = { codes: done.includes(2), pol: done.includes(3), facts: done.includes(4) };
   const missing = [!ready.codes && "a billing code", !ready.pol && "a policy with approved rules", !ready.facts && "key facts"].filter(Boolean);
   const btn = (to, label, cls, off) => `<button class="btn ${cls || ""}" data-svstatus="${to}" ${off ? "disabled" : ""}>${label}</button>`;
   const acts = s.status === "planned" ? btn("pilot", "Start the pilot", "primary", missing.length > 0) : s.status === "pilot" ? btn("live", "Make it live", "primary") + " " + btn("planned", "Back to planned") : btn("pilot", "Pause (back to pilot)");
@@ -222,27 +248,25 @@ function serviceHtml() {
   const facts = s.facts.map((f) => `<tr><td><b>${esc(f.label)}</b></td><td>${esc(f.ask || "")}</td><td class="faint" style="font-size:12.5px">${f.used_by.length ? f.used_by.map(esc).join(", ") : "Not used by a rule yet"}</td></tr>`).join("");
   const act = s.activity.length ? s.activity.map((r) => `<tr><td class="faint" style="font-size:12.5px;white-space:nowrap">${esc(fullTime(r.at))}</td><td>${esc(r.who || "")}</td><td><span class="chip ${AUDIT_CHIP[r.action] || "plain"}">${esc(AUDIT_WORDS[r.action] || r.action)}</span></td><td class="faint" style="font-size:12.5px">${esc(r.detail || "")}</td></tr>`).join("") : "";
   const f = S.pol.form, up = f.source === "pdf";
-  const sec = (n, title, sub, body) => `<div class="card"><div style="display:flex;gap:10px;align-items:baseline"><span class="chip plain">${n}</span><div><h3 style="margin:0">${title}</h3>${sub ? `<p class="muted" style="margin:2px 0 0">${sub}</p>` : ""}</div></div><div style="margin-top:12px">${body}</div></div>`;
+  const sec = (title, sub, body) => `<div class="card"><div><h3 style="margin:0">${title}</h3>${sub ? `<p class="muted" style="margin:2px 0 0">${sub}</p>` : ""}</div><div style="margin-top:12px">${body}</div></div>`;
+  const row = (ok, label, detail) => `<div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)"><span class="chip ${ok ? "ok" : "plain"}">${ok ? "Done" : "Missing"}</span><b>${label}</b><span class="faint">${detail}</span></div>`;
 
-  return `<div class="page" style="display:grid;gap:16px;max-width:1080px">
-    <div class="page-head"><div><button class="btn small ghost" data-psvcback style="margin-left:-8px">${ic("left", 16)}Services</button>
-      <h1 style="margin-top:4px">${esc(s.short)} <span class="chip ${st[1]}" style="vertical-align:middle">${st[0]}</span></h1>
-      <p>${esc(s.scope || s.name)}</p></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${acts}</div></div>
-    ${S.pol.msg ? `<div class="banner">${esc(S.pol.msg)}</div>` : ""}
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${strip}</div>
-    ${s.status === "planned" && missing.length ? small("Before the pilot: add " + missing.join(", ") + ".") : small(SVC_STATUS_HELP[s.status] + (s.note ? " Note: " + esc(s.note) : ""))}
-    ${confirm}${lockNote}
-    ${sec("1", "Billing codes", "A request reaches this service through the billing code on it. A code can belong to one service.",
+  let body = "", why = "";
+  if (step === 2) {
+    why = !ready.codes ? "Add at least one billing code to continue." : "";
+    body = sec("Billing codes", "A request reaches this service through the billing code on it. A code can belong to one service.",
       `${codes ? `<div class="tbl"><table><tbody>${codes}</tbody></table></div>` : `<div class="faint">No billing codes yet.</div>`}
        ${s.other_codes ? small("CMS lists " + s.other_codes + " more related codes that are not turned on.", "margin-top:6px") : ""}
-       ${locked ? "" : `<div style="margin-top:14px"><div class="field" style="margin:0;max-width:520px"><label for="csq">Find billing codes</label><input id="csq" type="search" placeholder="Search CMS articles by words, for example lumbar or sleep apnea" value="${esc(S.pol.cs.q)}"></div>
+       ${locked ? "" : `<div style="margin-top:14px"><div class="field" style="margin:0;max-width:520px"><label for="csq">Find billing codes</label><input id="csq" type="search" placeholder="Search by words, for example lumbar or sleep apnea" value="${esc(S.pol.cs.q)}"></div>
         <div id="csbox">${codeSugHtml()}</div>
         <details class="more" style="margin-top:10px"><summary><u>Add a code CMS did not list</u></summary>
          <div style="display:grid;grid-template-columns:130px minmax(0,1fr) auto;gap:8px;margin-top:8px;align-items:end">
           <div class="field" style="margin:0"><label for="ccode">Billing code</label><input id="ccode" type="text" placeholder="72148" value="${esc(S.pol.code.code)}"></div>
           <div class="field" style="margin:0"><label for="csrc">Where did this code come from?</label><input id="csrc" type="text" placeholder="For example: the plan's own policy, page 3" value="${esc(S.pol.code.source)}"></div>
-          <button class="btn small" id="cadd">Add code</button></div></details></div>`}`)}
-    ${sec("2", "Policies", "The policies a nurse checks a request against. The system builds each one from its official text. You review every rule.",
+          <button class="btn small" id="cadd">Add code</button></div></details></div>`}`);
+  } else if (step === 3) {
+    why = !ready.pol ? (s.drafts.some((d) => d.status === "draft") ? "Review the draft policy to continue." : "Add a policy and approve its rules to continue.") : "";
+    body = sec("Policies", "The policies a nurse checks a request against. The system builds each one from its official text. You review every rule.",
       `${pols || drafts ? `<div class="tbl"><table><tbody>${pols}${drafts}</tbody></table></div>` : `<div class="faint">No policies yet.</div>`}
        ${locked ? "" : `<div style="margin-top:14px"><div class="field" style="margin:0;max-width:520px"><label for="sugq">Find a policy</label><input id="sugq" type="search" placeholder="Search CMS by title or number, for example acupuncture or 30.3.3" value="${esc(S.pol.q)}"></div>
         <div id="sugbox">${sugHtml()}</div>
@@ -253,10 +277,31 @@ function serviceHtml() {
               <div class="field" style="margin:0"><label for="plevel">What kind of policy is it?</label><select id="plevel"><option value="HUMANA_INTERNAL" ${f.level === "HUMANA_INTERNAL" ? "selected" : ""}>Humana policy</option><option value="MCG" ${f.level === "MCG" ? "selected" : ""}>MCG guideline</option><option value="LCD" ${f.level === "LCD" ? "selected" : ""}>Local coverage (LCD)</option><option value="NCD" ${f.level === "NCD" ? "selected" : ""}>National coverage (NCD)</option></select></div>
               <div class="field" style="margin:0"><label for="pfile">PDF file</label><input id="pfile" type="file" accept="application/pdf"></div>`
             : `<div class="field" style="margin:0"><label for="pid">Regulation</label><input id="pid" type="text" placeholder="42 CFR 412.3" value="${esc(f.ident)}"></div>`}</div>
-          <div style="margin-top:10px"><button class="btn small primary" id="pgo" ${S.pol.busy ? "disabled" : ""}>${S.pol.busy ? "Starting…" : "Build this policy"}</button></div></details></div>`}`)}
-    ${sec("3", "Key facts", "The things the AI reader finds in a packet to check the rules. They come from the policies above and are combined here. To change one, change the policy.",
-      facts ? `<div class="tbl"><table><thead><tr><th>Key fact</th><th>Question to the provider if it is missing</th><th>Checked by</th></tr></thead><tbody>${facts}</tbody></table></div>` : `<div class="faint">None yet. They appear when you approve a policy for this service.</div>`)}
-    ${act ? sec("4", "Activity", "", `<div class="tbl"><table><tbody>${act}</tbody></table></div>`) : ""}</div>`;
+          <div style="margin-top:10px"><button class="btn small primary" id="pgo" ${S.pol.busy ? "disabled" : ""}>${S.pol.busy ? "Starting…" : "Build this policy"}</button></div></details></div>`}`);
+  } else if (step === 4) {
+    why = !ready.facts ? "Key facts appear when you approve a policy. Go back to the policies step." : "";
+    body = sec("Key facts", "The things the AI reader finds in a packet to check the rules. They come from the policies you approved and are combined here. To change one, change the policy.",
+      facts ? `<div class="tbl"><table><thead><tr><th>Key fact</th><th>Question to the provider if it is missing</th><th>Checked by</th></tr></thead><tbody>${facts}</tbody></table></div>` : `<div class="faint">None yet.</div>`);
+  } else {
+    body = sec("Go live", s.status === "planned" ? "Check that the service is ready, then start the pilot. In a pilot, a nurse checks every recommendation." : SVC_STATUS_HELP[s.status] + (s.note ? " Note: " + esc(s.note) : ""),
+      `<div style="max-width:680px">${row(ready.codes, "Billing codes", s.codes.length + " added")}${row(ready.pol, "Policies", s.policies.filter((p) => p.rules > 0).length + " with approved rules")}${row(ready.facts, "Key facts", s.facts.length + " found in the policies")}</div>
+       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px">${acts}${s.status === "planned" && missing.length ? small("Before the pilot, add " + missing.join(", ") + ".") : ""}</div>
+       ${confirm ? `<div style="margin-top:12px">${confirm}</div>` : ""}`)
+      + (act ? sec("Activity", "", `<div class="tbl"><table><tbody>${act}</tbody></table></div>`) : "");
+  }
+  const nav = step < 5 ? `<div class="wizbar"><button class="btn" data-stepto="${step - 1 < 2 ? 0 : step - 1}">${step === 2 ? "Back to services" : "Back"}</button>
+      <div style="display:flex;gap:10px;align-items:center">${why && !locked ? small(esc(why)) : ""}<button class="btn primary" data-stepto="${step + 1}" ${why && !locked ? "disabled" : ""}>Next: ${WIZ[step].toLowerCase()}</button></div></div>`
+    : `<div class="wizbar"><button class="btn" data-stepto="4">Back</button><button class="btn" data-stepto="0">Done, back to services</button></div>`;
+
+  return `<div class="page" style="display:grid;gap:16px;max-width:1080px">
+    <div class="page-head"><div><button class="btn small ghost" data-psvcback style="margin-left:-8px">${ic("left", 16)}Services</button>
+      <h1 style="margin-top:4px">${esc(s.short)} <span class="chip ${st[1]}" style="vertical-align:middle">${st[0]}</span></h1>
+      <p>${esc(s.scope || s.name)}</p></div></div>
+    ${S.pol.msg ? `<div class="banner">${esc(S.pol.msg)}</div>` : ""}
+    ${wizBar(step, done, true)}
+    ${lockNote}
+    ${body}
+    ${nav}</div>`;
 }
 
 const polServicesHtml = () => {
@@ -454,15 +499,16 @@ function bindSug() {
 function bindPolicy() {
   const on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));
   const val = (id) => (document.getElementById(id) || {}).value;
-  const back = async () => { clearInterval(polTimer); const ctx = S.pol.build && (S.pol.build.service_ctx || S.pol.svcKey); S.pol.build = null; S.pol.msg = null; await loadPolicies(); if (ctx && S.view === "services") { S.pol.svcKey = ctx; S.pol.svc = await api("/policies/services/" + ctx); render(); loadSug(); loadCodeSug(); } else render(); };
+  const back = async () => { clearInterval(polTimer); const ctx = S.pol.build && (S.pol.build.service_ctx || S.pol.svcKey); S.pol.build = null; S.pol.msg = null; await loadPolicies(); if (ctx && S.view === "services") { S.pol.svcKey = ctx; S.pol.step = 3; S.pol.svc = await api("/policies/services/" + ctx); render(); loadSug(); loadCodeSug(); } else render(); };
   const f = S.pol.form, keepForm = () => { f.source = val("psrc") ?? f.source; f.ident = val("pid") ?? f.ident; f.pid = val("ppid") ?? f.pid; f.title = val("ptitle") ?? f.title; f.level = val("plevel") ?? f.level; };
 
   /* services list */
   on("[data-psvc]", async (el) => { await openService(el.dataset.psvc); });
   on("#nsopen", () => { S.pol.newSvc.open = true; render(); });
-  on("#nscancel", () => { S.pol.newSvc = { open: false, name: "", scope: "", code: "", source: "" }; render(); });
+  const closeNew = () => { S.pol.newSvc = { open: false, name: "", scope: "", code: "", source: "" }; render(); window.scrollTo(0, 0); };
+  on("#nscancel", closeNew); on("#nscancel2", closeNew);
   const nsn = document.getElementById("nsname"), nss = document.getElementById("nsscope");
-  if (nsn) nsn.oninput = () => (S.pol.newSvc.name = nsn.value);
+  if (nsn) nsn.oninput = () => { S.pol.newSvc.name = nsn.value; const b = document.getElementById("nscreate"); if (b) b.disabled = !nsn.value.trim(); };
   if (nss) nss.oninput = () => (S.pol.newSvc.scope = nss.value);
   on("#nscreate", async () => {
     const n = S.pol.newSvc; if (!n.name.trim()) throw new Error("Give the service a name");
@@ -475,6 +521,13 @@ function bindPolicy() {
     await loadPolicies(); render();
   });
 
+  /* one service: the steps */
+  on("[data-step]", (el) => { S.pol.step = Number(el.dataset.step); S.pol.msg = null; render(); window.scrollTo(0, 0); });
+  on("[data-stepto]", async (el) => {
+    const n = Number(el.dataset.stepto);
+    if (n === 0) { S.pol.svcKey = null; S.pol.svc = null; S.pol.msg = null; await loadPolicies(); render(); window.scrollTo(0, 0); return; }
+    S.pol.step = n; S.pol.msg = null; render(); window.scrollTo(0, 0);
+  });
   /* one service */
   on("[data-psvcback]", async () => { S.pol.svcKey = null; S.pol.svc = null; S.pol.msg = null; await loadPolicies(); render(); window.scrollTo(0, 0); });
   on("[data-svstatus]", (el) => { S.pol.sv = { open: el.dataset.svstatus, note: "" }; render(); });
