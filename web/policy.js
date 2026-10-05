@@ -179,23 +179,6 @@ function bindCodeSug() {
   });
 }
 
-/* The ML team's evaluation of the service, read-only. The owner does not build test packets or run it. */
-function evalHtml(s) {
-  const e = s.evaluation, m = e.latest && e.latest.metrics;
-  if (!m) return `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="chip plain">Not evaluated yet</span><span class="faint">The ML team has not run test packets for this service.</span></div>`;
-  const chip = e.status === "current" ? `<span class="chip ok">Evaluated on the current policies</span>` : `<span class="chip warn">Policies changed since this evaluation</span>`;
-  const bad = (v) => (v ? ' style="color:var(--bad)"' : "");
-  return `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px">${chip}${small(esc(fullTime(e.latest.run_at)) + " · " + esc(e.latest.run_by) + " · " + m.packets + " test packets" + (e.latest.source === "report" ? " · from an earlier run" : ""))}</div>
-    <div class="stat" style="margin:0"><div><b>${m.decisions_right} of ${m.packets}</b><span>decisions right</span></div><div><b${bad(m.wrong_approvals)}>${m.wrong_approvals}</b><span>approved, but a person was needed</span></div>
-      <div><b>${m.over_flags}</b><span>sent to a person that were fine</span></div><div><b>${m.facts_right_pct ?? "-"}%</b><span>key facts read right</span></div><div><b${bad(m.made_up_pct)}>${m.made_up_pct ?? "-"}%</b><span>key facts made up</span></div></div>
-    ${e.status === "changed" ? small("The key facts or rules changed after this run. Ask the ML team to run it again.", "margin-top:8px") : ""}`;
-}
-function evalNote(s) {
-  const e = s.evaluation, m = e.latest && e.latest.metrics;
-  if (!m) return `No evaluation from the ML team yet. A nurse checks every recommendation in the pilot.`;
-  return `${e.status === "current" ? "Evaluation on the current policies" : "Evaluation is out of date"}: ${m.decisions_right} of ${m.packets} decisions right, ${m.wrong_approvals} approved when a person was needed.`;
-}
-
 function serviceHtml() {
   const s = S.pol.svc;
   if (!s) return `<div class="page"><div class="empty">Loading…</div></div>`;
@@ -206,7 +189,7 @@ function serviceHtml() {
   const missing = [!ready.codes && "a billing code", !ready.pol && "a policy with approved rules", !ready.facts && "key facts"].filter(Boolean);
   const btn = (to, label, cls, off) => `<button class="btn ${cls || ""}" data-svstatus="${to}" ${off ? "disabled" : ""}>${label}</button>`;
   const acts = s.status === "planned" ? btn("pilot", "Start the pilot", "primary", missing.length > 0) : s.status === "pilot" ? btn("live", "Make it live", "primary") + " " + btn("planned", "Back to planned") : btn("pilot", "Pause (back to pilot)");
-  const confirm = sv.open ? `<div class="card" style="border-color:var(--line2);display:grid;gap:8px;max-width:640px"><b>Move ${esc(s.short)} from ${esc(s.status)} to ${esc(sv.open)}</b>${sv.open === "live" ? small(esc(evalNote(s))) : ""}
+  const confirm = sv.open ? `<div class="card" style="border-color:var(--line2);display:grid;gap:8px;max-width:640px"><b>Move ${esc(s.short)} from ${esc(s.status)} to ${esc(sv.open)}</b>
       <div class="field" style="margin:0"><label for="svnote">${sv.open === "live" ? "What did the pilot show? (required)" : "Note (optional)"}</label><textarea id="svnote" style="min-height:56px" placeholder="${sv.open === "live" ? "For example: ran 3 weeks, nurses agreed with the recommendation on 28 of 30 requests" : ""}">${esc(sv.note)}</textarea></div>
       <div style="display:flex;gap:8px"><button class="btn primary small" data-svgo>Confirm</button><button class="btn small" data-svcancel>Cancel</button></div></div>` : "";
   const lockNote = locked ? `<div class="banner">This service is live. To change its codes or policies, pause it back to pilot first.</div>` : "";
@@ -217,7 +200,7 @@ function serviceHtml() {
       <td style="text-align:right">${locked ? "" : `<button class="btn small ghost" data-codedel="${esc(c.code)}">Remove</button>`}</td></tr>`; }).join("");
   const pols = s.policies.map((p) => `<tr><td><b>${esc(p.title)}</b>${small(esc(p.id) + " · " + esc(LEVEL[p.level] || p.level))}</td>
       <td>${p.verified ? `<span class="chip ok">Approved</span>` : `<span class="chip plain">Placeholder</span>`}<div class="faint" style="font-size:12.5px;margin-top:3px">${p.verified ? p.rules + " rules" + (p.waiting ? ", " + p.waiting + " waiting" : "") : "No rules yet"}</div></td>
-      <td style="text-align:right;white-space:nowrap">${p.url && p.url.startsWith("http") ? `<a class="btn small ghost" href="${esc(p.url)}" target="_blank" rel="noopener">Source</a> ` : ""}${locked ? "" : `<button class="btn small ghost" data-poldel="${esc(p.id)}">Remove</button>`}</td></tr>`).join("");
+      <td style="text-align:right;white-space:nowrap">${p.build ? `<button class="btn small ${p.build.status === "draft" ? "primary" : ""}" data-pbuild="${esc(p.build.id)}">${p.build.status === "draft" ? "Review rules" : "Rules and quotes"}</button> ` : ""}${p.url && p.url.startsWith("http") ? `<a class="btn small ghost" href="${esc(p.url)}" target="_blank" rel="noopener">Source</a> ` : ""}${locked ? "" : `<button class="btn small ghost" data-poldel="${esc(p.id)}">Remove</button>`}</td></tr>`).join("");
   const drafts = s.drafts.map((d) => { const run = d.status === "running", err = d.status === "error";
     return `<tr><td><b>${esc(d.policy_id || d.ident)}</b>${small(esc((d.kind || "").toUpperCase()))}</td><td><span class="chip ${err ? "bad" : run ? "new" : "warn"}">${err ? "Failed" : run ? esc(d.stage || "Building") : "Ready for your review"}</span></td>
       <td style="text-align:right"><button class="btn small ${run || err ? "" : "primary"}" data-pbuild="${esc(d.id)}">${run || err ? "Open" : "Review"}</button></td></tr>`; }).join("");
@@ -258,8 +241,7 @@ function serviceHtml() {
           <div style="margin-top:10px"><button class="btn small primary" id="pgo" ${S.pol.busy ? "disabled" : ""}>${S.pol.busy ? "Starting…" : "Build this policy"}</button></div></details></div>`}`)}
     ${sec("3", "Key facts", "The things the AI reader finds in a packet to check the rules. They come from the policies above and are combined here. To change one, change the policy.",
       facts ? `<div class="tbl"><table><thead><tr><th>Key fact</th><th>Question to the provider if it is missing</th><th>Checked by</th></tr></thead><tbody>${facts}</tbody></table></div>` : `<div class="faint">None yet. They appear when you approve a policy for this service.</div>`)}
-    ${sec("4", "Evaluation", "Run by the ML team on labelled test packets. You do not run it. It shows how well the AI reader handles this service.", evalHtml(s))}
-    ${act ? sec("5", "Activity", "", `<div class="tbl"><table><tbody>${act}</tbody></table></div>`) : ""}</div>`;
+    ${act ? sec("4", "Activity", "", `<div class="tbl"><table><tbody>${act}</tbody></table></div>`) : ""}</div>`;
 }
 
 const polServicesHtml = () => {
@@ -412,7 +394,7 @@ function approveHtml(b, t) {
 
 function polBuildHtml() {
   const b = S.pol.build;
-  const back = b.service_ctx_name ? b.service_ctx_name : S.view === "history" ? "Version history" : "Policies";
+  const back = b.service_ctx_name ? b.service_ctx_name : S.view === "services" && S.pol.svc ? S.pol.svc.short : S.view === "history" ? "Version history" : "Policies";
   const head = (inner) => `<div class="page" style="max-width:1260px"><div class="page-head"><div><button class="btn small ghost" data-pback style="margin-left:-8px">${ic("left", 16)}${esc(back)}</button><h1 style="margin-top:4px">${inner}</h1></div></div>`;
   if (b.status === "running") {
     const cur = Math.max(0, BUILD_STEPS.findIndex((s) => s[0] === b.stage));
@@ -425,7 +407,7 @@ function polBuildHtml() {
   const cr = b.change_report;
   const crRows = cr ? cr.rows.map((r) => `<tr><td>${esc(r.id)}</td><td>${esc((r.fact || "").replace(/_/g, " "))}</td><td>${esc(r.approved || "")}</td><td>${esc(r.draft || "")}</td><td><span class="chip ${r.result === "same" ? "ok" : r.result === "differs" ? "warn" : r.result === "missed" ? "bad" : "plain"}">${r.result === "same" ? "Same" : r.result === "differs" ? "Different" : r.result === "missed" ? "Not in the new version" : "Information"}</span></td></tr>`).join("") : "";
   return head(esc(m.title)) + `<p class="muted" style="margin:-8px 0 14px">${esc(m.policy_id)} · ${esc(LEVEL[m.level] || m.level)} · ${esc(m.source)} ${esc(m.version)}${m.effective ? " · effective " + esc(m.effective) : ""}${m.url && m.url.startsWith("http") ? ` · <a href="${esc(m.url)}" target="_blank" rel="noopener">official source</a>` : ""}</p>
-    ${b.status === "published" ? `<div class="banner" style="border-color:var(--ok);color:var(--ok)">This policy was approved.</div>` : ""}
+    ${b.status === "published" ? `<div class="banner" style="border-color:var(--ok);color:var(--ok)">This policy was approved. These are its rules and the exact quotes they come from. To change a rule, update the policy from CMS. That makes a new draft you can approve or reject again.</div>` : ""}
     ${S.pol.msg ? `<div class="banner">${esc(S.pol.msg)}</div>` : ""}
     <div class="stat" style="margin-bottom:14px"><div><b>${n}</b><span>rules the AI drafted</span></div><div><b>${b.counts.pass} / ${b.counts.review} / ${b.counts.fail}</b><span>automatic checks: matched / check / failed</span></div>
       <div><b>${t.approved} · ${t.rejected} · ${t.pending}</b><span>your decisions: approved · rejected · waiting</span></div>${cr ? `<div><b>${cr.counts.same} of ${cr.approved_count}</b><span>live rules the new version matches exactly</span></div>` : ""}</div>
@@ -456,7 +438,7 @@ function bindSug() {
 function bindPolicy() {
   const on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));
   const val = (id) => (document.getElementById(id) || {}).value;
-  const back = async () => { clearInterval(polTimer); const ctx = S.pol.build && S.pol.build.service_ctx; S.pol.build = null; S.pol.msg = null; await loadPolicies(); if (ctx && S.view === "services") { S.pol.svcKey = ctx; S.pol.svc = await api("/policies/services/" + ctx); render(); loadSug(); loadCodeSug(); } else render(); };
+  const back = async () => { clearInterval(polTimer); const ctx = S.pol.build && (S.pol.build.service_ctx || S.pol.svcKey); S.pol.build = null; S.pol.msg = null; await loadPolicies(); if (ctx && S.view === "services") { S.pol.svcKey = ctx; S.pol.svc = await api("/policies/services/" + ctx); render(); loadSug(); loadCodeSug(); } else render(); };
   const f = S.pol.form, keepForm = () => { f.source = val("psrc") ?? f.source; f.ident = val("pid") ?? f.ident; f.pid = val("ppid") ?? f.pid; f.title = val("ptitle") ?? f.title; f.level = val("plevel") ?? f.level; };
 
   /* services list */

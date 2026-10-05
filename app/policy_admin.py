@@ -13,7 +13,7 @@ from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
 from pydantic import BaseModel
 
 from . import db
-from pipeline import engine, procedures, service_eval, telemetry as tel
+from pipeline import engine, procedures, telemetry as tel
 from pipeline.policy_build import sources as S
 from pipeline.policy_build.build import run as run_build
 from pipeline.policy_build.compare import compare as compare_live
@@ -705,15 +705,10 @@ def _publish_service_change(c, u, lib, key, what, audit_action):
     return lib["version"]
 
 
-def _evaluation(c, lib, key):
-    """The ML team's latest evaluation of this service, and whether the policies have changed since. Read-only for the owner."""
-    rows = [dict(r) for r in c.execute("SELECT * FROM service_evals WHERE service=? ORDER BY run_at DESC, id DESC LIMIT 5", (key,))]
-    if not rows:
-        return dict(status="none", latest=None)
-    r = rows[0]
-    return dict(status="current" if r["fingerprint"] == service_eval.fingerprint(lib, key) else "changed",
-                latest=dict(run_at=r["run_at"], run_by=r["run_by"], set=r["set_name"], label=r["label"], source=r["source"], library_version=r["library_version"], metrics=json.loads(r["metrics"])),
-                earlier=len(rows) - 1)
+def _rules_build(c, policy_id):
+    """The draft that holds a policy's rules beside their exact quotes: the one that was approved, else the latest open draft. None for a policy written by hand."""
+    r = c.execute("SELECT id, status FROM policy_builds WHERE policy_id=? AND status IN ('published','draft') ORDER BY (status='published') DESC, created_at DESC LIMIT 1", (policy_id,)).fetchone()
+    return dict(id=r["id"], status=r["status"]) if r else None
 
 
 @router.get("/services/{key}")
@@ -735,7 +730,7 @@ def service_detail(key: str, request: Request):
         x = pols.get(pid)
         if x:
             attached.append(dict(id=pid, title=x["title"], level=x["level"], source=x["source"], url=x.get("url"), rules=len(x.get("criteria", [])), waiting=len(x.get("waiting_rules", [])),
-                                 verified=bool(x.get("verified")), n_facts=len(x.get("facts", [])), note=x.get("verified_from") or x.get("applies_to")))
+                                 verified=bool(x.get("verified")), n_facts=len(x.get("facts", [])), note=x.get("verified_from") or x.get("applies_to"), build=_rules_build(c, pid)))
     drafts = [dict(r2) for r2 in c.execute("SELECT id, kind, ident, policy_id, status, stage, created_at FROM policy_builds WHERE service=? AND status IN ('running','draft','error') ORDER BY created_at DESC", (key,))]
     seen = {x[0]: x[1] for x in c.execute("SELECT cpt, COUNT(*) FROM cases GROUP BY cpt")}
     short = p["short"]
@@ -745,7 +740,7 @@ def service_detail(key: str, request: Request):
                 other_codes=len(p.get("cms_other_codes", [])), checked=p.get("cpt_checked"),
                 policies=attached, drafts=drafts,
                 facts=[dict(key=d["key"], label=d["label"], ask=d.get("ask") or "", kind=d["kind"], used_by=used.get(d["key"], []), from_policy=d.get("from_policy")) for d in p["facts"]],
-                n_cases=sum(seen.get(x, 0) for x in p["cpts"]), activity=acts, evaluation=_evaluation(c, lib, key))
+                n_cases=sum(seen.get(x, 0) for x in p["cpts"]), activity=acts)
 
 
 _STOP = {"with", "from", "that", "this", "inpatient", "outpatient", "surgery", "procedure", "service", "treatment", "therapy", "for", "and", "the", "of"}
