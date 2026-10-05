@@ -806,9 +806,10 @@ def attach_policy(key: str, body: AttachPolicyReq, request: Request):
     need = sorted({k for cr in pol.get("criteria", []) for k in (cr.get("required_fact"), (cr.get("applies_if") or {}).get("fact")) if k and k not in have})
     if need:
         raise HTTPException(400, "This policy's rules need key facts this service does not have yet: " + ", ".join(x.replace("_", " ") for x in need) + ". Build the policy again for this service so the system can add them.")
+    brings = [d["label"] for d in pol.get("facts", []) if d["key"] not in {x["key"] for x in procedures.library()["procedures"][key]["facts"]}]
     p.setdefault("policies", []).append(body.policy_id)
     ver = _publish_service_change(c, u, lib, key, f"{p['short']}: added policy {body.policy_id}", "service_policy_added")
-    return dict(ok=True, version=ver)
+    return dict(ok=True, version=ver, brings=brings, rules=len(pol.get("criteria", [])))
 
 
 @router.post("/services/{key}/policies/{policy_id}/remove")

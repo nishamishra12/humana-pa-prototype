@@ -12,11 +12,29 @@ _RAW = None  # the library as saved: what the owner edits and publishes
 _LIB = None  # the library as the engine reads it: each service also carries the key facts of its policies
 
 
+def _lift_facts(lib):
+    """A policy written before key facts lived on the policy has none of its own. Give it the definitions of the key facts its rules check,
+    taken from a service that uses it. Then another service can add the policy with no rebuild. Saved with the next change to the library."""
+    for pol in lib["policies"]:
+        if "facts" in pol:
+            continue
+        need = {k for r in pol.get("criteria", []) + pol.get("waiting_rules", []) for k in (r.get("required_fact"), (r.get("applies_if") or {}).get("fact")) if k}
+        got = {}
+        for proc in lib["procedures"].values():
+            if pol["id"] in proc.get("policies", []):
+                for d in proc["facts"]:
+                    if d["key"] in need:
+                        got.setdefault(d["key"], d)
+        if got or any(pol["id"] in p.get("policies", []) for p in lib["procedures"].values()):
+            pol["facts"] = [got[k] for k in sorted(got)]
+
+
 def raw():
     global _RAW
     if _RAW is None:
         path = LIVE_PATH if os.path.exists(LIVE_PATH) else LIB_PATH
         _RAW = json.load(open(path, encoding="utf-8"))
+        _lift_facts(_RAW)
     return _RAW
 
 

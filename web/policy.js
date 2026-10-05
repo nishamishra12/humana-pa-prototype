@@ -428,7 +428,7 @@ function bindSug() {
   const on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));
   on("[data-sugadd]", async (el) => {
     const r = await api(`/policies/services/${S.pol.svcKey}/policies`, { method: "POST", body: { policy_id: el.dataset.sugadd } });
-    S.pol.msg = "Policy added. Library version " + r.version + "."; await loadPolicies(); render(); loadSug(); loadCodeSug();
+    S.pol.msg = `Policy added with its ${r.rules} approved rules${r.brings.length ? " and " + r.brings.length + " key fact" + (r.brings.length > 1 ? "s" : "") : ""}. Nothing was fetched, read or reviewed again.`; await loadPolicies(); render(); loadSug(); loadCodeSug();
   });
   on("[data-sugbuild]", async (el) => {
     const r = await api("/policies/builds", { method: "POST", body: { kind: el.dataset.sugbuild, ident: el.dataset.sugid, service: S.pol.svcKey } });
