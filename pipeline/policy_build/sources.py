@@ -10,7 +10,7 @@ Each fetch is saved under policies/work/<policy_id>/<version>/source.txt with a 
 version or effective date, when it was retrieved, and a hash of the text. The hash is how a scheduled check can tell
 that a policy has changed since the last approved version.
 """
-import gzip, hashlib, html, json, os, re, urllib.request
+import gzip, hashlib, html, json, os, re, time, urllib.error, urllib.request
 from datetime import datetime, timezone
 
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
@@ -33,9 +33,15 @@ def clean(s):
 
 def _get(url, headers=None):
     req = urllib.request.Request(url, headers={"Accept-Encoding": "gzip", "User-Agent": "PADeskPolicyBuild/1.0", **(headers or {})})  # eCFR requires compression
-    with urllib.request.urlopen(req, timeout=60) as r:
-        data = r.read()
-        return gzip.decompress(data) if r.headers.get("Content-Encoding") == "gzip" else data
+    for attempt in range(3):  # the CMS API now and then drops a call. Try again before giving up.
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                data = r.read()
+                return gzip.decompress(data) if r.headers.get("Content-Encoding") == "gzip" else data
+        except (urllib.error.URLError, TimeoutError, ConnectionError):
+            if attempt == 2:
+                raise
+            time.sleep(1.5 * (attempt + 1))
 
 
 def _cms(path, tok):
