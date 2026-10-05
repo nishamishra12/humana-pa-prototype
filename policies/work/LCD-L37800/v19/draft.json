@@ -1,0 +1,400 @@
+{
+ "criteria": [
+  {
+   "id": "ALLERGEN_RELEVANT",
+   "text": "The allergen(s) to which the patient is allergic must be clinically relevant.",
+   "source_quote": "The allergen(s) to which the patient is allergic must be clinically relevant",
+   "cite": "History/Background and/or General Information",
+   "required_fact": "allergen_clinically_relevant",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is the allergen identified as clinically relevant to the patient's history and exposure?",
+   "short": "Allergen not clinically relevant",
+   "confidence": "high"
+  },
+  {
+   "id": "AVOIDANCE_FAILED",
+   "text": "Trial of avoidance measures has failed or there is unavoidable exposure to allergy triggers identified in allergy testing.",
+   "source_quote": "Trial of avoidance measures has failed or there is unavoidable exposure to allergy triggers identified in allergy testing",
+   "cite": "History/Background and/or General Information",
+   "required_fact": "avoidance_failed_or_unavoidable_exposure",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Did avoidance measures fail, or is there documentation of unavoidable exposure to the identified trigger?",
+   "short": "No documented avoidance failure or unavoidable exposure",
+   "confidence": "high"
+  },
+  {
+   "id": "COVERED_INDICATION",
+   "text": "The patient's condition must be one of the covered indications (allergic rhinitis, allergic conjunctivitis, allergic asthma, dust mite atopic dermatitis, or stinging insect hypersensitivity).",
+   "source_quote": "Conditions for which immunotherapy will be considered medically reasonable and necessary include",
+   "cite": "Covered Indications",
+   "required_fact": "diagnosis",
+   "test": {
+    "type": "in",
+    "value": [
+     "Allergic rhinitis",
+     "Allergic conjunctivitis",
+     "Allergic asthma",
+     "Dust mite atopic dermatitis",
+     "Stinging insect hypersensitivity"
+    ]
+   },
+   "if_missing": "What is the patient's diagnosis for which immunotherapy is being requested?",
+   "short": "Diagnosis not a covered indication",
+   "confidence": "high"
+  },
+  {
+   "id": "NOT_FOOD_HYPERSENSITIVITY",
+   "text": "Immunotherapy for food hypersensitivity is not covered.",
+   "source_quote": "Food hypersensitivity",
+   "cite": "Limitations",
+   "required_fact": "diagnosis_is_food_hypersensitivity",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is the immunotherapy being given for food hypersensitivity?",
+   "short": "Indicated for food hypersensitivity (excluded)",
+   "confidence": "high"
+  },
+  {
+   "id": "NOT_COCKROACH",
+   "text": "Immunotherapy for cockroach hypersensitivity is not covered.",
+   "source_quote": "Cockroach hypersensitivity",
+   "cite": "Limitations",
+   "required_fact": "diagnosis_is_cockroach_hypersensitivity",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is the immunotherapy being given for cockroach hypersensitivity?",
+   "short": "Indicated for cockroach hypersensitivity (excluded)",
+   "confidence": "high"
+  },
+  {
+   "id": "NOT_URTICARIA",
+   "text": "Immunotherapy for urticaria and/or angioedema is not covered.",
+   "source_quote": "Urticaria and/or angioedema",
+   "cite": "Limitations",
+   "required_fact": "diagnosis_is_urticaria_angioedema",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is the immunotherapy being given for urticaria or angioedema?",
+   "short": "Indicated for urticaria/angioedema (excluded)",
+   "confidence": "high"
+  },
+  {
+   "id": "NOT_PROVOCATION_NEUTRALIZATION",
+   "text": "Provocation-neutralization therapy is not covered.",
+   "source_quote": "Provocation-neutralization therapy",
+   "cite": "Limitations",
+   "required_fact": "is_provocation_neutralization_therapy",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is the requested therapy a provocation-neutralization therapy?",
+   "short": "Provocation-neutralization therapy (excluded)",
+   "confidence": "high"
+  },
+  {
+   "id": "NOT_RINKEL_METHOD",
+   "text": "Low-dose subcutaneous therapy based on the Rinkel method is not covered.",
+   "source_quote": "Low-dose subcutaneous therapy based on the Rinkel method",
+   "cite": "Limitations",
+   "required_fact": "is_rinkel_method",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is the requested therapy low-dose subcutaneous therapy based on the Rinkel method?",
+   "short": "Rinkel method therapy (excluded)",
+   "confidence": "high"
+  },
+  {
+   "id": "NOT_ALLERGOID_ADJUVANT",
+   "text": "Therapy formulations such as allergoids or adjuvants are not covered.",
+   "source_quote": "Therapy formulations, such as allergoids or adjuvants",
+   "cite": "Limitations",
+   "required_fact": "uses_allergoid_or_adjuvant_formulation",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the therapy use allergoid or adjuvant formulations?",
+   "short": "Allergoid/adjuvant formulation used (excluded)",
+   "confidence": "high"
+  },
+  {
+   "id": "NOT_EXCLUDED_ROUTE",
+   "text": "Oral/sublingual for food, epicutaneous, intralymphatic, intranasal, or sublingual routes of administration are not covered.",
+   "source_quote": "The following routes of administration",
+   "cite": "Limitations",
+   "required_fact": "route_of_administration",
+   "test": {
+    "type": "in",
+    "value": [
+     "subcutaneous",
+     "other"
+    ]
+   },
+   "if_missing": "What is the route of administration for the immunotherapy?",
+   "short": "Excluded route of administration used",
+   "confidence": "high"
+  },
+  {
+   "id": "NOT_WHOLE_BODY_EXTRACT",
+   "text": "Immunotherapy for Hymenoptera venom sensitivity using whole-body extracts (except fire ant extracts) is not covered.",
+   "source_quote": "Immunotherapy for Hymenoptera venom sensitivity using whole-body extracts, with the exception of fire ant extracts",
+   "cite": "Limitations",
+   "required_fact": "uses_whole_body_extract_non_fire_ant",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is whole-body extract (other than fire ant) being used for Hymenoptera venom immunotherapy?",
+   "short": "Whole-body extract used (non-fire ant, excluded)",
+   "confidence": "high"
+  },
+  {
+   "id": "NO_SUBSTANTIAL_COMORBIDITY",
+   "text": "Patients should not have substantial comorbid conditions that could increase immunotherapy risk.",
+   "source_quote": "Patients should not have substantial comorbid conditions that could increase immunotherapy risk",
+   "cite": "Limitations",
+   "required_fact": "substantial_comorbid_risk_condition",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have substantial comorbid conditions (e.g., severe uncontrolled asthma, significant cardiovascular disease) that increase immunotherapy risk?",
+   "short": "Substantial comorbid risk condition present",
+   "confidence": "medium"
+  },
+  {
+   "id": "BETA_BLOCKER_ACE_ASSESSMENT",
+   "text": "Patients on beta-blockers and/or ACE inhibitors must have an individualized risk versus benefit assessment prior to receiving inhalant or venom allergen immunotherapy.",
+   "source_quote": "Patients on beta-blockers and/or angiotensin-converting enzyme (ACE) inhibitor medications must have individualized assessments of risk versus benefit prior to receiving inhalant or venom allergen immunotherapy",
+   "cite": "Limitations",
+   "required_fact": "individualized_risk_benefit_assessment_done",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "If the patient is on a beta-blocker or ACE inhibitor, was an individualized risk vs benefit assessment documented prior to immunotherapy?",
+   "short": "No individualized risk/benefit assessment for beta-blocker/ACE inhibitor patient",
+   "confidence": "medium",
+   "applies_if": {
+    "fact": "on_beta_blocker_or_ace_inhibitor",
+    "equals": "yes"
+   }
+  },
+  {
+   "id": "ABLE_TO_COOPERATE",
+   "text": "Patients should be able to cooperate during therapy.",
+   "source_quote": "Patients should be able to cooperate during therapy",
+   "cite": "Limitations",
+   "required_fact": "patient_able_to_cooperate",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is the patient able to cooperate during immunotherapy administration?",
+   "short": "Patient unable to cooperate during therapy",
+   "confidence": "medium"
+  }
+ ],
+ "new_facts": [
+  {
+   "key": "allergen_clinically_relevant",
+   "label": "Allergen clinically relevant to patient history",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the documentation state the allergen correlates with the patient's clinical history and exposure?"
+  },
+  {
+   "key": "avoidance_failed_or_unavoidable_exposure",
+   "label": "Avoidance trial failed or unavoidable exposure",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the record show avoidance measures were tried and failed, or that exposure to the identified allergen is unavoidable?"
+  },
+  {
+   "key": "diagnosis",
+   "label": "Patient diagnosis",
+   "kind": "enum",
+   "values": [
+    "Allergic rhinitis",
+    "Allergic conjunctivitis",
+    "Allergic asthma",
+    "Dust mite atopic dermatitis",
+    "Stinging insect hypersensitivity",
+    "Food hypersensitivity",
+    "Cockroach hypersensitivity",
+    "Urticaria and/or angioedema",
+    "Other"
+   ],
+   "ask": "What diagnosis is being treated with allergen immunotherapy?"
+  },
+  {
+   "key": "diagnosis_is_food_hypersensitivity",
+   "label": "Diagnosis is food hypersensitivity",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the indication for therapy food hypersensitivity?"
+  },
+  {
+   "key": "diagnosis_is_cockroach_hypersensitivity",
+   "label": "Diagnosis is cockroach hypersensitivity",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the indication for therapy cockroach hypersensitivity?"
+  },
+  {
+   "key": "diagnosis_is_urticaria_angioedema",
+   "label": "Diagnosis is urticaria/angioedema",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the indication for therapy urticaria or angioedema?"
+  },
+  {
+   "key": "is_provocation_neutralization_therapy",
+   "label": "Therapy is provocation-neutralization",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the requested therapy provocation-neutralization therapy?"
+  },
+  {
+   "key": "is_rinkel_method",
+   "label": "Therapy uses Rinkel method",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the requested therapy a low-dose subcutaneous Rinkel method therapy?"
+  },
+  {
+   "key": "uses_allergoid_or_adjuvant_formulation",
+   "label": "Uses allergoid/adjuvant formulation",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the therapy formulation include allergoids or adjuvants?"
+  },
+  {
+   "key": "route_of_administration",
+   "label": "Route of administration",
+   "kind": "enum",
+   "values": [
+    "subcutaneous",
+    "oral_sublingual_food",
+    "epicutaneous",
+    "intralymphatic",
+    "intranasal",
+    "sublingual",
+    "other"
+   ],
+   "ask": "What route of administration is used for the immunotherapy?"
+  },
+  {
+   "key": "uses_whole_body_extract_non_fire_ant",
+   "label": "Uses whole-body extract (non-fire ant)",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is a whole-body extract (other than fire ant) being used for Hymenoptera venom immunotherapy?"
+  },
+  {
+   "key": "substantial_comorbid_risk_condition",
+   "label": "Substantial comorbid risk condition present",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the patient have a substantial comorbid condition (e.g., severe uncontrolled asthma, significant cardiovascular disease) increasing immunotherapy risk?"
+  },
+  {
+   "key": "on_beta_blocker_or_ace_inhibitor",
+   "label": "Patient on beta-blocker or ACE inhibitor",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the patient currently taking a beta-blocker or ACE inhibitor medication?"
+  },
+  {
+   "key": "individualized_risk_benefit_assessment_done",
+   "label": "Individualized risk/benefit assessment documented",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Was an individualized risk versus benefit assessment documented before immunotherapy for this patient?"
+  },
+  {
+   "key": "patient_able_to_cooperate",
+   "label": "Patient able to cooperate during therapy",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the documentation indicate the patient is able to cooperate during immunotherapy administration?"
+  }
+ ],
+ "not_modeled": [
+  {
+   "quote": "A presumption of failure can be made when, after 12-24 months of therapy, a person does not experience: A noticeable decrease of symptoms, An increase in tolerance to the offending allergen, and A reduction in medication usage.",
+   "why": "This is a clinical response/monitoring guideline for continuation decisions, not a discrete pre-authorization eligibility criterion checkable from a single fact; it's a compound judgment about treatment response over time."
+  },
+  {
+   "quote": "For many patients, the recommended duration of allergen immunotherapy is 3-5 years.",
+   "why": "A general duration recommendation, not a strict coverage requirement; described as individualized, not testable as pass/fail."
+  },
+  {
+   "quote": "Home administration of allergen immunotherapy should only be considered in rare and exceptional cases when the benefits of immunotherapy clearly outweigh the risks.",
+   "why": "Subjective judgment about rare/exceptional cases without a clear testable fact; site-of-service rule is discretionary and narrative rather than a bright-line criterion."
+  },
+  {
+   "quote": "Services will be considered medically reasonable and necessary when all aspects of care are within the scope of practice of the provider's professional licensure",
+   "why": "Provider licensure/scope-of-practice compliance depends on state law specifics not captured in a simple fact vocabulary for this packet-level tool."
+  }
+ ],
+ "_usage": {
+  "input_tokens": 5421,
+  "output_tokens": 4914
+ },
+ "_model": "claude-sonnet-5"
+}

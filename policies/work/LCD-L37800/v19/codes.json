@@ -1,0 +1,125 @@
+{
+ "method": "lcd_related_articles",
+ "retrieved_at": "2026-10-05T22:48:10+00:00",
+ "articles": [
+  {
+   "id": "A57678",
+   "version": 11,
+   "title": "Allergen Immunotherapy",
+   "mac": "First Coast Service Options, Inc. (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57678&ver=11",
+   "match_score": null,
+   "cites_ncd": null,
+   "n_codes": 11
+  },
+  {
+   "id": "A59576",
+   "version": 8,
+   "title": "Approved Drugs and Biologicals; Includes Cancer Chemotherapeutic Agents",
+   "mac": "First Coast Service Options, Inc. (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=59576&ver=8",
+   "match_score": null,
+   "cites_ncd": null,
+   "n_codes": 1
+  }
+ ],
+ "codes": [
+  {
+   "code": "95115",
+   "description": "PROFESSIONAL SERVICES FOR ALLERGEN IMMUNOTHERAPY NOT INCLUDING PROVISION OF ALLERGENIC EXTRACTS; SINGLE INJECTION",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95117",
+   "description": "PROFESSIONAL SERVICES FOR ALLERGEN IMMUNOTHERAPY NOT INCLUDING PROVISION OF ALLERGENIC EXTRACTS; 2 OR MORE INJECTIONS",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95144",
+   "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY, SINGLE DOSE VIAL(S) (SPECIFY NUMBER OF VIALS)",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95145",
+   "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY (SPECIFY NUMBER OF DOSES); SINGLE STINGING INSECT VENOM",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95146",
+   "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY (SPECIFY NUMBER OF DOSES); 2 SINGLE STINGING INSECT VENOMS",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95147",
+   "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY (SPECIFY NUMBER OF DOSES); 3 SINGLE STINGING INSECT VENOMS",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95148",
+   "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY (SPECIFY NUMBER OF DOSES); 4 SINGLE STINGING INSECT VENOMS",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95149",
+   "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY (SPECIFY NUMBER OF DOSES); 5 SINGLE STINGING INSECT VENOMS",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95165",
+   "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY; SINGLE OR MULTIPLE ANTIGENS (SPECIFY NUMBER OF DOSES)",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95170",
+   "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY; WHOLE BODY EXTRACT OF BITING INSECT OR OTHER ARTHROPOD (SPECIFY NUMBER OF DOSES)",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95180",
+   "description": "RAPID DESENSITIZATION PROCEDURE, EACH HOUR (EG, INSULIN, PENICILLIN, EQUINE SERUM)",
+   "listed_by": [
+    "A57678"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "J7999",
+   "description": "Only mentioned in the article text: ance: Compounded drugs should be reported with HCPCS code J7999 on a single claim line. Place quantity = ‘1’ on the line billed...",
+   "listed_by": [
+    "A59576"
+   ],
+   "n_articles": 1
+  }
+ ],
+ "note": "CMS links these articles to the LCD. The codes are the ones each article lists."
+}

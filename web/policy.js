@@ -156,16 +156,22 @@ function codeRows(rows, of) {
 }
 function codeSugHtml() {
   const cs = S.pol.cs, g = cs.data;
-  if (!g) return `<div class="faint" style="padding:8px 0">Looking for billing codes…</div>`;
+  if (!g) return `<div class="faint" style="padding:8px 0">Finding billing codes…</div>`;
   const head = (t, sub) => `<div style="margin:10px 0 4px"><b style="font-size:13.5px">${t}</b>${sub ? small(sub) : ""}</div>`;
-  const cons = g.articles.length ? (cs.cons ? (cs.cons.codes.length ? head("Codes most articles agree on", `Read from ${cs.cons.read} CMS articles. A code listed by more articles comes first. Check the descriptions before you add one.`) + codeRows(cs.cons.codes, cs.cons.read) : "") : `<div class="faint" style="padding:8px 0">Reading the articles to find the codes they agree on…</div>`) : "";
-  const pol = g.from_policies.map((p) => head("Listed for " + esc(p.title), "CMS lists these codes beside the policy. Each one keeps its CMS article as its source.") + codeRows(p.codes)).join("");
+  const pol = g.from_policies.map((p) => head("Listed for " + esc(p.title), "CMS lists these codes beside the policy.") + codeRows(p.codes)).join("");
+  const found = cs.cons && cs.cons.codes.length;
+  const main = !g.articles.length ? `<div class="faint" style="padding:6px 0">${esc(g.note || "No billing codes found.")}</div>`
+    : !cs.cons ? `<div class="faint" style="padding:8px 0">Finding billing codes…</div>`
+    : found ? head("Suggested billing codes", `The number shows how many of ${cs.cons.read} CMS articles list the code. More articles means more likely. Each code you add keeps its article as its source. Check the descriptions.`) + codeRows(cs.cons.codes, cs.cons.read)
+    : `<div class="faint" style="padding:6px 0">CMS lists no codes on the matching articles. Open one below, or add a code yourself.</div>`;
   const arts = g.articles.map((a) => { const d = cs.art[a.aid], open = d && d.open;
     return `<div style="border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:6px"><div style="display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap"><div><b>${esc(a.title)}</b>${small(esc(a.id) + " · " + esc((a.mac || "").replace(/\s*\(.*$/, "")) + ` · <a href="${esc(a.url)}" target="_blank" rel="noopener">open on CMS</a>`)}</div>
       <button class="btn small" data-csart="${esc(a.aid)}" data-csver="${esc(a.version)}">${cs.busy === a.aid ? "Loading…" : open ? "Hide codes" : "See codes"}</button></div>
       ${open && d.codes ? `<div style="margin-top:8px">${d.codes.length ? codeRows(d.codes) : `<div class="faint">CMS lists no codes on this article.</div>`}</div>` : ""}</div>`; }).join("");
-  return `${pol}${cons}${arts || g.note ? head(g.asked ? "CMS articles that match" : "CMS articles that match the service name", "Billing and Coding articles are written by each regional Medicare contractor. Open one to see its codes. Check it is about the same service.") + (arts || `<div class="faint" style="padding:6px 0">${esc(g.note)}</div>`) : ""}
-    <div style="margin-top:8px"><button class="btn primary small" id="csadd" ${Object.keys(cs.picked).length ? "" : "disabled"}>${Object.keys(cs.picked).length ? "Add " + Object.keys(cs.picked).length + " selected code" + (Object.keys(cs.picked).length > 1 ? "s" : "") : "Tick the codes to add"}</button></div>`;
+  const n = Object.keys(cs.picked).length;
+  return `${pol}${main}
+    ${arts ? `<details class="more" style="margin-top:8px" ${cs.cons && !found ? "open" : ""}><summary><u>See the ${g.articles.length} CMS articles these come from</u></summary><div style="margin-top:8px">${arts}</div></details>` : ""}
+    <div style="margin-top:10px"><button class="btn primary small" id="csadd" ${n ? "" : "disabled"}>${n ? "Add " + n + " selected code" + (n > 1 ? "s" : "") : "Tick the codes to add"}</button></div>`;
 }
 function bindCodeSug() {
   const cs = S.pol.cs, on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));

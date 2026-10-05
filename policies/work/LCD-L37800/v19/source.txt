@@ -1,0 +1,67 @@
+LCD L37800: Allergen Immunotherapy
+Version 19
+
+Compliance with the provisions in this LCD may be monitored and addressed through post payment data analysis and subsequent medical review audits.
+ History/Background and/or General Information 
+Allergen Immunotherapy is defined as the repeated administration of specific allergens to individuals with IgE-mediated conditions to provide protection against allergic symptoms and inflammatory reactions associated with natural exposure to these allergens. 1 
+Allergen immunotherapy should be considered for patients who have discernable evidence of specific IgE antibodies to clinically relevant allergens. The decision to begin allergen immunotherapy may depend on a number of factors, including but not limited to, patient's preference/acceptability, adherence, medication requirements, response to avoidance methods, and the adverse effects of medications. The severity and duration of symptoms should also be considered when evaluating the need for allergen immunotherapy. 1 
+The presence of IgE antibodies alone does not infer the need for immunotherapy; the presence of IgE antibodies to an allergen must correlate with the patient’s history. 1 For example, the presence of IgE antibodies to an allergen not locally found, with no history of exposure or expectation of exposure, would not be considered clinically relevant. 
+In order for allergen immunotherapy to be considered medically reasonable and necessary both of the following criteria must be met:
+ The allergen(s) to which the patient is allergic must be clinically relevant, and
+ Trial of avoidance measures has failed or there is unavoidable exposure to allergy triggers identified in allergy testing. 1 
+ Covered Indications 
+ Conditions for which immunotherapy will be considered medically reasonable and necessary include:
+ Allergic rhinitis
+ Allergic conjunctivitis
+ Allergic asthma 2-9 
+ Dust mite atopic dermatitis 1,9-11 
+ Stinging insect hypersensitivity (e.g., bees, hornets, wasps, fire ants) 1-9 
+ Although all treatment regimens must be individualized for a given patient, immunotherapy generally has two phases. A build-up phase and a maintenance phase .
+The build-up phase includes the initiation and subsequent increase of applicable antigen concentrations within 8-28 weeks. Usually a single dose increase is administered per visit and visits generally vary from 1-3 times per week. Accelerated timetables, also referred to as rush or cluster immunotherapy, involve giving several injections at increasing doses on a single visit. 1,9
+ The maintenance phase occurs when the effective therapeutic dose is reached. This dose provides therapeutic effectiveness without significant adverse local or systemic consequences. This dose may not be the initial targeted concentration/dose. The maintenance immunotherapy schedule is generally every 4-8 weeks for venoms and every 2-4 weeks for inhalant allergens. Maintenance immunotherapy generally involves follow-up visits every 6-12 months. 1,2,9 
+ Length of Maintenance Therapy: The duration of all forms of immunotherapy must be individualized. A presumption of failure can be made when, after 12-24 months of therapy, a person does not experience:
+ A noticeable decrease of symptoms,
+ An increase in tolerance to the offending allergen, and
+ A reduction in medication usage.
+ For many patients, the recommended duration of allergen immunotherapy is 3-5 years. However, the duration of immunotherapy should be individualized based on the benefits sustained from therapy, disease severity, immunotherapy reaction, patient preference and certain antigens in the therapy. 1,2,9
+ Desensitization is the rapid administration of incremental doses of allergens or medications by which effector cells are rendered less reactive or nonreactive to an IgE-mediated immune response. Tolerance to medications can be achieved through desensitization. 1 
+ Limitations
+ Patients should not have substantial comorbid conditions that could increase immunotherapy risk (e.g., severe asthma uncontrolled by pharmacotherapy, significant cardiovascular disease).
+ Patients on beta-blockers and/or angiotensin-converting enzyme (ACE) inhibitor medications must have individualized assessments of risk versus benefit prior to receiving inhalant or venom allergen immunotherapy.
+ Patients should be able to cooperate during therapy.
+ Please refer to the CMS IOM Publication 100-02, Medicare Benefit Policy Manual, Chapter 15, Section 50.4.4.1 Antigens for additional limitations.
+ Please refer to the CMS IOM Publication 100-03, Medicare National Coverage Determinations (NCD) Manual , Chapter 1, Part 2 Sections 110.9 Antigens Prepared for Sublingual Administration and 110.11 Food Allergy Testing and Treatment for additional limitations.
+ Allergen immunotherapy is not considered medically reasonable and necessary for :
+ Food hypersensitivity 1,12-14 
+ Cockroach hypersensitivity 1 
+ Urticaria and/or angioedema 1,12,13 
+ Provocation-neutralization therapy 1,13 
+ Low-dose subcutaneous therapy based on the Rinkel method 6,12,13 
+ Therapy formulations, such as allergoids or adjuvants 1 
+ The following routes of administration 6,12,13 :
+ Oral or sublingual for food immunotherapy
+ Epicutaneous immunotherapy
+ Intralymphatic immunotherapy
+ Intranasal immunotherapy
+ Sublingual Immunotherapy
+ Immunotherapy for Hymenoptera venom sensitivity using whole-body extracts, with the exception of fire ant extracts. 1,2,9 
+ Place of Services (POS)
+ Immunotherapy may have severe unpredictable systemic and local reactions within the first 30 minutes following the injection. It is recommended that immunotherapy be administered in a setting that permits the prompt recognition and management of adverse reactions, particularly anaphylaxis. It is recommended that patients wait at the physician's office/medical clinic for at least 30 minutes after the immunotherapy injection. 1,6,9 
+Home administration of allergen immunotherapy should only be considered in rare and exceptional cases when the benefits of immunotherapy clearly outweigh the risks. Frequent or routine home immunotherapy is not considered appropriate under any circumstances. If this method is utilized, informed consent should be attained from the patient and the individual administering the injection must be trained and equipped to recognize and manage immunotherapy reactions, particularly anaphylaxis. 1 
+ Provider Qualifications
+ Services will be considered medically reasonable and necessary when all aspects of care are within the scope of practice of the provider’s professional licensure, when performed according to the supervision requirements per state scope of practice laws, and when all procedures are performed by appropriately trained providers in the appropriate setting.
+ Notice: Services performed for any given diagnosis must meet all of the indications and limitations stated in this LCD, the general requirements for medical necessity as stated in CMS payment policy manuals, any and all existing CMS national coverage determinations, and all Medicare payment rules.
+
+This LCD supplements but does not replace, modify or supersede existing Medicare applicable National Coverage Determinations (NCDs) or payment policy rules and regulations for allergen immunotherapy services. Federal statute and subsequent Medicare regulations regarding provision and payment for medical services are lengthy. They are not repeated in this LCD. Neither Medicare payment policy rules nor this LCD replace, modify or supersede applicable state statutes regarding medical practice or other health practice professions acts, definitions or scopes of practice. All providers who report services for Medicare payment must fully understand and follow all existing laws, regulations and rules for Medicare payment for allergen immunotherapy services and must properly submit only valid claims for them. Please review and understand them and apply the medical necessity provisions in the policy within the context of the manual rules. Relevant CMS manual instructions and policies regarding allergen immunotherapy services may be found in the following Internet-Only Manuals (IOMs) published on the CMS Web site:
+ IOM Citations 
+ CMS IOM Publication 100-02, Medicare Benefit Policy Manual, 
+ Chapter 15, Sections 20.2 Physician Expense for Allergy Treatment, 50.4.4.1 Antigens, 60.1 Direct Personal Supervision, and 60.2 Services of Nonphysician Personnel Furnished Incident To Physician's Services
+ CMS IOM Publication 100-03, Medicare National Coverage Determinations (NCD) Manual, 
+ Chapter 1, Part 2, Sections 110.9 Antigens Prepared for Sublingual Administration and 110.11 Food Allergy Testing and Treatment
+ CMS IOM Publication 100-04, Medicare Claims Processing Manual, 
+ Chapter 12, Section 200 Allergy Testing and Immunotherapy
+ CMS IOM Publication 100-08, Medicare Program Integrity Manual ,
+ Chapter 13, Section 13.5.4 Reasonable and Necessary Provisions in LCDs
+ Social Security Act (Title XVIII) Standard References 
+ Title XVIII of the Social Security Act, Section 1862(a)(1)(A) states that no Medicare payment may be made for items or services which are not reasonable and necessary for the diagnosis or treatment of illness or injury.
+ Title XVIII of the Social Security Act, Section 1862(a)(7). This section excludes routine physical examinations.

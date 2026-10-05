@@ -1,0 +1,169 @@
+{
+ "criteria": [
+  {
+   "id": "ALLERGEN_RELEVANT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (allergen_clinically_relevant): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AVOIDANCE_FAILED",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (avoidance_failed_or_unavoidable_exposure): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "COVERED_INDICATION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (diagnosis): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NOT_FOOD_HYPERSENSITIVITY",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (diagnosis_is_food_hypersensitivity): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NOT_COCKROACH",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (diagnosis_is_cockroach_hypersensitivity): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NOT_URTICARIA",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (diagnosis_is_urticaria_angioedema): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NOT_PROVOCATION_NEUTRALIZATION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (is_provocation_neutralization_therapy): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NOT_RINKEL_METHOD",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (is_rinkel_method): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NOT_ALLERGOID_ADJUVANT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (uses_allergoid_or_adjuvant_formulation): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NOT_EXCLUDED_ROUTE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (route_of_administration): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NOT_WHOLE_BODY_EXTRACT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (uses_whole_body_extract_non_fire_ant): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NO_SUBSTANTIAL_COMORBIDITY",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (substantial_comorbid_risk_condition): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "BETA_BLOCKER_ACE_ASSESSMENT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (individualized_risk_benefit_assessment_done): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "ABLE_TO_COOPERATE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (patient_able_to_cooperate): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 0,
+  "review": 14,
+  "fail": 0
+ },
+ "total": 14,
+ "uncovered": [
+  "Although all treatment regimens must be individualized for a given patient, immunotherapy generally has two phases.",
+  "The build-up phase includes the initiation and subsequent increase of applicable antigen concentrations within 8-28",
+  "The maintenance phase occurs when the effective therapeutic dose is reached.",
+  "The maintenance immunotherapy schedule is generally every 4-8 weeks for venoms and every 2-4",
+  "Maintenance immunotherapy generally involves follow-up visits every 6-12 months.",
+  "Immunotherapy may have severe unpredictable systemic and local reactions within the first 30 minutes following the injection.",
+  "It is recommended that patients wait at the physician's office/medical clinic for at least 30 minutes after the immunotherapy injection.",
+  "If this method is utilized, informed consent should be attained from the patient and the individual administering the injection must be trained and equipped to recognize and manage immunotherapy reactions, particularly anaphylaxis.",
+  "Services performed for any given diagnosis must meet all of the indications and limitations stated in this LCD,",
+  "providers who report services for Medicare payment must fully understand and follow all existing laws, regulations and",
+  "rules for Medicare payment for allergen immunotherapy services and must properly submit only valid claims for them.",
+  "Please review and understand them and apply the medical necessity provisions in the policy within the context of the",
+  "in the following Internet-Only Manuals (IOMs) published on the CMS Web site:"
+ ],
+ "new_facts": [
+  "allergen_clinically_relevant",
+  "avoidance_failed_or_unavoidable_exposure",
+  "diagnosis",
+  "diagnosis_is_food_hypersensitivity",
+  "diagnosis_is_cockroach_hypersensitivity",
+  "diagnosis_is_urticaria_angioedema",
+  "is_provocation_neutralization_therapy",
+  "is_rinkel_method",
+  "uses_allergoid_or_adjuvant_formulation",
+  "route_of_administration",
+  "uses_whole_body_extract_non_fire_ant",
+  "substantial_comorbid_risk_condition",
+  "on_beta_blocker_or_ace_inhibitor",
+  "individualized_risk_benefit_assessment_done",
+  "patient_able_to_cooperate"
+ ],
+ "not_modeled": 4
+}
