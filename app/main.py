@@ -438,6 +438,7 @@ def act(cid: str, body: Act, request: Request):
 
 class Addendum(BaseModel):
     text: str
+    reply_type: str = "new"  # "new": the provider sent new information. "again": the provider says it was already sent.
 
 
 @app.post("/api/cases/{cid}/addendum")
@@ -446,6 +447,8 @@ def addendum(cid: str, body: Addendum, request: Request):
     c = db.conn()
     u = me(request, c)
     check_case_access(c, u, cid)
+    if body.reply_type not in ("new", "again"):
+        raise HTTPException(400, "Say whether the provider sent new information or says it was already sent")
     r = c.execute("SELECT * FROM cases WHERE id=?", (cid,)).fetchone()
     if not r:
         raise HTTPException(404, "Case not found")
@@ -458,7 +461,8 @@ def addendum(cid: str, body: Addendum, request: Request):
     c.execute("UPDATE cases SET facts=?, analysis=?, status='in_review' WHERE id=?", (json.dumps(facts), json.dumps(res), cid))
     c.execute("INSERT INTO comments(case_id,user_id,kind,body,created_at) VALUES(?,?,?,?,?)",
               (cid, None, "provider_reply", body.text.strip(), db.now()))
-    db.audit(c, cid, u["id"], "provider_reply", f"Provider response added as page {page}. Case checked again. Recommendation: {res['action']}")
+    said = "The provider sent new information." if body.reply_type == "new" else "The provider says it was already sent."
+    db.audit(c, cid, u["id"], "provider_reply", f"Provider response added as page {page}. {said} Case checked again. Recommendation: {res['action']}")
     if r["assignee_id"]:
         db.notify(c, r["assignee_id"], cid, f"The provider replied on {cid}. It is back in your queue")
     c.commit()

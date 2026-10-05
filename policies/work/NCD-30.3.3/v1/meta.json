@@ -1,0 +1,12 @@
+{
+ "policy_id": "NCD-30.3.3",
+ "level": "NCD",
+ "title": "Acupuncture for Chronic Lower Back Pain (cLBP)",
+ "version": "v1",
+ "effective": "01/21/2020",
+ "url": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=373",
+ "source": "CMS Coverage API",
+ "sha256": "9cb8be4ed3b19588fd2652c846fe219ddab3536a899769682e108f6b69015af5",
+ "chars": 2189,
+ "retrieved_at": "2026-10-04T22:21:18+00:00"
+}

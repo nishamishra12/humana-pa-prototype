@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" font-family="Calibri, 'Segoe UI', Arial, sans-serif">
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text x="30" y="40" font-size="13" font-weight="700" letter-spacing="3" fill="#1F6F5C">THE POLICY LIBRARY AS A DATABASE</text>
+  <text x="30" y="74" font-size="28" font-family="Cambria, Georgia, serif" fill="#16211E">Service in the middle. Codes and policies hang off it.</text>
+
+  <!-- CODE -->
+  <g>
+    <rect x="30" y="110" width="230" height="210" rx="10" fill="#fff" stroke="#1F6F5C" stroke-width="2"/>
+    <rect x="30" y="110" width="230" height="40" rx="10" fill="#E3F0EB" stroke="#1F6F5C" stroke-width="2"/>
+    <text x="48" y="137" font-size="17" font-weight="700" fill="#16211E">CODE</text>
+    <text x="48" y="178" font-size="14" fill="#16211E"><tspan font-weight="700">code</tspan>  <tspan fill="#5C6B66">PK</tspan></text>
+    <text x="48" y="204" font-size="14" fill="#16211E"><tspan font-weight="700">service_id</tspan>  <tspan fill="#5C6B66">FK</tspan></text>
+    <text x="48" y="230" font-size="14" fill="#5C6B66">description</text>
+    <text x="48" y="256" font-size="14" fill="#5C6B66">source (CMS article)</text>
+    <text x="48" y="282" font-size="14" fill="#5C6B66">added_by, added_at</text>
+  </g>
+  <!-- SERVICE -->
+  <g>
+    <rect x="345" y="110" width="230" height="210" rx="10" fill="#fff" stroke="#8A5A00" stroke-width="2.5"/>
+    <rect x="345" y="110" width="230" height="40" rx="10" fill="#FCEFD0" stroke="#8A5A00" stroke-width="2.5"/>
+    <text x="363" y="137" font-size="17" font-weight="700" fill="#16211E">SERVICE</text>
+    <text x="363" y="178" font-size="14" fill="#16211E"><tspan font-weight="700">id</tspan>  <tspan fill="#5C6B66">PK</tspan></text>
+    <text x="363" y="204" font-size="14" fill="#5C6B66">name</text>
+    <text x="363" y="230" font-size="14" fill="#5C6B66">scope (plain words)</text>
+    <text x="363" y="256" font-size="14" fill="#5C6B66">status: planned, pilot, live</text>
+    <text x="363" y="282" font-size="14" fill="#5C6B66">library version</text>
+  </g>
+  <!-- JOIN -->
+  <g>
+    <rect x="650" y="150" width="220" height="130" rx="10" fill="#fff" stroke="#5C6B66" stroke-width="2" stroke-dasharray="6 4"/>
+    <rect x="650" y="150" width="220" height="40" rx="10" fill="#F3F5F4" stroke="#5C6B66" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="666" y="177" font-size="15" font-weight="700" fill="#16211E">SERVICE_POLICY</text>
+    <text x="666" y="214" font-size="14" fill="#16211E"><tspan font-weight="700">service_id</tspan>  <tspan fill="#5C6B66">FK</tspan></text>
+    <text x="666" y="240" font-size="14" fill="#16211E"><tspan font-weight="700">policy_id</tspan>  <tspan fill="#5C6B66">FK</tspan></text>
+    <text x="666" y="266" font-size="14" fill="#5C6B66">added by, added at</text>
+  </g>
+  <!-- POLICY -->
+  <g>
+    <rect x="945" y="110" width="225" height="210" rx="10" fill="#fff" stroke="#5F3AA8" stroke-width="2"/>
+    <rect x="945" y="110" width="225" height="40" rx="10" fill="#EBE2F8" stroke="#5F3AA8" stroke-width="2"/>
+    <text x="963" y="137" font-size="17" font-weight="700" fill="#16211E">POLICY</text>
+    <text x="963" y="178" font-size="14" fill="#16211E"><tspan font-weight="700">id</tspan>  <tspan fill="#5C6B66">PK</tspan></text>
+    <text x="963" y="204" font-size="14" fill="#5C6B66">title, level (NCD, LCD, ...)</text>
+    <text x="963" y="230" font-size="14" fill="#5C6B66">source, version, hash</text>
+    <text x="963" y="256" font-size="14" fill="#5C6B66">rules + key facts (here)</text>
+    <text x="963" y="282" font-size="14" fill="#5C6B66">approved by, approved at</text>
+  </g>
+
+  <!-- relationships -->
+  <g stroke="#16211E" stroke-width="2" fill="none">
+    <line x1="260" y1="215" x2="345" y2="215"/>
+    <line x1="575" y1="215" x2="650" y2="215"/>
+    <line x1="870" y1="215" x2="945" y2="215"/>
+  </g>
+  <g font-size="15" font-weight="700" fill="#16211E" text-anchor="middle">
+    <text x="276" y="205">N</text><text x="330" y="205">1</text>
+    <text x="591" y="205">1</text><text x="634" y="205">N</text>
+    <text x="886" y="205">N</text><text x="930" y="205">1</text>
+  </g>
+  <g font-size="12.5" fill="#1F6F5C" text-anchor="middle" font-weight="700">
+    <text x="302" y="240">many codes</text><text x="302" y="257">one service</text>
+    <text x="610" y="240">one service</text><text x="610" y="257">many links</text>
+    <text x="908" y="240">many links</text><text x="908" y="257">one policy</text>
+  </g>
+
+  <!-- how to read it -->
+  <rect x="30" y="360" width="565" height="150" rx="10" fill="#F3F5F4" stroke="#CBD5D1"/>
+  <text x="50" y="390" font-size="12" font-weight="700" letter-spacing="2" fill="#5C6B66">HOW TO READ IT</text>
+  <text x="50" y="418" font-size="15" fill="#16211E"><tspan font-weight="700">A code belongs to exactly one service.</tspan></text>
+  <text x="50" y="440" font-size="15" fill="#5C6B66">So the code decides which service a packet goes to.</text>
+  <text x="50" y="470" font-size="15" fill="#16211E"><tspan font-weight="700">A service has many policies. A policy can serve many services.</tspan></text>
+  <text x="50" y="492" font-size="15" fill="#5C6B66">That is many-to-many, so it needs the join table.</text>
+
+  <rect x="620" y="360" width="550" height="150" rx="10" fill="#fff" stroke="#CBD5D1"/>
+  <text x="640" y="390" font-size="12" font-weight="700" letter-spacing="2" fill="#5C6B66">EXAMPLE FROM THE PROTOTYPE</text>
+  <text x="640" y="418" font-size="15" fill="#16211E"><tspan font-weight="700">Service:</tspan> ICD for heart failure</text>
+  <text x="640" y="443" font-size="15" fill="#16211E"><tspan font-weight="700">Code:</tspan> 33249 (it belongs to this service only)</text>
+  <text x="640" y="468" font-size="15" fill="#16211E"><tspan font-weight="700">Policies:</tspan> 42 CFR 412.3, NCD 20.4</text>
+  <text x="640" y="493" font-size="15" fill="#5C6B66">42 CFR 412.3 is also used by lumbar fusion and bariatric surgery.</text>
+</svg>

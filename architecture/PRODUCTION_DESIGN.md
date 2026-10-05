@@ -267,10 +267,11 @@ policy lookup → deterministic criteria engine → nurse console,
 recommend-only → audit log. Ships the completeness gate. Targets avoidable
 pend rate and first-pass determination rate.
 
-**Phase 2 (Intelligent):** gated auto-approve on the highest-confidence
-subset, once the eval set proves zero false approvals. A feedback loop from
-denial and appeal outcomes back into the extraction eval set. Member-facing
-status via the 2027 Patient Access API.
+**Phase 2:** member-facing status via the 2027 Patient Access API, a feedback
+loop from denial and appeal outcomes back into the rules and the eval set, and
+more services onboarded in the order Humana's request history suggests. A
+person decides in every phase. The AI never denies and never approves on its
+own.
 
 ---
 

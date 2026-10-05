@@ -37,6 +37,11 @@ td:first-child{white-space:nowrap}
 .future{border-style:dashed;background:transparent}
 .pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:500}
 .pill.gap{background:var(--ambersoft);color:var(--amber)}
+.big{font-size:34px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1;margin:2px 0 4px}
+.big.risk{color:var(--risk)}
+.decide{margin-top:10px;padding:8px 10px;border-radius:8px;background:var(--accsoft);font-size:12.5px}
+.decide b{color:var(--acc);margin-right:8px;text-transform:uppercase;letter-spacing:.05em;font-size:11px}
+.pill.live{background:var(--accsoft);color:var(--acc)}.pill.pilot{background:var(--ambersoft);color:var(--amber)}.pill.planned{background:var(--bg);color:var(--ink2);border:1px solid var(--line)}
 [hidden]{display:none!important}
 .flash{animation:flash 1.6s ease-out}
 @keyframes flash{0%{background:var(--accsoft);outline:3px solid var(--acc);border-radius:6px}100%{background:transparent;outline:3px solid transparent}}
@@ -65,39 +70,49 @@ function bars(rows, color) {
 function render() {
 const E = D.exec, U = D.um;
 $("#demo").textContent = LIVE ? `Live. Made-up demo data: ${D.n} cases. Updated ${D.generated}` : `Made-up demo data: ${D.n} cases. Snapshot from ${D.generated}`;
-$("#p-exec").innerHTML = `
-<h2>Right now</h2>
-<div class="kpis">
- ${kpi(E.total, "Cases in the system")}
- ${kpi(E.at_risk, "At risk: the AI sent it to a person", "risk")}
- ${kpi(E.clean, "Not at risk: the AI recommends approve", "acc")}
- ${kpi(E.with_md, "With a medical director", "dir")}
- ${kpi(E.pended, "Waiting on the provider", "amber")}
- ${kpi(E.denied, "Denied (only a director can)")}
-</div>
-<h2>Where the work is</h2>
+$("#p-exec").innerHTML = (() => {
+const DC = E.decisions, att = DC.capacity.overdue + DC.capacity.due_soon;
+const decide = (t) => `<div class="decide"><b>Decision</b>${t}</div>`;
+const codes = DC.demand.codes.map((g) => `${esc(g.code)} (${g.n}, oldest ${g.oldest_days} days)`).join(", ");
+const pilots = DC.pilots.map((s) => `<p style="margin:0 0 4px"><b>${esc(s.name)}</b>: ${s.cases} case(s), nurses agreed on ${dash(s.agree, "%")}, the AI would have approved ${s.missed} that a person sent on.</p>`).join("");
+const pill = (st) => `<span class="pill ${st}">${{ live: "Live", pilot: "Pilot", planned: "Planned" }[st] || st}</span>`;
+return `
+<h2>Decisions for you</h2>
 <div class="grid2">
- <div class="card"><h3>Status of every case</h3><p>Where each case is today.</p>${bars(E.by_status)}</div>
- <div class="card"><h3>What the AI recommended</h3><p>Not at risk means approve. The rest need a person.</p>${bars(E.risk_split, "var(--risk)")}</div>
+ <div class="card"><h3>Capacity today</h3><div class="big ${att ? "risk" : ""}">${att}</div><p>cases are past or within 24 hours of the CMS deadline. ${DC.capacity.open} are open. ${DC.capacity.unassigned ? `${DC.capacity.unassigned} still wait at intake, the oldest ${DC.capacity.oldest_unassigned_days} days.` : "Nothing is waiting at intake."}</p>${decide("Reassign work, or add nurse capacity, before a deadline passes.")}</div>
+ <div class="card"><h3>Which service to onboard next</h3><div class="big">${DC.demand.total}</div><p>open requests arrived for a procedure we do not cover. ${codes ? "Most waiting: " + codes + "." : "None are waiting."}</p>${decide("Approve the next service to onboard. The code with the most waiting requests goes first.")}</div>
+ <div class="card"><h3>Policy review</h3><div class="big">${DC.owner.drafts}</div><p>policy drafts are waiting for the policy owner. The live library is version ${esc(DC.owner.version)}.</p>${decide("Make sure the owner has time to review. Nothing goes live without it.")}</div>
+ <div class="card"><h3>Services in pilot</h3><div class="big">${DC.pilots.length}</div>${pilots || "<p>No service is in pilot.</p>"}${decide("Make a pilot live, or pause it. Weigh how often nurses agree against what the AI would have approved.")}</div>
 </div>
-<h2>Time and deadlines</h2>
+<h2>Service rollout</h2>
+<div class="card"><div class="tw"><table>
+<thead><tr><th>Service</th><th>Status</th><th class="num">Cases</th><th class="num">AI flagged</th><th class="num">Nurse agrees</th><th class="num">AI said approve, a person sent it on</th><th class="num">AI flagged, nurse approved</th></tr></thead><tbody>
+${E.services.map((s) => `<tr><td>${esc(s.name)}</td><td>${pill(s.status)}</td><td class="num">${s.cases}</td><td class="num">${dash(s.flagged, "%")}</td><td class="num">${dash(s.agree, "%")}${s.reviews ? ` <span class="note">of ${s.reviews}</span>` : ""}</td><td class="num">${s.missed}</td><td class="num">${s.extra}</td></tr>`).join("")}
+</tbody></table></div>
+<p class="note" style="margin:10px 0 0">Nurse agrees: the nurse's first action on each case matched the AI, counted once per case. Watch the second-to-last column. It is the AI approving what a person then sent on. The last one only costs review time.</p></div>
+<h2>Speed and deadlines</h2>
 <div class="kpis">
  ${kpi(E.avg_hours === null ? "n/a" : E.avg_hours + " h", `Average time from received to decision (${E.decided} decided)`)}
  ${kpi(dash(E.within_deadline, "%"), "Decided within the CMS deadline")}
  ${kpi(E.overdue, "Open and past the deadline", E.overdue ? "risk" : "")}
  ${kpi(E.due_soon, "Open and due in 24 hours", E.due_soon ? "amber" : "")}
 </div>
-<h2>Leading indicators</h2>
+<h2>Leading indicators: days to weeks</h2>
 <div class="card"><div class="tw"><table>
 <thead><tr><th>Indicator</th><th class="num">Today</th><th>Better when</th><th>What it tells us</th></tr></thead><tbody>
 <tr><td>First-review rate</td><td class="num">${dash(E.first_review_rate, "%")}</td><td>Higher</td><td class="note">Decided cases that did not need a pend. Based on ${E.decided} decided case(s).</td></tr>
-<tr><td>Nurse agrees with the AI</td><td class="num">${dash(E.agree_rate, "%")}</td><td>Higher</td><td class="note">Of ${E.n_actions} nurse actions, how many matched the recommendation. ${E.overrides} approved against it.</td></tr>
+<tr><td>Nurse agrees with the AI</td><td class="num">${dash(E.agree_rate, "%")}</td><td>Higher</td><td class="note">Of ${E.n_actions} case(s) with a nurse review, how many matched the recommendation. ${E.overrides} approved against it.</td></tr>
+<tr><td>Avoidable pends</td><td class="num">${E.replies ? E.avoidable_pends + " of " + E.replies : '<span class="pill gap">no replies yet</span>'}</td><td>Lower</td><td class="note">Provider replies marked "already sent". The nurse picks the type when the reply is added.</td></tr>
 <tr><td>Avoidable escalations</td><td class="num">${E.avoidable_escalations} of ${E.escalations}</td><td>Lower</td><td class="note">Escalations a director sent back because the packet already had the answer.</td></tr>
-<tr><td>Avoidable pends</td><td class="num"><span class="pill gap">not captured yet</span></td><td>Lower</td><td class="note">Needs one change: the provider's reply is typed "sent new info" or "already sent".</td></tr>
-<tr><td>Overturned because the info was in the packet</td><td class="num"><span class="pill gap">needs Humana data</span></td><td>Lower</td><td class="note">Appeals data arrives months later. It turns the early read into the full North Star.</td></tr>
 </tbody></table></div></div>
-<h2>Next</h2>
-<div class="card future"><h3>Month over month</h3><p>Same tiles, one point per month, so the trend is visible. It needs three months of production data. The prototype shows today only.</p></div>`;
+<h2>Lagging indicators: months, with Humana's data</h2>
+<div class="card"><div class="tw"><table>
+<thead><tr><th>Indicator</th><th class="num">Today</th><th>Better when</th><th>What it tells us</th></tr></thead><tbody>
+<tr><td>Overturned because the info was in the packet</td><td class="num"><span class="pill gap">needs Humana data</span></td><td>Lower</td><td class="note">A denial is appealed and wins, and the packet already had the answer. Appeals arrive months later. This turns the early read into the full north star.</td></tr>
+<tr><td>Cost per decision</td><td class="num"><span class="pill gap">needs finance data</span></td><td>Lower</td><td class="note">Total spend on a case divided by decided cases.</td></tr>
+<tr><td>Month over month</td><td class="num"><span class="pill gap">needs 3 months</span></td><td>Trend</td><td class="note">The same numbers, one point per month. The prototype shows today only.</td></tr>
+</tbody></table></div></div>`;
+})();
 
 $("#p-um").innerHTML = `
 <h2>Right now</h2>

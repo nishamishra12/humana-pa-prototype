@@ -1,0 +1,343 @@
+{
+ "criteria": [
+  {
+   "id": "CLBP-DURATION",
+   "text": "Chronic LBP must have lasted 12 weeks or longer.",
+   "source_quote": "Lasting 12 weeks or longer",
+   "cite": "B",
+   "required_fact": "clbp_duration_weeks",
+   "test": {
+    "type": "gte",
+    "value": 12
+   },
+   "if_missing": "How long has the patient's low back pain lasted (in weeks)?",
+   "short": "cLBP duration <12 weeks",
+   "confidence": "high"
+  },
+  {
+   "id": "CLBP-NONSPECIFIC",
+   "text": "The low back pain must be nonspecific, with no identifiable systemic cause.",
+   "source_quote": "nonspecific, in that it has no identifiable systemic cause",
+   "cite": "B",
+   "required_fact": "clbp_nonspecific",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is the low back pain nonspecific, without an identifiable systemic cause (e.g., not metastatic, inflammatory, infectious disease)?",
+   "short": "Pain has identifiable systemic cause",
+   "confidence": "high"
+  },
+  {
+   "id": "CLBP-NOT-SURGERY",
+   "text": "The low back pain must not be associated with surgery.",
+   "source_quote": "not associated with surgery",
+   "cite": "B",
+   "required_fact": "clbp_associated_with_surgery",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is the low back pain associated with a prior surgery?",
+   "short": "Pain associated with surgery",
+   "confidence": "high"
+  },
+  {
+   "id": "CLBP-NOT-PREGNANCY",
+   "text": "The low back pain must not be associated with pregnancy.",
+   "source_quote": "not associated with pregnancy",
+   "cite": "B",
+   "required_fact": "clbp_associated_with_pregnancy",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is the low back pain associated with pregnancy?",
+   "short": "Pain associated with pregnancy",
+   "confidence": "high"
+  },
+  {
+   "id": "VISITS-INITIAL-LIMIT",
+   "text": "Up to 12 visits in 90 days are covered initially.",
+   "source_quote": "Up to 12 visits in 90 days are covered",
+   "cite": "B",
+   "required_fact": "acupuncture_visits_in_90_days",
+   "test": {
+    "type": "lte",
+    "value": 12
+   },
+   "if_missing": "How many acupuncture visits has the patient had in the current 90-day period?",
+   "short": "Exceeds 12 visits in 90 days (without documented improvement for additional sessions)",
+   "confidence": "medium"
+  },
+  {
+   "id": "ADDITIONAL-SESSIONS-IMPROVEMENT",
+   "text": "An additional 8 sessions are covered only for patients demonstrating improvement.",
+   "source_quote": "An additional 8 sessions will be covered for those patients demonstrating an improvement.",
+   "cite": "B",
+   "required_fact": "patient_improving",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there documentation that the patient is improving with acupuncture treatment?",
+   "short": "No documented improvement to justify additional 8 sessions",
+   "confidence": "high"
+  },
+  {
+   "id": "ANNUAL-MAX",
+   "text": "No more than 20 acupuncture treatments may be administered annually.",
+   "source_quote": "No more than 20 acupuncture treatments may be administered annually",
+   "cite": "B",
+   "required_fact": "acupuncture_treatments_annual_count",
+   "test": {
+    "type": "lte",
+    "value": 20
+   },
+   "if_missing": "How many acupuncture treatments has the patient received this year?",
+   "short": "Exceeds 20 treatments annually",
+   "confidence": "high"
+  },
+  {
+   "id": "DISCONTINUE-NOT-IMPROVING",
+   "text": "Treatment must be discontinued if the patient is not improving or is regressing.",
+   "source_quote": "Treatment must be discontinued if the patient is not improving or is regressing.",
+   "cite": "B",
+   "required_fact": "patient_not_improving_or_regressing",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is there documentation that the patient is not improving or is regressing?",
+   "short": "Patient not improving or regressing - treatment should be discontinued",
+   "confidence": "high"
+  },
+  {
+   "id": "PROVIDER-STATE-REQUIREMENTS",
+   "text": "Physicians furnishing acupuncture must do so in accordance with applicable state requirements.",
+   "source_quote": "may furnish acupuncture in accordance with applicable state requirements",
+   "cite": "B",
+   "required_fact": "physician_meets_state_requirements",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Does the furnishing physician meet applicable state requirements for acupuncture?",
+   "short": "Physician does not meet state requirements",
+   "confidence": "medium"
+  },
+  {
+   "id": "NONPHYSICIAN-DEGREE",
+   "text": "PAs, NPs/CNSs, and auxiliary personnel must have a masters or doctoral level degree in acupuncture or Oriental Medicine from an ACAOM-accredited school.",
+   "source_quote": "a masters or doctoral level degree in acupuncture or Oriental Medicine from a school accredited by the Accreditation\nCommission on Acupuncture and Oriental Medicine (ACAOM)",
+   "cite": "B",
+   "required_fact": "nonphysician_acupuncture_degree",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "applies_if": {
+    "fact": "furnishing_provider_type",
+    "equals": "non-physician"
+   },
+   "if_missing": "Does the furnishing non-physician provider have a masters or doctoral degree in acupuncture/Oriental Medicine from an ACAOM-accredited school?",
+   "short": "Non-physician provider lacks required ACAOM-accredited degree",
+   "confidence": "high"
+  },
+  {
+   "id": "NONPHYSICIAN-LICENSE",
+   "text": "PAs, NPs/CNSs, and auxiliary personnel must have a current, full, active, and unrestricted license to practice acupuncture.",
+   "source_quote": "a current, full, active, and unrestricted license to practice acupuncture in a State, Territory, or Commonwealth",
+   "cite": "B",
+   "required_fact": "nonphysician_acupuncture_license",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "applies_if": {
+    "fact": "furnishing_provider_type",
+    "equals": "non-physician"
+   },
+   "if_missing": "Does the furnishing non-physician provider have a current, full, active, and unrestricted license to practice acupuncture?",
+   "short": "Non-physician provider lacks required unrestricted license",
+   "confidence": "high"
+  },
+  {
+   "id": "AUXILIARY-SUPERVISION",
+   "text": "Auxiliary personnel furnishing acupuncture must be under the appropriate level of supervision required by regulations.",
+   "source_quote": "Auxiliary personnel furnishing acupuncture must be under the appropriate level of supervision of a physician, PA, or\nNP/CNS required by our regulations at 42 CFR Sec.Sec. 410.26 and 410.27.",
+   "cite": "B",
+   "required_fact": "auxiliary_personnel_supervised",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "applies_if": {
+    "fact": "furnishing_provider_type",
+    "equals": "auxiliary personnel"
+   },
+   "if_missing": "Is the auxiliary personnel furnishing acupuncture under the required level of physician/PA/NP/CNS supervision per 42 CFR 410.26/410.27?",
+   "short": "Auxiliary personnel not appropriately supervised",
+   "confidence": "high"
+  },
+  {
+   "id": "INDICATION-CLBP-ONLY",
+   "text": "Acupuncture (including dry needling) is non-covered for any condition other than cLBP.",
+   "source_quote": "All types of acupuncture including dry needling for any condition other than cLBP are non-covered by Medicare.",
+   "cite": "C",
+   "required_fact": "indication_is_clbp",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is the acupuncture being furnished for chronic low back pain (cLBP) as opposed to another condition?",
+   "short": "Acupuncture furnished for condition other than cLBP",
+   "confidence": "high"
+  }
+ ],
+ "new_facts": [
+  {
+   "key": "clbp_duration_weeks",
+   "label": "Duration of chronic low back pain in weeks",
+   "kind": "number",
+   "ask": "How many weeks has the patient's low back pain lasted?"
+  },
+  {
+   "key": "clbp_nonspecific",
+   "label": "Whether cLBP is nonspecific (no identifiable systemic cause)",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the low back pain nonspecific, i.e., without an identifiable systemic cause such as metastatic, inflammatory, or infectious disease?"
+  },
+  {
+   "key": "clbp_associated_with_surgery",
+   "label": "Whether cLBP is associated with surgery",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the patient's low back pain associated with a surgery?"
+  },
+  {
+   "key": "clbp_associated_with_pregnancy",
+   "label": "Whether cLBP is associated with pregnancy",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the patient's low back pain associated with pregnancy?"
+  },
+  {
+   "key": "acupuncture_visits_in_90_days",
+   "label": "Number of acupuncture visits in the current 90-day period",
+   "kind": "number",
+   "ask": "How many acupuncture visits has the patient had within the current 90-day period?"
+  },
+  {
+   "key": "patient_improving",
+   "label": "Whether the patient is documented as improving with acupuncture",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the clinical documentation show the patient is improving with acupuncture treatment?"
+  },
+  {
+   "key": "acupuncture_treatments_annual_count",
+   "label": "Total number of acupuncture treatments administered this year",
+   "kind": "number",
+   "ask": "How many total acupuncture treatments has the patient received so far this year?"
+  },
+  {
+   "key": "patient_not_improving_or_regressing",
+   "label": "Whether the patient is documented as not improving or regressing",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is there documentation indicating the patient is not improving or is regressing?"
+  },
+  {
+   "key": "physician_meets_state_requirements",
+   "label": "Whether the furnishing physician meets applicable state requirements",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the physician furnishing acupuncture meet all applicable state licensing/requirements?"
+  },
+  {
+   "key": "furnishing_provider_type",
+   "label": "Type of provider furnishing acupuncture",
+   "kind": "enum",
+   "values": [
+    "physician",
+    "non-physician",
+    "auxiliary personnel"
+   ],
+   "ask": "What type of provider is furnishing the acupuncture (physician, PA/NP/CNS, or auxiliary personnel)?"
+  },
+  {
+   "key": "nonphysician_acupuncture_degree",
+   "label": "Whether non-physician provider has required ACAOM-accredited degree",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the PA/NP/CNS or auxiliary personnel furnishing acupuncture hold a masters or doctoral degree in acupuncture/Oriental Medicine from an ACAOM-accredited school?"
+  },
+  {
+   "key": "nonphysician_acupuncture_license",
+   "label": "Whether non-physician provider has required unrestricted acupuncture license",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the PA/NP/CNS or auxiliary personnel furnishing acupuncture hold a current, full, active, unrestricted license to practice acupuncture?"
+  },
+  {
+   "key": "auxiliary_personnel_supervised",
+   "label": "Whether auxiliary personnel are under required supervision",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the auxiliary personnel furnishing acupuncture under the appropriate supervision required by 42 CFR 410.26/410.27?"
+  },
+  {
+   "key": "indication_is_clbp",
+   "label": "Whether the acupuncture indication is chronic low back pain",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the condition being treated with acupuncture chronic low back pain (cLBP)?"
+  }
+ ],
+ "not_modeled": [],
+ "_usage": {
+  "input_tokens": 3156,
+  "output_tokens": 4043
+ },
+ "_model": "claude-sonnet-5"
+}

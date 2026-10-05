@@ -13,10 +13,10 @@ def compute(c):
     cases, audit_by_case = [], {}
     for r in c.execute("SELECT * FROM audit ORDER BY id"):
         audit_by_case.setdefault(r["case_id"], []).append(dict(action=r["action"], user_id=r["user_id"], detail=r["detail"] or "", at=r["created_at"]))
-    for r in c.execute("SELECT id,status,priority,received_at,due_at,decided_at,assignee_id,md_id,analysis FROM cases"):
+    for r in c.execute("SELECT id,status,priority,received_at,due_at,decided_at,assignee_id,md_id,analysis,cpt,procedure_name FROM cases"):
         a = json.loads(r["analysis"])["action"]
         aud = audit_by_case.get(r["id"], [])
-        cases.append(dict(id=r["id"], status=r["status"], priority=r["priority"], received=t(r["received_at"]), due=t(r["due_at"]), decided=t(r["decided_at"]),
+        cases.append(dict(id=r["id"], cpt=r["cpt"], what=r["procedure_name"], status=r["status"], priority=r["priority"], received=t(r["received_at"]), due=t(r["due_at"]), decided=t(r["decided_at"]),
                           assignee=r["assignee_id"], md=r["md_id"], ai=a, at_risk=a != "approve", audit=aud,
                           pended=any(x["action"] == "pended" for x in aud), returned=[x for x in aud if x["action"] == "returned"]))
     n = len(cases)
@@ -29,15 +29,23 @@ def compute(c):
     pct = lambda a, b: round(100 * a / b) if b else None
 
     # human actions on the AI's recommendation: agree = both approve, or both send to a person
+    # one result per case: the nurse's first action. A case sent back and escalated twice counts once.
+    nurse_ids = {uid for uid, u in users.items() if u["role"] == "nurse"}
     acts = []
     for x in cases:
-        for e in x["audit"]:
-            if e["action"] in ("approved", "approved_override", "pended", "escalated"):
-                human_flag = e["action"] != "approved" and e["action"] != "approved_override"
-                acts.append(dict(case=x["id"], user=e["user_id"], override=e["action"] == "approved_override", agree=human_flag == x["at_risk"]))
+        if x["ai"] == "no_policy":
+            continue
+        first = next((e for e in x["audit"] if e["action"] in ("approved", "approved_override", "pended", "escalated") and e["user_id"] in nurse_ids), None)
+        if first:
+            human_flag = first["action"] in ("pended", "escalated")
+            acts.append(dict(case=x["id"], user=first["user_id"], cpt=x["cpt"], override=first["action"] == "approved_override", agree=human_flag == x["at_risk"],
+                             missed=human_flag and not x["at_risk"], extra=x["at_risk"] and not human_flag))
     returned = [e for x in cases for e in x["returned"]]
     avoidable_return = [e for e in returned if e["detail"].startswith("The packet already has what we need")]
     escalations = sum(1 for x in cases for e in x["audit"] if e["action"] == "escalated")
+    replies = [e for x in cases for e in x["audit"] if e["action"] == "provider_reply"]
+    typed = [e for e in replies if "already sent" in e["detail"] or "new information" in e["detail"]]
+    avoidable_pends = [e for e in typed if "already sent" in e["detail"]]
 
     status_order = [("new", "Not started"), ("in_review", "In review with a nurse"), ("pended", "Waiting on the provider"), ("escalated", "With a medical director"),
                     ("approved", "Approved"), ("denied", "Denied")]
@@ -54,6 +62,7 @@ def compute(c):
         first_review_rate=pct(sum(1 for x in decided if not x["pended"]), len(decided)),
         agree_rate=pct(sum(a["agree"] for a in acts), len(acts)), n_actions=len(acts), overrides=sum(a["override"] for a in acts),
         avoidable_escalations=len(avoidable_return), returns=len(returned), escalations=escalations,
+        replies=len(typed), avoidable_pends=len(avoidable_pends),
     )
 
     def aging(items):
@@ -85,5 +94,36 @@ def compute(c):
     um = dict(unassigned=len(unassigned), oldest_unassigned_days=round(max(((now - x["received"]).total_seconds() / 86400 for x in unassigned), default=0), 1),
               aging=aging(open_), nurses=nurses, directors=directors, open=len(open_), overdue=len(overdue), due_soon=len(due_soon),
               at_risk_open=sum(x["at_risk"] for x in open_))
+    # ---- what an executive can act on: capacity, which service next, owner review, pilot services
+    from pipeline import procedures
+    lib = procedures.library()
+    services = []
+    for key, p in lib["procedures"].items():
+        codes = set(p["cpts"])
+        mine = [x for x in cases if x["cpt"] in codes and x["ai"] != "no_policy"]
+        a = [t for t in acts if t["cpt"] in codes]
+        services.append(dict(key=key, name=p["short"], status=p.get("status", "live"), cases=len(mine), decided=sum(1 for x in mine if x["status"] in ("approved", "denied")),
+                             flagged=pct(sum(1 for x in mine if x["at_risk"]), len(mine)), reviews=len(a), agree=pct(sum(t["agree"] for t in a), len(a)),
+                             missed=sum(t["missed"] for t in a), extra=sum(t["extra"] for t in a)))
+    groups = {}
+    for x in open_:
+        if x["ai"] == "no_policy":
+            g = groups.setdefault(x["cpt"] or "unknown", dict(code=x["cpt"] or "unknown", what=x["what"], n=0, oldest=x["received"]))
+            g["n"] += 1
+            g["oldest"] = min(g["oldest"], x["received"])
+    demand = sorted(groups.values(), key=lambda g: (-g["n"], g["oldest"]))
+    for g in demand:
+        g["oldest_days"] = round((now - g["oldest"]).total_seconds() / 86400, 1)
+        del g["oldest"]
+    try:
+        drafts = c.execute("SELECT COUNT(*) FROM policy_builds WHERE status='draft' AND kind != 'earlier run'").fetchone()[0]
+    except Exception:
+        drafts = 0
+    exec_["services"] = services
+    exec_["decisions"] = dict(
+        capacity=dict(overdue=len(overdue), due_soon=len(due_soon), open=len(open_), unassigned=um["unassigned"], oldest_unassigned_days=um["oldest_unassigned_days"]),
+        demand=dict(total=sum(g["n"] for g in demand), codes=demand[:4]),
+        owner=dict(drafts=drafts, version=lib.get("version")),
+        pilots=[s for s in services if s["status"] == "pilot"])
     return dict(generated=now.strftime("%Y-%m-%d %H:%M UTC"), n=n, exec=exec_, um=um)
 

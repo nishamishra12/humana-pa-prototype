@@ -1,0 +1,148 @@
+{
+ "criteria": [
+  {
+   "id": "CLBP-DURATION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (clbp_duration_weeks): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "CLBP-NONSPECIFIC",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (clbp_nonspecific): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "CLBP-NOT-SURGERY",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (clbp_associated_with_surgery): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "CLBP-NOT-PREGNANCY",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (clbp_associated_with_pregnancy): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "VISITS-INITIAL-LIMIT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (acupuncture_visits_in_90_days): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "ADDITIONAL-SESSIONS-IMPROVEMENT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (patient_improving): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "ANNUAL-MAX",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (acupuncture_treatments_annual_count): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "DISCONTINUE-NOT-IMPROVING",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (patient_not_improving_or_regressing): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PROVIDER-STATE-REQUIREMENTS",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (physician_meets_state_requirements): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NONPHYSICIAN-DEGREE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (nonphysician_acupuncture_degree): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NONPHYSICIAN-LICENSE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (nonphysician_acupuncture_license): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AUXILIARY-SUPERVISION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (auxiliary_personnel_supervised): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "INDICATION-CLBP-ONLY",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (indication_is_clbp): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 0,
+  "review": 13,
+  "fail": 0
+ },
+ "total": 13,
+ "uncovered": [
+  "Nationally Covered Indications",
+  "Nationally Non-Covered Indications"
+ ],
+ "new_facts": [
+  "clbp_duration_weeks",
+  "clbp_nonspecific",
+  "clbp_associated_with_surgery",
+  "clbp_associated_with_pregnancy",
+  "acupuncture_visits_in_90_days",
+  "patient_improving",
+  "acupuncture_treatments_annual_count",
+  "patient_not_improving_or_regressing",
+  "physician_meets_state_requirements",
+  "furnishing_provider_type",
+  "nonphysician_acupuncture_degree",
+  "nonphysician_acupuncture_license",
+  "auxiliary_personnel_supervised",
+  "indication_is_clbp"
+ ],
+ "not_modeled": 0
+}

@@ -107,4 +107,10 @@ Rule for the whole deck: every phase has a reason, and we say it out loud.
 - To build: `node build_friction.js`. It needs the `@resvg/resvg-js` package to draw the character art.
 - `deck/journey/build_onboarding.js` builds `Policy_Service_Onboarding.pptx` (first solution slide: building the policy library and onboarding a service, 9 clicks). Needs `@resvg/resvg-js` for the icons.
 - `deck/journey/build_packet.js` builds `Packet_Journey.pptx` (second solution slide: how a packet moves through PA Desk, 9 clicks).
+- `deck/journey/build_metrics_slide.js` builds `Product_Metrics.pptx` (5 clicks) and `build_evals_slide.js` builds `Evals_Click_Through.pptx` (4 clicks). Refresh the eval numbers after the live packets run.
+- `deck/journey/build_phase2.js` builds `Phase_2.pptx` (6 clicks): the gate, the member view, learning from outcomes, more services. No auto-approve: a person decides in every phase.
+- `deck/journey/build_humana_table.js` builds `Humana_Moves.pptx`: a plain three-column table, no animation. What Humana is already doing and the gap. Replaces the numbers slide.
+- `deck/journey/build_personas.js` builds `Personas.pptx`: four people, two parts. Plain slide, no animation. Needs `@resvg/resvg-js` for the faces.
+- `deck/journey/build_why_now.js` builds `Why_Now.pptx` (plain, four cards). The value slide is dropped.
+- `deck/journey/gen_person_slides.py` builds the two-parts overview and the four person slides (`Two_Parts_Overview`, `Person_Policy_Owner`, `Person_Intake`, `Person_Nurse`, `Person_Director`), click by click, with captions. Run it with NODE_PATH set.
 - `deck/solution/drafts/` holds an early set of nine slides that are not approved. We take one at a time.

@@ -8,21 +8,44 @@ import json, os
 LIB_PATH = os.path.join(os.path.dirname(__file__), "..", "policies", "policy_library.json")  # the library shipped with the app
 DATA_DIR = os.getenv("PA_DATA_DIR") or os.path.join(os.path.dirname(__file__), "..", "app")
 LIVE_PATH = os.path.join(DATA_DIR, "policy_library.live.json")  # written when a policy owner publishes a version. It wins over the shipped one.
-_LIB = None
+_RAW = None  # the library as saved: what the owner edits and publishes
+_LIB = None  # the library as the engine reads it: each service also carries the key facts of its policies
+
+
+def raw():
+    global _RAW
+    if _RAW is None:
+        path = LIVE_PATH if os.path.exists(LIVE_PATH) else LIB_PATH
+        _RAW = json.load(open(path, encoding="utf-8"))
+    return _RAW
+
+
+def _merged(lib):
+    """Key facts live with the policy, because a nurse checks a fact against that policy. A service shows the combined list of its policies' key
+    facts. Two policies that need the same fact give one entry (the first wins). Facts a service carried on its own are kept."""
+    out = json.loads(json.dumps(lib))
+    pols = {p["id"]: p for p in out["policies"]}
+    for proc in out["procedures"].values():
+        have = {d["key"] for d in proc["facts"]}
+        for pid in proc.get("policies", []):
+            for d in pols.get(pid, {}).get("facts", []):
+                if d["key"] not in have:
+                    proc["facts"].append(dict(d, from_policy=pid))
+                    have.add(d["key"])
+    return out
 
 
 def library():
     global _LIB
     if _LIB is None:
-        path = LIVE_PATH if os.path.exists(LIVE_PATH) else LIB_PATH
-        _LIB = json.load(open(path, encoding="utf-8"))
+        _LIB = _merged(raw())
     return _LIB
 
 
 def reload():
     """Drop the cached library so the next call reads the live file. The engine refreshes its own copy (engine.refresh)."""
-    global _LIB
-    _LIB = None
+    global _RAW, _LIB
+    _RAW = _LIB = None
     return library()
 
 

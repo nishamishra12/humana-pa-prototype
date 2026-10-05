@@ -136,3 +136,49 @@ def find(kind, ident, title=None):
     except Exception as e:
         base["note"] = f"Could not look up codes ({type(e).__name__}). Add them yourself, or build again later."
     return base
+
+
+_STOP = {"with", "from", "that", "this", "inpatient", "outpatient", "surgery", "procedure", "service", "treatment", "therapy", "for", "and", "the", "of", "acute", "chronic"}
+
+
+def search_articles(query, limit=12):
+    """Billing and Coding and Policy articles whose title matches words from a service name. No codes yet: the owner opens an article to see them.
+    Returns (articles, note). Never raises."""
+    words = [w for w in re.findall(r"[a-z0-9]+", (query or "").lower()) if len(w) > 2 and w not in _STOP]
+    if not words:
+        return [], "Type a word or two from the service name."
+    try:
+        tok = S._cms_token()
+        scored = []
+        for a in _articles(tok):
+            t = (a.get("title") or "")
+            if not (t.lower().startswith("billing and coding") or "policy article" in t.lower()):  # equipment (DME) policies list their codes in a Policy Article
+                continue
+            plain = _plain(t).lower()
+            hit = sum(1 for w in words if w in plain)
+            frac = hit / len(words)
+            if frac >= 0.5:
+                scored.append((frac, fuzz.token_set_ratio(" ".join(words), plain), a))
+        scored.sort(key=lambda x: (-x[0], -x[1], x[2].get("title") or ""))
+        out = []
+        for frac, sc, a in scored[:limit]:
+            ref = _ref(a, a["document_version"], score=round(frac * 100))
+            ref["aid"] = a["document_id"]
+            out.append(ref)
+        return out, "" if out else "No Billing and Coding article matches these words. Try other words, or add the code yourself."
+    except Exception as e:
+        return [], f"Could not reach CMS ({type(e).__name__}). Add codes yourself, or try again later."
+
+
+def codes_of_article(aid, ver):
+    """The codes CMS lists on one article, with the article as their source. Never raises."""
+    try:
+        tok = S._cms_token()
+        a = next((x for x in _articles(tok) if str(x["document_id"]) == str(aid)), None)
+        if not a:
+            return None, [], "CMS has no such article."
+        ref = _ref(a, ver)
+        ref["aid"] = a["document_id"]
+        return ref, _article_codes(tok, a["document_id"], ver), ""
+    except Exception as e:
+        return None, [], f"Could not reach CMS ({type(e).__name__})."

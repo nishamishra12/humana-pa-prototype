@@ -1,0 +1,69 @@
+{
+ "info": {
+  "profile": "balanced",
+  "pages": 1,
+  "engine": "unstructured"
+ },
+ "elements": [
+  {
+   "type": "Title",
+   "text": "NCD 30.3.3: Acupuncture for Chronic Lower Back Pain (cLBP)",
+   "page": 1,
+   "id": "e1"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Version 1, effective 01/21/2020",
+   "page": 1,
+   "id": "e2"
+  },
+  {
+   "type": "Title",
+   "text": "A. General",
+   "page": 1,
+   "id": "e3"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Acupuncture is the selection and manipulation of specific acupuncture points by a variety of needling and non-needling\ntechniques.",
+   "page": 1,
+   "id": "e4"
+  },
+  {
+   "type": "Title",
+   "text": "B. Nationally Covered Indications",
+   "page": 1,
+   "id": "e5"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Effective for services performed on or after January 21, 2020, CMS will cover acupuncture for Medicare patients with\nchronic Lower Back Pain (cLBP). Up to 12 visits in 90 days are covered for Medicare beneficiaries under the following\ncircumstance:\n\nFor the purpose of this decision, cLBP is defined as:\n\nLasting 12 weeks or longer;\n\nnonspecific, in that it has no identifiable systemic cause (i.e., not associated with metastatic, inflammatory, infectious,\netc.disease);\n\nnot associated with surgery; and,\n\nnot associated with pregnancy.\n\nAn additional 8 sessions will be covered for those patients demonstrating an improvement.\n\nNo more than 20 acupuncture treatments may be administered annually\n\nTreatment must be discontinued if the patient is not improving or is regressing.\n\nPhysicians (as defined in 1861(r)(1) of the Social Security Act (the Act) may furnish acupuncture in accordance with\napplicable state requirements.\n\nPhysician assistants (PAs), nurse practitioners (NPs)/clinical nurse specialists (CNSs) (as identified in 1861(aa)(5) of the\nAct), and auxiliary personnel may furnish acupuncture if they meet all applicable state requirements and have:\n\na masters or doctoral level degree in acupuncture or Oriental Medicine from a school accredited by the Accreditation\nCommission on Acupuncture and Oriental Medicine (ACAOM); and,\n\na current, full, active, and unrestricted license to practice acupuncture in a State, Territory, or Commonwealth (i.e.\nPuerto Rico) of the United States, or District of Columbia.\n\nAuxiliary personnel furnishing acupuncture must be under the appropriate level of supervision of a physician, PA, or\nNP/CNS required by our regulations at 42 CFR Sec.Sec. 410.26 and 410.27.",
+   "page": 1,
+   "id": "e6"
+  },
+  {
+   "type": "Title",
+   "text": "C. Nationally Non-Covered Indications",
+   "page": 1,
+   "id": "e7"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "All types of acupuncture including dry needling for any condition other than cLBP are non-covered by Medicare.",
+   "page": 1,
+   "id": "e8"
+  },
+  {
+   "type": "Title",
+   "text": "D. Other",
+   "page": 1,
+   "id": "e9"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "N/A\n(This NCD last reviewed January 2020.)",
+   "page": 1,
+   "id": "e10"
+  }
+ ]
+}

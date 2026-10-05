@@ -91,13 +91,13 @@ async function renderLogin() {
   document.getElementById("lf").onsubmit = (e) => { e.preventDefault(); doLogin(document.getElementById("em").value, document.getElementById("pw").value); };
   document.querySelectorAll(".demo-btn").forEach((b) => (b.onclick = () => doLogin(b.dataset.email, "demo1234")));
 }
-const homeView = () => (S.user.role === "policy_owner" ? "policies" : S.user.role === "medical_director" ? "decide" : S.user.role === "admin" ? "unassigned" : "attention");
+const homeView = () => (S.user.role === "policy_owner" ? "services" : S.user.role === "medical_director" ? "decide" : S.user.role === "admin" ? "unassigned" : "attention");
 
 /* ---------- loading ---------- */
 async function boot() {
   const [me, users] = await Promise.all([api("/me"), api("/users")]);
   S.user = me; S.users = users;
-  if (me.role === "policy_owner") { S.view = "policies"; S.caseId = null; await loadPolicies(); render(); return; }
+  if (me.role === "policy_owner") { S.view = "services"; S.caseId = null; await loadPolicies(); render(); return; }
   parseHash();
   if (S.view === "evals") await runEvals();
   else await loadList();
@@ -143,7 +143,7 @@ function go(hash) { history.replaceState(null, "", hash); }
 /* ---------- shell ---------- */
 function viewsFor() {
   const r = S.user.role;
-  if (r === "policy_owner") return [["demand", "Requests without a policy", "alert"], ["policies", "Policy library", "book"], ["review", "Policies to review", "inbox"], ["services", "Services", "list"], ["history", "Version history", "clock"]];
+  if (r === "policy_owner") return [["services", "Services", "list"], ["demand", "Requests without a policy", "alert"], ["policies", "Policies", "book"], ["history", "Version history", "clock"]];
   if (r === "admin") return [["unassigned", "Needs assignment", "inbox"], ["team", "Team", "users"], ["pended", "Waiting on provider", "clock"], ["escalated", "With a physician", "up"], ["done", "Decided", "checkc"], ["all", "Everything", "list"]];
   if (r === "nurse") return [["attention", "Needs my review", "inbox"], ["at_risk", "At risk", "alert"], ["pended", "Waiting on provider", "clock"], ["escalated", "With a physician", "up"], ["done", "Decided", "checkc"], ["mine", "All my cases", "list"]];
   return [["decide", "Waiting for my decision", "inbox"], ["done", "Decided", "checkc"], ["all", "Everything", "list"]];
@@ -162,8 +162,8 @@ function render() {
     return `<button class="rail-item ${S.view === v ? "on" : ""}" data-view="${v}" aria-label="${esc(l)}${n !== "" ? ", " + n : ""}" title="${esc(l)}">${ic(i, 20)}<span class="lab">${l}</span><span class="n ${red ? "red" : ""}">${n}</span>${n !== "" && n > 0 ? `<span class="rb ${red ? "red" : ""}">${n}</span>` : ""}</button>`;
   };
   const el0 = document.getElementById("content"), sp0 = document.querySelector(".srcpane");
-  const keepScroll = S.user.role === "policy_owner" && el0 && S._scrollKey === S.view + "|" + (S.pol.build ? S.pol.build.id : "") ? { c: el0.scrollTop, w: window.scrollY, s: sp0 ? sp0.scrollTop : 0 } : null;
-  S._scrollKey = S.view + "|" + (S.user.role === "policy_owner" && S.pol.build ? S.pol.build.id : "");
+  const keepScroll = S.user.role === "policy_owner" && el0 && S._scrollKey === S.view + "|" + (S.pol.build ? S.pol.build.id : S.pol.svcKey || "") ? { c: el0.scrollTop, w: window.scrollY, s: sp0 ? sp0.scrollTop : 0 } : null;
+  S._scrollKey = S.view + "|" + (S.user.role === "policy_owner" ? (S.pol.build ? S.pol.build.id : S.pol.svcKey || "") : "");
   $app.innerHTML = `<div class="shell">
     <header class="topbar">
       <button class="icon-btn" id="burger" aria-label="${S.railOpen ? "Collapse the menu" : "Expand the menu"}" aria-expanded="${S.railOpen}">${ic("menu", 22)}</button>
@@ -430,7 +430,7 @@ const SAMPLE_REPLY = {
 };
 function simulateReplyCard(a) {
   const reply = a.gate.questions.map((q) => SAMPLE_REPLY[q.fact]).filter(Boolean).join(" ");
-  return `<div class="card"><h3>Demo: the provider replies</h3><label class="faint" style="font-size:12.5px">This adds a page to the packet and checks the case again.</label><textarea id="reply" style="margin-top:6px">${esc(reply || "Provider reply: additional documentation attached.")}</textarea><div class="action-row" style="margin-top:8px"><button class="btn" data-go="reply">Simulate the reply</button></div></div>`;
+  return `<div class="card"><h3>Demo: the provider replies</h3><label class="faint" style="font-size:12.5px">This adds a page to the packet and checks the case again.</label><textarea id="reply" style="margin-top:6px">${esc(reply || "Provider reply: additional documentation attached.")}</textarea><div class="field" style="margin:8px 0 0"><label for="rtype">What the provider said</label><select id="rtype"><option value="new">They sent new information</option><option value="again">They say it was already sent</option></select></div><div class="action-row" style="margin-top:8px"><button class="btn" data-go="reply">Simulate the reply</button></div></div>`;
 }
 const RETURN_REASONS = [["reconsider", "Please look at this again"], ["info_enough", "The packet already has what we need"], ["ask_provider", "Ask the provider for more first"], ["wrong_policy", "A different policy applies"], ["other", "Other"]];
 
@@ -545,7 +545,7 @@ async function openCase(id) {
 function bind() {
   const on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));
   on("[data-view]", async (el) => { S.pop = null; S.pick = null; S.view = el.dataset.view; S.caseId = null; S.detail = null; S.act = null; S.q = ""; go("#/view/" + S.view);
-    if (S.user.role === "policy_owner") { clearInterval(polTimer); S.pol.build = null; S.pol.msg = null; S.pol.revert = null; await loadPolicies(); render(); window.scrollTo(0, 0); return; } if (S.view === "evals") await runEvals(); else { await loadList(); if (S.user.role === "admin") await loadTeam(); } render(); });
+    if (S.user.role === "policy_owner") { clearInterval(polTimer); S.pol.build = null; S.pol.svcKey = null; S.pol.svc = null; S.pol.msg = null; S.pol.revert = null; await loadPolicies(); render(); window.scrollTo(0, 0); return; } if (S.view === "evals") await runEvals(); else { await loadList(); if (S.user.role === "admin") await loadTeam(); } render(); });
   on("[data-back]", async () => { S.pick = null; S.caseId = null; S.detail = null; S.act = null; go("#/view/" + S.view); await refresh(); render(); });
   on("[data-case]", (el) => openCase(el.dataset.case));
   on("[data-recheck]", async (el) => { el.disabled = true; el.textContent = "Reading the packet again…"; const d = await api(`/cases/${S.caseId}/recheck`, { method: "POST" }); S.detail = d; await refresh(); toast("Checked again: " + (d.analysis ? RECO_TITLE(d.analysis) : "done")); render(); });
@@ -600,7 +600,7 @@ const submit = guard(async (kind) => {
   const id = S.caseId;
   let d;
   if (kind === "comment") d = await api(`/cases/${id}/comments`, { method: "POST", body: { body: v("cbody") } });
-  else if (kind === "reply") d = await api(`/cases/${id}/addendum`, { method: "POST", body: { text: v("reply") } });
+  else if (kind === "reply") d = await api(`/cases/${id}/addendum`, { method: "POST", body: { text: v("reply"), reply_type: v("rtype") || "new" } });
   else if (kind === "pend") d = await api(`/cases/${id}/action`, { method: "POST", body: { action: "pend", question: v("question") } });
   else if (kind === "escalate") d = await api(`/cases/${id}/action`, { method: "POST", body: { action: "escalate", md_id: +v("mdsel"), note: v("note") } });
   else if (kind === "return") d = await api(`/cases/${id}/action`, { method: "POST", body: { action: "return", reason: v("reason"), note: v("note") } });

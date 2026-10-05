@@ -33,3 +33,18 @@ Packets (made up, in `packets/demo_new_service/`, made by `scripts/make_cpap_pac
 - The engine has no "either of these" logic, so a policy with several ways to qualify is modeled one way at a time.
 - Tested end to end on these three made-up packets only. No accuracy claim for the CPAP service.
 - The AI drafted the rules. The owner's review is what makes them trustworthy.
+
+---
+
+# Second example: allergy shots (SCIT), LCD L40046
+
+Same flow as CPAP. The policy is LCD L40046 (Palmetto GBA), Allergen Immunotherapy (AIT) with Subcutaneous Immunotherapy (SCIT). The request code is CPT 95165. CMS lists it in Billing and Coding article A59971, together with 95115, 95117, 95144 and 95180.
+
+Packets (made up, `scripts/make_scit_packets.py`, in `packets/demo_new_service/`):
+| File | Documented | Result once the service exists |
+|---|---|---|
+| `scit_complete.pdf` | Symptoms, positive skin test and blood test, medicines tried, plan, safety | Approve |
+| `scit_missing_history.pdf` | No record of medicines tried or allergen avoidance | Pend: two precise questions |
+| `scit_pregnant.pdf` | Complete, but the patient is 14 weeks pregnant | Escalate: the policy lists SCIT during pregnancy as not reasonable |
+
+When reviewing the draft, approve the core rules (diagnosis, symptoms on exposure, allergen-specific IgE, reason for treatment, not first-line, SCIT not SLIT, not pregnant, not food, MD prepared the antigens, physician examined the patient, facility equipped for anaphylaxis). Reject the atopic dermatitis rules. That is a different pathway and stays with a person.

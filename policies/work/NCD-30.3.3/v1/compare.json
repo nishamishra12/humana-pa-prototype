@@ -1,0 +1,90 @@
+{
+ "policy_id": "NCD-30.3.3",
+ "rows": [],
+ "extra": [
+  {
+   "id": "CLBP-DURATION",
+   "fact": "clbp_duration_weeks",
+   "test": "gte 12",
+   "text": "Chronic LBP must have lasted 12 weeks or longer."
+  },
+  {
+   "id": "CLBP-NONSPECIFIC",
+   "fact": "clbp_nonspecific",
+   "test": "in yes",
+   "text": "The low back pain must be nonspecific, with no identifiable systemic cause."
+  },
+  {
+   "id": "CLBP-NOT-SURGERY",
+   "fact": "clbp_associated_with_surgery",
+   "test": "absent",
+   "text": "The low back pain must not be associated with surgery."
+  },
+  {
+   "id": "CLBP-NOT-PREGNANCY",
+   "fact": "clbp_associated_with_pregnancy",
+   "test": "absent",
+   "text": "The low back pain must not be associated with pregnancy."
+  },
+  {
+   "id": "VISITS-INITIAL-LIMIT",
+   "fact": "acupuncture_visits_in_90_days",
+   "test": "lte 12",
+   "text": "Up to 12 visits in 90 days are covered initially."
+  },
+  {
+   "id": "ADDITIONAL-SESSIONS-IMPROVEMENT",
+   "fact": "patient_improving",
+   "test": "present",
+   "text": "An additional 8 sessions are covered only for patients demonstrating improvement."
+  },
+  {
+   "id": "ANNUAL-MAX",
+   "fact": "acupuncture_treatments_annual_count",
+   "test": "lte 20",
+   "text": "No more than 20 acupuncture treatments may be administered annually."
+  },
+  {
+   "id": "DISCONTINUE-NOT-IMPROVING",
+   "fact": "patient_not_improving_or_regressing",
+   "test": "absent",
+   "text": "Treatment must be discontinued if the patient is not improving or is regressing."
+  },
+  {
+   "id": "PROVIDER-STATE-REQUIREMENTS",
+   "fact": "physician_meets_state_requirements",
+   "test": "in yes",
+   "text": "Physicians furnishing acupuncture must do so in accordance with applicable state requirements."
+  },
+  {
+   "id": "NONPHYSICIAN-DEGREE",
+   "fact": "nonphysician_acupuncture_degree",
+   "test": "in yes",
+   "text": "PAs, NPs/CNSs, and auxiliary personnel must have a masters or doctoral level degree in acupuncture or Oriental Medicine from an ACAOM-accredited school."
+  },
+  {
+   "id": "NONPHYSICIAN-LICENSE",
+   "fact": "nonphysician_acupuncture_license",
+   "test": "in yes",
+   "text": "PAs, NPs/CNSs, and auxiliary personnel must have a current, full, active, and unrestricted license to practice acupuncture."
+  },
+  {
+   "id": "AUXILIARY-SUPERVISION",
+   "fact": "auxiliary_personnel_supervised",
+   "test": "in yes",
+   "text": "Auxiliary personnel furnishing acupuncture must be under the appropriate level of supervision required by regulations."
+  },
+  {
+   "id": "INDICATION-CLBP-ONLY",
+   "fact": "indication_is_clbp",
+   "test": "in yes",
+   "text": "Acupuncture (including dry needling) is non-covered for any condition other than cLBP."
+  }
+ ],
+ "counts": {
+  "same": 0,
+  "differs": 0,
+  "missed": 0
+ },
+ "approved_count": 0
+}

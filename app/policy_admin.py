@@ -17,6 +17,7 @@ from pipeline import engine, procedures, telemetry as tel
 from pipeline.policy_build import sources as S
 from pipeline.policy_build.build import run as run_build
 from pipeline.policy_build.compare import compare as compare_live
+from pipeline.policy_build import codes as cms_codes
 
 router = APIRouter(prefix="/api/policies")
 MAX_BUILDS_PER_DAY = int(os.getenv("PA_MAX_BUILDS_PER_DAY", "12"))  # each build is one AI call plus an Unstructured parse
@@ -132,7 +133,7 @@ def policies(request: Request):
     for p in lib["policies"]:
         sha, at = _latest_hash(p["id"])
         rows.append(dict(id=p["id"], title=p["title"], level=p["level"], source=p["source"], url=p.get("url"), verified=bool(p.get("verified")),
-                         criteria=len(p.get("criteria", [])), waiting=len(p.get("waiting_rules", [])), services=_services(lib, p["id"]), fetchable=bool(_fetchable(p["id"])),
+                         criteria=len(p.get("criteria", [])), waiting=len(p.get("waiting_rules", [])), n_facts=len(p.get("facts", [])), services=_services(lib, p["id"]), fetchable=bool(_fetchable(p["id"])),
                          last_saved=at, has_saved=bool(sha), note=p.get("verified_from") or p.get("applies_to")))
     builds = [dict(r) for r in c.execute("SELECT b.*, u.name AS who FROM policy_builds b LEFT JOIN users u ON u.id=b.created_by ORDER BY b.created_at DESC, b.rowid DESC LIMIT 25")]
     done = {r[0]: r[1] for r in c.execute("SELECT build_id, SUM(decision != 'pending') FROM policy_decisions GROUP BY build_id")}
@@ -142,13 +143,14 @@ def policies(request: Request):
         b["decided"] = done.get(b["id"], 0) or 0
     seen = {r[0]: r[1] for r in c.execute("SELECT cpt, COUNT(*) FROM cases GROUP BY cpt")}
     pols = {x["id"]: x for x in lib["policies"]}
-    svc = [dict(key=k, name=p["short"], full=p["name"], cpts=p["cpts"], policies=p.get("policies", []), checked=p.get("cpt_checked"), status=p.get("status", "live"),
+    drafts = {r[0]: r[1] for r in c.execute("SELECT service, COUNT(*) FROM policy_builds WHERE status IN ('draft','running') GROUP BY service")}
+    svc = [dict(key=k, name=p["short"], full=p["name"], scope=p.get("scope") or "", n_drafts=drafts.get(k, 0), cpts=p["cpts"], policies=p.get("policies", []), checked=p.get("cpt_checked"), status=p.get("status", "live"),
                 sources=p.get("cpt_sources", []), other_codes=p.get("cms_other_codes", []), n_details=len(p["facts"]), note=p.get("status_note"),
                 n_rules=sum(len(pols[i].get("criteria", [])) for i in p.get("policies", []) if i in pols), n_cases=sum(seen.get(x, 0) for x in p["cpts"]))
            for k, p in lib["procedures"].items()]
     waiting = [json.loads(r["analysis"]).get("action") == "no_policy" for r in c.execute("SELECT analysis FROM cases WHERE status NOT IN ('approved','denied')")]
     return dict(version=lib.get("version"), policies=rows, builds=builds, services=[dict(key=k, name=p["short"]) for k, p in lib["procedures"].items()], services_detail=svc, demand_count=sum(waiting),
-                versions=_versions(c))
+                n_drafts=sum(1 for b in builds if b["status"] == "draft"), versions=_versions(c))
 
 
 # ---------- start a build ----------
@@ -269,7 +271,7 @@ def _all_fact_keys(lib, service=None, policy_id=None):
 def _blocked(crit, rep, lib):
     """A rule the owner cannot approve: the code checks failed."""
     if rep["level"] == "fail":
-        return "The code checks failed: " + "; ".join(rep["issues"])
+        return "The automatic checks failed: " + "; ".join(rep["issues"])
     return None
 
 
@@ -284,7 +286,7 @@ def _waiting(crit, lib, keys=None):
     if ai and ai.get("fact") and ai["fact"] not in keys:
         new.append(ai["fact"])
     if new:
-        return "Needs a new detail from the packet (" + ", ".join(x.replace("_", " ") for x in new) + "). The packet reader does not look for it yet. You can approve the rule now. It is saved with the policy and affects no case until the reader learns to find it."
+        return "Needs a key fact the AI reader does not look for yet (" + ", ".join(x.replace("_", " ") for x in new) + "). You can approve the rule now. It is saved with the policy and changes nothing until a service has this key fact."
     return None
 
 
@@ -305,18 +307,23 @@ def get_build(bid: str, request: Request):
     lib = procedures.library()
     dec = _decisions(c, bid)
     repb = {r["id"]: r for r in rep["criteria"]}
+    ctx = b["service"] if b["service"] in lib["procedures"] else ""
+    ctx_open = bool(ctx) and lib["procedures"][ctx].get("status", "live") != "live"
+    keys_ok = _all_fact_keys(lib, ctx or None, meta["policy_id"]) | ({f["key"] for f in draft.get("new_facts", [])} if ctx_open else set())
     crits = []
     for cr in draft["criteria"]:
         d = dec.get(cr["id"], {})
         eff = _effective(cr, d)
         issues = [i for i in repb[cr["id"]]["issues"] if "new packet detail" not in i and "NEW fact" not in i]
         crits.append(dict(eff, original_test=cr["test"], check=("pass" if repb[cr["id"]]["level"] == "review" and not issues else repb[cr["id"]]["level"]), issues=issues, decision=d.get("decision") or "pending",
-                          edited=bool(d.get("edited")), blocked=_blocked(cr, repb[cr["id"]], lib), waiting=_waiting(cr, lib, _all_fact_keys(lib, None, meta["policy_id"]))))
+                          edited=bool(d.get("edited")), blocked=_blocked(cr, repb[cr["id"]], lib), waiting=_waiting(cr, lib, keys_ok)))
     live = next((p for p in lib["policies"] if p["id"] == meta["policy_id"]), None)
     cpath = os.path.join(f, "codes.json")
     codes = json.load(open(cpath, encoding="utf-8")) if os.path.exists(cpath) else dict(method="none", articles=[], codes=[], note="This draft was built before codes were fetched. Build it again to fetch them.")
     mine = [k for k, p in lib["procedures"].items() if meta["policy_id"] in p.get("policies", [])]
-    out.update(codes=codes, service_now=mine[0] if mine else "", services=[dict(key=k, name=p["short"], cpts=p["cpts"], status=p.get("status", "live"), fact_keys=[d["key"] for d in p["facts"]]) for k, p in lib["procedures"].items()])
+    out.update(used_by=[p["short"] for p in lib["procedures"].values() if meta["policy_id"] in p.get("policies", [])])
+    out.update(codes=codes, service_now=ctx or (mine[0] if mine else ""), service_ctx=ctx, service_ctx_name=lib["procedures"][ctx]["short"] if ctx else "",
+               service_ctx_status=lib["procedures"][ctx].get("status", "live") if ctx else "", services=[dict(key=k, name=p["short"], cpts=p["cpts"], status=p.get("status", "live"), fact_keys=[d["key"] for d in p["facts"]]) for k, p in lib["procedures"].items()])
     out.update(meta=dict(meta), elements=els["elements"], engine=els["info"].get("engine"), criteria=crits, new_facts=draft.get("new_facts", []),
                not_modeled=draft.get("not_modeled", []), uncovered=rep["uncovered"], counts=rep["counts"],
                change_report=compare_live(draft, meta["policy_id"]) if live else None, in_library=bool(live), live_criteria=len(live["criteria"]) if live else 0,
@@ -450,7 +457,7 @@ def _check_attach(att, lib, draft, folder, policy_id):
     for c in att.codes:
         code = c.code.strip().upper()
         if not re.match(r"^([0-9]{5}|[A-Z][0-9]{4})$", code):
-            raise HTTPException(400, f"{c.code} is not a procedure code. A code is 5 digits, or a letter and 4 digits.")
+            raise HTTPException(400, f"{c.code} is not a billing code. A code is 5 digits, or a letter and 4 digits.")
         if owner_of.get(code) and owner_of[code] != att.service:
             raise HTTPException(400, f"Code {code} already belongs to {lib['procedures'][owner_of[code]]['short']}. A code can send a packet to one service only.")
         if len([x for x in att.codes if x.code.strip().upper() == code]) > 1:
@@ -462,9 +469,7 @@ def _check_attach(att, lib, draft, folder, policy_id):
             out.append(dict(code=code, description=c.description.strip() or None, sources=[], note="Added by the policy owner. Source: " + c.source.strip()[:300]))
         else:
             raise HTTPException(400, f"Say where code {code} came from. CMS did not list it for this policy.")
-    if att.extend and att.service != "__new__" and lib["procedures"][att.service].get("status", "live") == "live":
-        raise HTTPException(400, "This service is live. Move it to pilot first, then add the new details.")
-    return dict(service=att.service, codes=out, new_service=att.new_service, details=att.details, extend=att.extend)
+    return dict(service=att.service, codes=out, new_service=att.new_service, details=att.details)
 
 
 def _covered(lib):
@@ -512,19 +517,6 @@ def _make_service(att, lib, approved, draft, policy_id):
     return key
 
 
-def _extend_service(att, lib, approved, draft):
-    """Adds the details the approved rules need to an existing planned or pilot service."""
-    proc = lib["procedures"][att["service"]]
-    new = {f["key"]: f for f in draft.get("new_facts", [])}
-    asks = {d.key: d.ask for d in att["details"] if d.ask.strip()}
-    have = {d["key"] for d in proc["facts"]}
-    for x in approved:
-        for k in (x.get("required_fact"), (x.get("applies_if") or {}).get("fact")):
-            if k and k in new and k not in have:
-                proc["facts"].append(_fact_def(new[k], asks.get(k)))
-                have.add(k)
-
-
 def _apply_attach(att, lib, policy_id, who):
     """Adds the policy to the service's stack and the codes to its list, with their sources. Returns the codes added."""
     if not att:
@@ -559,7 +551,6 @@ class DetailReq(BaseModel):
 
 
 class AttachReq(BaseModel):
-    extend: bool = False  # add the details these rules need to an existing planned or pilot service
     service: str = ""  # a service key, or "__new__" to create one
     codes: list[CodeReq] = []
     new_service: NewServiceReq | None = None
@@ -589,23 +580,31 @@ def publish(bid: str, body: PublishReq, request: Request):
     approved = [_effective(x, dec.get(x["id"])) for x in draft["criteria"] if dec[x["id"]]["decision"] == "approved"]
     if not approved:
         raise HTTPException(400, "Approve at least one rule to publish")
-    lib = copy.deepcopy(procedures.library())
+    lib = copy.deepcopy(procedures.raw())
     att = _check_attach(body.attach, lib, draft, b["folder"], meta["policy_id"])
-    _snapshot(procedures.library())
+    _snapshot(procedures.raw())
     pol = next((p for p in lib["policies"] if p["id"] == meta["policy_id"]), None)
     now_lib = procedures.library()
     new_key = None
+    pol_facts = []  # key facts this policy adds. They are saved on the policy, and every service that uses the policy shows them.
     if att and att["service"] == "__new__":
         new_key = _make_service(att, lib, approved, draft, meta["policy_id"])
         att["service"] = new_key
         keys = {d["key"] for d in lib["procedures"][new_key]["facts"]}
+    elif att:
+        keys = {d["key"] for d in now_lib["procedures"][att["service"]]["facts"]}
+        newmap = {f["key"]: f for f in draft.get("new_facts", [])}
+        asks = {d.key: d.ask for d in att["details"] if d.ask.strip()}
+        for x in approved:
+            for k in (x.get("required_fact"), (x.get("applies_if") or {}).get("fact")):
+                if k and k in newmap and k not in keys and k not in {d["key"] for d in pol_facts}:
+                    pol_facts.append(_fact_def(newmap[k], asks.get(k)))
+        if pol_facts and lib["procedures"][att["service"]].get("status", "live") == "live":
+            raise HTTPException(400, "This service is live, and these rules need new key facts. Move the service back to pilot first.")
+        keys |= {d["key"] for d in pol_facts}
     else:
-        if att and att.get("extend"):
-            _extend_service(att, lib, approved, draft)
-            keys = {d["key"] for d in lib["procedures"][att["service"]]["facts"]}
-        else:
-            keys = _all_fact_keys(now_lib, att["service"] if att else None, meta["policy_id"])
-    yesno = {d["key"] for p in lib["procedures"].values() for d in p["facts"] if _is_yesno(d)}
+        keys = _all_fact_keys(now_lib, None, meta["policy_id"])
+    yesno = {d["key"] for p in list(lib["procedures"].values()) + list(now_lib["procedures"].values()) for d in p["facts"] if _is_yesno(d)} | {d["key"] for d in pol_facts if _is_yesno(d)}
     active = [x for x in approved if not _waiting(x, now_lib, keys)]
     held = [x for x in approved if _waiting(x, now_lib, keys)]
     conv = [_to_library(x, yesno) for x in active]
@@ -617,13 +616,16 @@ def publish(bid: str, body: PublishReq, request: Request):
         if conv:  # a draft whose approved rules all wait for the packet reader never wipes the rules that are live
             pol["criteria"] = conv
         pol["waiting_rules"] = held_rules
+        for d in pol_facts:
+            if d["key"] not in {x["key"] for x in pol.setdefault("facts", [])}:
+                pol["facts"].append(d)
         pol["verified"] = True
         pol["verified_from"] = f"Draft built {stamp} from {meta['source']} {meta['version']}, reviewed and approved by {who}"
     else:
         change = dict(added=[x["id"] for x in conv], removed=[], changed=[], unchanged=0)
         lib["policies"].append(dict(id=meta["policy_id"], level=meta["level"], answers="Q2_MEDICAL_NECESSITY", title=meta["title"], source=meta["source"], url=meta.get("url"),
                                     verified=True, verified_from=f"Draft built {stamp} from {meta['source']} {meta['version']}, reviewed and approved by {who}",
-                                    applies_to="Not attached to a service yet. It does not affect any case until a service lists it.", criteria=conv, waiting_rules=held_rules))
+                                    applies_to="Not attached to a service yet. It does not affect any case until a service lists it.", criteria=conv, waiting_rules=held_rules, facts=pol_facts))
     attached_codes = _apply_attach(att, lib, meta["policy_id"], u["name"])
     lib["version"] = _bump(lib.get("version"))
     _snapshot(lib)
@@ -641,6 +643,7 @@ def publish(bid: str, body: PublishReq, request: Request):
 class ServiceReq(BaseModel):
     name: str
     short: str
+    scope: str = ""  # one sentence: which requests belong to this service
     codes: list[CodeReq] = []
 
 
@@ -657,7 +660,7 @@ def create_service(body: ServiceReq, request: Request):
     c, u = _owner(request)
     if not body.name.strip() or not body.short.strip():
         raise HTTPException(400, "Give the service a name and a short name")
-    lib = copy.deepcopy(procedures.library())
+    lib = copy.deepcopy(procedures.raw())
     key = _slug(body.short)
     if key in lib["procedures"]:
         raise HTTPException(400, "A service with that short name already exists")
@@ -666,21 +669,280 @@ def create_service(body: ServiceReq, request: Request):
     for cr in body.codes:
         code = cr.code.strip().upper()
         if not re.match(r"^([0-9]{5}|[A-Z][0-9]{4})$", code):
-            raise HTTPException(400, f"{cr.code} is not a procedure code. A code is 5 digits, or a letter and 4 digits.")
+            raise HTTPException(400, f"{cr.code} is not a billing code. A code is 5 digits, or a letter and 4 digits.")
         if code in owner_of:
             raise HTTPException(400, f"Code {code} already belongs to {lib['procedures'][owner_of[code]]['short']}.")
         if not cr.source.strip():
             raise HTTPException(400, f"Say where code {code} came from")
         src.append(dict(code=code, description=cr.description.strip() or None, sources=[], note="Added by the policy owner. Source: " + cr.source.strip()[:300],
                         added_by=u["name"], added_at=datetime.now(timezone.utc).strftime("%Y-%m-%d")))
-    lib["procedures"][key] = dict(name=body.name.strip(), short=body.short.strip(), cpts=[s["code"] for s in src], policies=[], facts=[], status="planned", cpt_sources=src)
-    _snapshot(procedures.library())
+    lib["procedures"][key] = dict(name=body.name.strip(), short=body.short.strip(), scope=body.scope.strip()[:300], cpts=[s["code"] for s in src], policies=[], facts=[], status="planned", cpt_sources=src)
+    _snapshot(procedures.raw())
     _bump_and_write(lib)
     c.execute("INSERT INTO policy_versions(library_version,kind,policy_id,build_id,published_by,published_at,changelog,note) VALUES(?,?,?,?,?,?,?,?)",
               (lib["version"], "service", None, None, u["id"], db.now(), None, f"Added {body.short.strip()} to the rollout list"))
     _log(c, u, "service_created", None, None, f"{body.short.strip()}: planned, codes {', '.join(s['code'] for s in src) or 'none yet'}")
     c.commit()
     return dict(ok=True, key=key, version=lib["version"])
+
+
+# ---------- one service ----------
+def _svc(lib, key):
+    p = lib["procedures"].get(key)
+    if not p:
+        raise HTTPException(404, "Service not found")
+    return p
+
+
+def _publish_service_change(c, u, lib, key, what, audit_action):
+    """One saved version for a change to a service: snapshot, bump, write, record."""
+    _snapshot(procedures.raw())
+    _bump_and_write(lib)
+    c.execute("INSERT INTO policy_versions(library_version,kind,policy_id,build_id,published_by,published_at,changelog,note) VALUES(?,?,?,?,?,?,?,?)",
+              (lib["version"], "service", None, None, u["id"], db.now(), None, what))
+    _log(c, u, audit_action, None, None, what)
+    c.commit()
+    return lib["version"]
+
+
+@router.get("/services/{key}")
+def service_detail(key: str, request: Request):
+    """Everything about one service on one page: its codes, its policies, the key facts they add up to, and what happened to it."""
+    c, u = _owner(request)
+    lib = procedures.library()
+    p = _svc(lib, key)
+    r = procedures.raw()["procedures"][key]
+    pols = {x["id"]: x for x in lib["policies"]}
+    used = {}  # key fact -> the policies whose rules test it
+    for pid in p.get("policies", []):
+        for cr in pols.get(pid, {}).get("criteria", []) + pols.get(pid, {}).get("waiting_rules", []):
+            for k in (cr.get("required_fact"), (cr.get("applies_if") or {}).get("fact")):
+                if k and pid not in used.setdefault(k, []):
+                    used[k].append(pid)
+    attached = []
+    for pid in p.get("policies", []):
+        x = pols.get(pid)
+        if x:
+            attached.append(dict(id=pid, title=x["title"], level=x["level"], source=x["source"], url=x.get("url"), rules=len(x.get("criteria", [])), waiting=len(x.get("waiting_rules", [])),
+                                 verified=bool(x.get("verified")), n_facts=len(x.get("facts", [])), note=x.get("verified_from") or x.get("applies_to")))
+    drafts = [dict(r2) for r2 in c.execute("SELECT id, kind, ident, policy_id, status, stage, created_at FROM policy_builds WHERE service=? AND status IN ('running','draft','error') ORDER BY created_at DESC", (key,))]
+    seen = {x[0]: x[1] for x in c.execute("SELECT cpt, COUNT(*) FROM cases GROUP BY cpt")}
+    short = p["short"]
+    acts = [dict(at=a["at"], who=a["who"], action=a["action"], detail=a["detail"]) for a in c.execute("SELECT a.*, u.name AS who FROM policy_audit a LEFT JOIN users u ON u.id=a.user_id WHERE a.detail LIKE ? ORDER BY a.id DESC LIMIT 12", (f"%{short}%",))]
+    return dict(key=key, name=p["name"], short=short, scope=p.get("scope") or "", status=p.get("status", "live"), note=p.get("status_note"), version=lib.get("version"),
+                codes=[dict(code=x, source=next((y for y in r.get("cpt_sources", []) if y["code"] == x), None)) for x in p["cpts"]],
+                other_codes=len(p.get("cms_other_codes", [])), checked=p.get("cpt_checked"),
+                policies=attached, drafts=drafts,
+                facts=[dict(key=d["key"], label=d["label"], ask=d.get("ask") or "", kind=d["kind"], used_by=used.get(d["key"], []), from_policy=d.get("from_policy")) for d in p["facts"]],
+                n_cases=sum(seen.get(x, 0) for x in p["cpts"]), activity=acts)
+
+
+_STOP = {"with", "from", "that", "this", "inpatient", "outpatient", "surgery", "procedure", "service", "treatment", "therapy", "for", "and", "the", "of"}
+
+
+@router.get("/services/{key}/suggestions")
+def suggestions(key: str, request: Request, q: str = ""):
+    """Policies that may apply to this service. Today they come from the service name and what the owner types, matched against the CMS lists the
+    back end keeps, plus every policy already in the library. Matching from the service's codes needs a code index of the CMS articles, a back-end job
+    that is not built yet."""
+    c, u = _owner(request)
+    lib = procedures.library()
+    p = _svc(lib, key)
+    mine = set(p.get("policies", []))
+    words = [w for w in re.findall(r"[a-z0-9.]+", (q or f"{p['name']} {p.get('scope') or ''}").lower()) if len(w) > 2 and w not in _STOP]
+    out = []
+    for x in lib["policies"]:
+        if x["id"] in mine:
+            continue
+        hit = sum(1 for w in words if w in (x["id"] + " " + x["title"]).lower())
+        out.append(dict(policy_id=x["id"], title=x["title"], level=x["level"], in_library=True, rules=len(x.get("criteria", [])), verified=bool(x.get("verified")), kind=None, ident=None, effective=None, match=hit > 0))
+    out.sort(key=lambda o: not o["match"])
+    cms = []
+    if words:
+        from rapidfuzz import fuzz
+        in_lib = {x["id"] for x in lib["policies"]}
+        for kind in ("ncd", "lcd"):
+            rows, as_of = _corpus(kind)
+            pre = "NCD-" if kind == "ncd" else "LCD-"
+            for r2 in rows:
+                if pre + r2["id"] in in_lib:
+                    continue
+                hay = (r2["id"] + " " + r2["title"]).lower()
+                hit = sum(1 for w in words if w in hay)
+                sc = hit / len(words) * 100 if hit else fuzz.partial_token_set_ratio(" ".join(words), hay) * 0.6
+                if (q and hit) or sc >= 55:
+                    cms.append((sc, dict(policy_id=pre + r2["id"], title=r2["title"], level=kind.upper(), in_library=False, rules=0, verified=False, kind=kind, ident=r2["id"], effective=r2.get("effective"))))
+        cms.sort(key=lambda t: -t[0])
+    if q:
+        toks = [t for t in q.lower().split() if t]
+        out = [o for o in out if all(t in (o["policy_id"] + " " + o["title"]).lower() for t in toks)]
+    return dict(library=out[:8], cms=[x[1] for x in cms[:8]], asked=bool(q))
+
+
+class AttachPolicyReq(BaseModel):
+    policy_id: str
+
+
+@router.post("/services/{key}/policies")
+def attach_policy(key: str, body: AttachPolicyReq, request: Request):
+    """Adds a policy that is already in the library to this service. A live service cannot change its policies: move it back to pilot first."""
+    c, u = _owner(request)
+    lib = copy.deepcopy(procedures.raw())
+    p = _svc(lib, key)
+    pol = next((x for x in lib["policies"] if x["id"] == body.policy_id), None)
+    if not pol:
+        raise HTTPException(404, "That policy is not in the library. Build it first.")
+    if body.policy_id in p.get("policies", []):
+        raise HTTPException(400, "This policy is already on the service")
+    if p.get("status", "live") == "live":
+        raise HTTPException(400, "This service is live. Move it back to pilot before you change its policies.")
+    have = {d["key"] for d in procedures.library()["procedures"][key]["facts"]} | {d["key"] for d in pol.get("facts", [])}
+    need = sorted({k for cr in pol.get("criteria", []) for k in (cr.get("required_fact"), (cr.get("applies_if") or {}).get("fact")) if k and k not in have})
+    if need:
+        raise HTTPException(400, "This policy's rules need key facts this service does not have yet: " + ", ".join(x.replace("_", " ") for x in need) + ". Build the policy again for this service so the system can add them.")
+    p.setdefault("policies", []).append(body.policy_id)
+    ver = _publish_service_change(c, u, lib, key, f"{p['short']}: added policy {body.policy_id}", "service_policy_added")
+    return dict(ok=True, version=ver)
+
+
+@router.post("/services/{key}/policies/{policy_id}/remove")
+def detach_policy(key: str, policy_id: str, request: Request):
+    c, u = _owner(request)
+    lib = copy.deepcopy(procedures.raw())
+    p = _svc(lib, key)
+    if policy_id not in p.get("policies", []):
+        raise HTTPException(404, "This policy is not on the service")
+    if p.get("status", "live") == "live":
+        raise HTTPException(400, "This service is live. Move it back to pilot before you change its policies.")
+    p["policies"].remove(policy_id)
+    ver = _publish_service_change(c, u, lib, key, f"{p['short']}: removed policy {policy_id}", "service_policy_removed")
+    return dict(ok=True, version=ver)
+
+
+@router.post("/services/{key}/codes")
+def add_service_code(key: str, body: CodeReq, request: Request):
+    c, u = _owner(request)
+    lib = copy.deepcopy(procedures.raw())
+    p = _svc(lib, key)
+    if p.get("status", "live") == "live":
+        raise HTTPException(400, "This service is live. Move it back to pilot before you change its codes.")
+    code = body.code.strip().upper()
+    if not re.match(r"^([0-9]{5}|[A-Z][0-9]{4})$", code):
+        raise HTTPException(400, f"{body.code} is not a billing code. A code is 5 digits, or a letter and 4 digits.")
+    owner_of = {x: k for k, q in lib["procedures"].items() for x in q["cpts"]}
+    if code in owner_of:
+        raise HTTPException(400, f"Code {code} already sends packets to {lib['procedures'][owner_of[code]]['short']}. A code can belong to one service only.")
+    if not body.source.strip():
+        raise HTTPException(400, f"Say where code {code} came from")
+    p["cpts"].append(code)
+    p.setdefault("cpt_sources", []).append(dict(code=code, description=body.description.strip() or None, sources=[], note="Added by the policy owner. Source: " + body.source.strip()[:300],
+                                                 added_by=u["name"], added_at=datetime.now(timezone.utc).strftime("%Y-%m-%d")))
+    ver = _publish_service_change(c, u, lib, key, f"{p['short']}: added code {code}", "service_code_added")
+    return dict(ok=True, version=ver)
+
+
+# ---------- billing codes suggested from CMS ----------
+def _code_rows(lib, key, rows):
+    """Codes with whether this service already has them, or another service does."""
+    owner_of = {x: k for k, q in lib["procedures"].items() for x in q["cpts"]}
+    out = []
+    for r in rows:
+        o = owner_of.get(r["code"])
+        out.append(dict(r, taken=None if not o else ("this" if o == key else lib["procedures"][o]["short"])))
+    return out
+
+
+@router.get("/services/{key}/code-suggestions")
+def code_suggestions(key: str, request: Request, q: str = ""):
+    """Where the owner can get billing codes from, with the source already attached:
+    1. the policies already on the service (the codes CMS listed when each policy was built), and
+    2. CMS Billing and Coding articles whose title matches the service name, or what the owner types."""
+    c, u = _owner(request)
+    lib = procedures.library()
+    p = _svc(lib, key)
+    from_pol = []
+    for pid in p.get("policies", []):
+        base = os.path.join(S.WORK, pid)
+        if not os.path.isdir(base):
+            continue
+        path = os.path.join(base, sorted(os.listdir(base))[-1], "codes.json")
+        if not os.path.exists(path):
+            continue
+        cd = json.load(open(path, encoding="utf-8"))
+        if cd.get("codes"):
+            x = next((y for y in lib["policies"] if y["id"] == pid), {})
+            arts = {a["id"]: a for a in cd.get("articles", [])}
+            rows = [dict(code=r["code"], description=r["description"], sources=[arts[i] for i in r["listed_by"] if i in arts][:3]) for r in cd["codes"]]
+            from_pol.append(dict(policy_id=pid, title=x.get("title", pid), note=cd.get("note", ""), codes=_code_rows(lib, key, rows)))
+    arts, note = cms_codes.search_articles(q or f"{p['name']} {p.get('scope') or ''}")
+    return dict(from_policies=from_pol, articles=arts, note=note, asked=bool(q))
+
+
+@router.get("/services/{key}/code-article")
+def code_article(key: str, aid: str, ver: int, request: Request):
+    c, u = _owner(request)
+    lib = procedures.library()
+    _svc(lib, key)
+    ref, rows, note = cms_codes.codes_of_article(aid, ver)
+    if not ref:
+        raise HTTPException(502, note or "Could not read the article")
+    return dict(article=ref, note=note, codes=_code_rows(lib, key, [dict(r, sources=[ref]) for r in rows]))
+
+
+class CmsCode(BaseModel):
+    code: str
+    description: str = ""
+    sources: list[dict] = []
+
+
+class CmsCodesReq(BaseModel):
+    codes: list[CmsCode]
+
+
+@router.post("/services/{key}/codes/from-cms")
+def add_codes_from_cms(key: str, body: CmsCodesReq, request: Request):
+    """Adds the codes the owner ticked. Each keeps the CMS article it came from."""
+    c, u = _owner(request)
+    lib = copy.deepcopy(procedures.raw())
+    p = _svc(lib, key)
+    if p.get("status", "live") == "live":
+        raise HTTPException(400, "This service is live. Move it back to pilot before you change its codes.")
+    owner_of = {x: k for k, q in lib["procedures"].items() for x in q["cpts"]}
+    added = []
+    for cc in body.codes:
+        code = cc.code.strip().upper()
+        if not re.match(r"^([0-9]{5}|[A-Z][0-9]{4})$", code):
+            raise HTTPException(400, f"{cc.code} is not a billing code")
+        if code in p["cpts"]:
+            continue
+        if code in owner_of:
+            raise HTTPException(400, f"Code {code} already sends packets to {lib['procedures'][owner_of[code]]['short']}. A code can belong to one service only.")
+        srcs = [dict(article=str(a.get("id", ""))[:20], version=a.get("version"), title=str(a.get("title", ""))[:200], mac=str(a.get("mac", ""))[:120], url=a.get("url"))
+                for a in cc.sources[:3] if str(a.get("url", "")).startswith("https://www.cms.gov/")]
+        if not srcs:
+            raise HTTPException(400, f"Code {code} has no CMS article as its source")
+        p["cpts"].append(code)
+        p.setdefault("cpt_sources", []).append(dict(code=code, description=cc.description.strip() or None, sources=srcs, note=None, added_by=u["name"], added_at=datetime.now(timezone.utc).strftime("%Y-%m-%d")))
+        added.append(code)
+    if not added:
+        raise HTTPException(400, "Nothing new to add")
+    ver = _publish_service_change(c, u, lib, key, f"{p['short']}: added codes {', '.join(added)} from CMS", "service_code_added")
+    return dict(ok=True, version=ver, added=added)
+
+
+@router.post("/services/{key}/codes/{code}/remove")
+def remove_service_code(key: str, code: str, request: Request):
+    c, u = _owner(request)
+    lib = copy.deepcopy(procedures.raw())
+    p = _svc(lib, key)
+    if p.get("status", "live") == "live":
+        raise HTTPException(400, "This service is live. Move it back to pilot before you change its codes.")
+    if code not in p["cpts"]:
+        raise HTTPException(404, "That code is not on the service")
+    p["cpts"].remove(code)
+    p["cpt_sources"] = [x for x in p.get("cpt_sources", []) if x["code"] != code]
+    ver = _publish_service_change(c, u, lib, key, f"{p['short']}: removed code {code}", "service_code_removed")
+    return dict(ok=True, version=ver)
 
 
 class StatusReq(BaseModel):
@@ -694,7 +956,7 @@ def set_service_status(key: str, body: StatusReq, request: Request):
     """planned -> pilot -> live, and back. A service needs a policy with rules, its details and a code before it can be a pilot.
     Going live needs a written note on what was tested."""
     c, u = _owner(request)
-    lib = copy.deepcopy(procedures.library())
+    lib = copy.deepcopy(procedures.raw())
     p = lib["procedures"].get(key)
     if not p:
         raise HTTPException(404, "Service not found")
@@ -707,18 +969,18 @@ def set_service_status(key: str, body: StatusReq, request: Request):
     if body.status in ("pilot", "live"):
         problems = []
         if not p["cpts"]:
-            problems.append("it has no procedure codes")
+            problems.append("it has no billing codes")
         if not any(pols.get(i, {}).get("criteria") for i in p.get("policies", [])):
-            problems.append("it has no policy with live rules")
-        if not p["facts"]:
-            problems.append("it has no details for the packet reader to find")
+            problems.append("it has no policy with approved rules")
+        if not procedures.library()["procedures"][key]["facts"]:
+            problems.append("it has no key facts for the packet reader to find")
         if problems:
             raise HTTPException(400, "This service cannot start yet: " + "; ".join(problems) + ".")
     if body.status == "live" and len(body.note.strip()) < 10:
         raise HTTPException(400, "Write what was tested before this service goes live (at least a sentence)")
     p["status"] = body.status
     p["status_note"] = body.note.strip()[:300] or None
-    _snapshot(procedures.library())
+    _snapshot(procedures.raw())
     _bump_and_write(lib)
     c.execute("INSERT INTO policy_versions(library_version,kind,policy_id,build_id,published_by,published_at,changelog,note) VALUES(?,?,?,?,?,?,?,?)",
               (lib["version"], "service", None, None, u["id"], db.now(), None, f"{p['short']}: {now} to {body.status}" + (f". {body.note.strip()}" if body.note.strip() else "")))
