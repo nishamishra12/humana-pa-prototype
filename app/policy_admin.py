@@ -13,7 +13,7 @@ from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
 from pydantic import BaseModel
 
 from . import db
-from pipeline import engine, procedures, telemetry as tel
+from pipeline import engine, procedures, service_eval, telemetry as tel
 from pipeline.policy_build import sources as S
 from pipeline.policy_build.build import run as run_build
 from pipeline.policy_build.compare import compare as compare_live
@@ -705,6 +705,17 @@ def _publish_service_change(c, u, lib, key, what, audit_action):
     return lib["version"]
 
 
+def _evaluation(c, lib, key):
+    """The ML team's latest evaluation of this service, and whether the policies have changed since. Read-only for the owner."""
+    rows = [dict(r) for r in c.execute("SELECT * FROM service_evals WHERE service=? ORDER BY run_at DESC, id DESC LIMIT 5", (key,))]
+    if not rows:
+        return dict(status="none", latest=None)
+    r = rows[0]
+    return dict(status="current" if r["fingerprint"] == service_eval.fingerprint(lib, key) else "changed",
+                latest=dict(run_at=r["run_at"], run_by=r["run_by"], set=r["set_name"], label=r["label"], source=r["source"], library_version=r["library_version"], metrics=json.loads(r["metrics"])),
+                earlier=len(rows) - 1)
+
+
 @router.get("/services/{key}")
 def service_detail(key: str, request: Request):
     """Everything about one service on one page: its codes, its policies, the key facts they add up to, and what happened to it."""
@@ -734,7 +745,7 @@ def service_detail(key: str, request: Request):
                 other_codes=len(p.get("cms_other_codes", [])), checked=p.get("cpt_checked"),
                 policies=attached, drafts=drafts,
                 facts=[dict(key=d["key"], label=d["label"], ask=d.get("ask") or "", kind=d["kind"], used_by=used.get(d["key"], []), from_policy=d.get("from_policy")) for d in p["facts"]],
-                n_cases=sum(seen.get(x, 0) for x in p["cpts"]), activity=acts)
+                n_cases=sum(seen.get(x, 0) for x in p["cpts"]), activity=acts, evaluation=_evaluation(c, lib, key))
 
 
 _STOP = {"with", "from", "that", "this", "inpatient", "outpatient", "surgery", "procedure", "service", "treatment", "therapy", "for", "and", "the", "of"}

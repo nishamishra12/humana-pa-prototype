@@ -179,6 +179,23 @@ function bindCodeSug() {
   });
 }
 
+/* The ML team's evaluation of the service, read-only. The owner does not build test packets or run it. */
+function evalHtml(s) {
+  const e = s.evaluation, m = e.latest && e.latest.metrics;
+  if (!m) return `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="chip plain">Not evaluated yet</span><span class="faint">The ML team has not run test packets for this service.</span></div>`;
+  const chip = e.status === "current" ? `<span class="chip ok">Evaluated on the current policies</span>` : `<span class="chip warn">Policies changed since this evaluation</span>`;
+  const bad = (v) => (v ? ' style="color:var(--bad)"' : "");
+  return `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px">${chip}${small(esc(fullTime(e.latest.run_at)) + " · " + esc(e.latest.run_by) + " · " + m.packets + " test packets" + (e.latest.source === "report" ? " · from an earlier run" : ""))}</div>
+    <div class="stat" style="margin:0"><div><b>${m.decisions_right} of ${m.packets}</b><span>decisions right</span></div><div><b${bad(m.wrong_approvals)}>${m.wrong_approvals}</b><span>approved, but a person was needed</span></div>
+      <div><b>${m.over_flags}</b><span>sent to a person that were fine</span></div><div><b>${m.facts_right_pct ?? "-"}%</b><span>key facts read right</span></div><div><b${bad(m.made_up_pct)}>${m.made_up_pct ?? "-"}%</b><span>key facts made up</span></div></div>
+    ${e.status === "changed" ? small("The key facts or rules changed after this run. Ask the ML team to run it again.", "margin-top:8px") : ""}`;
+}
+function evalNote(s) {
+  const e = s.evaluation, m = e.latest && e.latest.metrics;
+  if (!m) return `No evaluation from the ML team yet. A nurse checks every recommendation in the pilot.`;
+  return `${e.status === "current" ? "Evaluation on the current policies" : "Evaluation is out of date"}: ${m.decisions_right} of ${m.packets} decisions right, ${m.wrong_approvals} approved when a person was needed.`;
+}
+
 function serviceHtml() {
   const s = S.pol.svc;
   if (!s) return `<div class="page"><div class="empty">Loading…</div></div>`;
@@ -189,7 +206,7 @@ function serviceHtml() {
   const missing = [!ready.codes && "a billing code", !ready.pol && "a policy with approved rules", !ready.facts && "key facts"].filter(Boolean);
   const btn = (to, label, cls, off) => `<button class="btn ${cls || ""}" data-svstatus="${to}" ${off ? "disabled" : ""}>${label}</button>`;
   const acts = s.status === "planned" ? btn("pilot", "Start the pilot", "primary", missing.length > 0) : s.status === "pilot" ? btn("live", "Make it live", "primary") + " " + btn("planned", "Back to planned") : btn("pilot", "Pause (back to pilot)");
-  const confirm = sv.open ? `<div class="card" style="border-color:var(--line2);display:grid;gap:8px;max-width:640px"><b>Move ${esc(s.short)} from ${esc(s.status)} to ${esc(sv.open)}</b>
+  const confirm = sv.open ? `<div class="card" style="border-color:var(--line2);display:grid;gap:8px;max-width:640px"><b>Move ${esc(s.short)} from ${esc(s.status)} to ${esc(sv.open)}</b>${sv.open === "live" ? small(esc(evalNote(s))) : ""}
       <div class="field" style="margin:0"><label for="svnote">${sv.open === "live" ? "What did the pilot show? (required)" : "Note (optional)"}</label><textarea id="svnote" style="min-height:56px" placeholder="${sv.open === "live" ? "For example: ran 3 weeks, nurses agreed with the recommendation on 28 of 30 requests" : ""}">${esc(sv.note)}</textarea></div>
       <div style="display:flex;gap:8px"><button class="btn primary small" data-svgo>Confirm</button><button class="btn small" data-svcancel>Cancel</button></div></div>` : "";
   const lockNote = locked ? `<div class="banner">This service is live. To change its codes or policies, pause it back to pilot first.</div>` : "";
@@ -241,7 +258,8 @@ function serviceHtml() {
           <div style="margin-top:10px"><button class="btn small primary" id="pgo" ${S.pol.busy ? "disabled" : ""}>${S.pol.busy ? "Starting…" : "Build this policy"}</button></div></details></div>`}`)}
     ${sec("3", "Key facts", "The things the AI reader finds in a packet to check the rules. They come from the policies above and are combined here. To change one, change the policy.",
       facts ? `<div class="tbl"><table><thead><tr><th>Key fact</th><th>Question to the provider if it is missing</th><th>Checked by</th></tr></thead><tbody>${facts}</tbody></table></div>` : `<div class="faint">None yet. They appear when you approve a policy for this service.</div>`)}
-    ${act ? sec("4", "Activity", "", `<div class="tbl"><table><tbody>${act}</tbody></table></div>`) : ""}</div>`;
+    ${sec("4", "Evaluation", "Run by the ML team on labelled test packets. You do not run it. It shows how well the AI reader handles this service.", evalHtml(s))}
+    ${act ? sec("5", "Activity", "", `<div class="tbl"><table><tbody>${act}</tbody></table></div>`) : ""}</div>`;
 }
 
 const polServicesHtml = () => {

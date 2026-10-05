@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS policy_decisions(build_id TEXT, criterion_id TEXT, de
 CREATE TABLE IF NOT EXISTS policy_versions(n INTEGER PRIMARY KEY AUTOINCREMENT, library_version TEXT, kind TEXT, policy_id TEXT, build_id TEXT,
   published_by INTEGER, published_at TEXT, changelog TEXT, note TEXT);
 CREATE TABLE IF NOT EXISTS policy_audit(id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT, user_id INTEGER, action TEXT, policy_id TEXT, build_id TEXT, detail TEXT);
+CREATE TABLE IF NOT EXISTS service_evals(id INTEGER PRIMARY KEY AUTOINCREMENT, service TEXT, library_version TEXT, fingerprint TEXT, set_name TEXT, run_at TEXT, run_by TEXT, label TEXT, source TEXT, metrics TEXT);
 """
 
 
