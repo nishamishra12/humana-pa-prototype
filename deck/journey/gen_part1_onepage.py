@@ -96,15 +96,7 @@ seg("c4", X[3] + 0.45, 5.55, X[4] - 0.45, 5.55, true);   tag("c4t", X[3] + 0.45,
 seg("c5", X[4] + 0.45, 5.55, 11.78, 5.55, true);         tag("c5t", X[4] + 0.4, 5.3, 0.8, "approved");
 '''
 
-NOTES = ["""Part one builds the policy library. It happens before go-live, and it is the biggest piece of real work. There are three stages and two databases.
-
-Stage 1, the weekly refresh. A scheduled job calls the public CMS Coverage API for three things: the billing articles, the billing codes listed on each article, and the national and local coverage policies. It compares versions and fetches only what is new or changed. It saves it all in our first database: articles, the codes on each article, and policies. Because it is stored, the owner never waits on the CMS website.
-
-Stage 2, the owner creates a service, for example allergen immunotherapy. They use the owner screens. The app server reads the first database and suggests billing codes, ranked by how many articles each code is found in, and policies, from our library first and then from CMS. The owner picks, and the service is saved in the second database, the policy library. A code sends a packet to one service. A service can use many policies.
-
-Stage 3, only when the policy is new. The policy source goes to Unstructured, the ETL step. It uses a partitioner to parse the document and extract elements: title, text, page number, as JSON. Claude Sonnet reads those elements with a 10-rule prompt and a fixed output form, and drafts each rule with its exact quote, the key fact to check, and the question to ask the provider if the fact is missing. The validator is code with real algorithms. It re-finds every quote in the policy text, exact first and then fuzzy, requires the same numbers, and checks every number and key fact. The owner then reviews each rule beside its quote and approves, edits or rejects. Only approved rules are saved to the policy library.
-
-Part two only ever uses what part one approved."""]
+NOTES = [open(os.path.join(HERE, "..", "..", "docs", "PART1_ARCHITECTURE_SCRIPT.md"), encoding="utf-8").read().split("## What Part 1 is", 1)[1].split("## Check before you say it")[0].replace("## ", "").strip()]
 
 if __name__ == "__main__":
     G.build("Part 1 on one slide", "Part1_One_Page", JS, ['{ hold: 0, fx: [] }'], NOTES)
