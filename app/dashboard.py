@@ -38,7 +38,7 @@ def compute(c):
         first = next((e for e in x["audit"] if e["action"] in ("approved", "approved_override", "pended", "escalated") and e["user_id"] in nurse_ids), None)
         if first:
             human_flag = first["action"] in ("pended", "escalated")
-            acts.append(dict(case=x["id"], user=first["user_id"], cpt=x["cpt"], override=first["action"] == "approved_override", agree=human_flag == x["at_risk"],
+            acts.append(dict(case=x["id"], user=first["user_id"], cpt=x["cpt"], override=first["action"] == "approved_override", agree=human_flag == x["at_risk"], ai_flag=x["at_risk"], human_flag=human_flag,
                              missed=human_flag and not x["at_risk"], extra=x["at_risk"] and not human_flag))
     returned = [e for x in cases for e in x["returned"]]
     avoidable_return = [e for e in returned if e["detail"].startswith("The packet already has what we need")]
@@ -125,5 +125,28 @@ def compute(c):
         demand=dict(total=sum(g["n"] for g in demand), codes=demand[:4]),
         owner=dict(drafts=drafts, version=lib.get("version")),
         pilots=[s for s in services if s["status"] == "pilot"])
-    return dict(generated=now.strftime("%Y-%m-%d %H:%M UTC"), n=n, exec=exec_, um=um)
+    # ---- model efficiency: how the AI's work holds up against the two people who check it
+    p1 = lambda a, b: round(100 * a / b, 1) if b else None
+    tp = sum(1 for a in acts if a["human_flag"] and a["ai_flag"])
+    fn = sum(1 for a in acts if a["human_flag"] and not a["ai_flag"])   # the AI approved, the nurse sent it on
+    fp = sum(1 for a in acts if a["ai_flag"] and not a["human_flag"])   # the AI flagged, the nurse approved
+    tn = sum(1 for a in acts if not a["ai_flag"] and not a["human_flag"])
+    nurse_eff = dict(reviews=len(acts), ai_approved=fn + tn, wrong_approvals=fn, wrong_approvals_pct=p1(fn, fn + tn), ai_flagged=tp + fp, false_alarms=fp, false_alarms_pct=p1(fp, tp + fp),
+                     recall=p1(tp, tp + fn), precision=p1(tp, tp + fp))
+    try:
+        approved = rejected = edited = 0
+        for r in c.execute("SELECT d.decision, d.edited FROM policy_decisions d JOIN policy_builds b ON b.id=d.build_id WHERE b.status='published'"):
+            if r["decision"] == "approved":
+                approved += 1
+                edited += 1 if r["edited"] else 0
+            elif r["decision"] == "rejected":
+                rejected += 1
+        missed = c.execute("SELECT COUNT(*) FROM policy_misses m JOIN policy_builds b ON b.id=m.build_id WHERE b.status='published' AND m.verdict='requirement'").fetchone()[0]
+        not_req = c.execute("SELECT COUNT(*) FROM policy_misses m JOIN policy_builds b ON b.id=m.build_id WHERE b.status='published' AND m.verdict='not'").fetchone()[0]
+        policies = c.execute("SELECT COUNT(*) FROM policy_builds WHERE status='published'").fetchone()[0]
+    except Exception:
+        approved = rejected = edited = missed = not_req = policies = 0
+    owner_eff = dict(policies=policies, drafted=approved + rejected, approved=approved, rejected=rejected, edited=edited, missed=missed, dismissed=not_req,
+                     precision=p1(approved, approved + rejected), recall=p1(approved, approved + missed))
+    return dict(generated=now.strftime("%Y-%m-%d %H:%M UTC"), n=n, exec=exec_, um=um, eff=dict(owner=owner_eff, nurse=nurse_eff))
 
