@@ -30,7 +30,7 @@ def milestone(n, x, title, value):
 
 
 BODY = 'frame("THE ROADMAP", "Three phases over a year.", "Each phase earns the next one", "The months are illustrative. The order is the point.");\n'
-BODY += phase(1, 0.5, 5.95, "C.green", "C.greenSoft", "PHASE 1   ·   MONTHS 1 TO 4", "Right first time. A person decides.", "North star: right-first-time rate", None,
+BODY += phase(1, 0.5, 5.95, "C.green", "C.greenSoft", "PHASE 1   ·   MONTHS 1 TO 4", "Right first time. A person decides.", "North star: right-first-time rate. Two milestones ladder up to it.", None,
               "Nurse, provider, member, plan", "A tested library. Evals on real cases. Zero wrong approvals.") + "\n"
 BODY += milestone(1, 0.75, "Build the library", "One central place for every policy and what it checks. Every rule traces to the policy's own words.") + "\n"
 BODY += milestone(2, 3.55, "Decide every packet", "Fewer pends. The right answer the first time. A sooner decision for the member.") + "\n"
