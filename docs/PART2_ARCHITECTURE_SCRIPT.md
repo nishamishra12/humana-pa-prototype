@@ -19,23 +19,44 @@ If no service owns the code, the system doesn't guess. It says "no policy yet". 
 When a service is found, we pull its key facts and the rules attached to them from the library.
 
 ## Stage 2: the AI reads the packet and checks its own work
-Now the AI part. Claude Sonnet reads the packet. It has a prompt and a fixed output form. The form is built from that service's key facts. So the AI fills in one entry per key fact. It does not go looking for anything else.
+The elements JSON from the Unstructured API now goes to the AI. This is a different AI job from Part 1. In Part 1, the AI read a policy and drafted the rules. Here it reads a patient's packet and fills in the values. So the prompt is different, the output form is different, and the checks are different.
 
-The prompt has guardrails, same idea as Part 1:
-- Be literal and conservative.
-- Negation counts. "No evidence of instability" means absent, not found.
-- If the packet says the same thing twice with different values, the later, dated one wins.
-- Copy the exact sentence word for word.
-- Never guess a value that isn't written.
-- This patient only. A page about someone else is not evidence.
-- Planned is not done. A scheduled visit hasn't happened.
-- For dates, the AI reads them and our code does the counting.
+The AI is Claude Sonnet. It has two kinds of guardrails.
 
-It reads the packet three times, in parallel. All three reads must agree on the status and on the value. If they don't, we don't take a majority vote. We mark that fact unsure and the nurse checks it. I did this because a language model can answer differently on each run, and I don't want one lucky read to decide a case.
+**Guardrail one: the output dictionary.** The AI has to answer through a fixed form. The keys of that form are the key facts we built in Part 1 for this service. If the service has more than one policy, the keys are the list of unique key facts across those policies. If two policies both need length of stay, it appears once.
 
-Then we check its work, in two steps.
-- **Step one is code.** For each key fact, it finds the exact quote in the packet. It tries an exact match first, then fuzzy matching with the same numbers. It gives us the page and the real text from the packet. So the nurse sees what the packet says, not the AI's version.
-- **Step two is a second, smaller model, Claude Haiku.** It reads the quote in its page and says whether it supports the fact, contradicts it, is unrelated, or isn't enough. This catches a quote like "no evidence of instability" being used as evidence of instability. If this check ever fails to run, we keep the exact-text result. We never block a case because the checker was down.
+For each key fact, the AI fills in four things:
+- the status: found, none, implied or missing
+- the value: a number, a choice, a list or text, depending on the key fact
+- the evidence: the exact sentences from the packet, up to three, with their dates
+- a note, if the packet contradicts itself
+
+It also sees the question and the rule text for each key fact, so it knows what the value is for. And it can only use the statuses that key fact allows. So it can't wander off and report things we never asked for.
+
+**Guardrail two: the prompt.** There are eight rules. I'll name them.
+1. Negation. If the packet rules something out, like "no evidence of instability", that is none, never found.
+2. Conflicts. If the packet says the same thing twice with different values, the later, dated or more specific one wins.
+3. Quotes. For every fact it reports, it copies the exact sentence, word for word.
+4. Never guess. If a value isn't written, it doesn't make one up. It doesn't calculate one either, like a BMI from height and weight.
+5. This patient only. A page about someone else is not evidence. We give it the member's name and date of birth so it can tell.
+6. Planned is not done. A scheduled visit hasn't happened. Only what was done counts.
+7. Ambiguous is rare. It can only use it when it truly can't choose between two values.
+8. Dates. The AI reads the dates. Our code does the counting.
+
+**It runs three times, in parallel.** Why? A language model can answer differently each time you ask. A fact that comes back the same three times, I can trust. A fact that changes between runs is a warning sign. And running them in parallel means it isn't three times slower.
+
+**What happens if one of the three finds a wrong item?** All three have to agree on the status and on the value. Numbers must match. Choices must match. For free text and lists, the status must match, and the evidence gets checked next.
+
+If one run disagrees, we don't take a majority vote. We mark that key fact unsure, and we tell the nurse: we read this more than once and got different answers, please check the packet. I would rather send one doubtful fact to a nurse than let one lucky read decide a case. That is the recall-first design. It costs the nurse a little time, and it protects the member.
+
+**What if all three are wrong in the same way?** That is why there is a second layer. The validator.
+
+**The validator is different from Part 1.** In Part 1, the validator checked the AI's rules against the policy text. Here it checks the AI's answers against the packet. It does that in three steps.
+1. Agreement, which we just covered.
+2. The evidence matcher. It is code. It finds each quote in the packet. Exact match first. Then fuzzy matching, and a fuzzy match must carry the same numbers. It gives us the page and the real text. If the quote isn't in the packet at all, the AI made it up, and the fact goes to unsure. The nurse sees the packet's words, never the AI's version.
+3. The meaning check. A second, smaller model, Claude Haiku, reads the quote in its page and says one of four things: it supports the fact, it contradicts it, it is unrelated, or it isn't enough. If every sentence contradicts or is unrelated, the fact goes to unsure. If it supports, the fact gets a tick. This catches a quote like "no evidence of instability" being used as evidence of instability. If this check ever fails to run, we keep the exact-text result. We never block a case because the checker was down.
+
+Two safety nets on top. If the AI's reply is unreadable, we retry that read once. If the AI can't be reached at all, every key fact is marked unsure, so a person reads the packet. Nothing is guessed.
 
 ## Stage 3: decide
 Now the rules engine. This is code, not AI. For each rule, it looks at the key fact and says met, not met, missing, or unsure. Then it picks the next step:
