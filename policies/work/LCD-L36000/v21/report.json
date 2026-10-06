@@ -1,0 +1,176 @@
+{
+ "criteria": [
+  {
+   "id": "SIJ-NONOP6MO",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (nonop_treatment_6mo_failed): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-PAIN-NONRAD",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (pain_nonradiating): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-PAIN-UNILATERAL",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (pain_unilateral): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-PAIN-LOCATION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (pain_location_sij): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-TENDERNESS",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (localized_sij_tenderness_only): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-PROVOC-PRIMARY",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (positive_thigh_thrust_or_compression): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-PROVOC-ADDITIONAL",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (num_positive_additional_provocative_tests): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-NO-GENERALIZED-PAIN",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (generalized_pain_disorder): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-IMG-SIJOINT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (sij_imaging_excludes_destructive_or_inflammatory): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-IMG-HIP",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (hip_imaging_rules_out_oa): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-IMG-LUMBAR",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (lumbar_imaging_rules_out_other_cause): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-INJECTION-RESPONSE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (sij_injection_75pct_relief_twice): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-LIM-SYSTEMIC-ARTHROPATHY",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (systemic_arthropathy): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-LIM-INFECTION-TUMOR-FRACTURE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (infection_tumor_fracture): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-LIM-ACUTE-INSTABILITY",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (acute_traumatic_sij_instability): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SIJ-LIM-NEURAL-COMPRESSION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (correlating_neural_compression_or_other_cause): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 0,
+  "review": 16,
+  "fail": 0
+ },
+ "total": 16,
+ "uncovered": [
+  "Percutaneous minimally invasive fusion/stabilization of the sacroiliac joint (SIJ) for the treatment of back pain is indicated for the treatment of SIJ pain for patients with low back/buttock pain who meet all of the following criteria:"
+ ],
+ "new_facts": [
+  "nonop_treatment_6mo_failed",
+  "pain_nonradiating",
+  "pain_unilateral",
+  "pain_location_sij",
+  "localized_sij_tenderness_only",
+  "positive_thigh_thrust_or_compression",
+  "num_positive_additional_provocative_tests",
+  "generalized_pain_disorder",
+  "sij_imaging_excludes_destructive_or_inflammatory",
+  "hip_imaging_rules_out_oa",
+  "lumbar_imaging_rules_out_other_cause",
+  "sij_injection_75pct_relief_twice",
+  "systemic_arthropathy",
+  "infection_tumor_fracture",
+  "acute_traumatic_sij_instability",
+  "correlating_neural_compression_or_other_cause"
+ ],
+ "not_modeled": 0
+}

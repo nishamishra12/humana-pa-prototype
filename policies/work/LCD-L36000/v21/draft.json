@@ -1,0 +1,407 @@
+{
+ "criteria": [
+  {
+   "id": "SIJ-NONOP6MO",
+   "text": "Patient must have undergone and failed a minimum 6 months of intensive non-operative treatment including medication optimization, activity modification, and active physical therapy.",
+   "source_quote": "Have undergone and failed a minimum 6 months of intensive non-operative treatment that must include medication optimization, activity modification, and active physical therapy",
+   "cite": "Indications (a)",
+   "required_fact": "nonop_treatment_6mo_failed",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Did the patient undergo and fail at least 6 months of intensive non-operative treatment including medication optimization, activity modification, and active physical therapy?",
+   "short": "No 6-month failed non-operative treatment documented",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-PAIN-NONRAD",
+   "text": "Patient's pain must be non-radiating.",
+   "source_quote": "non-radiating, unilateral pain",
+   "cite": "Indications (b)",
+   "required_fact": "pain_nonradiating",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is the patient's pain documented as non-radiating?",
+   "short": "Pain is radiating or not documented as non-radiating",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-PAIN-UNILATERAL",
+   "text": "Patient's pain must be unilateral.",
+   "source_quote": "non-radiating, unilateral pain",
+   "cite": "Indications (b)",
+   "required_fact": "pain_unilateral",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is the patient's pain documented as unilateral?",
+   "short": "Pain is not documented as unilateral",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-PAIN-LOCATION",
+   "text": "Pain must be caudal to the lumbar spine (L5), localized over the posterior SIJ, and consistent with SIJ pain.",
+   "source_quote": "caudal to the lumbar spine (L5 vertebrae), localized over the posterior SIJ, and consistent with SIJ pain",
+   "cite": "Indications (b)",
+   "required_fact": "pain_location_sij",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is the pain localized caudal to L5, over the posterior SIJ, and consistent with SIJ pain?",
+   "short": "Pain location not consistent with SIJ pain criteria",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-TENDERNESS",
+   "text": "Patient must have localized tenderness with palpation of the posterior SIJ, without similar tenderness elsewhere and without other obvious pain sources.",
+   "source_quote": "Localized tenderness with palpation of the posterior SIJ in the absence of tenderness of similar severity elsewhere ... and other obvious sources for their pain do not exist",
+   "cite": "Indications (c)",
+   "required_fact": "localized_sij_tenderness_only",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is there localized tenderness at the posterior SIJ with no similar tenderness elsewhere and no other obvious pain source?",
+   "short": "Tenderness pattern does not meet SIJ-specific criteria",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-PROVOC-PRIMARY",
+   "text": "Patient must have a positive response to the thigh thrust test OR the compression test.",
+   "source_quote": "Positive response to the thigh thrust test OR compression test",
+   "cite": "Indications (d)",
+   "required_fact": "positive_thigh_thrust_or_compression",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Did the patient have a positive thigh thrust test or compression test?",
+   "short": "No positive thigh thrust or compression test documented",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-PROVOC-ADDITIONAL",
+   "text": "Patient must have positive results on at least 2 of the following additional provocative tests: Gaenslen's test, Distraction test, Patrick's sign.",
+   "source_quote": "AND 2 of the following additional provocative tests: Gaenslen's test, Distraction test, Patrick's sign",
+   "cite": "Indications (d)",
+   "required_fact": "num_positive_additional_provocative_tests",
+   "test": {
+    "type": "gte",
+    "value": 2
+   },
+   "if_missing": "How many of Gaenslen's test, Distraction test, and Patrick's sign were positive?",
+   "short": "Fewer than 2 additional provocative tests positive",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-NO-GENERALIZED-PAIN",
+   "text": "Patient must not have generalized pain behavior (e.g., somatoform disorder) or generalized pain disorders (e.g., fibromyalgia).",
+   "source_quote": "Absence of generalized pain behavior (e.g. somatoform disorder) or generalized pain disorders (e.g. fibromyalgia)",
+   "cite": "Indications (e)",
+   "required_fact": "generalized_pain_disorder",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have a generalized pain behavior or disorder such as somatoform disorder or fibromyalgia?",
+   "short": "Generalized pain disorder/behavior present",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-IMG-SIJOINT",
+   "text": "Imaging of the SI joint (plain radiographs and CT or MRI) must exclude destructive lesions or inflammatory arthropathy.",
+   "source_quote": "Imaging (plain radiographs and a CT or MRI) of the SI joint that excludes the presence of destructive lesions (e.g. tumor, infection) or inflammatory arthropathy",
+   "cite": "Indications (f)(1)",
+   "required_fact": "sij_imaging_excludes_destructive_or_inflammatory",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Do SI joint imaging studies (plain films and CT or MRI) exclude destructive lesions or inflammatory arthropathy?",
+   "short": "SI joint imaging does not exclude destructive/inflammatory findings",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-IMG-HIP",
+   "text": "Imaging of the ipsilateral hip (plain radiographs) must rule out osteoarthritis.",
+   "source_quote": "Imaging of the ipsilateral hip (plain radiographs) to rule out osteoarthritis",
+   "cite": "Indications (f)(2)",
+   "required_fact": "hip_imaging_rules_out_oa",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Does ipsilateral hip radiograph rule out osteoarthritis?",
+   "short": "Hip imaging does not rule out osteoarthritis",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-IMG-LUMBAR",
+   "text": "Imaging of the lumbar spine (CT or MRI) must rule out neural compression or other degenerative condition causing the pain.",
+   "source_quote": "Imaging of the lumbar spine (CT or MRI) to rule out neural compression or other degenerative condition that can be causing low back or buttock pain",
+   "cite": "Indications (f)(3)",
+   "required_fact": "lumbar_imaging_rules_out_other_cause",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Does lumbar spine CT or MRI rule out neural compression or other degenerative cause of the pain?",
+   "short": "Lumbar imaging does not rule out other causes",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-INJECTION-RESPONSE",
+   "text": "Patient must have at least 75% reduction of pain for the expected duration of anesthetic following an image-guided, contrast-enhanced SIJ injection, on 2 separate occasions.",
+   "source_quote": "At least 75% reduction of pain for the expected duration of the anesthetic used following an image-guided, contrast-enhanced SIJ injection on 2 separate occasions",
+   "cite": "Indications (g)",
+   "required_fact": "sij_injection_75pct_relief_twice",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Did the patient have at least 75% pain reduction for the expected anesthetic duration after image-guided contrast-enhanced SIJ injections on 2 separate occasions?",
+   "short": "Diagnostic SIJ injection response criterion not met",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-LIM-SYSTEMIC-ARTHROPATHY",
+   "text": "Procedure is not indicated if patient has systemic arthropathy such as ankylosing spondylitis or rheumatoid arthritis.",
+   "source_quote": "Systemic arthropathy such as ankylosing spondylitis or rheumatoid arthritis",
+   "cite": "Limitations",
+   "required_fact": "systemic_arthropathy",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have a systemic arthropathy such as ankylosing spondylitis or rheumatoid arthritis?",
+   "short": "Systemic arthropathy present",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-LIM-INFECTION-TUMOR-FRACTURE",
+   "text": "Procedure is not indicated in the presence of infection, tumor, or fracture.",
+   "source_quote": "Infection, tumor, or fracture",
+   "cite": "Limitations",
+   "required_fact": "infection_tumor_fracture",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is there evidence of infection, tumor, or fracture at the SIJ?",
+   "short": "Infection, tumor, or fracture present",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-LIM-ACUTE-INSTABILITY",
+   "text": "Procedure is not indicated in the presence of acute, traumatic instability of the SIJ.",
+   "source_quote": "Acute, traumatic instability of the SIJ",
+   "cite": "Limitations",
+   "required_fact": "acute_traumatic_sij_instability",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is there acute, traumatic instability of the SIJ?",
+   "short": "Acute traumatic SIJ instability present",
+   "confidence": "high"
+  },
+  {
+   "id": "SIJ-LIM-NEURAL-COMPRESSION",
+   "text": "Procedure is not indicated if there is neural compression on MRI or CT that correlates with the patient's symptoms or another more likely pain source.",
+   "source_quote": "Neural compression as seen on an MRI or CT that correlates with the patient's symptoms or other more likely source for their pain",
+   "cite": "Limitations",
+   "required_fact": "correlating_neural_compression_or_other_cause",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is there neural compression on MRI/CT correlating with symptoms, or another more likely pain source identified?",
+   "short": "Correlating neural compression or other likely cause present",
+   "confidence": "high"
+  }
+ ],
+ "new_facts": [
+  {
+   "key": "nonop_treatment_6mo_failed",
+   "label": "Failed 6 months of intensive non-operative treatment (meds, activity modification, PT)",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Did the patient complete at least 6 months of intensive non-operative treatment including medication optimization, activity modification, and active physical therapy, and fail to improve?"
+  },
+  {
+   "key": "pain_nonradiating",
+   "label": "Pain is non-radiating",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the patient's pain documented as non-radiating?"
+  },
+  {
+   "key": "pain_unilateral",
+   "label": "Pain is unilateral",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the patient's pain documented as unilateral?"
+  },
+  {
+   "key": "pain_location_sij",
+   "label": "Pain location consistent with SIJ pain (caudal to L5, posterior SIJ)",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the pain located caudal to L5, over the posterior SIJ, and consistent with SIJ pain?"
+  },
+  {
+   "key": "localized_sij_tenderness_only",
+   "label": "Localized posterior SIJ tenderness without similar tenderness elsewhere or other obvious cause",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is there localized tenderness on palpation of the posterior SIJ without similar severity tenderness elsewhere and no other obvious pain source?"
+  },
+  {
+   "key": "positive_thigh_thrust_or_compression",
+   "label": "Positive thigh thrust or compression test",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Was the thigh thrust test or compression test positive?"
+  },
+  {
+   "key": "num_positive_additional_provocative_tests",
+   "label": "Number of positive additional provocative tests (Gaenslen's, Distraction, Patrick's)",
+   "kind": "number",
+   "ask": "How many of the following tests were positive: Gaenslen's test, Distraction test, Patrick's sign?"
+  },
+  {
+   "key": "generalized_pain_disorder",
+   "label": "Generalized pain behavior/disorder (e.g., somatoform, fibromyalgia)",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the patient have a generalized pain behavior (e.g., somatoform disorder) or generalized pain disorder (e.g., fibromyalgia)?"
+  },
+  {
+   "key": "sij_imaging_excludes_destructive_or_inflammatory",
+   "label": "SI joint imaging excludes destructive lesions/inflammatory arthropathy",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Do plain radiographs and CT or MRI of the SI joint exclude destructive lesions (tumor, infection) or inflammatory arthropathy?"
+  },
+  {
+   "key": "hip_imaging_rules_out_oa",
+   "label": "Ipsilateral hip imaging rules out osteoarthritis",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the ipsilateral hip radiograph rule out osteoarthritis?"
+  },
+  {
+   "key": "lumbar_imaging_rules_out_other_cause",
+   "label": "Lumbar spine imaging rules out neural compression/other degenerative cause",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does lumbar spine CT or MRI rule out neural compression or other degenerative condition causing the pain?"
+  },
+  {
+   "key": "sij_injection_75pct_relief_twice",
+   "label": "≥75% pain relief after image-guided contrast-enhanced SIJ injection on 2 separate occasions",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Did the patient experience at least 75% pain reduction for the expected duration of anesthetic following image-guided, contrast-enhanced SIJ injections on two separate occasions?"
+  },
+  {
+   "key": "systemic_arthropathy",
+   "label": "Systemic arthropathy (e.g., ankylosing spondylitis, rheumatoid arthritis)",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the patient have a systemic arthropathy such as ankylosing spondylitis or rheumatoid arthritis?"
+  },
+  {
+   "key": "infection_tumor_fracture",
+   "label": "Infection, tumor, or fracture present",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is there evidence of infection, tumor, or fracture involving the SIJ?"
+  },
+  {
+   "key": "acute_traumatic_sij_instability",
+   "label": "Acute traumatic SIJ instability present",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is there acute, traumatic instability of the SIJ?"
+  },
+  {
+   "key": "correlating_neural_compression_or_other_cause",
+   "label": "Correlating neural compression on MRI/CT or other more likely pain source",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is there neural compression on MRI or CT that correlates with the patient's symptoms, or another more likely source for the pain?"
+  }
+ ],
+ "not_modeled": [],
+ "_usage": {
+  "input_tokens": 3508,
+  "output_tokens": 5363
+ },
+ "_model": "claude-sonnet-5"
+}

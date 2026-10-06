@@ -1,0 +1,29 @@
+{
+ "method": "lcd_related_articles",
+ "retrieved_at": "2026-10-06T05:00:01+00:00",
+ "articles": [
+  {
+   "id": "A57596",
+   "version": 19,
+   "title": "Percutaneous minimally invasive fusion/stabilization of the sacroiliac joint for the treatment of back pain",
+   "mac": "WPS Insurance Corporation (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57596&ver=19",
+   "match_score": null,
+   "cites_ncd": null,
+   "n_codes": 1
+  }
+ ],
+ "codes": [
+  {
+   "code": "27279",
+   "description": "ARTHRODESIS, SACROILIAC JOINT, PERCUTANEOUS OR MINIMALLY INVASIVE, WITH IMAGE GUIDANCE, INCLUDES OBTAINING BONE GRAFT WHEN PERFORMED, UNILATERAL; PLACEMENT OF TRANSARTICULAR DEVICE(S) AND/OR INTRA-ARTICULAR DEVICE(S) PIERCING THE LATERAL OR MEDIAL CORTICES OF THE ILIUM AND THE LATERAL CORTEX OF THE SACRUM",
+   "short": "Arthrd si jt plmt tartclr dv",
+   "group": 1,
+   "listed_by": [
+    "A57596"
+   ],
+   "n_articles": 1
+  }
+ ],
+ "note": "CMS links these articles to the LCD. The codes are the ones each article lists."
+}
