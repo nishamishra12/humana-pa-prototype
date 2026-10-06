@@ -167,12 +167,22 @@ function codeSugHtml() {
     ${arts ? `<details class="more" style="margin-top:8px" ${cs.cons && !found ? "open" : ""}><summary><u>See the ${g.articles.length} CMS articles these come from</u></summary>${small("On the CMS page, the code table under \"CPT/HCPCS Codes\" stays hidden until you accept the AMA license. Click \"Accept\" there to see it.", "margin-top:6px")}<div style="margin-top:8px">${arts}</div></details>` : ""}
     ${g.as_of ? small("CMS data copied on " + esc(g.as_of) + ".", "margin-top:8px") : ""}<div style="margin-top:10px"><button class="btn primary small" id="csadd" ${n ? "" : "disabled"}>${n ? "Add " + n + " selected code" + (n > 1 ? "s" : "") : "Tick the codes to add"}</button></div>`;
 }
+/* The Next button on the codes step follows the ticks: with codes ticked it adds them and moves on. */
+function csNextUpdate() {
+  const cs = S.pol.cs, n = Object.keys(cs.picked).length, b = document.getElementById("csnext"), w = document.getElementById("stepwhy");
+  if (!b) return;
+  const has = b.dataset.has === "1";
+  b.textContent = n ? `Add ${n} code${n > 1 ? "s" : ""} and continue` : "Next: policies";
+  b.disabled = !n && !has;
+  if (w) w.innerHTML = n || has ? "" : small("Add at least one billing code to continue.");
+}
 function bindCodeSug() {
   const cs = S.pol.cs, on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));
   document.querySelectorAll("[data-cspick]").forEach((el) => (el.onchange = () => {
     if (el.checked) cs.picked[el.dataset.cspick] = cs.rows[el.dataset.cspick]; else delete cs.picked[el.dataset.cspick];
     document.querySelectorAll(`[data-cspick="${el.dataset.cspick}"]`).forEach((o) => (o.checked = el.checked));
     const b = document.getElementById("csadd"), n = Object.keys(cs.picked).length; if (b) { b.disabled = !n; b.textContent = n ? `Add ${n} selected code${n > 1 ? "s" : ""}` : "Tick the codes to add"; }
+    csNextUpdate();
   }));
   on("[data-csart]", async (el) => {
     const aid = el.dataset.csart, d = cs.art[aid];
@@ -180,6 +190,14 @@ function bindCodeSug() {
     cs.busy = aid; document.getElementById("csbox").innerHTML = codeSugHtml(); bindCodeSug();
     try { const r = await api(`/policies/services/${S.pol.svcKey}/code-article?aid=${encodeURIComponent(aid)}&ver=${encodeURIComponent(el.dataset.csver)}`); cs.art[aid] = { open: true, codes: r.codes }; }
     finally { cs.busy = null; const box = document.getElementById("csbox"); if (box) { box.innerHTML = codeSugHtml(); bindCodeSug(); } }
+  });
+  on("#csnext", async () => {
+    if (Object.keys(cs.picked).length) {
+      const codes = Object.values(cs.picked).map((r) => ({ code: r.code, description: r.description, sources: r.sources }));
+      await api(`/policies/services/${S.pol.svcKey}/codes/from-cms`, { method: "POST", body: { codes } });
+      cs.picked = {}; cs.art = {}; await loadPolicies();
+    }
+    S.pol.step = 3; S.pol.msg = null; render(); window.scrollTo(0, 0);
   });
   on("#csadd", async () => {
     const codes = Object.values(cs.picked).map((r) => ({ code: r.code, description: r.description, sources: r.sources }));
@@ -289,8 +307,9 @@ function serviceHtml() {
        ${confirm ? `<div style="margin-top:12px">${confirm}</div>` : ""}`)
       + (act ? sec("Activity", "", `<div class="tbl"><table><tbody>${act}</tbody></table></div>`) : "");
   }
+  const picked = Object.keys(S.pol.cs.picked).length;
   const nav = step < 5 ? `<div class="wizbar"><button class="btn" data-stepto="${step - 1 < 2 ? 0 : step - 1}">${step === 2 ? "Back to services" : "Back"}</button>
-      <div style="display:flex;gap:10px;align-items:center">${why && !locked ? small(esc(why)) : ""}<button class="btn primary" data-stepto="${step + 1}" ${why && !locked ? "disabled" : ""}>Next: ${WIZ[step].toLowerCase()}</button></div></div>`
+      <div style="display:flex;gap:10px;align-items:center"><span id="stepwhy">${step === 2 && picked ? "" : why && !locked ? small(esc(why)) : ""}</span>${step === 2 ? `<button class="btn primary" id="csnext" data-has="${ready.codes ? 1 : 0}" ${!picked && why && !locked ? "disabled" : ""}>${picked ? "Add " + picked + " code" + (picked > 1 ? "s" : "") + " and continue" : "Next: " + WIZ[step].toLowerCase()}</button>` : `<button class="btn primary" data-stepto="${step + 1}" ${why && !locked ? "disabled" : ""}>Next: ${WIZ[step].toLowerCase()}</button>`}</div></div>`
     : `<div class="wizbar"><button class="btn" data-stepto="4">Back</button><button class="btn" data-stepto="0">Done, back to services</button></div>`;
 
   return `<div class="page" style="display:grid;gap:16px;max-width:1080px">
