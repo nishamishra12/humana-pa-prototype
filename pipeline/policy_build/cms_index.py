@@ -5,8 +5,9 @@ A scheduled job (scripts/refresh_cms_index.py) now copies the articles and their
 If the copy has not been made yet, every function here falls back to the live CMS call, so nothing breaks.
 
 Tables (app/db.py): cms_articles (one row per article version) and cms_article_codes (one row per code on an article).
+Also the national (NCD) and local (LCD) coverage policies with their coverage text: table cms_policies (one row per policy).
 """
-import time
+import json, os, re, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 
@@ -148,3 +149,90 @@ def articles_listing(c, codes):
     return [dict(r) for r in c.execute(f"""SELECT a.document_id, a.version, a.display_id, a.title, a.mac, COUNT(DISTINCT k.code) AS n
                                           FROM cms_article_codes k JOIN cms_articles a ON a.document_id=k.document_id AND a.version=k.version
                                           WHERE k.code IN ({q}) GROUP BY a.document_id, a.version ORDER BY n DESC, a.title LIMIT 20""", codes)]
+
+
+# ---------- national and local coverage policies ----------
+ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
+_KIND = {"NCD": "/reports/national-coverage-ncd/", "LCD": "/reports/local-coverage-final-lcds/"}
+_COLS = "kind,id,version,document_id,title,mac,effective,description,indications,summary,url,fetched_at"
+
+
+def import_corpus_json(c, root=ROOT):
+    """One-time start: loads the policies already downloaded to policies/corpus/*.json, with no call to CMS. Returns the number of rows."""
+    n = 0
+    for kind, f in (("NCD", "ncds.json"), ("LCD", "lcds.json")):
+        path = os.path.join(root, "policies", "corpus", f)
+        if not os.path.exists(path):
+            continue
+        for x in json.load(open(path, encoding="utf-8")):
+            if "error" in x:
+                continue
+            m = re.search(r"(?:lcdid|ncdid)=(\d+)", x.get("url") or "")
+            c.execute(f"INSERT OR IGNORE INTO cms_policies({_COLS}) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                      (kind, x["id"], str(x.get("version")), int(m[1]) if m else None, x.get("title"), x.get("mac"), x.get("effective"), x.get("description"), x.get("indications"),
+                       x.get("summary"), x.get("url"), "2026-10-04T00:00:00+00:00"))
+            n += 1
+    c.commit()
+    return n
+
+
+def _fetch_policy(tok, kind, r):
+    for attempt in range(3):
+        try:
+            if kind == "LCD":
+                d = S._cms(f"/data/lcd/?lcdid={r['document_id']}&ver={r['document_version']}", tok)["data"][0]
+                return dict(kind=kind, id=r["document_display_id"], version=str(r["document_version"]), document_id=int(r["document_id"]), title=r["title"], mac=S.clean(r.get("contractor_name_type")),
+                            effective=d.get("rev_eff_date") or r.get("effective_date"), description=None, indications=S.clean(d.get("indication")), summary=S.clean(d.get("cms_cov_policy")),
+                            url=f"https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid={r['document_id']}")
+            d = S._cms(f"/data/ncd/?ncdid={r['document_id']}&ncdver={r['document_version']}", tok)["data"][0]
+            return dict(kind=kind, id=r["document_display_id"], version=str(r["document_version"]), document_id=int(r["document_id"]), title=r["title"], mac=None, effective=d.get("effective_date"),
+                        description=S.clean(d.get("item_service_description")), indications=S.clean(d.get("indications_limitations")), summary=None,
+                        url=f"https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid={r['document_id']}")
+        except Exception:
+            time.sleep(1.5)
+    return None
+
+
+def sync_policies(c, workers=8, limit=None, log=print):
+    """Reads the CMS lists of NCDs and LCDs and fetches only the policies that are new or have a new version. Policies CMS no longer lists are removed."""
+    tok = S._cms_token()
+    fetched = removed = failed = 0
+    for kind, path in _KIND.items():
+        idx = S._cms(path, tok)["data"]
+        have = {r["id"]: r["version"] for r in c.execute("SELECT id, version FROM cms_policies WHERE kind=?", (kind,))}
+        todo = [r for r in idx if have.get(r["document_display_id"]) != str(r["document_version"])]
+        if limit:
+            todo = todo[:limit]
+        log(f"{kind}: CMS lists {len(idx)}, {len(todo)} are new or changed")
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            for row in ex.map(lambda r: _fetch_policy(tok, kind, r), todo):
+                if not row:
+                    failed += 1
+                    continue
+                c.execute(f"INSERT OR REPLACE INTO cms_policies({_COLS}) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                          (row["kind"], row["id"], row["version"], row["document_id"], row["title"], row["mac"], row["effective"], row["description"], row["indications"],
+                           row["summary"], row["url"], _now()))
+                fetched += 1
+        if not limit:
+            live = {r["document_display_id"] for r in idx}
+            gone = [i for i in have if i not in live]
+            for i in gone:
+                c.execute("DELETE FROM cms_policies WHERE kind=? AND id=?", (kind, i))
+            removed += len(gone)
+        c.commit()
+    c.execute("INSERT OR REPLACE INTO cms_meta(key,value) VALUES('policies_synced_at',?)", (_now(),))
+    c.commit()
+    log(f"Policies done. {fetched} fetched, {removed} removed, {failed} failed (tried again next run).")
+    return dict(fetched=fetched, removed=removed, failed=failed)
+
+
+def policy_titles(c, kind):
+    """(rows, as_of) for the policy picker: id, title and effective date of every NCD or LCD. Falls back to the downloaded files when the table is empty."""
+    kind = kind.upper()
+    rows = [dict(id=r["id"], title=r["title"] or "", effective=r["effective"]) for r in c.execute("SELECT id, title, effective FROM cms_policies WHERE kind=?", (kind,))]
+    if rows:
+        r = c.execute("SELECT value FROM cms_meta WHERE key='policies_synced_at'").fetchone() or c.execute("SELECT MAX(fetched_at) FROM cms_policies").fetchone()
+        return rows, (r[0] or "")[:10]
+    path = os.path.join(ROOT, "policies", "corpus", "ncds.json" if kind == "NCD" else "lcds.json")
+    rows = [dict(id=x["id"], title=x.get("title", ""), effective=x.get("effective")) for x in json.load(open(path, encoding="utf-8")) if "error" not in x]
+    return rows, "file"

@@ -25,9 +25,9 @@ Part 1 builds the policy library, once per service, before go-live. Part 2 runs 
 | Owner API | Services, codes, policy suggestions, builds, rule decisions, approve, status changes, revert, audit, check for CMS changes | `app/policy_admin.py` |
 | CMS API client | Gets the token, calls the Coverage API, fetches NCD, LCD and CFR text, hashes the source | `pipeline/policy_build/sources.py` |
 | Stored CMS copy | Billing articles and their codes in the database. The screens read only this | `pipeline/policy_build/cms_index.py`, tables `cms_articles`, `cms_article_codes`, `cms_meta` |
-| Refresh job | Copies the CMS articles and codes into the database. Run on a schedule | `scripts/refresh_cms_index.py` |
+| Refresh job | Copies the CMS articles, their codes and the NCD and LCD policies into the database. Reads only what is new or changed. Run on a schedule | `scripts/refresh_cms_index.py` |
 | Code matching | Matches a service name to articles by word stems, reads an article's codes, ranks by how many articles agree | `pipeline/policy_build/codes.py` |
-| Policy lists | NCD and LCD titles kept for policy suggestions | `policies/corpus/*.json`, built by `scripts/build_corpus.py` |
+| Stored NCD and LCD policies | Every national and local coverage policy with its coverage text. The policy picker and suggestions read this. The refresh job keeps it current | table `cms_policies`, `cms_index.py` (`sync_policies`, `policy_titles`), `scripts/refresh_cms_index.py`. The older JSON files in `policies/corpus/` were the one-time start |
 | Build pipeline | Runs fetch, parse, draft, check, compare for one policy and saves it | `pipeline/policy_build/build.py` |
 | Read the policy | Turns the source into page-cited elements (Unstructured) | `pipeline/policy_build/parse.py` |
 | AI draft | Claude writes rules and key facts through a fixed form, each with its exact quote | `pipeline/policy_build/draft.py` |

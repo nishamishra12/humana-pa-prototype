@@ -70,16 +70,9 @@ def _log(c, u, action, policy_id=None, build_id=None, detail=""):
     c.execute("INSERT INTO policy_audit(at,user_id,action,policy_id,build_id,detail) VALUES(?,?,?,?,?,?)", (db.now(), u["id"], action, policy_id, build_id, (detail or "")[:400]))
 
 
-_corpus_cache = {}
-
-
-def _corpus(kind):
-    """The CMS policies kept by the back end (policies/corpus). The owner picks from this list. A scheduled job refreshes it, the screen does not."""
-    if kind not in _corpus_cache:
-        path = os.path.join(ROOT, "policies", "corpus", "ncds.json" if kind == "ncd" else "lcds.json")
-        rows = [dict(id=x["id"], title=x.get("title", ""), effective=x.get("effective")) for x in json.load(open(path, encoding="utf-8")) if "error" not in x]
-        _corpus_cache[kind] = (rows, datetime.fromtimestamp(os.path.getmtime(path), timezone.utc).strftime("%Y-%m-%d"))
-    return _corpus_cache[kind]
+def _corpus(c, kind):
+    """The NCD or LCD list for the policy picker, from the database (cms_policies). The refresh job keeps it current, the screen does not call CMS."""
+    return cms_index.policy_titles(c, kind)
 
 
 @router.get("/corpus")
@@ -87,7 +80,7 @@ def corpus(kind: str, request: Request, q: str = ""):
     c, u = _owner(request)
     if kind not in ("ncd", "lcd"):
         raise HTTPException(400, "Choose NCD or LCD")
-    rows, as_of = _corpus(kind)
+    rows, as_of = _corpus(c, kind)
     toks = [t for t in re.split(r"\s+", q.lower().strip()) if t]
     hits = [r for r in rows if all(t in (r["id"] + " " + r["title"]).lower() for t in toks)] if toks else sorted(rows, key=lambda r: r["title"])
     lib = {p["id"] for p in procedures.library()["policies"]}
@@ -767,7 +760,7 @@ def suggestions(key: str, request: Request, q: str = ""):
     if ns:
         in_lib = {x["id"] for x in lib["policies"]}
         for kind in ("ncd", "lcd"):
-            rows, as_of = _corpus(kind)
+            rows, as_of = _corpus(c, kind)
             pre = "NCD-" if kind == "ncd" else "LCD-"
             for r2 in rows:
                 if pre + r2["id"] in in_lib:
