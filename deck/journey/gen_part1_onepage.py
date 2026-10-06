@@ -2,7 +2,7 @@
 people and outside systems on the left, dashed regions for each stage, an icon with a label for every component,
 labelled connectors, and the two databases drawn as database icons. No animation and no transition.
 Run from deck/journey with NODE_PATH pointing at a folder that has @resvg/resvg-js:   python gen_part1_onepage.py
-Output: Part1_One_Page.pptx
+Output: Part1_Architecture.pptx
 """
 import json, os, re, sys, zipfile, shutil
 
@@ -99,9 +99,9 @@ seg("c5", X[4] + 0.45, 5.55, 11.78, 5.55, true);         tag("c5t", X[4] + 0.4, 
 NOTES = [open(os.path.join(HERE, "..", "..", "docs", "PART1_ARCHITECTURE_SCRIPT.md"), encoding="utf-8").read().split("## What Part 1 is", 1)[1].split("## Check before you say it")[0].replace("## ", "").strip()]
 
 if __name__ == "__main__":
-    G.build("Part 1 on one slide", "Part1_One_Page", JS, ['{ hold: 0, fx: [] }'], NOTES)
+    G.build("Part 1 on one slide", "Part1_Architecture", JS, ['{ hold: 0, fx: [] }'], NOTES)
     # no animation and no transition: take out the timing the engine writes
-    out = os.path.join(HERE, "Part1_One_Page.pptx")
+    out = os.path.join(HERE, "Part1_Architecture.pptx")
     tmp = out + ".tmp"
     with zipfile.ZipFile(out) as zi, zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as zo:
         for it in zi.infolist():
