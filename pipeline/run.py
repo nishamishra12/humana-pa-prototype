@@ -30,8 +30,8 @@ def extract(elements, local=False, fast=False):
         except Exception as e:
             print(f"[extract] AI reading failed ({type(e).__name__}: {str(e)[:150]})")
             tel.event("extract.failed", error=True, **{"error.type": type(e).__name__})
-    if proc_key in (None, "lumbar_fusion"):
-        return extract_facts_rule_based(elements)
+    if proc_key is None:  # no service owns this billing code: keep what the form says, and the case is marked "no policy"
+        return dict(header, _extractor="none", _procedure_key=None)
     return _unsure_all(proc_key, header, "The AI reader was not available for this packet. Read the packet and enter the facts.")
 
 

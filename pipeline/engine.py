@@ -93,11 +93,12 @@ def analyze(facts: dict) -> dict:
     pkey, proc = procedure_for_cpt(cpt)
     covered = LIBRARY.get("covered_cpt_codes", [])
     if not proc:
-        names = ", ".join(p["short"].lower() for p in LIBRARY["procedures"].values())
+        names = ", ".join(p["short"].lower() for p in LIBRARY["procedures"].values() if p.get("status") != "planned")
+        today = f"Today PA Desk checks {names}. " if names else "No service is switched on yet. "
         return dict(
             checklist=[], gate=dict(complete=False, questions=[]), action="no_policy",
             rationale=(f"We do not have a policy for procedure code {cpt or 'unknown'} ({facts.get('_procedure') or 'procedure not identified'}). "
-                      f"Today PA Desk checks {names}. We will not judge this case against the wrong policy."),
+                      f"{today}We will not judge this case against the wrong policy."),
             policies=[], cannot_deny=True, cpt_covered=False, covered_cpt_codes=covered, procedure=None, fact_schema=[])
     defs = defs_by_key(proc)
     checklist, questions, unsure = [], {}, {}
@@ -125,20 +126,6 @@ def analyze(facts: dict) -> dict:
             if status == "missing" and not soft:
                 q = questions.setdefault(key, dict(fact=key, question=_provider_facing(c["if_missing"]), affects=[], note=(f or {}).get("note")))
                 q["affects"].append(c["id"])
-
-    # lumbar LCD indication 2 (deformity): non-operative treatment for at least 12 months
-    ind, cons = facts.get("indication_evidence", {}), facts.get("conservative_treatment", {})
-    if pkey == "lumbar_fusion" and ind.get("status") == "found" and ind.get("value") == "deformity" and cons.get("status") == "found":
-        months = cons.get("duration_months")
-        if months is not None:
-            ok = months >= 12
-            checklist.append(dict(
-                policy_id="LCD-L37848", layer="LCD", policy_title=POLICIES["LCD-L37848"]["title"], verified=True,
-                cite="LCD L37848, Indication 2b", criterion_id="LCD-DEF-12M",
-                text="For deformity without instability or neural compression: nonresponse to at least 1 year of non-operative treatment.",
-                short="non-operative treatment was under 12 months",
-                status="met" if ok else "not_met", fact_key="conservative_treatment",
-                evidence=dict(page=cons["page"], quote=cons["quote"]), evidence_all=_evidence_list(cons), note=f"{months:g} months documented."))
 
     def label(key):
         return (defs.get(key) or {}).get("phrase") or key

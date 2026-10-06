@@ -147,6 +147,10 @@ def seed(c):
                   (email, handle, name, role, title, salt, hash_pw("demo1234", salt)))
     uid = {h: c.execute("SELECT id FROM users WHERE handle=?", (h,)).fetchone()[0] for h in ("carla", "maria", "james", "patel", "brooks")}
 
+    from pipeline.procedures import library
+    if not library()["procedures"]:  # no services yet: only the staff accounts. The owner adds services, then packets are uploaded.
+        return
+
     plan = [  # file, offset days, priority, status, assignee
         ("p06_deformity_meets.pdf", -5.0, "standard", "approved", "james"),
         ("p03_missing_imaging.pdf", -3.0, "standard", "pended", "maria"),
@@ -198,6 +202,9 @@ def seed_multi(c):
     Safe to run on every start: a case is added only once. Skipped quietly if the fixtures are not built."""
     from pipeline.ingest import Element
     from pipeline.engine import analyze
+    from pipeline.procedures import library
+    if not library()["procedures"]:  # no services yet, so there is nothing to seed
+        return
     fx = os.path.join(ROOT, "packets", "fixtures")
     uid = {r["handle"]: r["id"] for r in c.execute("SELECT id, handle FROM users")}
     if not uid:

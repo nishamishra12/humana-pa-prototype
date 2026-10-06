@@ -343,9 +343,6 @@ def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3, trac
     for d in defs:
         agreed, raw, why = combined[d["key"]]
         facts[d["key"]] = _assemble(d, agreed, raw, why, pages, verdicts)
-    cons = facts.get("conservative_treatment")
-    if cons and cons["status"] == "found" and cons.get("quote"):
-        cons["duration_months"] = _months(cons["quote"])
     stat = [facts[d["key"]]["status"] for d in defs]
     tel.event("extract.summary", procedure=proc_key, facts_total=len(defs), facts_found=stat.count("found"), facts_none=stat.count("none"), facts_missing=stat.count("missing"),
             facts_unsure=stat.count("unsure"), facts_checked=sum(1 for d in defs if facts[d["key"]].get("checked")),

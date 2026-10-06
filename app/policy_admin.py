@@ -31,12 +31,7 @@ def setup(app, me):
     global _me
     _me = me
     app.include_router(router)
-    try:
-        if os.getenv("PA_DATA_DIR") and not os.path.isdir(S.WORK):
-            shutil.copytree(os.path.join(ROOT, "policies", "work"), S.WORK)
-        _seed_builds()
-    except Exception as e:  # never stop the app over the seed
-        print(f"[policy_admin] seed skipped: {type(e).__name__}: {str(e)[:100]}")
+    os.makedirs(S.WORK, exist_ok=True)  # builds are saved here. Nothing is seeded: the owner builds every policy.
 
 
 def _seed_builds():
