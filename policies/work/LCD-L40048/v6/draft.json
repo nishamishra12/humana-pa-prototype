@@ -1,0 +1,322 @@
+{
+ "criteria": [
+  {
+   "id": "DX-COVERED",
+   "text": "The diagnosis being treated must be one of the covered disorders (allergic rhinitis, allergic conjunctivitis, allergic asthma, or atopic dermatitis due to dust mites).",
+   "source_quote": "SCIT using preparations of aeroallergens can be considered reasonable and necessary in the management of the following disorders",
+   "cite": "Covered Indications",
+   "required_fact": "diagnosis",
+   "test": {
+    "type": "in",
+    "value": [
+     "Allergic rhinitis",
+     "Allergic conjunctivitis",
+     "Allergic asthma",
+     "Dust mite atopic dermatitis"
+    ]
+   },
+   "if_missing": "What condition/diagnosis is the immunotherapy being used to treat?",
+   "short": "Diagnosis not a covered indication",
+   "confidence": "high"
+  },
+  {
+   "id": "ROUTE-SCIT",
+   "text": "The route of administration must be subcutaneous (SCIT); sublingual immunotherapy is not covered.",
+   "source_quote": "Sublingual immunotherapy (SLIT)",
+   "cite": "Limitations for Allergen Immunotherapy",
+   "required_fact": "route_of_administration",
+   "test": {
+    "type": "in",
+    "value": [
+     "subcutaneous"
+    ]
+   },
+   "if_missing": "What route of administration is used for the immunotherapy?",
+   "short": "Route is not subcutaneous",
+   "confidence": "high"
+  },
+  {
+   "id": "IGE-RELEVANT",
+   "text": "Clinical relevance must be established by the presence of specific IgE to the allergen along with symptoms that correlate with exposure.",
+   "source_quote": "The presence of specific immunoglobulin E (IgE) to that allergen, demonstrated either through allergen skin testing or serum tests for allergen specific IgE.",
+   "cite": "Covered Indications",
+   "required_fact": "allergen_clinically_relevant",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Does documentation show the identified allergen correlates with the patient's clinical history/exposure and demonstrable IgE?",
+   "short": "Allergen clinical relevance/IgE not established",
+   "confidence": "high"
+  },
+  {
+   "id": "IGE-ABSENT-EXCLUSION",
+   "text": "Absence of clinically relevant IgE makes treatment not reasonable and necessary.",
+   "source_quote": "Absence of clinically relevant IgE",
+   "cite": "Limitations for Allergen Immunotherapy",
+   "required_fact": "allergen_clinically_relevant",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is there documented clinically relevant specific IgE to the allergen?",
+   "short": "No clinically relevant IgE documented",
+   "confidence": "high"
+  },
+  {
+   "id": "FIRST-LINE-EXCLUSION",
+   "text": "AIT is not reasonable and necessary as first-line treatment for allergic rhinitis/conjunctivitis without prior medical treatment and/or environmental avoidance.",
+   "source_quote": "First-line treatment for allergic rhinitis and allergic conjunctivitis in the absence of previous medical treatment and/or environmental avoidance",
+   "cite": "Limitations for Allergen Immunotherapy",
+   "required_fact": "avoidance_failed_or_unavoidable_exposure",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "applies_if": {
+    "fact": "diagnosis",
+    "equals": "Allergic rhinitis"
+   },
+   "if_missing": "Has the patient had prior medical treatment and/or attempted environmental avoidance before starting AIT?",
+   "short": "No prior medical treatment or avoidance attempted (first-line use)",
+   "confidence": "medium"
+  },
+  {
+   "id": "POOR-RESPONSE-OR-ALT",
+   "text": "For allergic rhinitis/conjunctivitis/asthma patients, at least one of several listed clinical justifications (e.g., poor response to pharmacotherapy/avoidance for 28+ days, unacceptable medication side effects, avoidance of long-term pharmacotherapy, possible asthma prevention) must be present.",
+   "source_quote": "At least 1 of the following: Poor response to pharmacotherapy, allergen avoidance, or both for a minimum of 28 consecutive days",
+   "cite": "Clinical Indications for Allergen Immunotherapy",
+   "required_fact": "avoidance_failed_or_unavoidable_exposure",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "applies_if": {
+    "fact": "diagnosis",
+    "equals": "Allergic rhinitis"
+   },
+   "if_missing": "Is there documentation of poor response to pharmacotherapy/avoidance for at least 28 days, unacceptable medication side effects, desire to avoid long-term pharmacotherapy, or possible asthma prevention?",
+   "short": "No qualifying clinical justification documented",
+   "confidence": "low"
+  },
+  {
+   "id": "AD-DUSTMITE-FAILED-MGMT",
+   "text": "For moderate to severe atopic dermatitis due to dust mites, the patient must have failed medical management for a minimum of 90 days.",
+   "source_quote": "For patients with moderate to severe AD due to dust mites who have failed medical management for a minimum of 90 days.",
+   "cite": "Clinical Indications for Allergen Immunotherapy",
+   "required_fact": "avoidance_failed_or_unavoidable_exposure",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "applies_if": {
+    "fact": "diagnosis",
+    "equals": "Dust mite atopic dermatitis"
+   },
+   "if_missing": "Has the patient failed medical management for atopic dermatitis due to dust mites for at least 90 days?",
+   "short": "No 90-day failed medical management documented for AD due to dust mites",
+   "confidence": "high"
+  },
+  {
+   "id": "AD-NOT-DUSTMITE-EXCLUSION",
+   "text": "Atopic dermatitis not due to dust mites is not reasonable and necessary for AIT.",
+   "source_quote": "AD not due to dust mites",
+   "cite": "Limitations for Allergen Immunotherapy",
+   "required_fact": "diagnosis",
+   "test": {
+    "type": "in",
+    "value": [
+     "Dust mite atopic dermatitis"
+    ]
+   },
+   "applies_if": {
+    "fact": "diagnosis",
+    "equals": "Dust mite atopic dermatitis"
+   },
+   "if_missing": "Is the atopic dermatitis specifically due to dust mite sensitivity?",
+   "short": "Atopic dermatitis not due to dust mites",
+   "confidence": "medium"
+  },
+  {
+   "id": "PREGNANCY-EXCLUSION",
+   "text": "SCIT during pregnancy is not reasonable and necessary.",
+   "source_quote": "SCIT during pregnancy",
+   "cite": "Limitations for Allergen Immunotherapy",
+   "required_fact": "pregnancy_status",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Is the patient currently pregnant?",
+   "short": "Patient is pregnant",
+   "confidence": "high"
+  },
+  {
+   "id": "FOOD-EXCLUSION",
+   "text": "Treatment for food sensitivities is not reasonable and necessary.",
+   "source_quote": "Treatment for food sensitivities",
+   "cite": "Limitations for Allergen Immunotherapy",
+   "required_fact": "diagnosis",
+   "test": {
+    "type": "in",
+    "value": [
+     "Allergic rhinitis",
+     "Allergic conjunctivitis",
+     "Allergic asthma",
+     "Dust mite atopic dermatitis"
+    ]
+   },
+   "if_missing": "Is the treatment intended for a food hypersensitivity/allergy?",
+   "short": "Treatment is for food sensitivity (excluded)",
+   "confidence": "medium"
+  },
+  {
+   "id": "PROVIDER-MD-DO",
+   "text": "Antigens must be prepared by a physician who is a Doctor of Medicine or Osteopathy.",
+   "source_quote": "The antigens are prepared by a physician who is a Doctor of Medicine or Osteopathy",
+   "cite": "Provider Requirements",
+   "required_fact": "provider_within_scope_and_trained",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is the provider preparing the antigens a licensed MD or DO?",
+   "short": "Antigens not prepared by MD/DO",
+   "confidence": "medium"
+  },
+  {
+   "id": "PHYSICIAN-EXAM-PLAN",
+   "text": "The physician who prepared the antigens must have examined the patient and determined a plan of treatment and dosage regimen.",
+   "source_quote": "The physician who prepared the antigens has examined the patient and has determined a plan of treatment and a dosage regimen",
+   "cite": "Provider Requirements",
+   "required_fact": "provider_within_scope_and_trained",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Did the physician who prepared the antigens examine the patient and establish a treatment plan and dosage regimen?",
+   "short": "No documented physician exam and treatment plan",
+   "confidence": "medium"
+  },
+  {
+   "id": "SUPERVISION-TRAINED",
+   "text": "SCIT must be administered under the supervision of an appropriately trained physician who can recognize and treat anaphylaxis.",
+   "source_quote": "SCIT should, therefore, be administered under the supervision of an appropriately trained physician who can recognize early symptoms and signs of anaphylaxis and administer emergency medications where necessary",
+   "cite": "Provider Requirements",
+   "required_fact": "provider_within_scope_and_trained",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is SCIT administered under supervision of a physician trained to recognize and treat anaphylaxis?",
+   "short": "No appropriately trained supervising physician documented",
+   "confidence": "high"
+  },
+  {
+   "id": "FACILITY-EQUIPPED",
+   "text": "SCIT must be administered only in facilities equipped to treat anaphylaxis.",
+   "source_quote": "SCIT should be administered only in facilities equipped to treat anaphylaxis.",
+   "cite": "Provider Requirements",
+   "required_fact": "facility_equipped_for_anaphylaxis",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is the administering facility equipped to treat anaphylaxis?",
+   "short": "Facility not equipped to treat anaphylaxis",
+   "confidence": "high"
+  },
+  {
+   "id": "CLINICAL-BENEFIT-2YR",
+   "text": "Treatment will not be reimbursed after 2 years when there is no apparent clinical benefit.",
+   "source_quote": "Treatment will not be reimbursed after a 2-year period when there is no apparent clinical benefit.",
+   "cite": "Limitations for Allergen Immunotherapy",
+   "required_fact": "clinical_benefit_observed",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Has the patient shown apparent clinical benefit (decreased symptoms, increased tolerance, reduced medication use) from immunotherapy?",
+   "short": "No apparent clinical benefit after 2 years",
+   "confidence": "medium"
+  }
+ ],
+ "new_facts": [
+  {
+   "key": "pregnancy_status",
+   "label": "Is the patient currently pregnant?",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the packet indicate the patient is currently pregnant?"
+  },
+  {
+   "key": "facility_equipped_for_anaphylaxis",
+   "label": "Is the administering facility equipped to treat anaphylaxis?",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the packet confirm the facility administering SCIT has equipment/medications to treat anaphylaxis?"
+  },
+  {
+   "key": "clinical_benefit_observed",
+   "label": "Has the patient shown apparent clinical benefit from immunotherapy after 12-24 months?",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is there documentation of decreased symptoms, increased allergen tolerance, or reduced medication usage after 12-24 months of therapy?"
+  }
+ ],
+ "not_modeled": [
+  {
+   "quote": "Some patients may not tolerate this dose due to repeated large local or systemic reactions. In this situation, the patient's highest tolerated dose becomes their maintenance dose.",
+   "why": "Describes dose adjustment logic, not a coverage criterion to test against a single fact."
+  },
+  {
+   "quote": "It may be appropriate to permit patient self-administration at home for the patient with a history of life-threatening anaphylaxis who cannot receive immunotherapy in a health care facility.",
+   "why": "Describes a case-by-case exception pathway requiring individualized clinical judgment and informed consent, not a simple testable fact."
+  },
+  {
+   "quote": "For those patients who have equivocal testing on IgE specific antibodies but have a strong clinical suspicion of allergic rhinitis and have a positive reaction to nasal allergen challenge, SCIT may be considered on a case-by-case basis as reasonable and necessary.",
+   "why": "This is a discretionary case-by-case exception requiring multiple nuanced facts (equivocal IgE, strong clinical suspicion, positive nasal challenge) best left to human review rather than a strict pass/fail rule."
+  },
+  {
+   "quote": "Patients should be evaluated at least every 6 to 12 months while receiving immunotherapy to assess efficacy",
+   "why": "This describes an ongoing monitoring/follow-up requirement during treatment, not a single prior-authorization gating criterion."
+  },
+  {
+   "quote": "There is consensus that an initial course of immunotherapy should consist of 3 to 5 years of maintenance treatment.",
+   "why": "This is general guidance on treatment duration/consensus, not a strict coverage requirement with a clear pass/fail test."
+  }
+ ],
+ "_usage": {
+  "input_tokens": 7352,
+  "output_tokens": 4835
+ },
+ "_model": "claude-sonnet-5"
+}

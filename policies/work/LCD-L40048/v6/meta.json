@@ -1,0 +1,12 @@
+{
+ "policy_id": "LCD-L40048",
+ "level": "LCD",
+ "title": "Allergen Immunotherapy (AIT) with Subcutaneous Immunotherapy (SCIT)",
+ "version": "v6",
+ "effective": "04/01/2026",
+ "url": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=40048",
+ "source": "CMS Coverage API",
+ "sha256": "710fcdfc4d1ff6f5196d2fa2d47b66cb3597b8bb6617fd5f65ac9290d2ebb6f2",
+ "chars": 12189,
+ "retrieved_at": "2026-10-06T01:28:02+00:00"
+}

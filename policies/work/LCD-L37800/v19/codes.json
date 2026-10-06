@@ -1,6 +1,6 @@
 {
  "method": "lcd_related_articles",
- "retrieved_at": "2026-10-05T22:48:10+00:00",
+ "retrieved_at": "2026-10-06T01:16:53+00:00",
  "articles": [
   {
    "id": "A57678",
@@ -27,6 +27,8 @@
   {
    "code": "95115",
    "description": "PROFESSIONAL SERVICES FOR ALLERGEN IMMUNOTHERAPY NOT INCLUDING PROVISION OF ALLERGENIC EXTRACTS; SINGLE INJECTION",
+   "short": "Immunotherapy one injection",
+   "group": 1,
    "listed_by": [
     "A57678"
    ],
@@ -35,6 +37,8 @@
   {
    "code": "95117",
    "description": "PROFESSIONAL SERVICES FOR ALLERGEN IMMUNOTHERAPY NOT INCLUDING PROVISION OF ALLERGENIC EXTRACTS; 2 OR MORE INJECTIONS",
+   "short": "Immunotherapy injections",
+   "group": 1,
    "listed_by": [
     "A57678"
    ],
@@ -43,6 +47,8 @@
   {
    "code": "95144",
    "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY, SINGLE DOSE VIAL(S) (SPECIFY NUMBER OF VIALS)",
+   "short": "Antigen therapy services",
+   "group": 1,
    "listed_by": [
     "A57678"
    ],
@@ -51,6 +57,8 @@
   {
    "code": "95145",
    "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY (SPECIFY NUMBER OF DOSES); SINGLE STINGING INSECT VENOM",
+   "short": "Antigen therapy services",
+   "group": 1,
    "listed_by": [
     "A57678"
    ],
@@ -59,6 +67,8 @@
   {
    "code": "95146",
    "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY (SPECIFY NUMBER OF DOSES); 2 SINGLE STINGING INSECT VENOMS",
+   "short": "Antigen therapy services",
+   "group": 1,
    "listed_by": [
     "A57678"
    ],
@@ -67,6 +77,8 @@
   {
    "code": "95147",
    "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY (SPECIFY NUMBER OF DOSES); 3 SINGLE STINGING INSECT VENOMS",
+   "short": "Antigen therapy services",
+   "group": 1,
    "listed_by": [
     "A57678"
    ],
@@ -75,6 +87,8 @@
   {
    "code": "95148",
    "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY (SPECIFY NUMBER OF DOSES); 4 SINGLE STINGING INSECT VENOMS",
+   "short": "Antigen therapy services",
+   "group": 1,
    "listed_by": [
     "A57678"
    ],
@@ -83,6 +97,8 @@
   {
    "code": "95149",
    "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY (SPECIFY NUMBER OF DOSES); 5 SINGLE STINGING INSECT VENOMS",
+   "short": "Antigen therapy services",
+   "group": 1,
    "listed_by": [
     "A57678"
    ],
@@ -91,6 +107,8 @@
   {
    "code": "95165",
    "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY; SINGLE OR MULTIPLE ANTIGENS (SPECIFY NUMBER OF DOSES)",
+   "short": "Antigen therapy services",
+   "group": 1,
    "listed_by": [
     "A57678"
    ],
@@ -99,6 +117,8 @@
   {
    "code": "95170",
    "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY; WHOLE BODY EXTRACT OF BITING INSECT OR OTHER ARTHROPOD (SPECIFY NUMBER OF DOSES)",
+   "short": "Antigen therapy services",
+   "group": 2,
    "listed_by": [
     "A57678"
    ],
@@ -107,6 +127,8 @@
   {
    "code": "95180",
    "description": "RAPID DESENSITIZATION PROCEDURE, EACH HOUR (EG, INSULIN, PENICILLIN, EQUINE SERUM)",
+   "short": "Rapid desensitization",
+   "group": 3,
    "listed_by": [
     "A57678"
    ],
@@ -115,6 +137,8 @@
   {
    "code": "J7999",
    "description": "Only mentioned in the article text: ance: Compounded drugs should be reported with HCPCS code J7999 on a single claim line. Place quantity = ‘1’ on the line billed...",
+   "short": "",
+   "group": null,
    "listed_by": [
     "A59576"
    ],

@@ -1,0 +1,69 @@
+{
+ "method": "lcd_related_articles",
+ "retrieved_at": "2026-10-06T01:28:02+00:00",
+ "articles": [
+  {
+   "id": "A59973",
+   "version": 7,
+   "title": "Allergen Immunotherapy (AIT) with Subcutaneous Immunotherapy (SCIT)",
+   "mac": "Wellpoint Federal (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=59973&ver=7",
+   "match_score": null,
+   "cites_ncd": null,
+   "n_codes": 5
+  }
+ ],
+ "codes": [
+  {
+   "code": "95115",
+   "description": "PROFESSIONAL SERVICES FOR ALLERGEN IMMUNOTHERAPY NOT INCLUDING PROVISION OF ALLERGENIC EXTRACTS; SINGLE INJECTION",
+   "short": "Immunotherapy one injection",
+   "group": 1,
+   "listed_by": [
+    "A59973"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95117",
+   "description": "PROFESSIONAL SERVICES FOR ALLERGEN IMMUNOTHERAPY NOT INCLUDING PROVISION OF ALLERGENIC EXTRACTS; 2 OR MORE INJECTIONS",
+   "short": "Immunotherapy injections",
+   "group": 1,
+   "listed_by": [
+    "A59973"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95144",
+   "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY, SINGLE DOSE VIAL(S) (SPECIFY NUMBER OF VIALS)",
+   "short": "Antigen therapy services",
+   "group": 1,
+   "listed_by": [
+    "A59973"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95165",
+   "description": "PROFESSIONAL SERVICES FOR THE SUPERVISION OF PREPARATION AND PROVISION OF ANTIGENS FOR ALLERGEN IMMUNOTHERAPY; SINGLE OR MULTIPLE ANTIGENS (SPECIFY NUMBER OF DOSES)",
+   "short": "Antigen therapy services",
+   "group": 1,
+   "listed_by": [
+    "A59973"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "95180",
+   "description": "RAPID DESENSITIZATION PROCEDURE, EACH HOUR (EG, INSULIN, PENICILLIN, EQUINE SERUM)",
+   "short": "Rapid desensitization",
+   "group": 1,
+   "listed_by": [
+    "A59973"
+   ],
+   "n_articles": 1
+  }
+ ],
+ "note": "CMS links these articles to the LCD. The codes are the ones each article lists."
+}

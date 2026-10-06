@@ -1,0 +1,143 @@
+{
+ "criteria": [
+  {
+   "id": "DX-COVERED",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "ROUTE-SCIT",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "IGE-RELEVANT",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "IGE-ABSENT-EXCLUSION",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "FIRST-LINE-EXCLUSION",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "POOR-RESPONSE-OR-ALT",
+   "level": "review",
+   "issues": [
+    "the AI marked its own confidence low"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AD-DUSTMITE-FAILED-MGMT",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "AD-NOT-DUSTMITE-EXCLUSION",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PREGNANCY-EXCLUSION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (pregnancy_status): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "FOOD-EXCLUSION",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PROVIDER-MD-DO",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PHYSICIAN-EXAM-PLAN",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SUPERVISION-TRAINED",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "FACILITY-EQUIPPED",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (facility_equipped_for_anaphylaxis): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "CLINICAL-BENEFIT-2YR",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (clinical_benefit_observed): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 11,
+  "review": 4,
+  "fail": 0
+ },
+ "total": 15,
+ "uncovered": [
+  "There are several important considerations that should be addressed to determine if aeroallergen SCIT is appropriate",
+  "patients to use, and when effective, they provide relief more rapidly than immunotherapy.",
+  "If current management is suboptimal, it is reasonable to consider a trial of AIT in",
+  "Symptoms upon natural exposure to the allergen OR inferred when the patient has known exposure to an allergen and a temporal pattern of symptoms that is consistent with occurrence of that allergen, such as rhinitis and conjunctivitis during tree pollen season;",
+  "Most patients placed on immunotherapy are sensitized to multiple allergens when dosed from a mixture of allergens;",
+  "After this, the clinician and patient should meet to review overall impact on quality of life and based upon these factors, decide if treatment will be continued.",
+  "A presumption of failure can be made when, after 12-24 months of therapy, a person does not experience a noticeable decrease of symptoms, an increase in tolerance to the offending allergen and a reduction in medication usage.",
+  "This requires very careful consideration of potential benefits and risks and should be made on an individual patient basis with appropriate informed consent.",
+  "Title XVIII of the Social Security Act, Sec.1862 (a)(1)(A) allows coverage and payment for only those items or services that are considered to be medically reasonable and necessary for the diagnosis or treatment of illness or injury or to improve the functioning of a malformed body member.",
+  "CMS Internet-Only Manual, Pub.",
+  "CMS Internet-Only Manual, Pub.",
+  "CMS Internet-Only Manual, Pub."
+ ],
+ "new_facts": [
+  "pregnancy_status",
+  "facility_equipped_for_anaphylaxis",
+  "clinical_benefit_observed"
+ ],
+ "not_modeled": 5
+}
