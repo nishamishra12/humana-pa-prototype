@@ -134,19 +134,19 @@ src = src[:i] + SLOTS + src[j:]
 
 # --- speaker notes, one per click
 NOTES_JS = r'''const STEP_NOTES = [
-  "Let me walk you through what Phase 1 looks like. It is the same case you saw earlier, so you can compare. And nothing changes at the start. A surgeon decides the patient needs a lumbar fusion. The office assembles the packet. Meet John Doe, 71.",
-  "They still fax it to the plan. Fourteen pages. I did not try to change how providers send things. That is a big change I don't need to make to get the benefit.",
-  "Intake checks the member, the form and the codes, same as today. And they upload the packet to our system. That upload is the moment everything changes.",
-  "This is where the AI comes in. During intake, it reads all fourteen pages. It finds the billing code, which tells it which service this is, and it looks for the key facts that service requires. The AI does this work before a nurse touches the case.",
-  "Intake assigns it to a UM nurse, same as today. The difference is what she opens. She is not hunting through fourteen pages.",
-  "She sees four facts: the expected stay, the risk factors, the imaging, and the conservative treatment. Each one comes with its page and the exact words from the packet. She can check any of them in one click.",
-  "The AI recommends one of three ways out: approve, pend, or escalate. The nurse confirms. The decision is still hers.",
-  "Path one. Every fact is there and every rule is met. The AI recommends approve, and the nurse confirms. This is the good case, and it is faster because she is reviewing, not reading.",
-  "Path two. A fact is missing. Today the nurse pends it and the provider has to work out what is missing. Here, the system tells her exactly what to ask. The provider gets one precise question, not a vague pend.",
-  "They send only that. It goes back to the same nurse. There is no fax loop, no resending fourteen pages, and no starting from zero. This is where the right-first-time rate moves.",
-  "Path three. The facts are there, but the case is borderline. The AI escalates it. It never makes that call.",
-  "The medical director gets the case with the evidence and the nurse's note already attached. Only the director can deny, and they write the reason.",
-  "Close on this. Same people. Same decisions. A person decides every case. What changes is the hunt and the loop. The AI finds the evidence, so the nurse reviews and the provider gets one question.",
+  "Same case as before, so you can compare. Nothing changes at the start. A surgeon's office assembles the packet for John Doe, 71.",
+  "They still fax it. Fourteen pages. I am not changing how providers send things.",
+  "Intake checks the member, the form and the codes, same as today. Then they upload it to our system. That is where everything changes.",
+  "The AI comes in here. During intake, it reads all fourteen pages and finds the facts this service needs, before a nurse touches the case.",
+  "The nurse picks it up, same as today. But she is not hunting through fourteen pages.",
+  "She sees four facts, each with its page and the exact words.",
+  "The AI recommends one of three ways out. The nurse confirms. The decision is still hers.",
+  "Path one. Everything is there. She confirms the approval. It is faster because she reviews instead of reads.",
+  "Path two. A fact is missing. The system tells her exactly what to ask. The provider gets one precise question, not a vague pend.",
+  "They send only that. It goes back to the same nurse. No fax loop. No starting from zero. This is where right-first-time moves.",
+  "Path three. A borderline case. The AI escalates it. It never makes that call.",
+  "The director gets the evidence and the nurse's note. Only they can deny.",
+  "Same people. Same decisions. What changes is the hunt and the loop.",
 ];
 
 const NOTES = `Same case as the current state, with the AI added where it is. Purple is what changes.`;
