@@ -141,12 +141,10 @@ def compute(c):
                 edited += 1 if r["edited"] else 0
             elif r["decision"] == "rejected":
                 rejected += 1
-        missed = c.execute("SELECT COUNT(*) FROM policy_misses m JOIN policy_builds b ON b.id=m.build_id WHERE b.status='published' AND m.verdict='requirement'").fetchone()[0]
-        not_req = c.execute("SELECT COUNT(*) FROM policy_misses m JOIN policy_builds b ON b.id=m.build_id WHERE b.status='published' AND m.verdict='not'").fetchone()[0]
         policies = c.execute("SELECT COUNT(*) FROM policy_builds WHERE status='published'").fetchone()[0]
     except Exception:
-        approved = rejected = edited = missed = not_req = policies = 0
-    owner_eff = dict(policies=policies, drafted=approved + rejected, approved=approved, rejected=rejected, edited=edited, missed=missed, dismissed=not_req,
-                     precision=p1(approved, approved + rejected), recall=p1(approved, approved + missed))
+        approved = rejected = edited = policies = 0
+    owner_eff = dict(policies=policies, drafted=approved + rejected, approved=approved, rejected=rejected, edited=edited,
+                     precision=p1(approved, approved + rejected), edit_rate=p1(edited, approved))
     return dict(generated=now.strftime("%Y-%m-%d %H:%M UTC"), n=n, exec=exec_, um=um, eff=dict(owner=owner_eff, nurse=nurse_eff))
 

@@ -120,14 +120,14 @@ $("#p-um").innerHTML = `
 <h3 style="margin:0 0 6px">Key facts: the AI against the policy owner</h3>
 <div class="kpis">
  ${kpi(dash(EO.precision, "%"), `Precision. Of the ${EO.drafted} key fact(s) the AI drafted, the owner approved ${EO.approved} and rejected ${EO.rejected}. A rejected one was a wrong guess. ${EO.edited} needed an edit first.`)}
- ${kpi(dash(EO.recall, "%"), `Recall. Of the real requirements, the share the AI found. The owner marked ${EO.missed} sentence(s) as a requirement the AI missed, across ${EO.policies} approved policy build(s).`, EO.missed ? "amber" : "")}
+ ${kpi(dash(EO.edit_rate, "%"), `Edited first. Of the ${EO.approved} key fact(s) the owner approved, the share that needed a change before approval, across ${EO.policies} approved policy build(s).`)}
 </div>
 <h3 style="margin:14px 0 6px">Packets: the AI against the UM nurse</h3>
 <div class="kpis">
  ${kpi(dash(EN.wrong_approvals_pct, "%"), `Wrong approvals. Of the ${EN.ai_approved} case(s) the AI said approve, the nurse sent on ${EN.wrong_approvals}. Goal 0. This is the dangerous miss, so recall.`, EN.wrong_approvals ? "risk" : "")}
  ${kpi(dash(EN.false_alarms_pct, "%"), `False alarms. Of the ${EN.ai_flagged} case(s) the AI flagged, the nurse approved ${EN.false_alarms} anyway. A high number means the AI flags too much, so precision.`, EN.false_alarms ? "amber" : "")}
 </div>
-<p class="note" style="margin:8px 0 0">One result per case: the nurse's first action against the AI's recommendation. Nurse recall: ${dash(EN.recall, "%")}. Nurse precision: ${dash(EN.precision, "%")}. Key fact numbers come from the policy owner's review of each policy before it is approved.</p>
+<p class="note" style="margin:8px 0 0">One result per case: the nurse's first action against the AI's recommendation. Nurse recall: ${dash(EN.recall, "%")}. Nurse precision: ${dash(EN.precision, "%")}. The key fact numbers come from the policy owner's approve and reject choices on each policy.</p>
 <h2>Right now</h2>
 <div class="kpis">
  ${kpi(U.unassigned, "Waiting at intake, not assigned" + (U.unassigned ? ` (oldest ${U.oldest_unassigned_days} days)` : ""), U.unassigned ? "amber" : "")}

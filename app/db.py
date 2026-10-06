@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS cms_article_codes(document_id INTEGER, version INTEGE
 CREATE INDEX IF NOT EXISTS cms_article_codes_code ON cms_article_codes(code);
 CREATE TABLE IF NOT EXISTS cms_policies(kind TEXT, id TEXT, version TEXT, document_id INTEGER, title TEXT, mac TEXT, effective TEXT, description TEXT, indications TEXT, summary TEXT, url TEXT, fetched_at TEXT, PRIMARY KEY(kind, id));
 CREATE TABLE IF NOT EXISTS cms_meta(key TEXT PRIMARY KEY, value TEXT);
-CREATE TABLE IF NOT EXISTS policy_misses(build_id TEXT, idx INTEGER, sentence TEXT, verdict TEXT, decided_by INTEGER, decided_at TEXT, PRIMARY KEY(build_id, idx));
 CREATE TABLE IF NOT EXISTS policy_audit(id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT, user_id INTEGER, action TEXT, policy_id TEXT, build_id TEXT, detail TEXT);
 """
 

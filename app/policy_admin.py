@@ -317,8 +317,6 @@ def get_build(bid: str, request: Request):
                change_report=compare_live(draft, meta["policy_id"]) if live else None, in_library=bool(live), live_criteria=len(live["criteria"]) if live else 0,
                tally={k: sum(1 for x in crits if x["decision"] == k) for k in ("approved", "rejected", "pending")}, library_version=lib.get("version"),
                waiting_approved=sum(1 for x in crits if x["decision"] == "approved" and x["waiting"]))
-    mis = {r["idx"]: r["verdict"] for r in c.execute("SELECT idx, verdict FROM policy_misses WHERE build_id=?", (bid,))}
-    out["uncovered_items"] = [dict(idx=i, text=t, verdict=mis.get(i, "open")) for i, t in enumerate(rep["uncovered"])]
     return out
 
 
@@ -360,31 +358,6 @@ def decide(bid: str, cid: str, body: DecisionReq, request: Request):
               (bid, cid, body.decision, json.dumps(edited) if edited else (json.dumps(prev["edited"]) if prev.get("edited") and not edited else None), u["id"], db.now()))
     label = {"approved": "approved", "rejected": "rejected", "pending": "undid the decision on"}[body.decision]
     _log(c, u, "rule_" + body.decision, b["policy_id"], bid, f"{label} {cid}" + (" (edited)" if edited else ""))
-    c.commit()
-    return dict(ok=True)
-
-
-class MissReq(BaseModel):
-    verdict: str  # requirement: a real requirement the AI missed. not: not a requirement. open: undo.
-
-
-@router.post("/builds/{bid}/misses/{idx}")
-def review_miss(bid: str, idx: int, body: MissReq, request: Request):
-    """The checker lists sentences that sound like a requirement but have no rule. The owner says which ones are real. That is how we count what the AI missed."""
-    c, u = _owner(request)
-    b = c.execute("SELECT * FROM policy_builds WHERE id=?", (bid,)).fetchone()
-    if not b or b["status"] != "draft":
-        raise HTTPException(400, "This draft is not open for review")
-    if body.verdict not in ("requirement", "not", "open"):
-        raise HTTPException(400, "Choose requirement, not, or open")
-    rep = json.load(open(os.path.join(b["folder"], "report.json"), encoding="utf-8"))
-    if not 0 <= idx < len(rep["uncovered"]):
-        raise HTTPException(404, "Sentence not found")
-    if body.verdict == "open":
-        c.execute("DELETE FROM policy_misses WHERE build_id=? AND idx=?", (bid, idx))
-    else:
-        c.execute("INSERT OR REPLACE INTO policy_misses(build_id,idx,sentence,verdict,decided_by,decided_at) VALUES(?,?,?,?,?,?)", (bid, idx, rep["uncovered"][idx][:400], body.verdict, u["id"], db.now()))
-    _log(c, u, "miss_" + body.verdict, b["policy_id"], bid, f"sentence {idx + 1}: " + ("a requirement the AI missed" if body.verdict == "requirement" else "not a requirement" if body.verdict == "not" else "undone"))
     c.commit()
     return dict(ok=True)
 
@@ -650,12 +623,10 @@ def publish(bid: str, body: PublishReq, request: Request):
               (lib["version"], "publish", meta["policy_id"], bid, u["id"], db.now(), json.dumps(dict(change, approved=len(approved), rejected=len(draft["criteria"]) - len(approved), waiting=len(held), codes=attached_codes, service=att["service"] if att else None)), body.note.strip()[:300]))
     _log(c, u, "published", meta["policy_id"], bid, f"Library {lib['version']}: {len(active)} rules live, {len(held)} waiting, {len(draft['criteria']) - len(approved)} rejected" + (f"; attached to {att['service']} with codes {', '.join(attached_codes)}" if att and attached_codes else "") + (f". Note: {body.note.strip()}" if body.note.strip() else ""))
     c.commit()
-    mis = [r["verdict"] for r in c.execute("SELECT verdict FROM policy_misses WHERE build_id=?", (bid,))]
     edited = sum(1 for x in draft["criteria"] if dec[x["id"]]["decision"] == "approved" and dec[x["id"]].get("edited"))
     tel.event("policy.publish", **{"policy.id": meta["policy_id"], "policy.library_version": lib["version"], "policy.rules_approved": len(approved),
                                    "review.rules_drafted": len(draft["criteria"]), "review.rules_approved": len(approved), "review.rules_rejected": len(draft["criteria"]) - len(approved),
-                                   "review.rules_edited": edited, "review.missed_confirmed": mis.count("requirement"), "review.missed_dismissed": mis.count("not"),
-                                   "review.missed_open": max(0, len(json.load(open(os.path.join(b["folder"], "report.json"), encoding="utf-8"))["uncovered"]) - len(mis))})
+                                   "review.rules_edited": edited})
     return dict(ok=True, version=lib["version"], change=change, waiting=len(held), codes=attached_codes, attached=bool(pol and _services(lib, pol["id"])) or bool(att))
 
 
