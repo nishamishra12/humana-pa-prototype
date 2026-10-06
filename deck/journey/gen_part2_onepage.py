@@ -25,7 +25,7 @@ BODY = r'''
 frame("PART 2  ·  ARCHITECTURE", "Part 2 decides every packet.", "Every request. The AI helps. A person decides.",
   "All patient data is made up. The AI reads, finds the evidence and recommends. A person decides. The system never denies on its own.");
 
-ring("R1", 1.9, 1.4, 11.0, 1.7, C.green);   rl("R1L", 12.8, "1   INTAKE AND READ", 1.44);
+ring("R1", 1.9, 1.4, 11.0, 1.7, C.green);   rl("R1L", 12.8, "1   THE PACKET COMES IN. SAME ETL AS PART 1.", 1.44);
 ring("R2", 1.9, 3.2, 11.0, 1.75, C.purple);  rl("R2L", 12.8, "2   THE AI READS, THEN CHECKS ITS OWN WORK", 3.24);
 ring("R3", 1.9, 5.05, 11.0, 1.95, C.amber);  rl("R3L", 12.8, "3   DECIDE", 5.09);
 
@@ -37,7 +37,7 @@ cap("cPrv", 1.05, 2.45, "Provider", ["fax or portal"], 1.4);
 wp("iInt", "intake", 2.95, 2.0);
 cap("cInt", 2.95, 2.45, "Intake coordinator", ["uploads, assigns a nurse"], 1.6);
 icon("iApp", 4.8, 2.0, "server", "code");
-cap("cApp", 4.8, 2.45, "App server", ["upload, assign, progress"], 1.6);
+cap("cApp", 4.8, 2.45, "App server", ["new packet API call"], 1.6);
 icon("iUns", 6.65, 2.0, "parts", "etl");
 cap("cUns", 6.65, 2.45, "Unstructured API", ["pages to elements, with page numbers"], 1.6);
 icon("iKey", 8.5, 2.0, "key", "code");
@@ -45,7 +45,7 @@ cap("cKey", 8.15, 2.45, "Billing code to service", ["pattern match, then library
 db("iLib", 11.5, 1.95);
 cap("cLib", 11.5, 2.4, "Policy library", ["from Part 1"], 1.7);
 seg("a1", 1.5, 2.0, 2.5, 2.0, true);    tag("a1t", 1.45, 1.74, 1.1, "packet PDF");
-seg("a2", 3.4, 2.0, 4.35, 2.0, true);   tag("a2t", 3.35, 1.74, 1.05, "upload");
+seg("a2", 3.4, 2.0, 4.35, 2.0, true);   tag("a2t", 3.3, 1.74, 1.15, "API call");
 seg("a3", 5.25, 2.0, 6.2, 2.0, true);   tag("a3t", 5.2, 1.74, 1.05, "pages");
 seg("a4", 7.1, 2.0, 8.05, 2.0, true);   tag("a4t", 7.05, 1.74, 1.05, "elements, JSON");
 seg("a5", 11.0, 1.95, 8.95, 1.95, true); tag("a5t", 9.0, 1.69, 2.0, "service, key facts, rules");
@@ -85,7 +85,7 @@ seg("d4", 10.1, 5.85, 11.35, 5.85, true);  tag("d4t", 10.1, 5.58, 1.25, "live nu
 txt("n3", 2.75, 5.1, 6.0, 0.4, ["Pend sends the provider one precise question. The reply is read again and comes back to the nurse."], { size: 9, italic: true });
 '''
 
-NOTES = [open(os.path.join(HERE, "..", "..", "docs", "PART2_ARCHITECTURE_SCRIPT.md"), encoding="utf-8").read().split("## What Part 2 is", 1)[1].split("## Endpoints")[0].replace("## ", "").strip()]
+NOTES = [open(os.path.join(HERE, "..", "..", "docs", "PART2_ARCHITECTURE_SCRIPT.md"), encoding="utf-8").read().split("## Part 2 starts with the packet", 1)[1].split("## Endpoints")[0].replace("## ", "").strip()]
 
 if __name__ == "__main__":
     G.build("Part 2 on one slide", "Part2_Architecture", HELPERS + BODY, ['{ hold: 0, fx: [] }'], NOTES)

@@ -2,24 +2,24 @@
 
 In my own voice. Plain, active sentences. For the one-page Part 2 architecture slide.
 
-## What Part 2 is
-Part 1 gave us the library. Part 2 is what happens every time a request comes in. A packet arrives, and the system helps the nurse decide.
+## Part 2 starts with the packet
+Part 2 is what happens every time a request comes in, and it starts with the packet.
 
-Quick reminder. For each service, the library has a list of key facts, with a rule attached to each one. Part 2 checks every incoming packet against that list. The AI reads. Code checks. A person decides.
+The provider sends it by fax or portal. The intake coordinator uploads it as one PDF form and assigns it to a nurse. They can see each nurse's workload, so they pick the nurse with room.
 
-## Stage 1: intake and read
-The provider sends the packet by fax or portal. The intake coordinator uploads it as one PDF and assigns it to a nurse. They can see each nurse's workload, so they pick the nurse with room.
+When our system gets that API call for a new packet, it runs it through a pipeline. It is very similar to the pipeline we saw in Part 1. Parse the document. Hand the JSON to the AI. Check the AI's work. The difference is what goes in and what comes out. In Part 1, a policy goes in and key facts with rules come out. In Part 2, a packet goes in, and the values for those key facts come out, each with its evidence.
 
-The first thing the app does is the same ETL step we saw in Part 1. The PDF goes through the Unstructured API. It reads every page and gives back elements as JSON. Each element keeps its text and its page number. That page number is how a nurse later sees "page 6 of 14".
+## Stage 1: parse the packet and find the service
+Step one is the same ETL as Part 1. The PDF goes through the Unstructured API. It has a partitioner. It reads every page, extracts the elements, and gives the output as JSON. Each element has its text and its page number. That page number is how a nurse later sees "page 6 of 14".
 
 Then we find the billing code. Plain pattern matching finds the code on the request. We look that code up in the library to find the service that owns it. This is why we collected the billing codes in Part 1. The code is the doorway. It sends the packet to the right service.
 
 If no service owns the code, the system doesn't guess. It says "no policy yet". That request shows up on the policy owner's list as the next service to build.
 
-When a service is found, we pull its key facts and the rules attached to them from the library.
+When a service is found, we pull its key facts and the rules attached to them from the library. Those key facts are what the AI will look for.
 
 ## Stage 2: the AI reads the packet and checks its own work
-The elements JSON from the Unstructured API now goes to the AI. This is a different AI job from Part 1. In Part 1, the AI read a policy and drafted the rules. Here it reads a patient's packet and fills in the values. So the prompt is different, the output form is different, and the checks are different.
+The elements JSON now goes to the AI. This is a different AI job from Part 1. In Part 1, the AI read a policy and drafted the rules. Here it reads a patient's packet and fills in the values. So the prompt is different, the output form is different, and the checks are different.
 
 The AI is Claude Sonnet. It has two kinds of guardrails.
 
