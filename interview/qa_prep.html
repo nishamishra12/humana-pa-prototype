@@ -1,0 +1,314 @@
+<title>Humana PA Q&amp;A Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one reading column, a sticky theme bar, one card per question. Green matches the interview deck. */
+:root {
+  --bg: #F6F8F7; --surface: #FFFFFF; --ink: #16211E; --muted: #55635E; --line: #D6DFDB;
+  --accent: #1F6F5C; --accent-soft: #E3F0EB; --hot: #A8442E; --hot-soft: #FBEAE5;
+  --display: "Literata", Cambria, Georgia, serif;
+  --body: "Public Sans", Calibri, "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111816; --surface: #19221F; --ink: #E7EEEB; --muted: #9AABA5; --line: #2C3934;
+  --accent: #6CC3A8; --accent-soft: #1E3530; --hot: #F09A84; --hot-soft: #3A2420; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #111816; --surface: #19221F; --ink: #E7EEEB; --muted: #9AABA5; --line: #2C3934;
+  --accent: #6CC3A8; --accent-soft: #1E3530; --hot: #F09A84; --hot-soft: #3A2420; color-scheme: dark; }
+
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 760px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 80px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; text-wrap: balance; margin: 0; }
+h1 { font-size: 2.2rem; line-height: 1.15; }
+.lede { color: var(--muted); margin: 12px 0 0; max-width: 62ch; }
+.eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+
+.top3 { margin-top: 28px; background: var(--hot-soft); border-radius: 10px; padding: 16px 20px; }
+.top3 .eyebrow { color: var(--hot); }
+.top3 ol { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; }
+.top3 a { color: var(--ink); }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; background: var(--bg); border-bottom: 1px solid var(--line);
+  margin-top: 28px; padding-block: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.bar a { font-size: .85rem; font-weight: 600; color: var(--accent); text-decoration: none; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); }
+.bar a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bar button { margin-left: auto; font: inherit; font-size: .85rem; font-weight: 600; color: var(--surface); background: var(--accent); border: 0; border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+
+section { margin-top: 40px; scroll-margin-top: 70px; }
+section > h2 { font-size: 1.5rem; }
+section > .lede { margin-top: 4px; font-size: .95rem; }
+.cards { display: grid; gap: 14px; margin-top: 16px; }
+
+.q { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; scroll-margin-top: 70px; }
+.q.hot { border-color: var(--hot); }
+.q h3 { font-size: 1.12rem; line-height: 1.35; display: flex; gap: 10px; align-items: baseline; }
+.q h3 .n { font-family: var(--body); font-size: .8rem; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; flex: none; }
+.pill { font-family: var(--body); font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--hot); background: var(--hot-soft); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.lbl { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 14px 0 4px; }
+.q ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.lead { margin: 12px 0 0; font-weight: 600; }
+.why { margin-top: 12px; padding: 10px 14px; background: var(--accent-soft); border-radius: 8px; font-size: .92rem; color: var(--ink); }
+.why b { color: var(--accent); }
+.reveal { display: none; font: inherit; font-size: .85rem; font-weight: 600; color: var(--accent); background: none; border: 1px solid var(--accent); border-radius: 999px; padding: 4px 12px; margin-top: 12px; cursor: pointer; }
+.quiz .q:not(.open) .ans { display: none; }
+.quiz .q:not(.open) .reveal { display: inline-block; }
+
+.src { margin-top: 48px; font-size: .88rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+.src a { color: var(--accent); overflow-wrap: anywhere; }
+@media (max-width: 480px) { h1 { font-size: 1.75rem; } .q { padding: 16px; } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Humana · Prior Authorization Decision Support</div>
+  <h1>Likely questions, short answers</h1>
+  <p class="lede">For each question: what to say, in plain bullets, then a short note so you understand the idea behind it. Say it in your own words. Use quiz mode to test yourself.</p>
+
+  <div class="top3">
+    <div class="eyebrow">Prep these three hardest</div>
+    <ol>
+      <li><a href="#q7">Why a language model, and not a model trained on past decisions?</a></li>
+      <li><a href="#q14">Humana was sued over AI and care decisions. How is this different?</a></li>
+      <li><a href="#q10">Recall is 86%. Would you ship that?</a></li>
+    </ol>
+  </div>
+
+  <nav class="bar" aria-label="Themes">
+    <a href="#tech">Tech choices</a><a href="#right">Is it right?</a><a href="#risk">Risk and rules</a><a href="#product">Product</a><a href="#biz">Business</a><a href="#you">About you</a>
+    <button id="quiz" type="button" aria-pressed="false">Quiz me</button>
+  </nav>
+
+  <div id="out"></div>
+
+  <div class="src">
+    <b>Sources for the two outside facts</b><br>
+    Lawsuit: <a href="https://www.fiercehealthcare.com/payers/class-action-lawsuit-accuses-humana-using-ai-algorithms-restrict-access-care">Fierce Healthcare</a> and the <a href="https://litigationtracker.law.georgetown.edu/wp-content/uploads/2023/12/Barrows_2023.12.12_COMPLAINT.pdf">complaint (Georgetown litigation tracker)</a>.<br>
+    CMS rule on algorithms: <a href="https://www.nortonrosefulbright.com/en-kr/knowledge/publications/644bd9a2/cms-clarifies-medicare-advantage-organizations-use-of-ai-and-algorithms-in-coverage-decisions">Norton Rose Fulbright summary of the February 2024 CMS FAQ</a>.<br>
+    Every other number is from your own deck and prototype. The bad fax test (7 October 2026) used the same Unstructured call the prototype makes: scripts/make_bad_fax.py and scripts/test_bad_fax.py.
+  </div>
+</div>
+
+<script>
+const THEMES = [
+ { id: "tech", title: "Tech choices", lede: "They want to see that you chose on purpose, and that each part can be swapped.", qs: [
+  { q: "Why Unstructured? What other parsers did you consider?",
+    lead: "I chose Unstructured because it reads messy documents, including handwriting, and I tested it on a bad fax.",
+    say: ["I needed text plus the page number for every piece, so each quote points back to a page.",
+          "I worked at Unstructured, so I know what it can do. It reads typed text, tables and handwriting from scanned images.",
+          "It costs about 1.5 cents a page.",
+          "Other options are AWS Textract, Azure Document Intelligence and Google Document AI. At Humana, I'd compare them on real faxes. It also depends on what Humana already has approved.",
+          "It's swappable. The rest of the pipeline only needs text and page numbers."],
+    why: "A <b>parser</b> turns a PDF or a fax image into text, with its layout: titles, paragraphs, tables, page numbers. A fax has no text inside it at all, only a picture of the page, so the parser has to read the picture. The point to land: you chose for a need (page numbers for evidence), you know the tool from the inside, and you tested it." },
+  { q: "How does it handle bad faxes and handwriting?",
+    lead: "I tested it. A bad fax makes more work for the parser, not for the nurse.",
+    say: ["I took one packet and made it a bad fax: fax resolution, black and white, tilted, speckled, with streaks. No text layer.",
+          "I added a handwritten cover sheet with the member, the billing code and the BMI, plus handwritten notes on three pages.",
+          "Unstructured found 21 of 21 key facts, including all 10 handwritten ones. Seven pages took about a minute.",
+          "If something truly can't be read, the fact is marked not found. It's never guessed. That leads to a pend with one clear question."],
+    why: "One thing I learned making the test: a fax machine can wipe out light grey print completely. No parser can read what isn't on the page. That's why \"not found\" leads to a pend, never an approval. The test files are in your interview folder: <b>D_bad_fax_walker_gastric_bypass.pdf</b>. Run it through the app once before you show it live." },
+  { q: "Why Claude Sonnet? Why not GPT, Gemini, or a smaller model?",
+    lead: "This job needs a model that follows strict rules, and in my experience Sonnet does that best.",
+    say: ["My prompt has hard rules: quote the exact words, never guess, use only this patient's record, answer in a fixed format. Sonnet stays inside those rules.",
+          "In the prototype I only ran Sonnet. Running GPT and Gemini too would have cost me money, so I picked the one I trust most from past work.",
+          "Each model has its strengths. Gemini is strongest with audio, video and very long inputs. GPT is strong too, with a big ecosystem. For careful reading under strict rules, I'd start with Sonnet.",
+          "In the real world, I'd run the same 40 packets on Sonnet, GPT and Gemini and compare recall, precision and cost. It also depends on which contract Humana already has.",
+          "A smaller model is cheaper and faster. I'd use one for simple steps, like reading the billing code. For a messy clinical record, the evals would have to prove it first."],
+    why: "The honest structure: <b>my experience</b> (Sonnet with strict prompts), <b>what I didn't test</b> (the others, because of cost), and <b>how I'd decide for real</b> (same 40 packets, plus Humana's contract). Good to know: Anthropic's API also has a citations feature built to quote source documents, which is close to what this product needs. Humana's existing cloud and AI contracts often decide this in practice, so saying it shows you know how enterprises buy." },
+  { q: "Would you fine-tune the model?",
+    lead: "Not at first.",
+    say: ["Prompts and guardrails are cheaper and faster to change. They already took recall from 57 to 86 percent.",
+          "I would fine-tune once we have thousands of real cases labeled by nurses, and prompts stop improving.",
+          "Policies also change often. A fine-tuned model would need retraining each time. A prompt reads the new policy right away."],
+    why: "<b>Fine-tuning</b> means training the model further on your own examples. It needs a lot of labeled data. A related question you might get: \"would you run an open model inside Humana's own servers?\" People ask that because of patient privacy. Your answer: not needed. Claude runs inside AWS and Google Cloud, under a <b>BAA</b>, the HIPAA contract that lets a vendor handle patient data." },
+  { q: "Why run it three times? Isn't that three times the cost?",
+    lead: "Yes, that step costs three times as much, and it's worth it.",
+    say: ["The whole case is still about 13 cents.",
+          "A model can answer differently each time. If the three runs disagree, the fact really is unclear, so a nurse should see it.",
+          "If the evals show two runs are enough, I'll cut it to two."],
+    why: "Disagreement between runs is a signal of uncertainty. Compare cents to dollars: CAQH puts a plan's cost of handling one manual PA at $3.41." },
+  { id: "speed", q: "Intake waits about a minute per upload. How would you make that faster?",
+    lead: "That minute doesn't matter to the member. It matters to the intake coordinator's time. So first I'd stop making her wait, then I'd make the wait shorter.",
+    say: ["Against a 7-day CMS clock, one minute is nothing. But a person staring at a progress bar is wasted time.",
+          "Step one, already built: it runs in the background. Intake uploads one or many faxes and keeps working. Each one shows its progress, then joins the queue when it's ready.",
+          "Step two: read the first page first. Member, billing code, and whether it answers a pended case take a few seconds. Intake can route it right away while the AI reads the clinical pages behind the scenes.",
+          "Step three: remove the upload. In production, faxes come in through a fax server and go straight into the pipeline. Intake only handles the exceptions, like a fax we couldn't read or match.",
+          "I would not cut the three runs to save time. Accuracy matters more than seconds here.",
+          "Long term, electronic prior auth from providers skips the scanning entirely."],
+    why: "Where the minute goes: reading a scanned fax (about 20 to 60 seconds) and three AI runs in parallel (about 18 seconds typical, 35 slow). Both are already timed in Honeycomb, step by step, so you'd know which one to fix. The idea to land: <b>speed for the member</b> is days to a decision, <b>speed for staff</b> is not waiting on screens. Those are two different problems. Electronic prior auth means the CMS rule that requires plans to offer a prior authorization API by 2027." },
+  { q: "Why not just ask the AI \"approve or not\"?",
+    say: ["Then you get an answer with no proof. The nurse can't check it, and CMS wants the decision tied to the patient's record.",
+          "So I split the work. The AI only reads and quotes. Plain code applies the rules and recommends. A person decides.",
+          "Each step can be tested on its own."],
+    why: "Splitting <b>reading</b> from <b>deciding</b> makes it auditable. Your run 3 story proves this: date counting moved from the AI into code, and precision went back up." },
+  { id: "q7", hot: true, q: "Why a language model, and not a model trained on Humana's past decisions?",
+    say: ["A model trained on past decisions learns what Humana usually did, not what the policy says. It copies old mistakes, and it can't show why.",
+          "In February 2024, CMS said a plan must decide on the patient's own record. A prediction from large data sets alone doesn't meet that.",
+          "My design reads this patient's packet against this policy, and quotes the evidence.",
+          "Past decisions are still useful: as test data for the evals, and to rank which services to onboard next."],
+    why: "This is your strongest answer because a CMS rule backs it. A <b>decision model</b> here means any classifier that predicts approve or deny from patterns. You mentioned one you heard of as \"JEV\". Tell Claude the exact name so we can add a line on it. The answer above works either way." },
+  { q: "Why not search the policy at request time (RAG)?",
+    lead: "I don't search the policy when a request comes in. It's already a checklist the owner approved.",
+    say: ["The billing code picks the service, and the service picks the exact policies. Nothing is guessed.",
+          "RAG fetches the chunks of text that look relevant, and then answers. The big risk is fetching the wrong chunk.",
+          "A fixed lookup by billing code is safer and easier to audit."],
+    why: "<b>RAG</b> stands for retrieval-augmented generation: search first, then answer from what you found. It's great when you don't know in advance which text matters. Here you do know, because the billing code tells you." },
+ ]},
+ { id: "right", title: "Is it right?", lede: "They will push on made-up data and on the gap between 86% and 100%.", qs: [
+  { q: "Your packets are made up. How would you get real data, and who labels it?",
+    say: ["The next step is de-identified real cases, labeled by senior nurses first.",
+          "Start with one service and a few hundred past cases where we know the final outcome, including appeals.",
+          "Then run the AI in shadow mode. It recommends, nobody acts on it, and we compare it to what the nurses decided."],
+    why: "<b>Shadow mode</b> means running silently next to the real process. It's the safest way to get real accuracy numbers before anyone relies on it." },
+  { id: "q10", hot: true, q: "Recall is 86%. Would you ship that?",
+    lead: "Yes. I would ship it as an assistant, not as an auto-approver.",
+    say: ["It never approves on its own. A nurse decides every case.",
+          "At 86%, the AI misses some risky items, and the nurse is still the safety net. The AI saves time. It doesn't replace the check.",
+          "Before we relax any human check, recall has to hit 100% on real cases.",
+          "Every miss becomes a test case I fix next."],
+    why: "Separate <b>assistive</b> (helps a person) from <b>autonomous</b> (acts alone). Assistive at 86% is fine with a person deciding. Autonomous needs 100%." },
+  { q: "What happens when a policy changes? How do you catch drift?",
+    lead: "Drift comes from two places: the policy changes, or the AI changes. I watch both, and the nurses tell me if I missed something.",
+    say: ["When the policy changes: a weekly job checks CMS for new versions. A changed policy goes back to the owner to review. Old cases keep the version they were decided on.",
+          "When the AI changes: I rerun the eval set on every prompt or model change, before it goes live.",
+          "In live use, the nurses' decisions are the check. When a nurse finds a problem the AI missed, that counts as a miss. If misses go up, recall in Honeycomb drops, and I know something drifted."],
+    why: "<b>Drift</b> means accuracy slipping over time without anyone changing anything on purpose. For example, providers start sending a new form, or a policy is reworded. You catch it in two ways: <b>before release</b>, with the eval set, and <b>after release</b>, by treating every nurse override as a label and watching live recall and precision." },
+  { q: "How do you stop nurses from just clicking agree?",
+    lead: "That's automation bias. It's very common, and it's a real risk.",
+    say: ["The nurse sees the quote and the page for every fact, so checking is quick.",
+          "I'd watch how fast nurses agree. A few seconds on a complex case is a flag.",
+          "During the testing period, I'd also plant known test cases with a miss in them, and see if nurses catch it."],
+    why: "<b>Automation bias</b> is people trusting the machine too much. An agreement rate near 100% is not good news by itself." },
+  { q: "How do you stop the AI from making things up?",
+    lead: "Every quote must exist in the packet, and I have guardrails at every step.",
+    say: ["The validator checks every quote, exact match first, then fuzzy. If a quote isn't found, it's thrown out.",
+          "The prompt rules: never guess, quote the exact words, use only this patient's information, and show anything unclear to the nurse.",
+          "The three runs must agree. If they don't, the fact is marked unsure.",
+          "If a fact is missing, it's marked not found, and that leads to a pend with one clear question."],
+    why: "This is the validator from both architecture slides. Fuzzy matching allows small differences, like a line break in the scan. Making things up is called <b>hallucination</b>." },
+ ]},
+ { id: "risk", title: "Risk and rules", lede: "Be calm and factual. Never comment on who is right in a lawsuit. Pivot to your design.", qs: [
+  { id: "q14", hot: true, q: "Humana was sued over AI and care decisions. How is this different?",
+    say: ["I know about that case. It's about post-acute care and a tool called nH Predict. Humana denies the claims, and the case is still open, so I won't comment on it.",
+          "My design is different on purpose. The AI never denies. It only reads the record and quotes evidence.",
+          "A nurse approves or pends. Only a medical director can deny.",
+          "Every recommendation shows its reasons, so it can be audited."],
+    why: "The case is <b>Barrows v. Humana</b>, filed December 2023 in Kentucky. It alleges nH Predict was used to cut post-acute care. Humana says it didn't use the tool to make denials. Stay neutral, then talk about your guardrails." },
+  { q: "How do you comply with CMS?",
+    say: ["CMS says to decide on the patient's own record, against published coverage criteria. That's exactly how this works: this packet, this policy, quoted evidence.",
+          "A physician makes every denial.",
+          "And it never runs slower than the CMS clock: 72 hours for expedited, 7 days for standard."],
+    why: "The clock comes from the CMS prior authorization rule that started in 2026. The policies come from public CMS coverage documents (NCDs and LCDs)." },
+  { q: "What about patient data, audit trails and accountability?",
+    say: ["Patient data stays in Humana's approved cloud, under a BAA.",
+          "Every step is logged: packet, policy version, model, prompt version, the quotes, and who decided.",
+          "The person who decides is accountable. The AI is a tool.",
+          "In production, monitoring would carry IDs and counts, not patient details."],
+    why: "An <b>audit trail</b> lets anyone replay why a decision was made. That's what regulators and appeals reviewers ask for." },
+ ]},
+ { id: "product", title: "Product judgment", lede: "They're testing how you choose and what you say no to.", qs: [
+  { id: "morework", hot: true, q: "Haven't you just created more work for the policy owner and intake?",
+    lead: "I didn't create new work. I moved work that already exists to a place where it's done once instead of thousands of times.",
+    say: ["Policy owner: plans already have clinical policy staff who turn coverage policies into criteria and nurse job aids. Since 2024, CMS also requires a UM committee to review UM policies every year. Someone already reads these policies line by line.",
+          "Today every nurse re-interprets the policy on every case. I moved that to once per policy. The AI drafts, the owner checks, and checking is faster than writing.",
+          "Rough math: about 2,000 policies at 30 minutes each is about 1,000 hours, one time. Against 9.5 million requests a year, a few nurse minutes saved per case is far bigger.",
+          "Intake: no new work. They already receive every fax and key the member, provider and codes into the UM system. Uploading replaces the keying, and the system matches a fax reply to its pended case for them.",
+          "And I'd measure it: owner minutes per policy, intake minutes per packet, nurse minutes per case. If the owner review isn't paying for itself, I let the AI approve sooner."],
+    why: "The UM committee rule is <b>42 CFR 422.137</b>, from the CMS 2024 Medicare Advantage final rule. The idea to land: work moves <b>upstream</b>, from many nurses on every case to one owner once per policy. In production a fax server feeds the pipeline directly, so the intake upload goes away too." },
+  { id: "aiwrong", q: "What happens when the AI drafts a rule wrong and the owner approves it anyway?",
+    lead: "It happened to me while testing, twice, and both times the system caught it before a member was harmed.",
+    say: ["Bariatric: the AI drafted a rule that failed every packet that named a procedure. Nothing was wrongly approved. Every case escalated to a person, and the pattern made it obvious.",
+          "TMS: the policy says \"one or more of\" four options. The AI made each option required, so every case got stuck at \"check the packet\".",
+          "Both fail in the safe direction: too strict, never too lenient. That's the recall-first design.",
+          "The fix is quick: the owner reopens the policy, rejects the rule and approves again. Each miss also becomes a test case for the policy-building prompt."],
+    why: "This is your strongest real story. Two real misses from your own testing, both caught, both safe. It shows the human-in-the-loop design working, and it's honest. Name the patterns: an \"absent\" rule on a fact every packet has, and an \"any one of\" list drafted as \"all of\"." },
+  { id: "adopt", q: "How do you get nurses to actually trust and use it?",
+    lead: "By never asking them to trust it blindly. Every answer comes with the quote and the page.",
+    say: ["The nurse sees the evidence next to every fact, so checking takes seconds, not a re-read of the packet.",
+          "When the AI is unsure, it says so, instead of guessing.",
+          "Start with the senior nurses who label the test cases. They become the champions.",
+          "Their corrections improve the system, so they see it get better because of them."],
+    why: "Trust comes from showing the work, being honest about uncertainty, and giving nurses ownership. Avoid saying \"they'll trust the AI\". The point is they don't have to." },
+  { id: "portal", q: "Why keep fax? Why not have providers use a portal?",
+    lead: "Because I don't control the provider's process, and changing it is the slowest way to get value.",
+    say: ["Most prior auth is still not fully electronic. A lot of it arrives by fax and phone. Forcing a portal adds work for provider offices, and adoption is slow.",
+          "So the system meets providers where they are. A fax in, a fax back, and the reply is matched to the case automatically.",
+          "Electronic prior auth is coming: CMS requires plans to offer a prior authorization API by 2027. When providers use it, the same pipeline gets cleaner data and skips the scanning."],
+    why: "This is a product principle: deliver value without asking the other side to change first. Your future state slide says the provider's process doesn't change. Point back to it." },
+  { q: "Why this problem? Why the policy owner first?",
+    say: ["Prior auth is high volume and slow, and it hurts members, providers and Star ratings. The value is large.",
+          "The AI is only as good as its rules. Without an approved rulebook, nothing after it can be trusted.",
+          "So the policy owner comes first."],
+    why: "This is your roadmap logic: Milestone 1 (rulebook) earns Milestone 2 (recommendations)." },
+  { q: "Why not auto-approve the easy cases?",
+    say: ["That's the end goal for clear approvals. Not yet.",
+          "First, prove 100% recall on real cases. Then auto-approve only the simplest, low-risk services, with audits.",
+          "Denials never become automatic."],
+    why: "A wrong approval costs money and can harm a member. <b>Gold carding</b> (skipping prior auth for providers with a strong record) is a related idea, and some states require it." },
+  { q: "Build or buy? Vendors already sell this.",
+    say: ["I'd look at vendors first.",
+          "I'd keep two things in-house: the rulebook and the evals. That's Humana's policy knowledge, and how it proves accuracy.",
+          "Buy the commodity parts, like the parser and the model.",
+          "I'd judge vendors on data control, whether they show why, fit with the nurse's workflow, and cost per case."],
+    why: "A strong PM answer is \"it depends, and here is how I'd decide\". Ask them what they use today." },
+  { q: "What did you leave out of scope?",
+    say: ["Member status (Phase 3). Provider and facility checks, and covered alternatives (Phase 2).",
+          "Electronic intake. The prototype only takes PDFs.",
+          "Real data.",
+          "I kept one full loop, from rulebook to decision, with a person at both ends."],
+    why: "Naming cuts confidently shows judgment. Each cut maps to a phase on your roadmap." },
+ ]},
+ { id: "biz", title: "Business", lede: "They know the numbers are illustrative. They want to see you reason about them.", qs: [
+  { q: "Which assumption in the $217M would you trust least?",
+    say: ["The member side. The link between faster prior auth and fewer members leaving comes from research, not Humana's own data.",
+          "The admin savings are firmer. They come from time saved per case and public cost numbers.",
+          "So in a pilot, I'd measure admin time first and treat retention and Stars as upside."],
+    why: "Saying which number you'd bet on least builds trust. It shows you know your own math." },
+  { q: "How would you prove value in 90 days?",
+    say: ["One service, one nurse team. Shadow mode first, then assistive.",
+          "Measure minutes per case, avoidable pends, right-first-time rate, and recall on cases nurses decided.",
+          "Compare against a similar team working without it."],
+    why: "Use leading numbers (weeks) for the pilot. Lagging numbers like Stars take quarters. This matches your metrics slide." },
+  { q: "What does it cost at scale?",
+    say: ["About 13 cents a case for the AI, plus parsing at about 1.5 cents a page.",
+          "Across 9.5 million standard requests, the AI is about $1.2 million a year.",
+          "For comparison, CAQH puts a plan's cost of handling one manual PA at $3.41."],
+    why: "These match your business value slide: about $10M a year to build and run, against about $217M in value." },
+ ]},
+ { id: "you", title: "About you", lede: "Short stories. Use \"I\".", qs: [
+  { q: "What was hardest to build?",
+    say: ["Getting recall up without flooding the nurse.",
+          "Run 2 caught more, but flagged too much. In run 3, I moved date counting into code and precision came back.",
+          "Lesson: let the AI read, and let code do the math."],
+    why: "This is your evals slide told as a story. Keep it under 30 seconds." },
+  { q: "What would you do differently?",
+    say: ["Test on real faxes earlier.",
+          "Sit with nurses earlier.",
+          "Build the evals on day one, not after the first version."],
+    why: "Pick one and say why. Honest and short beats a long list." },
+  { q: "How would you work with clinical, legal and compliance?",
+    say: ["Bring them in at the start, not at launch.",
+          "Clinical owns the rulebook. That's the policy owner persona.",
+          "Compliance signs off on each phase gate. Legal sets what the AI can and can't do.",
+          "Everyone sees the same eval dashboard."],
+    why: "Your roadmap gates (\"a tested rulebook, evals on real cases, zero wrong approvals\") are where these teams sign off." },
+ ]},
+];
+
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let n = 0;
+document.getElementById("out").innerHTML = THEMES.map((t) => `
+  <section id="${t.id}"><h2>${t.title}</h2><p class="lede">${t.lede}</p><div class="cards">${t.qs.map((c) => { n++; return `
+    <article class="q${c.hot ? " hot" : ""}" id="${c.id || "q" + n}">
+      <h3><span class="n">${String(n).padStart(2, "0")}</span><span>${esc(c.q)} ${c.hot ? '<span class="pill">Prep hardest</span>' : ""}</span></h3>
+      <button class="reveal" type="button">Show answer</button>
+      <div class="ans">${c.lead ? `<p class="lead">${esc(c.lead)}</p>` : ""}<div class="lbl">${c.lead ? "Then add" : "Say"}</div><ul>${c.say.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
+      <div class="why">${c.why}</div></div>
+    </article>`; }).join("")}</div></section>`).join("");
+
+const btn = document.getElementById("quiz");
+const setQuiz = (on) => { document.body.classList.toggle("quiz", on); btn.textContent = on ? "Show all answers" : "Quiz me"; btn.setAttribute("aria-pressed", on); document.querySelectorAll(".q.open").forEach((q) => q.classList.remove("open")); };
+btn.addEventListener("click", () => { const on = !document.body.classList.contains("quiz"); setQuiz(on); try { localStorage.setItem("quiz", on ? "1" : "0"); } catch (e) {} });
+document.addEventListener("click", (e) => { const r = e.target.closest(".reveal"); if (r) r.closest(".q").classList.add("open"); });
+try { if (localStorage.getItem("quiz") === "1") setQuiz(true); } catch (e) {}
+</script>

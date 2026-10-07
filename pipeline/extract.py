@@ -74,8 +74,15 @@ def extract_header(full: str) -> dict:
     colons ("Planned admit date 2026-11-19"), so every colon here is optional and each field stops at the next label."""
     full = _flatten_tables(full)
     facts = {}
-    m = re.search(r"(?:^|\s)Member:?\s+((?:(?!Member\b).)+?)\s+DOB:?\s*([\d-]+)\s*\(age (\d+)\)\s+Member ID:?\s*(\S+)", full, re.S)
+    m = re.search(r"(?:^|\s)Member:?\s+((?:(?!Member\b).)+?)\s+DOB:?\s*([\d/-]+)\s*\(age (\d+)\)\s+Member ID:?\s*(\S+)", full, re.S)
     facts["_member"] = dict(name=m.group(1).strip(), dob=m.group(2), age=int(m.group(3)), member_id=m.group(4)) if m else {}
+    if not m:  # a form with one labelled line per field ("Member name:", "Date of birth:", "Member ID:"), often handwritten
+        name = re.search(r"Member name:?\s*(.+?)(?=\s+(?:Date of birth|DOB|Member ID)\b|\n|$)", full)
+        dob = re.search(r"(?:Date of birth|DOB):?\s*([\d/-]+)", full)
+        age = re.search(r"\(age (\d+)\)", full)
+        mid = re.search(r"Member ID:?\s*([A-Z]{2,4}-?\d+)", full)
+        if name and mid:
+            facts["_member"] = dict(name=name.group(1).strip(), dob=dob.group(1) if dob else None, age=int(age.group(1)) if age else None, member_id=mid.group(1))
     m = (re.search(r"Requesting facility:?\s*(.+?),\s*Utilization", full)
          or re.search(r"Practice:?\s*(.+?)(?=\s+Phone\b|\n|$)", full))  # longer packets label the facility "Practice:"
     facts["_facility"] = m.group(1).strip() if m else None
@@ -84,9 +91,9 @@ def extract_header(full: str) -> dict:
     m = (re.search(r"Requested service:?\s*(.+?)(?=\s+CPT\b|\n|$)", full)
          or re.search(r"^(Elective inpatient admission,.+?)(?=\s+CPT\b|\n|$)", full, re.M))  # same text, under a heading
     facts["_procedure"] = m.group(1).strip().rstrip(".") if m else None
-    m = re.search(r"Planned admi(?:t|ssion) date:?\s*([\d-]+)", full)
+    m = re.search(r"Planned admi(?:t|ssion) date:?\s*([\d/-]+)", full)
     facts["_admit"] = m.group(1) if m else None
-    m = re.search(r"Level of care requested:?\s*(\w+)", full)
+    m = re.search(r"Level of care requested:?\s*(?:[Xx✓☑]\s+)?(\w+)", full)  # skip a ticked box's mark on a form
     facts["_setting"] = m.group(1).lower() if m else None
     return facts
 

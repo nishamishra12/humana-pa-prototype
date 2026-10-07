@@ -1,0 +1,209 @@
+{
+ "criteria": [
+  {
+   "id": "PRESCRIBER-QUALIFIED",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (prescriber_qualified): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "DX-MDD-SEVERE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (dx_severe_mdd): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "FAILED-INITIAL-TX",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (failed_initial_treatment): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "MEDS-RESISTANCE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (med_resistance_criterion_met): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "MEDS-INTOLERANCE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (med_intolerance_criterion_met): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PRIOR-RTMS-RESPONSE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (prior_rtms_response): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "CURRENT-ECT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (currently_receiving_ect): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "ONE-OF-FOUR-SUBCRITERIA",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (one_of_four_subcriteria_met): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PSYCHOTHERAPY-TRIAL",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (psychotherapy_trial_failed): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "ORDER-BY-PSYCHIATRIST",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (order_by_psychiatrist): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PHYSICIAN-TMS-EXPERIENCE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (physician_tms_experience): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "DIRECT-SUPERVISION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (direct_supervision): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NO-SEIZURE-HISTORY",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (seizure_history): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NO-PSYCHOTIC-SYMPTOMS",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (psychotic_symptoms_current_episode): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NO-NEURO-CONDITIONS",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (neuro_condition_present): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NO-IMPLANTED-DEVICE-NEAR-COIL",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (implanted_device_near_coil): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "RETREATMENT-MET-INITIAL-GUIDELINES",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (met_initial_treatment_guidelines): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "RETREATMENT-RELAPSE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (relapse_of_depressive_symptoms): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "RETREATMENT-PRIOR-RESPONSE-50PCT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (prior_treatment_response_pct): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 0,
+  "review": 19,
+  "fail": 0
+ },
+ "total": 19,
+ "uncovered": [
+  "require anesthesia or analgesia.",
+  "When used as an antidepressant therapy, TMS produces a clinical benefit without the systemic side effects attendant",
+  "This section allows coverage and payment for only those"
+ ],
+ "new_facts": [
+  "prescriber_qualified",
+  "dx_severe_mdd",
+  "failed_initial_treatment",
+  "med_resistance_criterion_met",
+  "med_intolerance_criterion_met",
+  "prior_rtms_response",
+  "currently_receiving_ect",
+  "one_of_four_subcriteria_met",
+  "psychotherapy_trial_failed",
+  "order_by_psychiatrist",
+  "physician_tms_experience",
+  "direct_supervision",
+  "seizure_history",
+  "psychotic_symptoms_current_episode",
+  "neuro_condition_present",
+  "implanted_device_near_coil",
+  "treatment_type",
+  "met_initial_treatment_guidelines",
+  "relapse_of_depressive_symptoms",
+  "prior_treatment_response_pct"
+ ],
+ "not_modeled": 1
+}

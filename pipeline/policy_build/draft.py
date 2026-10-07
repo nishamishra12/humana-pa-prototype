@@ -78,15 +78,19 @@ def draft(elements, meta, vocab, client=None):
     policy_text = "\n".join(f"[{e['id']}] ({e['type']}) {e['text']}" for e in elements)
     user = (f"Policy: {meta['title']} ({meta['policy_id']}), level {meta['level']}.\n\nFACT VOCABULARY\n{_vocab_text(vocab)}\n\nPOLICY TEXT\n{policy_text}")
     last = None
-    for attempt in (1, 2):
-        resp = client.messages.create(model=DRAFT_MODEL, max_tokens=8000, system=SYSTEM, tools=[_tool([d["key"] for d in vocab])],
+    for attempt, cap in ((1, 16000), (2, 20000)):  # a long policy (many contraindications) can run past 8,000 tokens and cut the answer off
+        resp = client.messages.create(model=DRAFT_MODEL, max_tokens=cap, system=SYSTEM, tools=[_tool([d["key"] for d in vocab])],
                                       tool_choice={"type": "tool", "name": "record_policy"}, messages=[{"role": "user", "content": user}])
         out = next(b for b in resp.content if b.type == "tool_use").input
         try:
+            if getattr(resp, "stop_reason", None) == "max_tokens":
+                raise ValueError(f"the draft was cut off at {cap} tokens")
             for k in ("criteria", "new_facts", "not_modeled"):
                 if isinstance(out.get(k), str):
                     out[k] = json.loads(out[k])
-            assert isinstance(out["criteria"], list)
+            assert isinstance(out["criteria"], list), "no criteria in the draft"
+            out.setdefault("new_facts", [])  # a complete answer with nothing new to propose
+            out.setdefault("not_modeled", [])
             usage = getattr(resp, "usage", None)
             out["_usage"] = dict(input_tokens=getattr(usage, "input_tokens", None), output_tokens=getattr(usage, "output_tokens", None))
             out["_model"] = DRAFT_MODEL

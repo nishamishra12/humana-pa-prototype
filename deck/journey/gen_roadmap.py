@@ -15,7 +15,9 @@ def phase(n, x, w, color, soft, head, title, sub, body, who, gate):
           f'txt("T{n}", {x + 0.25}, 1.92, {w - 0.5}, 0.45, [{json.dumps(title)}], {{ size: 20, color: C.ink }});']
     if sub:
         js.append(f'txt("S{n}", {x + 0.25}, 2.36, {w - 0.5}, 0.28, [{json.dumps(sub)}], {{ size: 11.5, color: C.muted, bold: true }});')
-    if body:
+    if isinstance(body, list):  # several short lines, one per item
+        js.append(f'txt("B{n}", {x + 0.25}, 2.72, {w - 0.5}, 1.6, {json.dumps(body)}, {{ size: 12, color: C.ink }});')
+    elif body:
         js.append(f'txt("B{n}", {x + 0.25}, 2.75, {w - 0.5}, 1.5, [{json.dumps(body)}], {{ size: 13, color: C.ink }});')
     js.append(f'txt("W{n}", {x + 0.25}, 4.45, {w - 0.5}, 0.3, [{json.dumps("FOR   " + who)}], {{ size: 11, color: C.ink, bold: true }});')
     js.append(f'add({{ name: "G{n}", kind: "node", static: true, x: {x + 0.2}, y: 4.85, w: {w - 0.4}, h: 0.65, fill: {soft}, line: {color}, lineW: 1, radius: 0.06, valign: "middle", margin: [0.03, 0.12, 0.03, 0.12], runs: [{{ text: "GATE   ", options: {{ bold: true, fontSize: 9.5, color: {color}, fontFace: B, charSpacing: 1.5 }} }}, {{ text: {json.dumps(gate)}, options: {{ fontSize: 11, color: C.ink, fontFace: B }} }}] }});')
@@ -31,12 +33,13 @@ def milestone(n, x, title, value):
 
 BODY = 'frame("THE ROADMAP", "Three phases over a year.", "Each phase earns the next one", "The months are illustrative. The order is the point.");\n'
 BODY += phase(1, 0.5, 5.95, "C.green", "C.greenSoft", "PHASE 1   ·   MONTHS 1 TO 4", "Right first time. A person decides.", "North star: right-first-time rate. Two milestones ladder up to it.", None,
-              "Nurse, provider, member, plan", "A tested library. Evals on real cases. Zero wrong approvals.") + "\n"
-BODY += milestone(1, 0.75, "Build the library", "One central place for every policy and what it checks. Every rule traces to the policy's own words.") + "\n"
-BODY += milestone(2, 3.55, "Decide every packet", "Fewer pends. The right answer the first time. A sooner decision for the member.") + "\n"
+              "Nurse, provider, member, plan", "A tested rulebook. Evals on real cases. Zero wrong approvals.") + "\n"
+BODY += milestone(1, 0.75, "Build the rulebook", "Onboard a service. Attach its policies. Turn each policy into a checklist of what it wants to see.") + "\n"
+BODY += milestone(2, 3.55, "Recommend on every request", "The AI checks each request against the rulebook, with evidence. The nurse confirms.") + "\n"
 BODY += 'seg("mA", 3.35, 3.5, 3.55, 3.5, true);\n'
-BODY += phase(2, 6.75, 3.05, "C.purple", "C.purpleSoft", "PHASE 2   ·   MONTHS 5 TO 9", "Scale.", None,
-              "More services, one at a time, ranked by Humana's own request history.", "The plan", "Evals on real cases for each new service.") + "\n"
+BODY += phase(2, 6.75, 3.05, "C.purple", "C.purpleSoft", "PHASE 2   ·   MONTHS 5 TO 9", "Scale. Edge cases.", None,
+              ["More services, ranked by Humana's request history.", " ", "Edge case: every rule met, but the procedure is not covered.", " ", "Edge case: checking the provider and the facility."],
+              "The plan, the director", "Evals on real cases for each new service.") + "\n"
 BODY += phase(3, 10.1, 2.73, "C.amber", "C.amberSoft", "PHASE 3   ·   MONTHS 10 TO 12", "Member status.", None,
               "The member sees where a request stands. It reads the trusted record.", "The member", "A compliance review.") + "\n"
 BODY += 'seg("pA", 6.47, 3.5, 6.73, 3.5, true);  seg("pB", 9.82, 3.5, 10.08, 3.5, true);\n'

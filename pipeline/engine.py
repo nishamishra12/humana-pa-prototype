@@ -10,7 +10,7 @@ the procedure; the procedure lists its facts and the policies that apply, in ord
 Criteria can test a number (gte, lte), a choice (in), presence (default), or absence (mode "absent").
 This is plain code, not AI, so the same facts always give the same recommendation.
 """
-import json, os
+import json, os, re
 from .procedures import library, procedure_for_cpt, defs_by_key, ui_schema
 
 LIBRARY = library()
@@ -88,6 +88,44 @@ def _evidence_list(f):
     return ev
 
 
+# The detail that says WHICH procedure or approach is requested. A rule on it that fails means the procedure is not covered.
+# Today the owner's key fact is recognised by its name. Later the owner tags it.
+_PROCEDURE_FACT = re.compile(r"procedure|approach|operation", re.I)
+
+
+def _is_procedure_fact(defn):
+    return bool(defn) and defn.get("kind") == "enum" and bool(_PROCEDURE_FACT.search(defn.get("key", "") + " " + defn.get("label", "")))
+
+
+def _coverage_gap(not_met, facts, policies, defs):
+    """Every clinical rule is met, and the only rules that fail are about which procedure is requested, and that procedure is not on the
+    policy's covered list. Then the procedure is not covered. The covered options come straight from the approved rule, never from the AI."""
+    keys = {c["fact_key"] for c in not_met}
+    if len(keys) != 1:
+        return None
+    key = next(iter(keys))
+    if not _is_procedure_fact(defs.get(key)):
+        return None
+    f = facts.get(key) or {}
+    requested = f.get("value")
+    if f.get("status") != "found" or not requested or isinstance(requested, (list, tuple)):
+        return None
+    covered, source = [], None
+    for pol in policies:
+        for c in pol["criteria"]:
+            chk = c.get("check")
+            if c.get("required_fact") == key and chk and chk["op"] == "in" and _applies(c, facts):
+                for v in chk["value"]:
+                    if v not in covered:
+                        covered.append(v)
+                source = source or (pol, c)
+    if not covered or not source or str(requested).lower() in [str(v).lower() for v in covered]:
+        return None  # the requested procedure IS on the list: a different rule is failing, so the procedure is covered
+    pol, rule = source
+    return dict(fact=key, requested=requested, covered=covered, policy_id=pol["id"], policy_title=pol["title"], rule_id=rule["id"], cite=rule["cite"],
+                rule_text=rule["text"], fact_label=defs[key].get("label"))
+
+
 def analyze(facts: dict) -> dict:
     cpt = facts.get("_cpt")
     pkey, proc = procedure_for_cpt(cpt)
@@ -132,6 +170,7 @@ def analyze(facts: dict) -> dict:
 
     gate = dict(complete=not questions and not unsure, questions=list(questions.values()), unsure=list(unsure.values()))
     not_met = [c for c in checklist if c["status"] == "not_met"]
+    gap = None
     if unsure:
         action = "verify"
         rationale = ("We could not confirm " + ", ".join(label(k) for k in unsure) +
@@ -142,12 +181,14 @@ def analyze(facts: dict) -> dict:
                      ". Ask the provider for exactly that before judging the case.")
     elif not_met:
         action = "escalate"
+        gap = _coverage_gap(not_met, facts, policies, defs)
         rationale = ("The packet is complete, but " + "; ".join((c.get("short") or c["text"][:60]) for c in not_met) +
                      ". This needs a physician's clinical judgment, so it goes to a medical director.")
     else:
         action = "approve"
         rationale = "The packet is complete and every criterion is supported."
-    return dict(checklist=checklist, gate=gate, action=action, rationale=rationale, library_version=LIBRARY.get("version"),
+    extra = dict(coverage_gap=gap) if action == "escalate" and gap else {}
+    return dict(**extra, checklist=checklist, gate=gate, action=action, rationale=rationale, library_version=LIBRARY.get("version"),
                 policies=[dict(id=p["id"], level=LEVEL_LABEL[p["level"]], title=p["title"], source=p["source"],
                                url=p["url"], verified=p["verified"]) for p in policies if p["criteria"]],
                 cannot_deny=True, cpt_covered=True, covered_cpt_codes=covered,

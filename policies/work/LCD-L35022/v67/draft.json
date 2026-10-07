@@ -1,0 +1,354 @@
+{
+ "criteria": [
+  {
+   "id": "PROC-NOTCOVERED-PRIMARY",
+   "text": "Surgical treatment for primary obesity is not a covered Medicare service.",
+   "source_quote": "Surgical treatment for primary obesity is not a covered Medicare service.",
+   "cite": "CMS National Coverage Policy",
+   "required_fact": "has_obesity_comorbidity",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Does the record document at least one qualifying obesity comorbid condition (rather than primary obesity alone)?",
+   "short": "No documented obesity comorbidity (surgery for primary obesity only)",
+   "confidence": "medium"
+  },
+  {
+   "id": "PROC-LSG-STANDALONE-ONLY",
+   "text": "Laparoscopic Sleeve Gastrectomy is covered only as a stand-alone procedure, not as part of a staged procedure or a failed attempt converted to open.",
+   "source_quote": "Laparoscopic Sleeve Gastrectomy for a 'stand-alone' procedure (i.e., not as part of staged procedure or part of failed attempt that moves to an open procedure)",
+   "cite": "e10",
+   "required_fact": "procedure_type",
+   "applies_if": {
+    "fact": "procedure_type",
+    "equals": "LSG laparoscopic stand-alone"
+   },
+   "test": {
+    "type": "in",
+    "value": [
+     "LSG laparoscopic stand-alone"
+    ]
+   },
+   "if_missing": "Is the requested LSG a stand-alone procedure (not staged, not converted from a failed open attempt)?",
+   "short": "LSG not performed as stand-alone procedure",
+   "confidence": "high"
+  },
+  {
+   "id": "PROC-MINIGASTRIC-EXCLUDED",
+   "text": "Mini-gastric bypass is not covered under this LCD.",
+   "source_quote": "Mini-gastric bypass.",
+   "cite": "e11-e12",
+   "required_fact": "procedure_type",
+   "test": {
+    "type": "in",
+    "value": [
+     "RYGBP open",
+     "RYGBP laparoscopic",
+     "BPD/DS open",
+     "BPD/DS laparoscopic",
+     "BPD/GRDS open",
+     "BPD/GRDS laparoscopic",
+     "LAGB laparoscopic",
+     "LAGB open",
+     "LSG laparoscopic stand-alone",
+     "LSG open",
+     "VBG open",
+     "VBG laparoscopic"
+    ]
+   },
+   "if_missing": "What specific bariatric procedure is being requested?",
+   "short": "Requested procedure is mini-gastric bypass, which is excluded",
+   "confidence": "high"
+  },
+  {
+   "id": "PROC-SILASTIC-EXCLUDED",
+   "text": "Silastic ring vertical gastric bypass (Fobi pouch) is not covered under this LCD.",
+   "source_quote": "Silastic ring vertical gastric bypass (Fobi pouch).",
+   "cite": "e11,e13",
+   "required_fact": "procedure_type",
+   "test": {
+    "type": "in",
+    "value": [
+     "RYGBP open",
+     "RYGBP laparoscopic",
+     "BPD/DS open",
+     "BPD/DS laparoscopic",
+     "BPD/GRDS open",
+     "BPD/GRDS laparoscopic",
+     "LAGB laparoscopic",
+     "LAGB open",
+     "LSG laparoscopic stand-alone",
+     "LSG open",
+     "VBG open",
+     "VBG laparoscopic"
+    ]
+   },
+   "if_missing": "What specific bariatric procedure is being requested?",
+   "short": "Requested procedure is silastic ring vertical gastric bypass (Fobi pouch), which is excluded",
+   "confidence": "high"
+  },
+  {
+   "id": "COMORBID-REQUIRED",
+   "text": "Bariatric surgery is covered only when the patient has at least one qualifying obesity-related comorbid condition.",
+   "source_quote": "Comorbid conditions for which bariatric surgery is covered include the following",
+   "cite": "Comorbid Conditions",
+   "required_fact": "has_obesity_comorbidity",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Does the record document at least one qualifying obesity-related comorbid condition (e.g., Type II diabetes, refractory hypertension, refractory hyperlipidemia, obesity-induced cardiomyopathy, clinically significant OSA, obesity-related hypoventilation, pseudotumor cerebri, severe arthropathy, hepatic steatosis without prior inflammation)?",
+   "short": "No qualifying obesity-related comorbid condition documented",
+   "confidence": "high"
+  },
+  {
+   "id": "COMORBID-NOT-TRIVIAL",
+   "text": "The comorbid condition must not be trivial or easily controlled with non-invasive means and must be of sufficient severity to pose considerable risk to function and/or survival.",
+   "source_quote": "condition must not be trivial or easily controlled with non-invasive means (such as medication) and must be of sufficient severity as to pose considerable short- or long-term risk to function and/or survival",
+   "cite": "e26",
+   "required_fact": null,
+   "test": {
+    "type": "informational"
+   },
+   "if_missing": null,
+   "short": "Comorbidity severity assessment needed",
+   "confidence": "low"
+  },
+  {
+   "id": "COMORBID-NO-CONTRAINDICATIONS",
+   "text": "No contraindications to bariatric surgery may exist.",
+   "source_quote": "no contraindications to bariatric surgery may exist",
+   "cite": "e26",
+   "required_fact": "bariatric_contraindication_present",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the record document any absolute contraindication to bariatric surgery (e.g., prohibitive cardiac risk, severe COPD, non-compliance, continued tobacco use, significant psychiatric disorder, eating disorder, severe hiatal hernia for LAGB, autoimmune disease for LAGB, hepatic disease with inflammation/portal hypertension/ascites)?",
+   "short": "A contraindication to bariatric surgery is documented",
+   "confidence": "high"
+  },
+  {
+   "id": "MEDTX-BMI-MET",
+   "text": "To be deemed unsuccessful with medical treatment, the patient must meet BMI requirements stated in national policy at the time of surgery.",
+   "source_quote": "The patient meets BMI requirements stated in national policy (at the time of surgery).",
+   "cite": "Previous Unsuccessful Medical Treatment for Obesity",
+   "required_fact": "bmi",
+   "test": {
+    "type": "gte",
+    "value": 35
+   },
+   "if_missing": "What is the beneficiary's calculated BMI (kg/m^2) at the time of surgery?",
+   "short": "BMI does not meet national policy threshold",
+   "confidence": "low"
+  },
+  {
+   "id": "MEDTX-LIFESTYLE-KNOWLEDGE",
+   "text": "The patient must have been provided with knowledge and tools for lifestyle change and be demonstrated as capable and willing to undergo the changes.",
+   "source_quote": "The patient has been provided with knowledge and tools needed to achieve such lifelong lifestyle changes, exhibits understanding of the needed changes and is demonstrated to clinicians involved in his or her care to be capable and willing to undergo the changes.",
+   "cite": "Previous Unsuccessful Medical Treatment for Obesity",
+   "required_fact": "lifestyle_education_demonstrated",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Does the record document that the patient was educated on lifestyle changes and demonstrated capability/willingness to undergo them?",
+   "short": "No documentation of lifestyle education/demonstrated capability",
+   "confidence": "medium"
+  },
+  {
+   "id": "MEDTX-DILIGENT-EFFORT-CERTIFIED",
+   "text": "The patient's diligent effort to achieve healthy body weight must be described in the medical record and certified by the operating surgeon.",
+   "source_quote": "The patient has made a diligent effort to achieve healthy body weight with such efforts described in the medical record and certified by the operating surgeon.",
+   "cite": "Previous Unsuccessful Medical Treatment for Obesity",
+   "required_fact": "diligent_effort_certified_by_surgeon",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there documentation in the medical record, certified by the operating surgeon, of the patient's diligent effort to achieve a healthy body weight?",
+   "short": "No surgeon-certified documentation of diligent weight-loss effort",
+   "confidence": "high"
+  },
+  {
+   "id": "MEDTX-STRUCTURED-PROGRAM",
+   "text": "The patient must have failed to maintain healthy weight despite adequate participation in a structured dietary program overseen by a qualifying professional (physician, RD, CSP, CSR, or FADA).",
+   "source_quote": "The patient has failed to maintain a healthy weight despite adequate participation in a structured dietary program overseen by one of the following",
+   "cite": "Previous Unsuccessful Medical Treatment for Obesity",
+   "required_fact": "prior_medical_tx_unsuccessful",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Does the record document a prior structured dietary program (overseen by a physician, RD, CSP, CSR, or FADA) that the patient participated in adequately but failed to maintain healthy weight?",
+   "short": "No documented unsuccessful structured dietary program overseen by qualifying professional",
+   "confidence": "high"
+  },
+  {
+   "id": "PSYCH-EVAL-REQUIRED-IF-HISTORY",
+   "text": "Patients with a history of psychiatric/psychological disorder, currently under psychiatric/psychological care, or on psychotropic medications must undergo preoperative psychological evaluation and clearance with documentation in the record.",
+   "source_quote": "Patients who have a history of psychiatric or psychological disorder or are currently under the care of a psychologist/psychiatrist, or are on psychotropic medications, must undergo preoperative psychological evaluation and clearance and the patient's record must include documentation of the evaluation and assessment.",
+   "cite": "Preoperative Psychological/Psychiatric Evaluation",
+   "required_fact": "psych_eval_documented",
+   "applies_if": {
+    "fact": "psychiatric_history_present",
+    "equals": "yes"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "If the patient has a psychiatric history, current psychiatric/psychological care, or is on psychotropic medications, is there documentation of a preoperative psychological evaluation and clearance?",
+   "short": "Required psychological evaluation/clearance not documented for patient with psychiatric history",
+   "confidence": "high"
+  },
+  {
+   "id": "SURGEON-TRAINING",
+   "text": "Bariatric surgery must be performed by a surgeon trained and substantially experienced with surgery of the digestive tract, with training from a completed accredited residency, ongoing CME, and board certification by the appropriate ABMS.",
+   "source_quote": "Bariatric surgery procedures must be performed by a surgeon trained and substantially experienced with surgery of the digestive tract.",
+   "cite": "Contractor Local Coverage Policy",
+   "required_fact": "surgeon_qualifications_met",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there documentation that the operating surgeon is trained/experienced in digestive tract surgery, completed an accredited residency, maintains CME, and is board certified by the appropriate ABMS (or equivalent college/society membership)?",
+   "short": "Surgeon qualifications not documented",
+   "confidence": "medium"
+  },
+  {
+   "id": "POSTOP-SURGEON-CARE",
+   "text": "Postoperative care by the operating surgeon immediately following surgery and throughout the global period is required.",
+   "source_quote": "Postoperative care by the operating surgeon immediately following surgery and throughout the global period for the surgery.",
+   "cite": "Postoperative Care",
+   "required_fact": "postop_surgeon_care_documented",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there a plan/documentation for postoperative care by the operating surgeon through the global period?",
+   "short": "No documented plan for postoperative surgeon care",
+   "confidence": "medium"
+  },
+  {
+   "id": "POSTOP-THREE-VISITS",
+   "text": "At least three follow-up visits with the bariatric surgery team within the first year are required.",
+   "source_quote": "At least three follow-up visits with the bariatric surgery team within the first year.",
+   "cite": "Postoperative Care",
+   "required_fact": "postop_three_visits_planned",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there a documented plan for at least three follow-up visits with the bariatric surgery team within the first year?",
+   "short": "No documented plan for at least three follow-up visits in first year",
+   "confidence": "medium"
+  },
+  {
+   "id": "POSTOP-LIFETIME-CARE",
+   "text": "Lifetime postoperative care for dietary, exercise, and lifestyle issues reinforced by counseling/support groups supervised by a physician is required.",
+   "source_quote": "Lifetime postoperative care for dietary issues (including vitamin, mineral and nutritional supplementation), exercise and lifestyle changes reinforced by counseling and/or support groups supervised by a physician knowledgeable in the long-term care of such patients.",
+   "cite": "Postoperative Care",
+   "required_fact": "postop_lifetime_care_plan_documented",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there a documented plan for lifetime postoperative dietary/exercise/lifestyle care supervised by a knowledgeable physician?",
+   "short": "No documented lifetime postoperative care plan",
+   "confidence": "medium"
+  },
+  {
+   "id": "REPEAT-PROCEDURE-NOT-COVERED",
+   "text": "Repeat bariatric surgery is generally not reasonable and necessary and is not covered absent appeal-level documentation.",
+   "source_quote": "Repeat bariatric surgery is generally not reasonable and necessary.",
+   "cite": "Repeat Bariatric Procedures",
+   "required_fact": "prior_bariatric_surgery_history",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have a history of a prior bariatric surgical procedure?",
+   "short": "Patient has prior bariatric surgery (repeat procedure generally not covered)",
+   "confidence": "medium"
+  }
+ ],
+ "new_facts": [
+  {
+   "key": "bariatric_contraindication_present",
+   "label": "Documented absolute contraindication to bariatric surgery",
+   "kind": "event",
+   "ask": "Does the record document any absolute contraindication (cardiac risk, severe COPD, non-compliance, tobacco use, psychiatric conditions, eating disorder, severe hiatal hernia for LAGB, autoimmune disease for LAGB, hepatic disease with inflammation/portal HTN/ascites)?"
+  },
+  {
+   "key": "lifestyle_education_demonstrated",
+   "label": "Patient educated on lifestyle changes and demonstrated capability/willingness",
+   "kind": "event",
+   "ask": "Does the record show the patient was given knowledge/tools for lifestyle change and demonstrated understanding and willingness?"
+  },
+  {
+   "key": "diligent_effort_certified_by_surgeon",
+   "label": "Diligent weight-loss effort documented and certified by operating surgeon",
+   "kind": "event",
+   "ask": "Is there documentation, certified by the operating surgeon, describing the patient's diligent effort to achieve a healthy body weight?"
+  },
+  {
+   "key": "psych_eval_documented",
+   "label": "Preoperative psychological evaluation and clearance documented",
+   "kind": "event",
+   "ask": "Is there documentation of a preoperative psychological/psychiatric evaluation and clearance for this patient?"
+  },
+  {
+   "key": "psychiatric_history_present",
+   "label": "Patient has psychiatric history, current psych care, or is on psychotropic medications",
+   "kind": "enum",
+   "ask": "Does the patient have a history of psychiatric/psychological disorder, is currently under psychological/psychiatric care, or is on psychotropic medications?",
+   "values": [
+    "yes",
+    "no"
+   ]
+  },
+  {
+   "key": "surgeon_qualifications_met",
+   "label": "Operating surgeon meets training/certification requirements",
+   "kind": "event",
+   "ask": "Does the record document the operating surgeon's training (accredited residency), CME, and board certification (or equivalent society fellowship/membership)?"
+  },
+  {
+   "key": "postop_surgeon_care_documented",
+   "label": "Postoperative care plan by operating surgeon documented",
+   "kind": "event",
+   "ask": "Is there a documented plan for postoperative care by the operating surgeon through the global period?"
+  },
+  {
+   "key": "postop_three_visits_planned",
+   "label": "Plan for at least 3 follow-up visits within first year",
+   "kind": "event",
+   "ask": "Is there a documented plan for at least three bariatric team follow-up visits within the first year post-surgery?"
+  },
+  {
+   "key": "postop_lifetime_care_plan_documented",
+   "label": "Lifetime postoperative care plan documented",
+   "kind": "event",
+   "ask": "Is there a documented plan for lifetime postoperative dietary/exercise/lifestyle care supervised by a physician?"
+  },
+  {
+   "key": "prior_bariatric_surgery_history",
+   "label": "History of prior bariatric surgical procedure",
+   "kind": "event",
+   "ask": "Does the patient have a history of a previous bariatric surgical procedure?"
+  }
+ ],
+ "not_modeled": [
+  {
+   "quote": "Incidental cholecystectomy is covered in the presence of signs and/or symptoms of gallbladder disease, finding of a grossly diseased gallbladder at the time of operation or a history of metabolic derangements that will result in symptomatic gallbladder disease following bariatric procedures.",
+   "why": "This is a separate ancillary coverage pathway (incidental cholecystectomy) requiring intraoperative/clinical findings not part of the core bariatric surgery eligibility vocabulary; no corresponding fact exists and it is a distinct procedure decision."
+  },
+  {
+   "quote": "A diagnostic session is appropriate, and treatment sessions are appropriate if the patient has a diagnosable disorder that is likely to respond to psychotherapy.",
+   "why": "This describes coverage of psychological treatment sessions themselves, not a bariatric surgery eligibility criterion; requires clinical judgment on diagnosis/treatment response not captured by a simple fact."
+  },
+  {
+   "quote": "Routine preoperative testing (including upper gastrointestinal endoscopy) in the absence of signs/symptoms or personal history of a disease that could be negatively impacted by anesthesia or surgery is excluded from Medicare coverage by law.",
+   "why": "This is a billing exclusion for specific ancillary testing, not a bariatric surgery authorization criterion, and depends on complex clinical judgment about symptom presence per test type."
+  },
+  {
+   "quote": "All underlying medical conditions that will likely impact or complicate the patient's surgical and postoperative course must be adequately controlled before surgery.",
+   "why": "Too vague/general to test as a single fact; requires case-by-case clinical judgment across unspecified conditions."
+  }
+ ],
+ "_usage": {
+  "input_tokens": 7511,
+  "output_tokens": 6579
+ },
+ "_model": "claude-sonnet-5"
+}

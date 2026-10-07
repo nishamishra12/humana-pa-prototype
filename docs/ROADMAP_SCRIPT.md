@@ -1,26 +1,22 @@
 # Roadmap slide: speaker script
 
-In my own voice. Plain, active sentences. Short version. After this slide, I walk them through what Phase 1 looks like.
+In my own voice. Short, plain sentences. After this slide, I walk them through our personas in Phase 1.
 
 ## Script
-This is the roadmap. Three phases, about a year. The months are illustrative. The order is what matters. My rule is simple: each phase earns the next one.
+This is the roadmap. Three phases, about a year. The months are illustrative. The order is what matters. Each phase earns the next one.
 
-Phase 1 has one goal. Get each request decided right the first time, with a person still deciding. The measure, my north star, is the right-first-time rate. Out of every 100 requests, how many are right the first time, with no back and forth.
+We start with Phase 1. It has one goal: get each request right the first time, with a person still deciding. My north star here is the right-first-time rate. Out of every 100 requests, how many are right the first time, with no back and forth?
 
-Two milestones ladder up to that goal.
+Phase 1 has two milestones.
 
-Milestone 1 is to build the library. Think of it as the rulebook. One central place with every policy we cover, written as a checklist of what each one wants to see in a request. Every item traces back to the policy's own words. It is the foundation, so I measure it by how fast we can add a service.
+Milestone 1 is building the rulebook. Here we onboard a new service. We attach every policy that applies to it. Then we turn each policy into a checklist. The checklist says what the policy wants to see in a request. This is the foundation that the AI in milestone 2 uses.
 
-Milestone 2 is to decide every packet. The AI checks each request against that checklist and gives the nurse a recommendation, with the evidence. The nurse confirms. This is where the north star moves. The nurse stops hunting. The provider stops re-sending. The member gets a decision sooner.
+Milestone 2 is the recommendation. The AI checks every request against the rulebook we created in milestone 1. It recommends what to do, with the evidence from the packet, and gives it to the nurse. The nurse stops hunting. The provider stops re-sending. And the request gets decided faster.
 
-Why start here? That is where the delay lives. It is the safest place, because a person decides every case. And it builds the record that everything else needs.
+Phase 2 is scale, plus a few more features. We onboard more services, ranked by Humana's own request history. And we handle a few edge cases. One is where every clinical rule is met, but the procedure isn't covered. The system will suggest the usual next step, like a covered alternative. The other is checking the provider and the facility, for the things a fax can't tell us.
 
-Why the library first? The AI only uses what a person approved. So I get that right, then run in shadow beside the nurses before any nurse sees a recommendation. The gate to leave Phase 1 is a tested library, and zero wrong approvals on real labeled cases.
+Phase 3 is member status. The member sees where a request stands. It comes last because a status is only as good as the record behind it.
 
-Phase 2 is scale. I add services one at a time, ranked by Humana's own request history. Only after Phase 1 is proven.
+So: prove it's right, then widen it, then show it to the member. And a person decides in every phase.
 
-Phase 3 is member status. The member sees where a request stands. It comes last because a status is only as good as the record behind it, and it needs a compliance review. From January 2027, plans must offer a Patient Access API. This lands after that, so I'm not claiming it meets the mandate. It builds on the record.
-
-Prove it is right. Then widen it. Then show it to the member. A person decides in every phase, and the AI never denies.
-
-Now let me walk you through what Phase 1 looks like.
+Now let me walk you through our personas in Phase 1.

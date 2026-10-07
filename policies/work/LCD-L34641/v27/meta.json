@@ -1,0 +1,12 @@
+{
+ "policy_id": "LCD-L34641",
+ "level": "LCD",
+ "title": "Transcranial Magnetic Stimulation (TMS)",
+ "version": "v27",
+ "effective": "03/26/2026",
+ "url": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=34641",
+ "source": "CMS Coverage API",
+ "sha256": "974c9de8bab59dcc6f4847d783a97c8813b66b9a92581b0771ea5f7da99d9461",
+ "chars": 4802,
+ "retrieved_at": "2026-10-07T16:13:24+00:00"
+}

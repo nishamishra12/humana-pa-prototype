@@ -24,6 +24,9 @@ EXTRACT_MODEL = os.getenv("PA_EXTRACT_MODEL", "claude-sonnet-5")
 SYSTEM = """You read a prior authorization packet and fill in a fact form for one procedure. Be literal and conservative.
 
 1. NEGATION. If the text rules something out ("no evidence of instability", "no significant comorbidities", "denies diabetes"), that is status "none", never "found". Reread the sentence: does it say the finding IS present, or that it is ABSENT?
+   The same goes for a fact that asks whether a requirement is met (a severe diagnosis, a failed trial, a qualified prescriber). If the packet
+   clearly shows it is NOT met (it says "moderate" where the fact asks for severe, or the therapy is working where the fact asks for a failed
+   trial), that is status "none", with the sentence that shows it as evidence. Never "found" with a quote that says the opposite.
 
 2. CONFLICTS. If the packet states a fact more than once with different values, the later, dated or more specific statement is the current one (for example a repeat echocardiogram after treatment replaces an older one, even if the older report appears on a later page of the packet). Choose the current value, and list BOTH statements as evidence: the one that backs your value with supports_value true, the other with supports_value false. Put the dates in "date". Name the conflict in "note".
 
@@ -237,7 +240,7 @@ def _claim_text(d, raw):
     st, v = raw["status"], raw["value"]
     label = d.get("phrase") or d["label"]
     if st == "none":
-        return f"The packet states that there is none: {label}."
+        return f"The packet states that this is absent or not met: {label}."
     if v is None or d["kind"] in ("text", "event"):
         return f"The packet documents {label}."  # free text: do not make one sentence carry the whole summary
     if isinstance(v, list):
@@ -297,6 +300,14 @@ def _assemble(d, agreed, raw, why, pages, verdicts):
     return f
 
 
+def _shows_not_met(d, f, raw, absent):
+    """True when all three reads agreed on "found", but the checker says every quote shows the opposite, for a requirement fact."""
+    if f.get("status") != "unsure" or raw.get("status") != "found" or "none" not in d["statuses"] or d["key"] in absent:
+        return False
+    v = [x.get("verdict") for x in f.get("evidence", []) if x.get("supports")]
+    return bool(v) and all(x == "contradicts" for x in v)
+
+
 def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3, trace: dict | None = None) -> dict:
     """trace: pass an empty dict to capture what each step saw and produced (used by scripts/trace_case.py). Nothing else changes."""
     import anthropic
@@ -309,11 +320,27 @@ def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3, trac
     head = extract_header(full)
     n = max(1, n_votes)
     with tel.span("extract.reads", procedure=proc_key, votes=n, pages=len({e.page for e in elements})):
+        def once(_):
+            try:
+                return _run_once(packet_text, proc, client, head)
+            except Exception as e:  # one bad read does not lose the case: the others still vote
+                print(f"[extract] one read failed ({type(e).__name__}: {str(e)[:120]})")
+                tel.event("extract.read_failed", error=True, **{"error.type": type(e).__name__})
+                return None
         with ThreadPoolExecutor(max_workers=n) as pool:
-            runs = list(pool.map(tel.bind(lambda _: _run_once(packet_text, proc, client, head)), range(n)))
+            runs = [r for r in pool.map(tel.bind(once), range(n)) if r is not None]
+        if len(runs) < min(n, 2):
+            raise RuntimeError(f"only {len(runs)} of {n} reads succeeded")
 
     pages = ev.page_texts(elements)
     combined = {d["key"]: _combine(runs, d) for d in defs}
+    lib = library()
+    pols = [p for p in lib["policies"] if p["id"] in proc.get("policies", [])]
+    absent = {c.get("required_fact") for p in pols for c in p.get("criteria", []) if c.get("mode") == "absent"}  # safety facts: "none" passes the rule
+    for d in defs:  # a fact read as "none": the quote that shows it is the evidence, whichever way a read flagged it (safety facts are still checked below)
+        agreed, raw, _ = combined[d["key"]]
+        if agreed and raw["status"] == "none" and raw["evidence"] and not any(e.get("supports_value", True) for e in raw["evidence"]):
+            raw["evidence"] = [dict(e, supports_value=True) for e in raw["evidence"]]
     if trace is not None:
         trace.update(system_prompt=SYSTEM, packet_chars=len(packet_text), packet_preview=packet_text[:1800], header=head, runs=runs,
                      combined={k: dict(agreed=v[0], why=v[2]) for k, v in combined.items()}, tool_facts=[dict(key=d["key"], label=d["label"], ask=d["ask"], kind=d["kind"]) for d in defs],
@@ -323,6 +350,8 @@ def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3, trac
         agreed, raw, _ = combined[d["key"]]
         if not agreed or raw["status"] == "missing":
             continue
+        if raw["status"] == "none" and d["key"] not in absent:
+            continue  # a requirement read as "not met" only sends the case to a person, so it skips the meaning check (which misreads "moderate, not severe" as a contradiction)
         i = 0
         for e in raw["evidence"]:
             if not e.get("supports_value", True):
@@ -342,7 +371,16 @@ def extract_facts(elements: list[Element], proc_key: str, n_votes: int = 3, trac
     facts["_procedure_key"] = proc_key
     for d in defs:
         agreed, raw, why = combined[d["key"]]
-        facts[d["key"]] = _assemble(d, agreed, raw, why, pages, verdicts)
+        f = _assemble(d, agreed, raw, why, pages, verdicts)
+        if _shows_not_met(d, f, raw, absent):
+            # the reader said "found", but the checker says every quote shows the opposite ("moderate" for a severe diagnosis).
+            # For a requirement that means "not met": the case goes to a person, never to a denial. Safety facts (mode absent) stay
+            # "unsure", because flipping one of those would pass a case.
+            shown = [x for x in f["evidence"] if x.get("verdict") == "contradicts"]
+            reason = f["note"].split("does not clearly state this. ", 1)[-1].replace(" Check the packet.", "").strip()
+            f = _fact("none", None, shown[0]["page"], shown[0]["quote"], "The packet shows this is not met. " + reason)
+            f["evidence"] = [dict(x, supports=True) for x in shown]
+        facts[d["key"]] = f
     stat = [facts[d["key"]]["status"] for d in defs]
     tel.event("extract.summary", procedure=proc_key, facts_total=len(defs), facts_found=stat.count("found"), facts_none=stat.count("none"), facts_missing=stat.count("missing"),
             facts_unsure=stat.count("unsure"), facts_checked=sum(1 for d in defs if facts[d["key"]].get("checked")),

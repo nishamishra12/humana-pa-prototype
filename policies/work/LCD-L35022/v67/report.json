@@ -1,0 +1,175 @@
+{
+ "criteria": [
+  {
+   "id": "PROC-NOTCOVERED-PRIMARY",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PROC-LSG-STANDALONE-ONLY",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PROC-MINIGASTRIC-EXCLUDED",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PROC-SILASTIC-EXCLUDED",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "COMORBID-REQUIRED",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "COMORBID-NOT-TRIVIAL",
+   "level": "review",
+   "issues": [
+    "the AI marked its own confidence low"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "COMORBID-NO-CONTRAINDICATIONS",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (bariatric_contraindication_present): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "MEDTX-BMI-MET",
+   "level": "fail",
+   "issues": [
+    "the number 35 does not appear in the quote",
+    "the AI marked its own confidence low"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "MEDTX-LIFESTYLE-KNOWLEDGE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (lifestyle_education_demonstrated): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "MEDTX-DILIGENT-EFFORT-CERTIFIED",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (diligent_effort_certified_by_surgeon): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "MEDTX-STRUCTURED-PROGRAM",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PSYCH-EVAL-REQUIRED-IF-HISTORY",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (psych_eval_documented): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SURGEON-TRAINING",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (surgeon_qualifications_met): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "POSTOP-SURGEON-CARE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (postop_surgeon_care_documented): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "POSTOP-THREE-VISITS",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (postop_three_visits_planned): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "POSTOP-LIFETIME-CARE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (postop_lifetime_care_plan_documented): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "REPEAT-PROCEDURE-NOT-COVERED",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (prior_bariatric_surgery_history): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 6,
+  "review": 10,
+  "fail": 1
+ },
+ "total": 17,
+ "uncovered": [
+  "When billing for non-covered services, use the appropriate modifier.",
+  "This training and expertise must have been acquired within the framework of a completed accredited",
+  "Severe arthropathy of spine and/or weight-bearing joints (when obesity prohibits appropriate surgical management of",
+  "Services performed for any given diagnosis must meet all of the indications and limitations stated in this policy,",
+  "providers who report services for Medicare payment must fully understand and follow all existing laws, regulations and",
+  "rules for Medicare payment for bariatric surgical services and must properly submit only valid claims for them.",
+  "review and understand them and apply the medical necessity provisions in the policy within the context of the manual",
+  "Relevant CMS manual instructions and policies may be found in the following Internet-Only Manuals (IOMs)"
+ ],
+ "new_facts": [
+  "bariatric_contraindication_present",
+  "lifestyle_education_demonstrated",
+  "diligent_effort_certified_by_surgeon",
+  "psych_eval_documented",
+  "psychiatric_history_present",
+  "surgeon_qualifications_met",
+  "postop_surgeon_care_documented",
+  "postop_three_visits_planned",
+  "postop_lifetime_care_plan_documented",
+  "prior_bariatric_surgery_history"
+ ],
+ "not_modeled": 4
+}

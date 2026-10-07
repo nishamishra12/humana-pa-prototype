@@ -37,6 +37,7 @@ POLICY_SCHEMA = """
 CREATE TABLE IF NOT EXISTS policy_builds(id TEXT PRIMARY KEY, policy_id TEXT, kind TEXT, ident TEXT, service TEXT, status TEXT, stage TEXT, error TEXT,
   folder TEXT, version TEXT, created_by INTEGER, created_at TEXT, summary TEXT);
 CREATE TABLE IF NOT EXISTS policy_decisions(build_id TEXT, criterion_id TEXT, decision TEXT, edited TEXT, decided_by INTEGER, decided_at TEXT, PRIMARY KEY(build_id, criterion_id));
+CREATE TABLE IF NOT EXISTS policy_owner_rules(build_id TEXT, id TEXT, rule TEXT, new_fact TEXT, added_by INTEGER, added_at TEXT, PRIMARY KEY(build_id, id));
 CREATE TABLE IF NOT EXISTS policy_versions(n INTEGER PRIMARY KEY AUTOINCREMENT, library_version TEXT, kind TEXT, policy_id TEXT, build_id TEXT,
   published_by INTEGER, published_at TEXT, changelog TEXT, note TEXT);
 CREATE TABLE IF NOT EXISTS cms_articles(document_id INTEGER, version INTEGER, display_id TEXT, title TEXT, mac TEXT, updated_on TEXT, codes_at TEXT, PRIMARY KEY(document_id, version));
@@ -116,8 +117,8 @@ def raise_sla_alerts(c):
 
 
 def create_case(c, elements, engine, facts, analysis, packet_file, priority="standard", received_offset=0.0, case_id=None):
-    n = c.execute("SELECT COUNT(*) FROM cases").fetchone()[0]
-    case_id = case_id or f"PA-{1001 + n}"
+    top = c.execute("SELECT MAX(CAST(SUBSTR(id, 4) AS INTEGER)) FROM cases WHERE id LIKE 'PA-%'").fetchone()[0]
+    case_id = case_id or f"PA-{(top or 1000) + 1}"  # the highest number plus one, so a deleted case never makes the next one collide
     m = facts.get("_member", {})
     received = now(received_offset)
     due = (datetime.fromisoformat(received) + timedelta(hours=72 if priority == "expedited" else 24 * 7)).isoformat(timespec="seconds")

@@ -1,0 +1,429 @@
+{
+ "criteria": [
+  {
+   "id": "PRESCRIBER-QUALIFIED",
+   "text": "TMS must be prescribed and administered by a licensed physician knowledgeable in the use of rTMS.",
+   "source_quote": "TMS may be covered if prescribed and administered by a licensed physician who is knowledgeable in the use of repetitive transcranial magnetic stimulation.",
+   "cite": "Indications for Coverage",
+   "required_fact": "prescriber_qualified",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is TMS prescribed and administered by a licensed physician knowledgeable in rTMS?",
+   "short": "Prescriber not confirmed qualified",
+   "confidence": "medium"
+  },
+  {
+   "id": "DX-MDD-SEVERE",
+   "text": "Patient must be an adult with a confirmed diagnosis of severe major depressive disorder, single or recurrent episode.",
+   "source_quote": "an adult who has a confirmed diagnosis of severe major depressive disorder (MDD) single or recurrent episode",
+   "cite": "Initial Treatment",
+   "required_fact": "dx_severe_mdd",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there a confirmed diagnosis of severe MDD (single or recurrent episode) in an adult patient?",
+   "short": "Severe MDD diagnosis not confirmed",
+   "confidence": "high"
+  },
+  {
+   "id": "FAILED-INITIAL-TX",
+   "text": "Patient must have failed to benefit from initial treatment of depression.",
+   "source_quote": "Outpatient rTMS may be indicated for patients with DSM-IV defined Major Depressive Disorder who have failed to benefit from initial treatment of their depression.",
+   "cite": "Indications for Coverage",
+   "required_fact": "failed_initial_treatment",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Has the patient failed to benefit from initial treatment of their depression?",
+   "short": "No documented failure of initial treatment",
+   "confidence": "high"
+  },
+  {
+   "id": "MEDS-RESISTANCE",
+   "text": "Resistance to treatment: lack of clinically significant response to a trial of psychopharmacologic agents from at least 2 different agent classes in current episode, each at adequate dose/duration.",
+   "source_quote": "Resistance to treatment with psychopharmacologic agents as evidenced by a lack of a clinically significant response to 1 trial of psychopharmacologic agents in the current depressive episode from at least 2 different agent classes.",
+   "cite": "Initial Treatment",
+   "required_fact": "med_resistance_criterion_met",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Does the patient meet the medication resistance criterion (failed trial with at least 2 agent classes at adequate dosing in current episode)?",
+   "short": "Medication resistance criterion not met",
+   "confidence": "medium"
+  },
+  {
+   "id": "MEDS-INTOLERANCE",
+   "text": "Inability to tolerate psychopharmacologic agents: 2 trials from at least 2 different agent classes with distinct side effects.",
+   "source_quote": "Inability to tolerate psychopharmacologic agents as evidenced by 2 trials of psychopharmacologic agents from at least 2 different agent classes, with distinct side effects",
+   "cite": "Initial Treatment",
+   "required_fact": "med_intolerance_criterion_met",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Does the patient meet the medication intolerance criterion (2 trials, 2+ classes, distinct side effects)?",
+   "short": "Medication intolerance criterion not met",
+   "confidence": "medium"
+  },
+  {
+   "id": "PRIOR-RTMS-RESPONSE",
+   "text": "History of response to rTMS in a previous depressive episode.",
+   "source_quote": "History of response to rTMS in a previous depressive episode",
+   "cite": "Initial Treatment",
+   "required_fact": "prior_rtms_response",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Does the patient have a history of response to rTMS in a previous depressive episode?",
+   "short": "No prior rTMS response history",
+   "confidence": "high"
+  },
+  {
+   "id": "CURRENT-ECT",
+   "text": "Patient is currently receiving ECT, with rTMS considered as a less invasive alternative.",
+   "source_quote": "If patient is currently receiving electro-convulsive therapy, rTMS may be considered reasonable and necessary as a less invasive treatment option.",
+   "cite": "Initial Treatment",
+   "required_fact": "currently_receiving_ect",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is the patient currently receiving ECT?",
+   "short": "Not currently receiving ECT",
+   "confidence": "high"
+  },
+  {
+   "id": "ONE-OF-FOUR-SUBCRITERIA",
+   "text": "At least one of the four sub-criteria (med resistance, med intolerance, prior rTMS response, current ECT) must be met.",
+   "source_quote": "One or more of the following:",
+   "cite": "Initial Treatment",
+   "required_fact": "one_of_four_subcriteria_met",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Does the patient meet at least one of the four listed sub-criteria (medication resistance, intolerance, prior rTMS response, or current ECT)?",
+   "short": "None of the required sub-criteria met",
+   "confidence": "medium"
+  },
+  {
+   "id": "PSYCHOTHERAPY-TRIAL",
+   "text": "Patient must have had a trial of evidence-based psychotherapy effective for MDD, of adequate frequency and duration, without significant improvement as documented by standardized rating scales.",
+   "source_quote": "A trial of an evidence-based psychotherapy known to be effective in the treatment of MDD of an adequate frequency and duration without significant improvement in depressive symptoms as documented by standardized rating scales that reliably measure depressive symptoms.",
+   "cite": "Initial Treatment",
+   "required_fact": "psychotherapy_trial_failed",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Has the patient had a documented trial of evidence-based psychotherapy of adequate frequency/duration without significant improvement, per standardized rating scales?",
+   "short": "No documented adequate psychotherapy trial failure",
+   "confidence": "high"
+  },
+  {
+   "id": "ORDER-BY-PSYCHIATRIST",
+   "text": "The order for treatment (or retreatment) must be written by a psychiatrist (MD or DO) who has examined the patient and reviewed the record.",
+   "source_quote": "The order for treatment (or retreatment) is written by a psychiatrist (MD or DO) who has examined the patient and reviewed the record.",
+   "cite": "Initial Treatment",
+   "required_fact": "order_by_psychiatrist",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Was the treatment order written by a psychiatrist (MD/DO) who examined the patient and reviewed the record?",
+   "short": "Order not written by qualifying psychiatrist",
+   "confidence": "high"
+  },
+  {
+   "id": "PHYSICIAN-TMS-EXPERIENCE",
+   "text": "The ordering physician must have experience administering TMS therapy.",
+   "source_quote": "The physician will have experience in administering TMS therapy.",
+   "cite": "Initial Treatment",
+   "required_fact": "physician_tms_experience",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Does the ordering physician have experience administering TMS therapy?",
+   "short": "Physician TMS experience not confirmed",
+   "confidence": "medium"
+  },
+  {
+   "id": "DIRECT-SUPERVISION",
+   "text": "Treatment must be given under direct supervision of the ordering physician (physician present in the area).",
+   "source_quote": "The treatment shall be given under direct supervision of this physician (physician present in the area but does not necessarily personally provide the treatment).",
+   "cite": "Initial Treatment",
+   "required_fact": "direct_supervision",
+   "test": {
+    "type": "in",
+    "value": [
+     "yes"
+    ]
+   },
+   "if_missing": "Is treatment given under direct supervision of the ordering physician (present in the area)?",
+   "short": "Direct supervision not confirmed",
+   "confidence": "high"
+  },
+  {
+   "id": "NO-SEIZURE-HISTORY",
+   "text": "Patient must not have a seizure disorder or history of seizures (except ECT-induced or isolated febrile seizures in infancy without recurrence).",
+   "source_quote": "Seizure disorder or any history of seizures (except those induced by ECT or isolated febrile seizures in infancy without subsequent treatment or recurrence)",
+   "cite": "Coverage Limitations",
+   "required_fact": "seizure_history",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have a seizure disorder or history of seizures (other than ECT-induced or isolated infantile febrile seizures)?",
+   "short": "Seizure history present",
+   "confidence": "high"
+  },
+  {
+   "id": "NO-PSYCHOTIC-SYMPTOMS",
+   "text": "Patient must not have acute or chronic psychotic symptoms or disorders in the current depressive episode.",
+   "source_quote": "Presence of acute or chronic psychotic symptoms or disorders (such as schizophrenia, schizophreniform or schizoaffective disorder) in the current depressive episode",
+   "cite": "Coverage Limitations",
+   "required_fact": "psychotic_symptoms_current_episode",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have acute or chronic psychotic symptoms or disorders in the current depressive episode?",
+   "short": "Psychotic symptoms present",
+   "confidence": "high"
+  },
+  {
+   "id": "NO-NEURO-CONDITIONS",
+   "text": "Patient must not have neurological conditions including epilepsy, cerebrovascular disease, dementia, increased intracranial pressure, history of repetitive/severe head trauma, or CNS tumors.",
+   "source_quote": "Neurological conditions that include epilepsy, cerebrovascular disease, dementia, increased intracranial pressure, history of repetitive or severe head trauma, or primary or secondary tumors in the central nervous system",
+   "cite": "Coverage Limitations",
+   "required_fact": "neuro_condition_present",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have any of the listed neurological conditions (epilepsy, cerebrovascular disease, dementia, increased ICP, severe head trauma history, CNS tumor)?",
+   "short": "Qualifying neurological condition present",
+   "confidence": "high"
+  },
+  {
+   "id": "NO-IMPLANTED-DEVICE-NEAR-COIL",
+   "text": "Patient must not have an implanted magnetic-sensitive medical device or other implanted metal item located ≤30 cm from the TMS coil.",
+   "source_quote": "Presence of an implanted magnetic-sensitive medical device located less than or equal to 30 cm from the TMS magnetic coil or other implanted metal items including, but not limited to a cochlear implant, implanted cardiac defibrillator (ICD), pacemaker, Vagus nerve stimulator (VNS), or metal aneurysm clips or coils, staples or stents.",
+   "cite": "Coverage Limitations",
+   "required_fact": "implanted_device_near_coil",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have an implanted magnetic-sensitive device or other implanted metal item within 30 cm of the TMS coil?",
+   "short": "Contraindicated implanted device present",
+   "confidence": "high"
+  },
+  {
+   "id": "RETREATMENT-MET-INITIAL-GUIDELINES",
+   "text": "For retreatment, patient must have previously met the guidelines for initial treatment.",
+   "source_quote": "Retreatment may be considered for patients who met the guidelines for initial treatment and subsequently developed a relapse of depressive symptoms",
+   "cite": "Retreatment",
+   "required_fact": "met_initial_treatment_guidelines",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Did the patient previously meet the guidelines for initial TMS treatment?",
+   "short": "Initial treatment guidelines not previously met",
+   "applies_if": {
+    "fact": "treatment_type",
+    "equals": "retreatment"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "RETREATMENT-RELAPSE",
+   "text": "For retreatment, patient must have subsequently developed a relapse of depressive symptoms.",
+   "source_quote": "subsequently developed a relapse of depressive symptoms",
+   "cite": "Retreatment",
+   "required_fact": "relapse_of_depressive_symptoms",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Has the patient had a relapse of depressive symptoms since prior TMS treatment?",
+   "short": "No documented relapse",
+   "applies_if": {
+    "fact": "treatment_type",
+    "equals": "retreatment"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "RETREATMENT-PRIOR-RESPONSE-50PCT",
+   "text": "For retreatment, patient must have responded to prior treatment as evidenced by greater than 50% improvement in standard rating scale measurements for depressive symptoms.",
+   "source_quote": "if the patient responded to prior treatments as evidenced by a greater than 50% improvement in standard rating scale measurements for depressive symptoms",
+   "cite": "Retreatment",
+   "required_fact": "prior_treatment_response_pct",
+   "test": {
+    "type": "gte",
+    "value": 50
+   },
+   "if_missing": "What percent improvement in standard rating scale measurements did the patient show with prior TMS treatment?",
+   "short": "Prior response ≤50% improvement or not documented",
+   "applies_if": {
+    "fact": "treatment_type",
+    "equals": "retreatment"
+   },
+   "confidence": "high"
+  }
+ ],
+ "new_facts": [
+  {
+   "key": "prescriber_qualified",
+   "label": "Prescriber is a licensed physician knowledgeable in rTMS",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the prescribing/administering physician licensed and knowledgeable in rTMS?"
+  },
+  {
+   "key": "dx_severe_mdd",
+   "label": "Confirmed diagnosis of severe MDD (single or recurrent) in adult",
+   "kind": "event",
+   "ask": "Is there documentation of a confirmed severe MDD diagnosis in an adult patient?"
+  },
+  {
+   "key": "failed_initial_treatment",
+   "label": "Failed to benefit from initial depression treatment",
+   "kind": "event",
+   "ask": "Did the patient fail to benefit from initial treatment of depression?"
+  },
+  {
+   "key": "med_resistance_criterion_met",
+   "label": "Medication resistance criterion met",
+   "kind": "event",
+   "ask": "Did the patient have a lack of significant response to psychopharmacologic trial(s) from at least 2 agent classes at adequate dose in current episode?"
+  },
+  {
+   "key": "med_intolerance_criterion_met",
+   "label": "Medication intolerance criterion met",
+   "kind": "event",
+   "ask": "Did the patient have 2 trials of psychopharmacologic agents from at least 2 classes with distinct side effects?"
+  },
+  {
+   "key": "prior_rtms_response",
+   "label": "History of response to rTMS in a previous episode",
+   "kind": "event",
+   "ask": "Does the patient have a documented history of response to rTMS in a prior depressive episode?"
+  },
+  {
+   "key": "currently_receiving_ect",
+   "label": "Currently receiving ECT",
+   "kind": "event",
+   "ask": "Is the patient currently receiving ECT?"
+  },
+  {
+   "key": "one_of_four_subcriteria_met",
+   "label": "At least one of the four initial-treatment sub-criteria met",
+   "kind": "event",
+   "ask": "Is at least one of the four sub-criteria (med resistance, intolerance, prior rTMS response, current ECT) documented as met?"
+  },
+  {
+   "key": "psychotherapy_trial_failed",
+   "label": "Adequate psychotherapy trial without significant improvement",
+   "kind": "event",
+   "ask": "Is there documentation of an adequate evidence-based psychotherapy trial without significant improvement per standardized rating scales?"
+  },
+  {
+   "key": "order_by_psychiatrist",
+   "label": "Order written by psychiatrist who examined patient and reviewed record",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Was the treatment order written by a psychiatrist (MD/DO) who examined the patient and reviewed the record?"
+  },
+  {
+   "key": "physician_tms_experience",
+   "label": "Ordering physician has experience administering TMS",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the physician have experience administering TMS therapy?"
+  },
+  {
+   "key": "direct_supervision",
+   "label": "Treatment given under direct physician supervision",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Is the treatment administered under direct supervision of the physician (present in the area)?"
+  },
+  {
+   "key": "seizure_history",
+   "label": "Seizure disorder or history of seizures",
+   "kind": "event",
+   "ask": "Does the patient have a seizure disorder or history of seizures (excluding ECT-induced or isolated infantile febrile seizures)?"
+  },
+  {
+   "key": "psychotic_symptoms_current_episode",
+   "label": "Acute/chronic psychotic symptoms in current episode",
+   "kind": "event",
+   "ask": "Does the patient have psychotic symptoms or disorders in the current depressive episode?"
+  },
+  {
+   "key": "neuro_condition_present",
+   "label": "Qualifying neurological condition present",
+   "kind": "event",
+   "ask": "Does the patient have epilepsy, cerebrovascular disease, dementia, increased ICP, severe head trauma history, or CNS tumor?"
+  },
+  {
+   "key": "implanted_device_near_coil",
+   "label": "Implanted magnetic-sensitive device or metal item within 30cm of coil",
+   "kind": "event",
+   "ask": "Does the patient have an implanted device/metal item within 30 cm of the TMS coil site?"
+  },
+  {
+   "key": "treatment_type",
+   "label": "Type of TMS treatment being requested",
+   "kind": "enum",
+   "values": [
+    "initial",
+    "retreatment"
+   ],
+   "ask": "Is this an initial TMS treatment course or a retreatment?"
+  },
+  {
+   "key": "met_initial_treatment_guidelines",
+   "label": "Previously met initial treatment guidelines",
+   "kind": "event",
+   "ask": "Did the patient previously meet the initial treatment guidelines for TMS?"
+  },
+  {
+   "key": "relapse_of_depressive_symptoms",
+   "label": "Relapse of depressive symptoms after prior treatment",
+   "kind": "event",
+   "ask": "Has the patient relapsed with depressive symptoms since prior TMS treatment?"
+  },
+  {
+   "key": "prior_treatment_response_pct",
+   "label": "Percent improvement in standard rating scale with prior TMS",
+   "kind": "number",
+   "ask": "What percent improvement in standardized depression rating scale did the patient show with prior TMS treatment?"
+  }
+ ],
+ "not_modeled": [
+  {
+   "quote": "All other uses of Transcranial Magnetic Stimulation are experimental and are not covered.",
+   "why": "General exclusionary statement, not a specific testable criterion against a single fact; covered indications are already modeled."
+  }
+ ],
+ "_usage": {
+  "input_tokens": 4100,
+  "output_tokens": 6856
+ },
+ "_model": "claude-sonnet-5"
+}

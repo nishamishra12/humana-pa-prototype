@@ -1,4 +1,4 @@
-import json, os, re, secrets, shutil
+import json, os, re, secrets, shutil, threading
 from datetime import datetime, timezone
 from fastapi import FastAPI, Form, HTTPException, Request, Response, UploadFile, File
 from fastapi.staticfiles import StaticFiles
@@ -8,7 +8,7 @@ from . import db
 from pipeline.ingest import Element
 from pipeline.extract import _months
 from pipeline.engine import analyze
-from pipeline.run import process, extract as run_extract
+from pipeline.run import process, read as run_read, extract as run_extract
 from pipeline.procedures import procedure_for_cpt, defs_by_key, display_for
 from pipeline import telemetry as tel
 from . import dashboard as dash_mod
@@ -572,10 +572,7 @@ def job_status(job: str, request: Request):
     return JOBS.get(job, dict(stage="waiting"))
 
 
-@app.post("/api/cases")
-def upload(request: Request, file: UploadFile = File(...), assignee_id: int | None = Form(None), job: str | None = Form(None)):
-    c = db.conn()
-    u = me(request, c)
+def _save_upload(c, u, file):
     if u["role"] in ("medical_director", "policy_owner"):
         raise HTTPException(403, "Intake uploads packets. Medical directors decide escalated cases.")
     if not (file.filename or "").lower().endswith(".pdf"):
@@ -590,10 +587,26 @@ def upload(request: Request, file: UploadFile = File(...), assignee_id: int | No
     dest = os.path.join(UPLOADS, f"{secrets.token_hex(4)}_{os.path.basename(file.filename)}")
     with open(dest, "wb") as out:
         shutil.copyfileobj(file.file, out)
+    return dest
+
+
+def _progress(job):
     def progress(stage, **info):
         if job:
             JOBS[job] = dict(stage=stage, **info)
-    els, engine, facts, res = process(dest, progress=progress)
+    return progress
+
+
+@app.post("/api/cases")
+def upload(request: Request, file: UploadFile = File(...), assignee_id: int | None = Form(None), job: str | None = Form(None)):
+    c = db.conn()
+    u = me(request, c)
+    dest = _save_upload(c, u, file)
+    return _new_case(c, u, dest, assignee_id, job)
+
+
+def _new_case(c, u, dest, assignee_id, job, elements=None, engine=None, progress=None):
+    els, engine, facts, res = process(dest, progress=progress or _progress(job), elements=elements, engine=engine)
     cid = db.create_case(c, els, engine, facts, res, os.path.basename(dest))
     _tel_recommendation(cid, res, os.path.basename(dest))
     if u["role"] == "admin":
@@ -612,6 +625,175 @@ def upload(request: Request, file: UploadFile = File(...), assignee_id: int | No
     if job:
         JOBS[job] = dict(stage="done", case_id=cid)
     return case_detail(c, cid)
+
+
+# ---------- a provider's fax reply to a pended case ----------
+# Providers do not use our portal. They answer a pend by fax, like any other packet. Intake uploads it.
+# The fax is read first. If it names a member with a pended case, intake is asked to attach it to that case,
+# with the nurse who pended it picked by default. Intake can pick any other nurse, or say it is a new request.
+READS: dict[str, dict] = {}
+
+
+def _pended_match(c, els):
+    """The pended case this fax answers, if any: the member ID written on the fax, else the member's name."""
+    text = " ".join(e.text for e in els)
+    low = " ".join(text.lower().split())
+    ids = {m.upper() for m in re.findall(r"MBR-\d+", text, re.I)}
+    rows = c.execute("SELECT * FROM cases WHERE status='pended' ORDER BY received_at DESC").fetchall()
+    hit = next((r for r in rows if r["member_id"] in ids), None) or next(
+        (r for r in rows if r["member_name"] and r["member_name"].lower() in low), None)
+    if not hit:
+        return None
+    names = names_map(c)
+    p = c.execute("SELECT user_id, created_at FROM audit WHERE case_id=? AND action='pended' ORDER BY id DESC LIMIT 1", (hit["id"],)).fetchone()
+    q = c.execute("SELECT body FROM comments WHERE case_id=? AND kind='provider_request' ORDER BY id DESC LIMIT 1", (hit["id"],)).fetchone()
+    return dict(case_id=hit["id"], member_name=hit["member_name"], member_id=hit["member_id"], procedure=hit["procedure_name"], cpt=hit["cpt"],
+                pended_by=names.get(p["user_id"]) if p else None, pended_at=p["created_at"] if p else None,
+                question=q["body"] if q else None, assignee_id=hit["assignee_id"])
+
+
+def _read_in_background(job, dest, user_id, name):
+    """Read one packet off the request thread. A fax that answers a pended case waits for intake to choose.
+    Anything else becomes a new case and joins "Needs assignment"."""
+    c = db.conn()
+    try:
+        u = c.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
+        JOBS[job].update(stage="reading")
+        els, engine = run_read(dest)
+        pages = len({e.page for e in els})
+        match = _pended_match(c, els)
+        if match:
+            token = secrets.token_hex(8)
+            READS[token] = dict(dest=dest, els=els, engine=engine, user_id=user_id)
+            JOBS[job].update(stage="needs_choice", token=token, match=match, pages=pages)
+            return
+        JOBS[job].update(pages=pages)
+        d = _new_case(c, u, dest, None, None, elements=els, engine=engine, progress=lambda stage, **i: JOBS[job].update(stage=stage))
+        JOBS[job].update(stage="done", case_id=d["id"], member=d["member_name"], action=d["analysis"]["action"])
+    except Exception as e:
+        print(f"[intake] {name} failed: {type(e).__name__}: {e}")
+        JOBS[job].update(stage="error", error=str(e)[:200] or type(e).__name__)
+    finally:
+        c.close()
+
+
+@app.post("/api/intake/upload")
+def intake_upload(request: Request, files: list[UploadFile] = File(...)):
+    """Intake uploads one or many packets and goes back to work. Each one is read in the background."""
+    c = db.conn()
+    u = me(request, c)
+    if u["role"] != "admin":
+        raise HTTPException(403, "Intake uploads packets here")
+    out = []
+    for f in files:
+        dest = _save_upload(c, u, f)
+        job = secrets.token_hex(6)
+        JOBS[job] = dict(stage="queued", name=os.path.basename(f.filename), user_id=u["id"], started=db.now())
+        threading.Thread(target=_read_in_background, args=(job, dest, u["id"], f.filename), daemon=True).start()
+        out.append(dict(job=job, name=JOBS[job]["name"]))
+    return out
+
+
+@app.get("/api/intake/jobs")
+def intake_jobs(request: Request):
+    c = db.conn()
+    u = me(request, c)
+    return [dict(job=k, **{x: v for x, v in j.items() if x != "user_id"}) for k, j in JOBS.items() if j.get("user_id") == u["id"] and not j.get("dismissed")]
+
+
+@app.post("/api/intake/jobs/{job}/dismiss")
+def intake_dismiss(job: str, request: Request):
+    c = db.conn()
+    u = me(request, c)
+    if JOBS.get(job, {}).get("user_id") == u["id"]:
+        JOBS[job]["dismissed"] = True
+    return dict(ok=True)
+
+
+@app.post("/api/intake/read")
+def intake_read(request: Request, file: UploadFile = File(...), job: str | None = Form(None)):
+    """Step 1 for intake: read the fax and say whether it answers a pended case. Nothing is created yet."""
+    c = db.conn()
+    u = me(request, c)
+    dest = _save_upload(c, u, file)
+    _progress(job)("reading")
+    els, engine = run_read(dest)
+    token = secrets.token_hex(8)
+    READS[token] = dict(dest=dest, els=els, engine=engine, user_id=u["id"])
+    return dict(token=token, pages=len({e.page for e in els}), match=_pended_match(c, els))
+
+
+def _take_read(token, u):
+    r = READS.get(token)
+    if not r or r["user_id"] != u["id"]:
+        raise HTTPException(404, "This upload has expired. Upload the fax again.")
+    return READS.pop(token)
+
+
+class ReadNew(BaseModel):
+    assignee_id: int | None = None
+    job: str | None = None
+
+
+@app.post("/api/intake/{token}/new")
+def intake_new(token: str, body: ReadNew, request: Request):
+    """Step 2a: the fax is a new request. Check it like any packet."""
+    c = db.conn()
+    u = me(request, c)
+    r = _take_read(token, u)
+    return _new_case(c, u, r["dest"], body.assignee_id, body.job, elements=r["els"], engine=r["engine"])
+
+
+class ReadReply(BaseModel):
+    case_id: str
+    assignee_id: int
+    job: str | None = None
+
+
+@app.post("/api/intake/{token}/reply")
+def intake_reply(token: str, body: ReadReply, request: Request):
+    """Step 2b: the fax answers a pended case. Add its pages to that case, check every fact again,
+    and send the case to the chosen nurse (by default, the nurse who pended it)."""
+    c = db.conn()
+    u = me(request, c)
+    if u["role"] != "admin":
+        raise HTTPException(403, "Intake attaches provider replies")
+    r = c.execute("SELECT * FROM cases WHERE id=?", (body.case_id,)).fetchone()
+    if not r:
+        raise HTTPException(404, "Case not found")
+    if r["status"] in ("approved", "denied"):
+        raise HTTPException(400, "This case already has a decision")
+    nurse = c.execute("SELECT * FROM users WHERE id=? AND role='nurse'", (body.assignee_id,)).fetchone()
+    if not nurse:
+        raise HTTPException(400, "Pick a nurse")
+    rd = _take_read(token, u)
+    say = _progress(body.job)
+    first = (c.execute("SELECT MAX(page) FROM elements WHERE case_id=?", (body.case_id,)).fetchone()[0] or 0) + 1
+    fax_pages = sorted({e.page for e in rd["els"]})
+    remap = {p: first + i for i, p in enumerate(fax_pages)}
+    for e in rd["els"]:
+        c.execute("INSERT INTO elements(case_id,page,type,text) VALUES(?,?,?,?)", (body.case_id, remap[e.page], e.type, e.text))
+    last = first + len(fax_pages) - 1
+    els = [Element(page=e["page"], type=e["type"], text=e["text"]) for e in
+           c.execute("SELECT * FROM elements WHERE case_id=? ORDER BY page,id", (body.case_id,))]
+    say("facts", pages=len(fax_pages))
+    facts = run_extract(els)  # the usual full check of every fact, on the original packet plus the reply
+    say("policy")
+    res = analyze(facts)
+    c.execute("UPDATE cases SET facts=?, analysis=?, status='in_review', assignee_id=? WHERE id=?",
+              (json.dumps(facts), json.dumps(res), nurse["id"], body.case_id))
+    pages = f"page {first}" if first == last else f"pages {first} to {last}"
+    c.execute("INSERT INTO comments(case_id,user_id,kind,body,created_at) VALUES(?,?,?,?,?)",
+              (body.case_id, None, "provider_reply", f"Reply by fax, received by {u['name']}. Added as {pages}.", db.now()))
+    db.audit(c, body.case_id, u["id"], "provider_reply",
+             f"Provider reply received by fax ({os.path.basename(rd['dest'])}) and added as {pages}. Sent to {nurse['name']}. Case checked again. Recommendation: {res['action']}")
+    db.notify(c, nurse["id"], body.case_id, f"The provider replied by fax on {body.case_id}. It is back in your queue")
+    c.commit()
+    if body.job:
+        JOBS[body.job] = dict(stage="done", case_id=body.case_id)
+    tel.event("case.provider_reply", **{"case.id": body.case_id, "reply.channel": "fax", "reply.pages": len(fax_pages),
+                                        "reply.same_nurse": r["assignee_id"] == nurse["id"], "ai.recommendation": res["action"]})
+    return case_detail(c, body.case_id)
 
 
 @app.get("/api/notifications")
@@ -671,22 +853,37 @@ def healthz():
 
 class ResetDemo(BaseModel):
     confirm: str = ""
+    everything: bool = False  # also wipe every policy draft, decision, version and the live library: a blank app
 
 
 @app.post("/api/admin/reset-demo")
 def reset_demo(body: ResetDemo, request: Request):
-    """Wipes every case and re-seeds the demo data. Intake only, and only with confirm='RESET'. For the day before a demo."""
+    """Wipes every case and re-seeds the demo data. Intake only, and only with confirm='RESET'. For the day before a demo.
+    With everything=true it also removes every service, policy draft, decision and library version, back to the shipped empty library."""
     c = db.conn()
     u = me(request, c)
     if u["role"] != "admin" or body.confirm != "RESET":
         raise HTTPException(403, "Intake only, with confirm set to RESET")
     for t in ("notifications", "audit", "comments", "elements", "cases", "sessions"):
         c.execute(f"DELETE FROM {t}")
+    if body.everything:
+        have = {r[0] for r in c.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        for t in ("policy_decisions", "policy_owner_rules", "policy_builds", "policy_versions", "policy_audit", "coverage_names"):
+            if t in have:
+                c.execute(f"DELETE FROM {t}")
+        from pipeline import procedures, engine
+        if os.path.exists(procedures.LIVE_PATH):
+            os.remove(procedures.LIVE_PATH)
+        vdir = os.path.join(db.DATA_DIR, "library_versions")
+        for f in (os.listdir(vdir) if os.path.isdir(vdir) else []):
+            os.remove(os.path.join(vdir, f))
+        procedures.reload()
+        engine.refresh()
     c.execute("DELETE FROM users")
     c.commit()
     c.close()
     db.init()
-    return {"ok": True, "note": "Demo data reset. Everyone is signed out."}
+    return {"ok": True, "note": ("Everything reset: no services, no policies, no cases. " if body.everything else "Demo data reset. ") + "Everyone is signed out."}
 
 
 @app.get("/api/dashboard")

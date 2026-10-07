@@ -1,0 +1,33 @@
+{
+ "info": {
+  "profile": "balanced",
+  "pages": 2,
+  "engine": "unstructured"
+ },
+ "elements": [
+  {
+   "type": "Title",
+   "text": "LCD L35136: Spinal Cord Stimulators for Chronic Pain",
+   "page": 1,
+   "id": "e1"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Version 37",
+   "page": 1,
+   "id": "e2"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The implantation of spinal cord stimulators (SCS) may be covered as therapies for the relief of chronic intractable pain.\nSCS is best suited for neuropathic pain but may have some limited value in other types of nociceptive severe, intractable\npain. Therapy consists of a short trial with a percutaneous implantation of neurostimulator electrode(s) in the epidural\nspace for assessing a patient's suitability for ongoing treatment with a permanent surgically implanted nerve stimulator.\nPerformance and documentation of an effective trial is a prerequisite for permanent nerve stimulation. In situations\nwhere the spinal cord stimulator has been working well but is in need of replacement for battery change, malfunction or\nend of stimulator life, a new trial is not needed to replace the stimulator.\n\nSelection of patients for implantation of spinal cord stimulators is critical to success of this therapy. SCS therapy should\nbe considered as a late option after more conservative attempts such as medications, physical therapy, psychological\ntherapy or other modalities have been tried.\n\nPatients must have undergone careful screening, evaluation and diagnosis by a multidisciplinary team prior to\nimplantation. (Such screening must include psychological, as well as physical evaluation). Documentation of the history\nand careful screening must be available in the patient chart if requested. Patients being selected for a trial\nMust not have active substance abuse issues.\n\nMust undergo proper patient education, discussion, and disclosure including an extensive discussion of the risks and\nbenefits of this therapy.\n\nMust undergo appropriate psychological screening\n\nMany experts recommend that the temporary neurostimulator be placed in an ASC or outpatient hospital setting.\nHowever, the temporary neurostimulator trial can be done in an office setting if all the sterility, equipment, professional\ntraining and support personnel required for the proper surgery, and follow up of the patient are available. Permanent\nneurostimulators must be placed in an ASC or hospital. Physicians performing SCS trials in the office setting must have\nlike privileges at a local hospital or ASC, or the providers must be sub-specialty boarded in Pain Medicine by the\nAmerican Board of Anesthesiology.\n\nIt is preferable that physicians performing the SCS trial will also perform the permanent implant. If the physician\nimplanting the trial neurostimulator does not or cannot implant the permanent neurostimulator, the patient should be\ninformed of this in writing and given the name of the referral surgeon who will implant the permanent neurostimulator(s).\nIt is expected that accurate patient selection will lead to most patients going on to receive permanent implants. Only\npatients who experience a positive response to a trial should proceed to a permanent implantation. All trials which\nproceed to permanent implant must have adequate documentation in the chart to support that decision. A successful\ntrial should be associated with at least a 50% reduction of target pain, or 50% reduction of analgesic medications, and\nshow some element of functional improvement. (Patients with reflex sympathetic dystrophy may show lower levels of\nimprovement since it takes longer periods for improvement than the typical 1-2 week trial). Physician judgment and\nexperience will also be taken into account.\n\nPhysicians with a low trial to permanent implant ratio (less than 50%) will be subject to post-payment review and may be\nasked to submit documentation as to the patient selection criteria, the radiologic imaging demonstrating proper lead\nplacement, and the medical necessity of the trials.\n\nNoridian will reimburse for placement of a maximum of 2 leads or 16 \"contacts,\" and for 2 SCS trials per anatomic spinal\nregion per patient per lifetime (with exceptions allowed for technical limitations for the initial trials or for use of different\nmodalities of stimulation, including new technology). More than 2 SCS trials per anatomic spinal region per patient per\nlifetime is not considered reasonable and necessary.\n\nIf a trial fails, a repeat trial is not appropriate unless there are extenuating circumstances that lead to trial failure.\n\nTitle XVIII of the Social Security Act (SSA), Sec.1862(a)(1)(A), states that no Medicare payment shall be made for items\nor services that \"are not reasonable and necessary for the diagnosis or treatment of illness or injury or to improve the\nfunctioning of a malformed body member.\"",
+   "page": 1,
+   "id": "e3"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "CMS Manual System, Pub 100-03, Medicare National Coverage Determinations Manual , Chapter 1, Sec.160.7,\nElectrical Nerve Stimulators.",
+   "page": 2,
+   "id": "e4"
+  }
+ ]
+}

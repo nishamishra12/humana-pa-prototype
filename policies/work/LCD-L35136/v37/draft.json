@@ -1,0 +1,460 @@
+{
+ "criteria": [
+  {
+   "id": "SCS-TRIAL-PREREQ",
+   "text": "A trial implantation must be performed and documented before permanent implantation.",
+   "source_quote": "Performance and documentation of an effective trial is a prerequisite for permanent nerve stimulation.",
+   "cite": "e3",
+   "required_fact": "trial_performed_and_documented",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Was a spinal cord stimulator trial performed and documented prior to permanent implantation?",
+   "short": "No documented trial prior to permanent implant",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-REPLACEMENT-EXCEPTION",
+   "text": "A new trial is not needed when replacing a working stimulator for battery change, malfunction, or end of life.",
+   "source_quote": "In situations where the spinal cord stimulator has been working well but is in need of replacement for battery change, malfunction or end of stimulator life, a new trial is not needed to replace the stimulator.",
+   "cite": "e3",
+   "required_fact": null,
+   "test": {
+    "type": "informational"
+   },
+   "if_missing": null,
+   "short": "Exception: no trial required for replacement",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-CONSERVATIVE-TX",
+   "text": "Patient must have tried more conservative treatments (medications, physical therapy, psychological therapy, or other modalities) before SCS.",
+   "source_quote": "SCS therapy should be considered as a late option after more conservative attempts such as medications, physical therapy, psychological therapy or other modalities have been tried.",
+   "cite": "e3",
+   "required_fact": "conservative_treatment_tried",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Has the patient tried conservative treatments (medications, physical therapy, psychological therapy, or other modalities) prior to SCS?",
+   "short": "No documented conservative treatment attempts",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-MULTIDISCIPLINARY-SCREEN",
+   "text": "Patient must have undergone careful screening, evaluation and diagnosis by a multidisciplinary team prior to implantation.",
+   "source_quote": "Patients must have undergone careful screening, evaluation and diagnosis by a multidisciplinary team prior to implantation.",
+   "cite": "e3",
+   "required_fact": "multidisciplinary_screening_done",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Was the patient screened and evaluated by a multidisciplinary team prior to implantation?",
+   "short": "No multidisciplinary team screening documented",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-PSYCH-PHYSICAL-SCREEN",
+   "text": "The multidisciplinary screening must include both psychological and physical evaluation.",
+   "source_quote": "Such screening must include psychological, as well as physical evaluation.",
+   "cite": "e3",
+   "required_fact": "psych_and_physical_eval_included",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Did the screening include both psychological and physical evaluation?",
+   "short": "Screening did not include both psychological and physical evaluation",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-CHART-DOCUMENTATION",
+   "text": "Documentation of history and careful screening must be available in the patient chart if requested.",
+   "source_quote": "Documentation of the history and careful screening must be available in the patient chart if requested.",
+   "cite": "e3",
+   "required_fact": "screening_documentation_in_chart",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is documentation of the patient's history and screening available in the chart?",
+   "short": "Screening documentation not available in chart",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-NO-SUBSTANCE-ABUSE",
+   "text": "Patients selected for a trial must not have active substance abuse issues.",
+   "source_quote": "Must not have active substance abuse issues.",
+   "cite": "e3",
+   "required_fact": "active_substance_abuse",
+   "test": {
+    "type": "absent"
+   },
+   "if_missing": "Does the patient have active substance abuse issues?",
+   "short": "Patient has active substance abuse issues",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-PATIENT-EDUCATION",
+   "text": "Patient must undergo proper education, discussion, and disclosure including an extensive discussion of risks and benefits.",
+   "source_quote": "Must undergo proper patient education, discussion, and disclosure including an extensive discussion of the risks and benefits of this therapy.",
+   "cite": "e3",
+   "required_fact": "patient_education_disclosure_done",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Did the patient undergo education and disclosure discussion including risks and benefits?",
+   "short": "No documented patient education/disclosure discussion",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-PSYCH-SCREENING-TRIAL",
+   "text": "Patient must undergo appropriate psychological screening prior to trial.",
+   "source_quote": "Must undergo appropriate psychological screening",
+   "cite": "e3",
+   "required_fact": "psychological_screening_done",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Did the patient undergo appropriate psychological screening?",
+   "short": "No psychological screening documented",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-PERM-SETTING",
+   "text": "Permanent neurostimulators must be placed in an ASC or hospital setting.",
+   "source_quote": "Permanent neurostimulators must be placed in an ASC or hospital.",
+   "cite": "e3",
+   "required_fact": "permanent_implant_setting",
+   "test": {
+    "type": "in",
+    "value": [
+     "ASC",
+     "hospital"
+    ]
+   },
+   "if_missing": "In what setting was the permanent neurostimulator implanted?",
+   "short": "Permanent implant not placed in ASC or hospital",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-OFFICE-TRIAL-PRIVILEGES",
+   "text": "Physicians performing SCS trials in an office setting must have like privileges at a local hospital or ASC, or be sub-specialty boarded in Pain Medicine by the American Board of Anesthesiology.",
+   "source_quote": "Physicians performing SCS trials in the office setting must have like privileges at a local hospital or ASC, or the providers must be sub-specialty boarded in Pain Medicine by the American Board of Anesthesiology.",
+   "cite": "e3",
+   "required_fact": "office_trial_physician_qualification",
+   "applies_if": {
+    "fact": "trial_setting",
+    "equals": "office"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Does the physician performing the office-based trial have hospital/ASC privileges or Pain Medicine board certification by ABA?",
+   "short": "Office-based trial physician lacks required privileges/certification",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-PERMANENT-ONLY-IF-POSITIVE-TRIAL",
+   "text": "Only patients who experience a positive response to a trial should proceed to permanent implantation.",
+   "source_quote": "Only patients who experience a positive response to a trial should proceed to permanent implantation.",
+   "cite": "e3",
+   "required_fact": "positive_trial_response",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Did the patient experience a positive response to the trial?",
+   "short": "No positive trial response documented",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-TRIAL-TO-PERM-DOCUMENTATION",
+   "text": "All trials which proceed to permanent implant must have adequate documentation in the chart to support that decision.",
+   "source_quote": "All trials which proceed to permanent implant must have adequate documentation in the chart to support that decision.",
+   "cite": "e3",
+   "required_fact": "trial_to_permanent_decision_documented",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Is there adequate chart documentation supporting the decision to proceed from trial to permanent implant?",
+   "short": "Decision to proceed to permanent implant not adequately documented",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-SUCCESSFUL-TRIAL-PAIN-REDUCTION",
+   "text": "A successful trial should be associated with at least a 50% reduction of target pain.",
+   "source_quote": "A successful trial should be associated with at least a 50% reduction of target pain, or 50% reduction of analgesic medications, and show some element of functional improvement.",
+   "cite": "e3",
+   "required_fact": "trial_pain_reduction_percent",
+   "test": {
+    "type": "gte",
+    "value": 50
+   },
+   "if_missing": "What percent reduction in target pain was achieved during the trial?",
+   "short": "Trial did not show at least 50% pain reduction",
+   "confidence": "medium"
+  },
+  {
+   "id": "SCS-SUCCESSFUL-TRIAL-MED-REDUCTION",
+   "text": "A successful trial should be associated with at least a 50% reduction of analgesic medications.",
+   "source_quote": "A successful trial should be associated with at least a 50% reduction of target pain, or 50% reduction of analgesic medications, and show some element of functional improvement.",
+   "cite": "e3",
+   "required_fact": "trial_analgesic_reduction_percent",
+   "test": {
+    "type": "gte",
+    "value": 50
+   },
+   "if_missing": "What percent reduction in analgesic medication use was achieved during the trial?",
+   "short": "Trial did not show at least 50% reduction in analgesic medications",
+   "confidence": "medium"
+  },
+  {
+   "id": "SCS-SUCCESSFUL-TRIAL-FUNCTIONAL-IMPROVEMENT",
+   "text": "A successful trial should show some element of functional improvement.",
+   "source_quote": "and show some element of functional improvement",
+   "cite": "e3",
+   "required_fact": "trial_functional_improvement",
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Did the trial show some element of functional improvement?",
+   "short": "No functional improvement documented during trial",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-RSD-LOWER-IMPROVEMENT-EXCEPTION",
+   "text": "Patients with reflex sympathetic dystrophy may show lower levels of improvement since it takes longer for improvement than the typical 1-2 week trial.",
+   "source_quote": "Patients with reflex sympathetic dystrophy may show lower levels of improvement since it takes longer periods for improvement than the typical 1-2 week trial.",
+   "cite": "e3",
+   "required_fact": null,
+   "test": {
+    "type": "informational"
+   },
+   "if_missing": null,
+   "short": "Exception for RSD patients - lower improvement threshold may apply",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-MAX-LEADS",
+   "text": "Noridian will reimburse for placement of a maximum of 2 leads.",
+   "source_quote": "Noridian will reimburse for placement of a maximum of 2 leads or 16 \"contacts,\"",
+   "cite": "e3",
+   "required_fact": "number_of_leads",
+   "test": {
+    "type": "lte",
+    "value": 2
+   },
+   "if_missing": "How many leads were placed?",
+   "short": "More than 2 leads placed",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-MAX-CONTACTS",
+   "text": "Noridian will reimburse for a maximum of 16 contacts.",
+   "source_quote": "Noridian will reimburse for placement of a maximum of 2 leads or 16 \"contacts,\"",
+   "cite": "e3",
+   "required_fact": "number_of_contacts",
+   "test": {
+    "type": "lte",
+    "value": 16
+   },
+   "if_missing": "How many contacts were used?",
+   "short": "More than 16 contacts used",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-MAX-TRIALS-PER-REGION",
+   "text": "A maximum of 2 SCS trials per anatomic spinal region per patient per lifetime is covered (exceptions allowed).",
+   "source_quote": "2 SCS trials per anatomic spinal region per patient per lifetime...More than 2 SCS trials per anatomic spinal region per patient per lifetime is not considered reasonable and necessary.",
+   "cite": "e3",
+   "required_fact": "prior_trials_count_same_region",
+   "test": {
+    "type": "lte",
+    "value": 2
+   },
+   "if_missing": "How many prior SCS trials has the patient had in this same anatomic spinal region (lifetime)?",
+   "short": "More than 2 prior trials in same spinal region",
+   "confidence": "high"
+  },
+  {
+   "id": "SCS-REPEAT-TRIAL-EXTENUATING",
+   "text": "If a trial fails, a repeat trial is not appropriate unless there are extenuating circumstances that led to the trial failure.",
+   "source_quote": "If a trial fails, a repeat trial is not appropriate unless there are extenuating circumstances that lead to trial failure.",
+   "cite": "e3",
+   "required_fact": "extenuating_circumstances_for_repeat_trial",
+   "applies_if": {
+    "fact": "prior_trial_failed",
+    "equals": "yes"
+   },
+   "test": {
+    "type": "present"
+   },
+   "if_missing": "Were there extenuating circumstances that led to the prior trial's failure, justifying a repeat trial?",
+   "short": "Repeat trial without documented extenuating circumstances for prior failure",
+   "confidence": "high"
+  }
+ ],
+ "new_facts": [
+  {
+   "key": "trial_performed_and_documented",
+   "label": "Trial performed and documented",
+   "kind": "event",
+   "ask": "Was a percutaneous SCS trial performed with documentation of effectiveness prior to permanent implant?"
+  },
+  {
+   "key": "conservative_treatment_tried",
+   "label": "Conservative treatments tried",
+   "kind": "event",
+   "ask": "Has the patient tried conservative treatments (medications, PT, psychological therapy, or other modalities) before SCS?"
+  },
+  {
+   "key": "multidisciplinary_screening_done",
+   "label": "Multidisciplinary screening done",
+   "kind": "event",
+   "ask": "Was the patient screened by a multidisciplinary team prior to implantation?"
+  },
+  {
+   "key": "psych_and_physical_eval_included",
+   "label": "Psychological and physical evaluation included",
+   "kind": "event",
+   "ask": "Did the screening include both psychological and physical evaluation?"
+  },
+  {
+   "key": "screening_documentation_in_chart",
+   "label": "Screening documentation in chart",
+   "kind": "event",
+   "ask": "Is documentation of history and screening present in the patient chart?"
+  },
+  {
+   "key": "active_substance_abuse",
+   "label": "Active substance abuse",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Does the patient have active substance abuse issues?"
+  },
+  {
+   "key": "patient_education_disclosure_done",
+   "label": "Patient education and disclosure done",
+   "kind": "event",
+   "ask": "Did the patient receive education and disclosure about risks/benefits of SCS therapy?"
+  },
+  {
+   "key": "psychological_screening_done",
+   "label": "Psychological screening done",
+   "kind": "event",
+   "ask": "Did the patient undergo appropriate psychological screening?"
+  },
+  {
+   "key": "permanent_implant_setting",
+   "label": "Setting of permanent implant",
+   "kind": "enum",
+   "values": [
+    "ASC",
+    "hospital",
+    "office",
+    "other"
+   ],
+   "ask": "In what setting was the permanent neurostimulator implanted?"
+  },
+  {
+   "key": "trial_setting",
+   "label": "Setting of trial",
+   "kind": "enum",
+   "values": [
+    "ASC",
+    "hospital",
+    "office"
+   ],
+   "ask": "In what setting was the SCS trial performed?"
+  },
+  {
+   "key": "office_trial_physician_qualification",
+   "label": "Office trial physician qualification",
+   "kind": "event",
+   "ask": "Does the physician performing an office-based trial have hospital/ASC privileges or Pain Medicine board certification by ABA?"
+  },
+  {
+   "key": "positive_trial_response",
+   "label": "Positive trial response",
+   "kind": "event",
+   "ask": "Did the patient have a positive response to the SCS trial?"
+  },
+  {
+   "key": "trial_to_permanent_decision_documented",
+   "label": "Trial-to-permanent decision documented",
+   "kind": "event",
+   "ask": "Is there chart documentation supporting the decision to proceed to permanent implant after trial?"
+  },
+  {
+   "key": "trial_pain_reduction_percent",
+   "label": "Trial pain reduction percent",
+   "kind": "number",
+   "ask": "What percentage reduction in target pain was observed during the trial?"
+  },
+  {
+   "key": "trial_analgesic_reduction_percent",
+   "label": "Trial analgesic medication reduction percent",
+   "kind": "number",
+   "ask": "What percentage reduction in analgesic medication use was observed during the trial?"
+  },
+  {
+   "key": "trial_functional_improvement",
+   "label": "Trial functional improvement",
+   "kind": "event",
+   "ask": "Was functional improvement observed during the trial?"
+  },
+  {
+   "key": "number_of_leads",
+   "label": "Number of leads placed",
+   "kind": "number",
+   "ask": "How many leads were placed during the procedure?"
+  },
+  {
+   "key": "number_of_contacts",
+   "label": "Number of contacts used",
+   "kind": "number",
+   "ask": "How many contacts were used during the procedure?"
+  },
+  {
+   "key": "prior_trials_count_same_region",
+   "label": "Prior trial count in same spinal region",
+   "kind": "number",
+   "ask": "How many prior SCS trials has this patient had in the same anatomic spinal region (lifetime)?"
+  },
+  {
+   "key": "prior_trial_failed",
+   "label": "Prior trial failed",
+   "kind": "enum",
+   "values": [
+    "yes",
+    "no"
+   ],
+   "ask": "Did a prior SCS trial in this patient fail?"
+  },
+  {
+   "key": "extenuating_circumstances_for_repeat_trial",
+   "label": "Extenuating circumstances for repeat trial",
+   "kind": "event",
+   "ask": "Were there extenuating circumstances documented that explain the prior trial failure, justifying a repeat trial?"
+  }
+ ],
+ "not_modeled": [
+  {
+   "quote": "It is preferable that physicians performing the SCS trial will also perform the permanent implant. If the physician implanting the trial neurostimulator does not or cannot implant the permanent neurostimulator, the patient should be informed of this in writing and given the name of the referral surgeon who will implant the permanent neurostimulator(s).",
+   "why": "This is a preference/process requirement about physician communication, not a binary coverage criterion testable against a single clinical fact."
+  },
+  {
+   "quote": "Physicians with a low trial to permanent implant ratio (less than 50%) will be subject to post-payment review and may be asked to submit documentation as to the patient selection criteria, the radiologic imaging demonstrating proper lead placement, and the medical necessity of the trials.",
+   "why": "This describes a provider-level post-payment review process, not a per-patient coverage criterion."
+  },
+  {
+   "quote": "Physician judgment and experience will also be taken into account.",
+   "why": "This is a general consideration, not a testable discrete criterion."
+  }
+ ],
+ "_usage": {
+  "input_tokens": 3775,
+  "output_tokens": 6533
+ },
+ "_model": "claude-sonnet-5"
+}

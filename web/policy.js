@@ -1,7 +1,7 @@
 "use strict";
 /* The policy owner's screens. Loaded after app.js, which owns S, api, esc, ic, toast, guard and render.
    The owner starts from a service (one kind of request, such as acute back pain) and builds it up in this order:
-   billing codes, policies, key facts, pilot, live. Key facts belong to the policy. A service shows the combined list.
+   billing codes, policies, key facts, submit. Key facts belong to the policy. A service shows the combined list.
    Views: Services (list, then one service), Requests without a policy, Policies (the catalog), Version history. A draft policy opens full screen. */
 S.pol = { data: null, svcKey: null, svc: null, step: 0, sug: null, build: null, sel: null, edit: null, confirm: false, note: "", asks: {}, audit: null, demand: null, revert: null, check: {}, busy: null, msg: null,
   newSvc: { open: false, name: "", scope: "", code: "", source: "" }, code: { code: "", source: "" }, cs: { q: "", data: null, cons: null, art: {}, rows: {}, picked: {}, busy: null }, sv: { open: null, note: "" }, q: "", more: false, form: { source: "cfr", ident: "", pid: "", title: "", level: "HUMANA_INTERNAL" } };
@@ -41,6 +41,15 @@ async function loadPolicies() {
   if (S.view === "services" && S.pol.svcKey) S.pol.svc = await api("/policies/services/" + S.pol.svcKey);
 }
 
+/* Something worked: say so in a green toast. The page stays where it is. */
+const saved = (msg) => toast(msg, false, true);
+async function keepPlace(fn) {
+  const c = document.getElementById("content"), sp = document.querySelector(".srcpane"), y = window.scrollY, t = c ? c.scrollTop : 0, p = sp ? sp.scrollTop : 0;
+  await fn();
+  const c2 = document.getElementById("content"), sp2 = document.querySelector(".srcpane");
+  if (c2) c2.scrollTop = t; if (sp2) sp2.scrollTop = p; window.scrollTo(0, y);
+}
+
 async function openService(key) {
   S.pol.svcKey = key; S.pol.build = null; S.pol.msg = null; S.pol.q = ""; S.pol.sug = null; S.pol.sv = { open: null, note: "" }; S.pol.more = false;
   S.pol.cs = { q: "", data: null, cons: null, art: {}, rows: {}, picked: {}, busy: null };
@@ -50,7 +59,7 @@ async function openService(key) {
   loadSug(); loadCodeSug();
 }
 async function loadCodeSug() {
-  if (!S.pol.svcKey || (S.pol.svc && S.pol.svc.status === "live")) return;
+  if (!S.pol.svcKey) return;
   const cs = S.pol.cs, key = S.pol.svcKey;
   const r = await api(`/policies/services/${key}/code-suggestions?q=${encodeURIComponent(cs.q || "")}`);
   if (key !== S.pol.svcKey) return;
@@ -73,7 +82,7 @@ async function loadSug() {
 async function openBuild(id) {
   clearInterval(polTimer);
   S.pol.build = await api("/policies/builds/" + id);
-  S.pol.sel = null; S.pol.edit = null; S.pol.confirm = false; S.pol.note = ""; S.pol.asks = {};
+  S.pol.sel = null; S.pol.edit = null; S.pol.add = null; S.pol.confirm = false; S.pol.note = ""; S.pol.asks = {};
   if (S.pol.build.status === "running") {
     polTimer = setInterval(guard(async () => {
       const b = await api("/policies/builds/" + id);
@@ -86,18 +95,17 @@ async function openBuild(id) {
 }
 
 /* ---------- services: the list ---------- */
-const SVC_STATUS = { live: ["Live", "ok"], pilot: ["Pilot", "warn"], planned: ["Planned", "plain"] };
-const SVC_STATUS_HELP = { planned: "Not switched on. No request is sent to it.", pilot: "Switched on. A nurse checks every recommendation.", live: "Switched on and tested." };
+const SVC_STATUS = { live: ["Onboarded", "ok"], pilot: ["Onboarded", "ok"], planned: ["Not submitted", "plain"] };
+const SVC_STATUS_HELP = { planned: "Not switched on. No request is sent to it.", live: "Switched on. Requests with its billing codes are checked against its policies, and a nurse reviews every recommendation.", pilot: "Switched on. Requests with its billing codes are checked against its policies, and a nurse reviews every recommendation." };
 
 /* The one thing the owner should do next on a service, worked out from what the service has so far. */
 function nextStep(s) {
-  if (s.status === "live") return ["Live", "ok"];
-  if (s.status === "pilot") return ["Check the pilot, then make it live", "warn"];
+  if (s.status !== "planned") return ["Onboarded", "ok"];
   if (!s.cpts.length) return ["Add billing codes", "new"];
   if (!s.policies.length && !s.n_drafts) return ["Add policies", "new"];
   if (s.n_drafts) return ["Review a policy", "warn"];
   if (!s.n_rules) return ["Add a policy with rules", "new"];
-  return ["Start the pilot", "ok"];
+  return ["Submit", "ok"];
 }
 
 function polServicesList() {
@@ -112,7 +120,7 @@ function polServicesList() {
   if (n.open) return newServiceHtml();
   return `<div class="page" style="display:grid;gap:20px;max-width:1180px">
     <div class="page-head"><div><h1>Services</h1><p>A service is one kind of request, such as acute back pain. Start here: add the service, then its billing codes and policies.</p></div>
-      <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap"><div class="stat" style="margin:0"><div><b>${d.services_detail.filter((s) => s.status === "live").length}</b><span>live</span></div><div><b>${d.services_detail.filter((s) => s.status === "pilot").length}</b><span>pilot</span></div><div><b>${d.services_detail.filter((s) => s.status === "planned").length}</b><span>planned</span></div></div>
+      <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap"><div class="stat" style="margin:0"><div><b>${d.services_detail.filter((s) => s.status !== "planned").length}</b><span>onboarded</span></div><div><b>${d.services_detail.filter((s) => s.status === "planned").length}</b><span>not submitted</span></div></div>
       ${n.open ? "" : `<button class="btn primary" id="nsopen">+ New service</button>`}</div></div>
     ${S.pol.msg ? `<div class="banner">${esc(S.pol.msg)}</div>` : ""}
     <div class="tbl"><table><thead><tr><th>Service</th><th>Status</th><th>Billing codes</th><th>Policies</th><th>Key facts</th><th>Requests seen</th><th>Next step</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
@@ -120,8 +128,8 @@ function polServicesList() {
 
 /* ---------- services: one service ---------- */
 const AUDIT_WORDS = { service_created: "Added the service", service_status: "Changed the status", service_policy_added: "Added a policy", service_policy_removed: "Removed a policy", service_code_added: "Added a billing code", service_code_removed: "Removed a billing code",
-  draft_started: "Started a policy", rule_approved: "Approved a rule", rule_rejected: "Rejected a rule", rule_pending: "Undid a decision", published: "Approved a policy", reverted: "Went back to a version", checked_for_update: "Checked CMS for changes" };
-const AUDIT_CHIP = { service_created: "new", service_status: "warn", service_policy_added: "ok", service_policy_removed: "warn", service_code_added: "ok", service_code_removed: "warn", published: "ok", rule_approved: "ok", rule_rejected: "bad", reverted: "warn", rule_pending: "plain", draft_started: "new", checked_for_update: "plain" };
+  draft_started: "Started a policy", rule_approved: "Approved a rule", rule_rejected: "Rejected a rule", rule_pending: "Undid a decision", rule_added: "Added a key fact the AI missed", rule_removed: "Removed a key fact they had added", edit_started: "Reopened an approved policy", published: "Approved a policy", reverted: "Went back to a version", checked_for_update: "Checked CMS for changes" };
+const AUDIT_CHIP = { service_created: "new", service_status: "warn", service_policy_added: "ok", service_policy_removed: "warn", service_code_added: "ok", service_code_removed: "warn", published: "ok", rule_approved: "ok", rule_rejected: "bad", reverted: "warn", rule_pending: "plain", rule_added: "ok", rule_removed: "warn", edit_started: "warn", draft_started: "new", checked_for_update: "plain" };
 
 function sugRow(x, key) {
   const lib = x.in_library;
@@ -202,12 +210,13 @@ function bindCodeSug() {
   on("#csadd", async () => {
     const codes = Object.values(cs.picked).map((r) => ({ code: r.code, description: r.description, sources: r.sources }));
     const r = await api(`/policies/services/${S.pol.svcKey}/codes/from-cms`, { method: "POST", body: { codes } });
-    S.pol.msg = `Added ${r.added.length} billing code${r.added.length > 1 ? "s" : ""}, each with its CMS source.`; cs.picked = {}; cs.art = {}; await loadPolicies(); render(); loadCodeSug();
+    await keepPlace(async () => { cs.picked = {}; cs.art = {}; await loadPolicies(); render(); });
+    saved(`Added ${r.added.length} billing code${r.added.length > 1 ? "s" : ""}, each with its CMS source.`); loadCodeSug();
   });
 }
 
 /* ---------- setting up a service, one step at a time ---------- */
-const WIZ = ["Describe", "Billing codes", "Policies", "Key facts", "Go live"];
+const WIZ = ["Describe", "Billing codes", "Policies", "Key facts", "Submit"];
 function wizBar(cur, done, clickable) {
   return `<div class="wiz" role="list" aria-label="Setup steps">${WIZ.map((l, i) => { const n = i + 1, on = n === cur, ok = done.includes(n);
     return `<button class="wizstep ${on ? "on" : ""} ${ok ? "done" : ""}" role="listitem" ${on ? 'aria-current="step"' : ""} ${clickable && n > 1 ? `data-step="${n}"` : "disabled"}><span class="wizdot">${ok && !on ? "✓" : n}</span><span class="wiztxt">${l}</span></button>`; }).join("")}</div>`;
@@ -243,23 +252,23 @@ function newServiceHtml() {
 function serviceHtml() {
   const s = S.pol.svc;
   if (!s) return `<div class="page"><div class="empty">Loading…</div></div>`;
-  const st = SVC_STATUS[s.status] || SVC_STATUS.live, locked = s.status === "live", sv = S.pol.sv, step = S.pol.step || wizStart(s);
+  const st = SVC_STATUS[s.status] || SVC_STATUS.live, sv = S.pol.sv, step = S.pol.step || wizStart(s);
   const done = wizDone(s), ready = { codes: done.includes(2), pol: done.includes(3), facts: done.includes(4) };
   const missing = [!ready.codes && "a billing code", !ready.pol && "a policy with approved rules", !ready.facts && "key facts"].filter(Boolean);
   const btn = (to, label, cls, off) => `<button class="btn ${cls || ""}" data-svstatus="${to}" ${off ? "disabled" : ""}>${label}</button>`;
-  const acts = s.status === "planned" ? btn("pilot", "Start the pilot", "primary", missing.length > 0) : s.status === "pilot" ? btn("live", "Make it live", "primary") + " " + btn("planned", "Back to planned") : btn("pilot", "Pause (back to pilot)");
-  const confirm = sv.open ? `<div class="card" style="border-color:var(--line2);display:grid;gap:8px;max-width:640px"><b>Move ${esc(s.short)} from ${esc(s.status)} to ${esc(sv.open)}</b>
-      <div class="field" style="margin:0"><label for="svnote">${sv.open === "live" ? "What did the pilot show? (required)" : "Note (optional)"}</label><textarea id="svnote" style="min-height:56px" placeholder="${sv.open === "live" ? "For example: ran 3 weeks, nurses agreed with the recommendation on 28 of 30 requests" : ""}">${esc(sv.note)}</textarea></div>
-      <div style="display:flex;gap:8px"><button class="btn primary small" data-svgo>Confirm</button><button class="btn small" data-svcancel>Cancel</button></div></div>` : "";
-  const lockNote = locked ? `<div class="banner">This service is live. To change its codes or policies, pause it back to pilot first.</div>` : "";
+  const acts = s.status === "planned" ? `<button class="btn primary" data-svsubmit ${missing.length || S.pol.busy ? "disabled" : ""}>${S.pol.busy ? "Submitting…" : "Submit"}</button>` : btn("planned", "Switch off");
+  const confirm = sv.open ? `<div class="card" style="border-color:var(--line2);display:grid;gap:8px;max-width:640px"><b>Switch off ${esc(s.short)}?</b>
+      ${small("Requests with its billing codes will say there is no policy until you submit it again.")}
+      <div class="field" style="margin:0"><label for="svnote">Note (optional)</label><textarea id="svnote" style="min-height:56px">${esc(sv.note)}</textarea></div>
+      <div style="display:flex;gap:8px"><button class="btn primary small" data-svgo>Switch off</button><button class="btn small" data-svcancel>Cancel</button></div></div>` : "";
 
   const codes = s.codes.map((c) => { const x = c.source;
     return `<tr><td style="width:90px"><b>${esc(c.code)}</b></td><td>${x && x.description ? more(x.description, 80) : `<span class="faint">No description</span>`}
       ${small(x && x.sources && x.sources.length ? "CMS: " + x.sources.slice(0, 2).map((z) => `<a href="${esc(z.url)}" target="_blank" rel="noopener">${esc(z.article)}</a>`).join(" · ") + (x.sources.length > 2 ? ` · +${x.sources.length - 2} more` : "") : x && x.note ? esc(x.note) : "<b>No source on file. Check before use.</b>")}</td>
-      <td style="text-align:right">${locked ? "" : `<button class="btn small ghost" data-codedel="${esc(c.code)}">Remove</button>`}</td></tr>`; }).join("");
+      <td style="text-align:right"><button class="btn small ghost" data-codedel="${esc(c.code)}">Remove</button></td></tr>`; }).join("");
   const pols = s.policies.map((p) => `<tr><td><b>${esc(p.title)}</b>${small(esc(p.id) + " · " + esc(LEVEL[p.level] || p.level))}</td>
       <td>${p.verified ? `<span class="chip ok">Approved</span>` : `<span class="chip plain">Placeholder</span>`}<div class="faint" style="font-size:12.5px;margin-top:3px">${p.verified ? p.rules + " rules" + (p.waiting ? ", " + p.waiting + " waiting" : "") : "No rules yet"}</div></td>
-      <td style="text-align:right;white-space:nowrap">${p.build ? `<button class="btn small ${p.build.status === "draft" ? "primary" : ""}" data-pbuild="${esc(p.build.id)}">${p.build.status === "draft" ? "Review rules" : "Rules and quotes"}</button> ` : ""}${p.url && p.url.startsWith("http") ? `<a class="btn small ghost" href="${esc(p.url)}" target="_blank" rel="noopener">Source</a> ` : ""}${locked ? "" : `<button class="btn small ghost" data-poldel="${esc(p.id)}">Remove</button>`}</td></tr>`).join("");
+      <td style="text-align:right;white-space:nowrap">${p.build ? `<button class="btn small ${p.build.status === "draft" ? "primary" : ""}" data-pbuild="${esc(p.build.id)}">${p.build.status === "draft" ? "Review rules" : "Rules and quotes"}</button> ` : ""}${p.url && p.url.startsWith("http") ? `<a class="btn small ghost" href="${esc(p.url)}" target="_blank" rel="noopener">Source</a> ` : ""}<button class="btn small ghost" data-poldel="${esc(p.id)}">Remove</button></td></tr>`).join("");
   const drafts = s.drafts.map((d) => { const run = d.status === "running", err = d.status === "error";
     return `<tr><td><b>${esc(d.policy_id || d.ident)}</b>${small(esc((d.kind || "").toUpperCase()))}</td><td><span class="chip ${err ? "bad" : run ? "new" : "warn"}">${err ? "Failed" : run ? esc(d.stage || "Building") : "Ready for your review"}</span></td>
       <td style="text-align:right"><button class="btn small ${run || err ? "" : "primary"}" data-pbuild="${esc(d.id)}">${run || err ? "Open" : "Review"}</button></td></tr>`; }).join("");
@@ -275,7 +284,7 @@ function serviceHtml() {
     body = sec("Billing codes", "A request reaches this service through the billing code on it. A code can belong to one service.",
       `${codes ? `<div class="tbl"><table><tbody>${codes}</tbody></table></div>` : `<div class="faint">No billing codes yet.</div>`}
        ${s.other_codes ? small("CMS lists " + s.other_codes + " more related codes that are not turned on.", "margin-top:6px") : ""}
-       ${locked ? "" : `<div style="margin-top:14px"><div class="field" style="margin:0;max-width:520px"><label for="csq">Find billing codes</label><input id="csq" type="search" placeholder="Search by words, for example lumbar or sleep apnea" value="${esc(S.pol.cs.q)}"></div>
+       ${`<div style="margin-top:14px"><div class="field" style="margin:0;max-width:520px"><label for="csq">Find billing codes</label><input id="csq" type="search" placeholder="Search by words, for example lumbar or sleep apnea" value="${esc(S.pol.cs.q)}"></div>
         <div id="csbox">${codeSugHtml()}</div>
         <details class="more" style="margin-top:10px"><summary><u>Add a code CMS did not list</u></summary>
          <div style="display:grid;grid-template-columns:130px minmax(0,1fr) auto;gap:8px;margin-top:8px;align-items:end">
@@ -286,7 +295,7 @@ function serviceHtml() {
     why = !ready.pol ? (s.drafts.some((d) => d.status === "draft") ? "Review the draft policy to continue." : "Add a policy and approve its rules to continue.") : "";
     body = sec("Policies", "The policies a nurse checks a request against. The system builds each one from its official text. You review every rule.",
       `${pols || drafts ? `<div class="tbl"><table><tbody>${pols}${drafts}</tbody></table></div>` : `<div class="faint">No policies yet.</div>`}
-       ${locked ? "" : `<div style="margin-top:14px"><div class="field" style="margin:0;max-width:520px"><label for="sugq">Find a policy</label><input id="sugq" type="search" placeholder="Search CMS by title or number, for example acupuncture or 30.3.3" value="${esc(S.pol.q)}"></div>
+       ${`<div style="margin-top:14px"><div class="field" style="margin:0;max-width:520px"><label for="sugq">Find a policy</label><input id="sugq" type="search" placeholder="Search CMS by title or number, for example acupuncture or 30.3.3" value="${esc(S.pol.q)}"></div>
         <div id="sugbox">${sugHtml()}</div>
         <details class="more" style="margin-top:10px" ${S.pol.more ? "open" : ""} id="moredet"><summary><u>Add a federal regulation, or upload a policy PDF</u></summary>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:8px">
@@ -301,15 +310,15 @@ function serviceHtml() {
     body = sec("Key facts", "The things the AI reader finds in a packet to check the rules. They come from the policies you approved and are combined here. To change one, change the policy.",
       facts ? `<div class="tbl"><table><thead><tr><th>Key fact</th><th>Question to the provider if it is missing</th><th>Checked by</th></tr></thead><tbody>${facts}</tbody></table></div>` : `<div class="faint">None yet.</div>`);
   } else {
-    body = sec("Go live", s.status === "planned" ? "Check that the service is ready, then start the pilot. In a pilot, a nurse checks every recommendation." : SVC_STATUS_HELP[s.status] + (s.note ? " Note: " + esc(s.note) : ""),
+    body = sec("Submit", s.status === "planned" ? "Check that the service is ready, then submit it. A nurse still reviews every recommendation." : SVC_STATUS_HELP[s.status] + (s.note ? " Note: " + esc(s.note) : ""),
       `<div style="max-width:680px">${row(ready.codes, "Billing codes", s.codes.length + " added")}${row(ready.pol, "Policies", s.policies.filter((p) => p.rules > 0).length + " with approved rules")}${row(ready.facts, "Key facts", s.facts.length + " found in the policies")}</div>
-       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px">${acts}${s.status === "planned" && missing.length ? small("Before the pilot, add " + missing.join(", ") + ".") : ""}</div>
+       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px">${acts}${s.status === "planned" && missing.length ? small("Before you submit, add " + missing.join(", ") + ".") : ""}</div>
        ${confirm ? `<div style="margin-top:12px">${confirm}</div>` : ""}`)
       + (act ? sec("Activity", "", `<div class="tbl"><table><tbody>${act}</tbody></table></div>`) : "");
   }
   const picked = Object.keys(S.pol.cs.picked).length;
   const nav = step < 5 ? `<div class="wizbar"><button class="btn" data-stepto="${step - 1 < 2 ? 0 : step - 1}">${step === 2 ? "Back to services" : "Back"}</button>
-      <div style="display:flex;gap:10px;align-items:center"><span id="stepwhy">${step === 2 && picked ? "" : why && !locked ? small(esc(why)) : ""}</span>${step === 2 ? `<button class="btn primary" id="csnext" data-has="${ready.codes ? 1 : 0}" ${!picked && why && !locked ? "disabled" : ""}>${picked ? "Add " + picked + " code" + (picked > 1 ? "s" : "") + " and continue" : "Next: " + WIZ[step].toLowerCase()}</button>` : `<button class="btn primary" data-stepto="${step + 1}" ${why && !locked ? "disabled" : ""}>Next: ${WIZ[step].toLowerCase()}</button>`}</div></div>`
+      <div style="display:flex;gap:10px;align-items:center"><span id="stepwhy">${step === 2 && picked ? "" : why ? small(esc(why)) : ""}</span>${step === 2 ? `<button class="btn primary" id="csnext" data-has="${ready.codes ? 1 : 0}" ${!picked && why ? "disabled" : ""}>${picked ? "Add " + picked + " code" + (picked > 1 ? "s" : "") + " and continue" : "Next: " + WIZ[step].toLowerCase()}</button>` : `<button class="btn primary" data-stepto="${step + 1}" ${why ? "disabled" : ""}>Next: ${WIZ[step].toLowerCase()}</button>`}</div></div>`
     : `<div class="wizbar"><button class="btn" data-stepto="4">Back</button><button class="btn" data-stepto="0">Done, back to services</button></div>`;
 
   return `<div class="page" style="display:grid;gap:16px;max-width:1080px">
@@ -318,7 +327,6 @@ function serviceHtml() {
       <p>${esc(s.scope || s.name)}</p></div></div>
     ${S.pol.msg ? `<div class="banner">${esc(S.pol.msg)}</div>` : ""}
     ${wizBar(step, done, true)}
-    ${lockNote}
     ${body}
     ${nav}</div>`;
 }
@@ -423,7 +431,7 @@ function ruleHtml(c, b) {
   const canEditValue = ["gte", "lte", "in"].includes(c.test.type);
   return `<div class="card rule ${sel ? "sel" : ""}" data-psel="${esc(c.id)}">
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between"><div><b>${esc(c.id)}</b> <span class="faint" style="font-size:12.5px">${esc(c.cite)}</span></div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip ${chk[1]}">${chk[0]}</span><span class="chip ${c.confidence === "high" ? "ok" : "warn"}">AI confidence: ${esc(c.confidence)}</span><span class="chip ${dec[1]}">${dec[0]}${c.edited ? " · edited" : ""}</span></div></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip ${chk[1]}">${chk[0]}</span>${c.owner_added ? `<span class="chip new">Added by you</span>` : `<span class="chip ${c.confidence === "high" ? "ok" : "warn"}">AI confidence: ${esc(c.confidence)}</span><span class="chip ${dec[1]}">${dec[0]}${c.edited ? " · edited" : ""}</span>`}</div></div>
     <p style="margin:8px 0 4px">${esc(c.text)}</p>
     <div class="quote">${more(c.source_quote, 260)}</div>
     <div class="faint" style="font-size:12.5px;margin-top:6px">The check: ${testText(c)}${c.applies_if ? ` · only when ${esc(String(c.applies_if.fact).replace(/_/g, " "))} is ${esc(c.applies_if.equals)}` : ""}</div>
@@ -437,7 +445,7 @@ function ruleHtml(c, b) {
       <div class="field" style="margin:0"><label>Question for the provider if it is missing</label><textarea id="ed-miss" style="min-height:52px">${esc(c.if_missing || "")}</textarea></div>
       <div style="display:flex;gap:8px"><button class="btn small primary" data-psave="${esc(c.id)}">Save and approve</button><button class="btn small" data-pedit="">Cancel</button></div></div>`
     : `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
-      ${b.status === "draft" ? `<button class="btn small approve ${c.decision === "approved" ? "" : "outline"}" data-pdec="approved" data-pcid="${esc(c.id)}" ${c.blocked ? "disabled" : ""}>Approve</button>
+      ${c.owner_added ? (b.status === "draft" ? `<button class="btn small danger outline" data-prem="${esc(c.id)}">Remove</button>` : "") : b.status === "draft" ? `<button class="btn small approve ${c.decision === "approved" ? "" : "outline"}" data-pdec="approved" data-pcid="${esc(c.id)}" ${c.blocked ? "disabled" : ""}>Approve</button>
       <button class="btn small danger ${c.decision === "rejected" ? "" : "outline"}" data-pdec="rejected" data-pcid="${esc(c.id)}">Reject</button>
       <button class="btn small" data-pedit="${esc(c.id)}" ${c.blocked ? "disabled" : ""}>Edit</button>
       ${c.decision !== "pending" ? `<button class="btn small ghost" data-pdec="pending" data-pcid="${esc(c.id)}">Undo</button>` : ""}` : ""}
@@ -455,21 +463,46 @@ function newFacts(b) {
   return need;
 }
 
+/* The owner selects words in the official text and adds a key fact the AI missed. */
+const isYesNo = (f) => f && f.kind === "enum" && (f.values || []).length > 0 && f.values.every((v) => ["yes", "no", "not_applicable"].includes(String(v).toLowerCase())) && f.values.some((v) => String(v).toLowerCase() === "yes");
+function addChecks(b, a) {
+  const fd = a.fact && a.fact !== "__new__" ? (b.known_facts || []).find((x) => x.key === a.fact) : null;
+  const kind = a.fact === "__new__" ? a.new_kind : !fd ? "" : fd.kind === "number" ? "number" : isYesNo(fd) ? "yesno" : fd.kind === "enum" ? "enum" : "documented";
+  return { number: [["gte", "At least"], ["lte", "At most"]], yesno: [["yes", "Must be yes"], ["no", "Must be no"]], enum: [["in", "Must be one of"]], documented: [["present", "Must be documented"]] }[kind] || [];
+}
+function addFormHtml(b) {
+  const a = S.pol.add, facts = b.known_facts || [], checks = addChecks(b, a);
+  const opt = (v, t, cur) => `<option value="${esc(v)}" ${cur === v ? "selected" : ""}>${esc(t)}</option>`;
+  const have = facts.filter((f) => !f.proposed), prop = facts.filter((f) => f.proposed);
+  const needsValue = ["gte", "lte", "in"].includes(a.test);
+  return `<div class="card" id="padd-form" style="border-color:var(--brand,#2b5cff)"><h3 style="margin:0 0 4px">Add a key fact the AI missed</h3>
+    ${small("Added from the words you selected. The same checks run on it. A number must be in those words.", "margin-bottom:8px")}
+    <div class="quote">${more(a.quote, 300)}</div>
+    <div style="display:grid;gap:8px;margin-top:10px">
+      <div class="field" style="margin:0"><label>Key fact</label><select data-pa="fact">${opt("", "Choose a key fact", a.fact)}${have.length ? `<optgroup label="Already on this service">${have.map((f) => opt(f.key, f.label, a.fact)).join("")}</optgroup>` : ""}${prop.length ? `<optgroup label="Proposed by the AI for this policy">${prop.map((f) => opt(f.key, f.label, a.fact)).join("")}</optgroup>` : ""}${opt("__new__", "A new key fact…", a.fact)}</select></div>
+      ${a.fact === "__new__" ? `<div class="field" style="margin:0"><label>Name of the new key fact</label><input type="text" data-pa="new_label" value="${esc(a.new_label)}" placeholder="For example: Failed 6 months of physical therapy"></div>
+      <div class="field" style="margin:0"><label>What kind of key fact is it</label><select data-pa="new_kind">${opt("number", "A number", a.new_kind)}${opt("yesno", "Yes or no", a.new_kind)}${opt("documented", "Something that must be documented", a.new_kind)}</select></div>` : ""}
+      ${checks.length ? `<div class="field" style="margin:0"><label>The check</label><div style="display:flex;gap:8px"><select data-pa="test" style="flex:1">${checks.map(([v, t]) => opt(v, t, a.test)).join("")}</select>${needsValue ? `<input type="text" data-pa="value" value="${esc(a.value)}" style="flex:1" placeholder="${a.test === "in" ? "Values, separated by commas" : "A number"}">` : ""}</div></div>` : ""}
+      <div class="field" style="margin:0"><label>Rule in plain words</label><textarea data-pa="text" style="min-height:56px">${esc(a.text)}</textarea></div>
+      <div class="field" style="margin:0"><label>Question for the provider if it is missing</label><textarea data-pa="if_missing" style="min-height:52px">${esc(a.if_missing)}</textarea></div>
+      <div style="display:flex;gap:8px"><button class="btn small primary" data-padd-save ${a.fact && a.test ? "" : "disabled"}>Add this key fact</button><button class="btn small" data-padd-cancel>Cancel</button></div></div></div>`;
+}
+
 function approveHtml(b, t) {
-  const svc = b.service_ctx_name, nf = newFacts(b), live = b.service_ctx_status === "live";
-  const ready = b.status === "draft" && t.pending === 0 && t.approved > 0 && S.pol.confirm && !(live && nf.length);
+  const svc = b.service_ctx_name, nf = newFacts(b);
+  const ready = b.status === "draft" && t.pending === 0 && t.approved + (b.added || 0) > 0 && S.pol.confirm;
   const rows = nf.map((f) => `<tr><td><b>${esc(f.label)}</b></td><td><input type="text" data-pask="${esc(f.key)}" value="${esc(S.pol.asks[f.key] ?? f.ask)}" aria-label="Question about ${esc(f.label)}"></td></tr>`).join("");
   return `<div class="card"><h3 style="margin:0 0 4px">${svc ? "Approve for " + esc(svc) : "Approve this version"}</h3>
     ${nf.length ? `<div style="margin:8px 0 12px"><b style="font-size:13.5px">${nf.length} new key fact${nf.length > 1 ? "s" : ""} for ${esc(svc)}</b>
       ${small("The approved rules need these. The AI reader will look for them in every packet. Change a question if it is unclear.", "margin-bottom:6px")}
-      ${live ? `<div class="banner">${esc(svc)} is live, so it cannot take new key facts. Pause it back to pilot first.</div>` : `<div class="tbl"><table><thead><tr><th>Key fact</th><th>Question to the provider if it is missing</th></tr></thead><tbody>${rows}</tbody></table></div>`}</div>` : ""}
+      <div class="tbl"><table><thead><tr><th>Key fact</th><th>Question to the provider if it is missing</th></tr></thead><tbody>${rows}</tbody></table></div></div>` : ""}
     ${(b.used_by || []).filter((n) => n !== svc).length ? `<div class="banner" style="margin-bottom:10px">This policy is also used by ${b.used_by.filter((n) => n !== svc).map(esc).join(", ")}. Approving changes their rules too.</div>` : ""}
     <p class="muted" style="margin:0 0 10px">${svc ? `This adds the approved rules to ${esc(svc)}.` : (b.used_by && b.used_by.length ? "This policy is used by " + b.used_by.map(esc).join(", ") + "." : "No service uses this policy yet. Open a service and add it there.")} It makes a new version of the policy library. New requests are checked against it from that moment. Requests already in progress keep their recommendation. You can go back to the previous version at any time.</p>
     <label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:10px"><input type="checkbox" id="pconf" ${S.pol.confirm ? "checked" : ""} style="margin-top:3px"><span>I reviewed every rule and I understand this changes how new requests are checked.</span></label>
     ${b.waiting_approved ? `<p class="faint" style="margin:0 0 10px;font-size:12.5px">${b.waiting_approved} approved rule(s) are saved but wait for a key fact no service has yet. They change nothing until a service has it.</p>` : ""}
     <div class="field" style="margin:0 0 12px"><label for="pnote">Note for the history (optional)</label><input id="pnote" type="text" value="${esc(S.pol.note)}" placeholder="Why this change"></div>
     <button class="btn primary" id="ppub" ${ready ? "" : "disabled"}>${svc ? "Approve for " + esc(svc) : "Approve a new version"}</button>
-    <span class="faint" style="margin-left:10px;font-size:12.5px">${t.pending ? t.pending + " rule(s) still need a decision." : t.approved ? "" : "Approve at least one rule."}</span></div>`;
+    <span class="faint" style="margin-left:10px;font-size:12.5px">${t.pending ? t.pending + " rule(s) still need a decision." : t.approved + (b.added || 0) ? "" : "Approve at least one rule."}</span></div>`;
 }
 
 function polBuildHtml() {
@@ -483,16 +516,18 @@ function polBuildHtml() {
       <div class="faint" style="margin-top:12px;font-size:12.5px">This usually takes about a minute. You can leave this page. The draft waits for you on the service page.</div></div></div>`;
   }
   if (b.status === "error") return head(esc(b.ident || "Draft")) + `<div class="banner" style="border-color:var(--bad);color:var(--bad)">The policy could not be built. ${esc(b.error || "")}</div></div>`;
-  const m = b.meta, t = b.tally, n = b.criteria.length;
+  const m = b.meta, t = b.tally, n = b.criteria.length - (b.added || 0);
   const cr = b.change_report;
   const crRows = cr ? cr.rows.map((r) => `<tr><td>${esc(r.id)}</td><td>${esc((r.fact || "").replace(/_/g, " "))}</td><td>${esc(r.approved || "")}</td><td>${esc(r.draft || "")}</td><td><span class="chip ${r.result === "same" ? "ok" : r.result === "differs" ? "warn" : r.result === "missed" ? "bad" : "plain"}">${r.result === "same" ? "Same" : r.result === "differs" ? "Different" : r.result === "missed" ? "Not in the new version" : "Information"}</span></td></tr>`).join("") : "";
   return head(esc(m.title)) + `<p class="muted" style="margin:-8px 0 14px">${esc(m.policy_id)} · ${esc(LEVEL[m.level] || m.level)} · ${esc(m.source)} ${esc(m.version)}${m.effective ? " · effective " + esc(m.effective) : ""}${m.url && m.url.startsWith("http") ? ` · <a href="${esc(m.url)}" target="_blank" rel="noopener">official source</a>` : ""}</p>
-    ${b.status === "published" ? `<div class="banner" style="border-color:var(--ok);color:var(--ok)">This policy was approved. These are its rules and the exact quotes they come from. To change a rule, update the policy from CMS. That makes a new draft you can approve or reject again.</div>` : ""}
+    ${b.status === "published" ? `<div class="banner row" style="border-color:var(--ok);color:var(--ok);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><span>This policy was approved. These are its rules and the exact quotes they come from.</span><button class="btn small primary" id="pedit">Edit decisions</button></div>` : ""}
+    ${b.status === "draft" && S.pol.editing === b.id ? `<div class="banner">You are editing the approved policy. Reject a rule you approved, or approve one you rejected. Then approve the policy again at the bottom. Requests are checked against the old rules until you do.</div>` : ""}
     ${S.pol.msg ? `<div class="banner">${esc(S.pol.msg)}</div>` : ""}
     <div class="stat" style="margin-bottom:14px"><div><b>${n}</b><span>rules the AI drafted</span></div><div><b>${b.counts.pass} / ${b.counts.review} / ${b.counts.fail}</b><span>automatic checks: matched / check / failed</span></div>
-      <div><b>${t.approved} · ${t.rejected} · ${t.pending}</b><span>your decisions: approved · rejected · waiting</span></div>${cr ? `<div><b>${cr.counts.same} of ${cr.approved_count}</b><span>live rules the new version matches exactly</span></div>` : ""}</div>
-    <div class="pol-grid"><div class="srcpane"><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)">The official text</h4><div id="srcbody">${sourceHtml(b)}</div></div>
-      <div style="display:grid;gap:12px;align-content:start">${b.criteria.map((c) => ruleHtml(c, b)).join("")}</div></div>
+      <div><b>${t.approved} · ${t.rejected} · ${t.pending}</b><span>your decisions: approved · rejected · waiting</span></div>${b.added ? `<div><b>${b.added}</b><span>key fact(s) you added</span></div>` : ""}${cr ? `<div><b>${cr.counts.same} of ${cr.approved_count}</b><span>live rules the new version matches exactly</span></div>` : ""}</div>
+    <div class="pol-grid"><div class="srcpane"><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)">The official text</h4>${b.status === "draft" ? small("Did the AI miss a requirement? Select the words, then add a key fact.", "margin-bottom:8px") : ""}<div id="srcbody">${sourceHtml(b)}</div></div>
+      <div style="display:grid;gap:12px;align-content:start">${S.pol.add ? addFormHtml(b) : ""}${b.criteria.map((c) => ruleHtml(c, b)).join("")}</div></div>
+    <button class="btn primary small" id="padd-float" hidden style="position:fixed;z-index:50;box-shadow:0 4px 14px rgba(0,0,0,.25)">Add a key fact from this text</button>
     <div style="display:grid;gap:16px;margin-top:20px">
       ${b.not_modeled.length ? `<div class="card"><h3 style="margin:0 0 4px">Left for a person (${b.not_modeled.length})</h3><p class="muted" style="margin:0 0 8px">Parts of the policy the AI did not turn into rules, with its reason. A nurse or physician still handles these.</p><ul class="plist">${b.not_modeled.map((x) => `<li>${more(x.quote, 160)}${small(esc(x.why))}</li>`).join("")}</ul></div>` : ""}
       ${b.uncovered.length ? `<div class="card"><h3 style="margin:0 0 4px">Might be missing (${b.uncovered.length})</h3><p class="muted" style="margin:0 0 8px">Sentences that sound like a requirement but have no rule and no note. Check that nothing important is left out.</p><ul class="plist">${b.uncovered.map((x) => `<li>${more(x, 200)}</li>`).join("")}</ul></div>` : ""}
@@ -507,7 +542,8 @@ function bindSug() {
   const on = (sel, fn) => document.querySelectorAll(sel).forEach((el) => (el.onclick = guard((e) => fn(el, e))));
   on("[data-sugadd]", async (el) => {
     const r = await api(`/policies/services/${S.pol.svcKey}/policies`, { method: "POST", body: { policy_id: el.dataset.sugadd } });
-    S.pol.msg = `Policy added with its ${r.rules} approved rules${r.brings.length ? " and " + r.brings.length + " key fact" + (r.brings.length > 1 ? "s" : "") : ""}. Nothing was fetched, read or reviewed again.`; await loadPolicies(); render(); loadSug(); loadCodeSug();
+    await keepPlace(async () => { await loadPolicies(); render(); });
+    saved(`Policy added with its ${r.rules} approved rules${r.brings.length ? " and " + r.brings.length + " key fact" + (r.brings.length > 1 ? "s" : "") : ""}. Nothing was fetched, read or reviewed again.`); loadSug(); loadCodeSug();
   });
   on("[data-sugbuild]", async (el) => {
     const r = await api("/policies/builds", { method: "POST", body: { kind: el.dataset.sugbuild, ident: el.dataset.sugid, service: S.pol.svcKey } });
@@ -550,11 +586,17 @@ function bindPolicy() {
   /* one service */
   on("[data-psvcback]", async () => { S.pol.svcKey = null; S.pol.svc = null; S.pol.msg = null; await loadPolicies(); render(); window.scrollTo(0, 0); });
   on("[data-svstatus]", (el) => { S.pol.sv = { open: el.dataset.svstatus, note: "" }; render(); });
+  on("[data-svsubmit]", async () => {
+    const svc = S.pol.svc;
+    await api(`/policies/services/${encodeURIComponent(S.pol.svcKey)}/status`, { method: "POST", body: { status: "live", note: "", confirm: true } });
+    await keepPlace(async () => { await loadPolicies(); render(); });
+    saved(`${svc.name} is now onboarded successfully`);
+  });
   on("[data-svcancel]", () => { S.pol.sv.open = null; render(); });
   const svn = document.getElementById("svnote"); if (svn) svn.oninput = () => (S.pol.sv.note = svn.value);
   on("[data-svgo]", async () => {
     const r = await api(`/policies/services/${encodeURIComponent(S.pol.svcKey)}/status`, { method: "POST", body: { status: S.pol.sv.open, note: S.pol.sv.note, confirm: true } });
-    S.pol.msg = "Service updated. Library version " + r.version + "."; S.pol.sv = { open: null, note: "" }; await loadPolicies(); render();
+    S.pol.sv = { open: null, note: "" }; await keepPlace(async () => { await loadPolicies(); render(); }); saved(`${S.pol.svc ? S.pol.svc.name : "The service"} is switched off. Library version ${r.version}.`);
   });
   const cc = document.getElementById("ccode"), cs = document.getElementById("csrc");
   if (cc) cc.oninput = () => (S.pol.code.code = cc.value);
@@ -592,12 +634,34 @@ function bindPolicy() {
   on("[data-pcheck]", async (el) => { const id = el.dataset.pcheck; el.textContent = "Checking…"; S.pol.check[id] = await api(`/policies/${encodeURIComponent(id)}/check-update`, { method: "POST" }); render(); });
   on("[data-pupdate]", async (el) => { const t = polTarget(el.dataset.pupdate); const r = await api("/policies/builds", { method: "POST", body: { kind: t.kind, ident: t.ident, service: "" } }); await openBuild(r.id); });
   on("[data-prevert]", (el) => { S.pol.revert = el.dataset.prevert; render(); });
-  on("[data-prevert-go]", async (el) => { const r = await api("/policies/revert", { method: "POST", body: { version: el.dataset.prevertGo, confirm: true } }); S.pol.revert = null; S.pol.msg = "The live library is back to version " + r.version + "."; await loadPolicies(); render(); });
+  on("[data-prevert-go]", async (el) => { const r = await api("/policies/revert", { method: "POST", body: { version: el.dataset.prevertGo, confirm: true } }); S.pol.revert = null; await keepPlace(async () => { await loadPolicies(); render(); }); saved("The live library is back to version " + r.version + "."); });
 
   /* one draft policy */
   on("[data-psel]", (el, e) => { if (e.target.closest("button:not([data-psel])")) return; S.pol.sel = el.dataset.psel; render(); const h = document.querySelector("#srcbody [data-hit]"); if (h) h.scrollIntoView({ block: "center", behavior: "smooth" }); });
   on("[data-pdec]", async (el, e) => { e.stopPropagation(); await api(`/policies/builds/${S.pol.build.id}/criteria/${encodeURIComponent(el.dataset.pcid)}`, { method: "POST", body: { decision: el.dataset.pdec } }); await openBuildKeep(); });
   on("[data-pedit]", (el, e) => { e.stopPropagation(); S.pol.edit = el.dataset.pedit || null; render(); });
+  on("[data-prem]", async (el, e) => { e.stopPropagation(); await api(`/policies/builds/${S.pol.build.id}/rules/${encodeURIComponent(el.dataset.prem)}/remove`, { method: "POST" }); await openBuildKeep(); });
+  const fl = document.getElementById("padd-float");
+  if (fl) {
+    fl.onmousedown = (e) => e.preventDefault(); // keep the selection
+    fl.onclick = () => { S.pol.add = { quote: S.pol.pick, fact: "", new_label: "", new_kind: "number", test: "", value: "", text: S.pol.pick, if_missing: "" }; fl.hidden = true; window.getSelection().removeAllRanges(); render(); const f = document.getElementById("padd-form"); if (f) f.scrollIntoView({ block: "start", behavior: "smooth" }); };
+  }
+  document.querySelectorAll("[data-pa]").forEach((el) => {
+    const k = el.dataset.pa, a = S.pol.add;
+    if (el.tagName === "SELECT") el.onchange = () => {
+      a[k] = el.value;
+      if (k === "fact" || k === "new_kind") { const c = addChecks(S.pol.build, a); a.test = c.length ? c[0][0] : ""; a.value = ""; const fd = (S.pol.build.known_facts || []).find((x) => x.key === a.fact); if (k === "fact" && fd && !a.if_missing) a.if_missing = fd.ask || ""; }
+      render();
+    };
+    else el.oninput = () => (a[k] = el.value);
+  });
+  on("[data-padd-cancel]", () => { S.pol.add = null; render(); });
+  on("[data-padd-save]", async () => {
+    const a = S.pol.add, body = { quote: a.quote, fact: a.fact, new_label: a.new_label, new_kind: a.fact === "__new__" ? a.new_kind : "", test: a.test, text: a.text, if_missing: a.if_missing };
+    if (a.test === "in") body.value = String(a.value).split(",").map((x) => x.trim()).filter(Boolean); else if (a.test === "gte" || a.test === "lte") body.value = a.value === "" ? null : Number(a.value);
+    await api(`/policies/builds/${S.pol.build.id}/rules`, { method: "POST", body });
+    S.pol.add = null; await openBuildKeep(); saved("Key fact added. It counts as one the AI missed, and it goes live with the policy when you approve.");
+  });
   on("[data-psave]", async (el, e) => {
     e.stopPropagation();
     const c = S.pol.build.criteria.find((x) => x.id === el.dataset.psave); const body = { decision: "approved", text: val("ed-text"), if_missing: val("ed-miss") };
@@ -607,12 +671,48 @@ function bindPolicy() {
   document.querySelectorAll("[data-pask]").forEach((el) => (el.oninput = () => (S.pol.asks[el.dataset.pask] = el.value)));
   const conf = document.getElementById("pconf"); if (conf) conf.onchange = () => { S.pol.confirm = conf.checked; S.pol.note = val("pnote") || ""; render(); };
   const note = document.getElementById("pnote"); if (note) note.oninput = () => { S.pol.note = note.value; };
+  on("#pedit", async () => {
+    const b = S.pol.build;
+    await api(`/policies/builds/${b.id}/edit`, { method: "POST" });
+    S.pol.editing = b.id; S.pol.confirm = false;
+    await openBuildKeep();
+    saved("Editing. Change any decision, then approve the policy again at the bottom.");
+  });
   on("#ppub", async () => {
+    S.pol.editing = null;
     const b = S.pol.build, ctx = b.service_ctx, nf = newFacts(b);
     const attach = ctx ? { service: ctx, codes: [], new_service: null, details: nf.map((x) => ({ key: x.key, ask: S.pol.asks[x.key] ?? x.ask })) } : null;
     const r = await api(`/policies/builds/${b.id}/publish`, { method: "POST", body: { confirm: true, note: S.pol.note, attach } });
-    S.pol.msg = `Approved. The policy library is now version ${r.version}. ${r.change.added.length} new rule(s) live, ${r.change.removed.length} removed, ${r.change.unchanged} unchanged.${r.waiting ? " " + r.waiting + " approved rule(s) are saved and wait for a key fact." : ""}${ctx ? "" : r.attached ? "" : " No service uses this policy yet."}`;
-    await loadPolicies(); await openBuildKeep();
+    const done = `Approved. The policy library is now version ${r.version}. ${r.change.added.length} new rule(s) live, ${r.change.removed.length} removed, ${r.change.unchanged} unchanged.${r.waiting ? " " + r.waiting + " approved rule(s) are saved and wait for a key fact." : ""}${ctx ? "" : r.attached ? "" : " No service uses this policy yet."}`;
+    await loadPolicies();
+    if (ctx && S.view === "services") {  // the next step is the next policy: a draft waiting for review, else the service's policies step
+      const svc = await api("/policies/services/" + encodeURIComponent(ctx));
+      const next = svc.drafts.find((d) => d.id !== b.id && d.status === "draft") || svc.drafts.find((d) => d.id !== b.id && d.status === "running");
+      if (next) { await openBuild(next.id); saved(done + " Next: review " + (next.ident || next.policy_id) + "."); }
+      else { S.pol.build = null; S.pol.msg = null; S.pol.svcKey = ctx; S.pol.svc = svc; S.pol.step = 3; render(); window.scrollTo(0, 0); loadSug(); loadCodeSug(); saved(done); }
+    } else { await openBuildKeep(); saved(done); }
   });
 }
-async function openBuildKeep() { const sel = S.pol.sel, edit = S.pol.edit, conf = S.pol.confirm, note = S.pol.note, msg = S.pol.msg, asks = S.pol.asks; await openBuild(S.pol.build.id); S.pol.asks = asks; S.pol.sel = sel; S.pol.edit = edit; S.pol.confirm = conf; S.pol.note = note; S.pol.msg = msg; render(); }
+async function openBuildKeep() { await keepPlace(async () => { const sel = S.pol.sel, edit = S.pol.edit, conf = S.pol.confirm, note = S.pol.note, msg = S.pol.msg, asks = S.pol.asks; await openBuild(S.pol.build.id); S.pol.asks = asks; S.pol.sel = sel; S.pol.edit = edit; S.pol.confirm = conf; S.pol.note = note; S.pol.msg = msg; render(); }); }
+
+
+/* Select words in the official text: a button appears to add a key fact from them. */
+document.addEventListener("selectionchange", () => {
+  const btn = document.getElementById("padd-float"), sb = document.getElementById("srcbody");
+  if (!btn) return;
+  const sel = window.getSelection();
+  const inside = sb && sel && !sel.isCollapsed && sb.contains(sel.anchorNode) && sb.contains(sel.focusNode);
+  if (inside) { // a selection that starts or ends inside a word grows to the whole word
+    const rg = sel.getRangeAt(0), w = (ch) => /\w/.test(ch || "");
+    const edge = (node, off, dir) => { if (node.nodeType !== 3) return off; const t = node.textContent; let i = off; while (dir < 0 ? w(t[i - 1]) && w(t[i]) : w(t[i]) && w(t[i - 1])) i += dir; return i; };
+    const a = edge(rg.startContainer, rg.startOffset, -1), z = edge(rg.endContainer, rg.endOffset, 1);
+    if (a !== rg.startOffset || z !== rg.endOffset) { rg.setStart(rg.startContainer, a); rg.setEnd(rg.endContainer, z); sel.removeAllRanges(); sel.addRange(rg); return; }
+  }
+  const q = inside ? sel.toString().replace(/\s+/g, " ").trim() : "";
+  if (q.length < 15) { btn.hidden = true; return; }
+  S.pol.pick = q;
+  const r = sel.getRangeAt(0).getBoundingClientRect();
+  btn.style.left = Math.max(8, Math.min(window.innerWidth - 250, r.left)) + "px";
+  btn.style.top = Math.min(window.innerHeight - 44, r.bottom + 8) + "px";
+  btn.hidden = false;
+});

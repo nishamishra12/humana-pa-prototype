@@ -1,0 +1,183 @@
+{
+ "info": {
+  "profile": "balanced",
+  "pages": 4,
+  "engine": "unstructured"
+ },
+ "elements": [
+  {
+   "type": "Title",
+   "text": "LCD L35022: Bariatric Surgical Management of Morbid Obesity",
+   "page": 1,
+   "id": "e1"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Version 67",
+   "page": 1,
+   "id": "e2"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Notice: It is not appropriate to bill Medicare for services that are not covered (as described by this entire LCD) as if they\nare covered. When billing for non-covered services, use the appropriate modifier.",
+   "page": 1,
+   "id": "e3"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Compliance with the provisions in this policy may be monitored and addressed through post payment data analysis and\nsubsequent medical review audits.",
+   "page": 1,
+   "id": "e4"
+  },
+  {
+   "type": "Title",
+   "text": "CMS National Coverage Policy",
+   "page": 1,
+   "id": "e5"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Surgical treatment for primary obesity is not a covered Medicare service. Refer to IOM Publication 100-03, Medicare\nNational Coverage Determinations Manual , Chapter 1, Part 2, Section 100.1, for more information regarding national\ncoverage indications for bariatric services.",
+   "page": 1,
+   "id": "e6"
+  },
+  {
+   "type": "Title",
+   "text": "Contractor Local Coverage Policy",
+   "page": 1,
+   "id": "e7"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Bariatric surgery procedures must be performed by a surgeon trained and substantially experienced with surgery of the\ndigestive tract. Services will be considered reasonable and necessary only if performed by appropriately trained\nproviders. This training and expertise must have been acquired within the framework of a completed accredited\nresidency training program and reflect ongoing continued medical education activities and board certification by the\nappropriate ABMS. It is expected that these services would be performed as indicated by current medical literature and\naccepted standards of practice of the American College of Surgeons, and the American Society for Metabolic and\nBariatric Disease. Surgeons performing these services for Medicare beneficiaries shall be appropriately trained Medical\nPhysicians (MD or DO) certified or eligible for certification by the American Board of Surgery, American Osteopathic\nBoard of (General) Surgery and/or is a Fellow of the American or Royal College of Surgeons, or Regular Member of the\nAmerican Society of Metabolic and Bariatric Surgery.",
+   "page": 1,
+   "id": "e8"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Consistent with NCD 100.1, Laparoscopic Sleeve Gastrectomy for morbid obesity is covered under Local Coverage\nDetermination by this contractor. Please refer to the NCD for coverage criteria:",
+   "page": 1,
+   "id": "e9"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Laparoscopic Sleeve Gastrectomy for a 'stand-alone' procedure (i.e., not as part of staged procedure or part of failed\nattempt that moves to an open procedure)",
+   "page": 1,
+   "id": "e10"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Under provisions of this LCD, the following procedures are also not covered:",
+   "page": 1,
+   "id": "e11"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Mini-gastric bypass.",
+   "page": 1,
+   "id": "e12"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Silastic ring vertical gastric bypass (Fobi pouch).",
+   "page": 1,
+   "id": "e13"
+  },
+  {
+   "type": "Title",
+   "text": "Comorbid Conditions",
+   "page": 1,
+   "id": "e14"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Severe obesity is known to aggravate numerous medical conditions. Comorbid conditions for which bariatric surgery is\ncovered include the following:",
+   "page": 1,
+   "id": "e15"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Type II diabetes mellitus (by American Diabetes Association diagnostic criteria).",
+   "page": 1,
+   "id": "e16"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Refractory hypertension (defined as blood pressure of 140 mmHg systolic and/or 90 mmHg diastolic despite medical\ntreatment with maximal doses of three antihypertensive medications).",
+   "page": 1,
+   "id": "e17"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Refractory hyperlipidemia (acceptable levels of lipids unachievable with diet and maximum doses of lipid lowering\nmedications).",
+   "page": 1,
+   "id": "e18"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Obesity-induced cardiomyopathy.",
+   "page": 1,
+   "id": "e19"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Clinically significant obstructive sleep apnea.",
+   "page": 1,
+   "id": "e20"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Obesity-related hypoventilation.",
+   "page": 1,
+   "id": "e21"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Pseudotumor cerebri (documented idiopathic intracerebral hypertension).",
+   "page": 1,
+   "id": "e22"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Severe arthropathy of spine and/or weight-bearing joints (when obesity prohibits appropriate surgical management of\njoint dysfunction treatable but for the obesity).",
+   "page": 1,
+   "id": "e23"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Hepatic steatosis without prior evidence of active inflammation.",
+   "page": 1,
+   "id": "e24"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Though the conditions listed above need not be immediately life-threatening for Medicare to cover bariatric surgery, the",
+   "page": 1,
+   "id": "e25"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "condition must not be trivial or easily controlled with non-invasive means (such as medication) and must be of sufficient\nseverity as to pose considerable short- or long-term risk to function and/or survival. Consideration of the risk-benefit for\neach individual patient must be used to determine that surgery for obesity is the best option for treatment for that patient\nand no contraindications to bariatric surgery may exist. Refer to IOM Publication 100-04, Medicare Claims Processing\nManual , Chapter 32, Section 150, for more information on co-morbid conditions related to morbid obesity.\n\nPrevious Unsuccessful Medical Treatment for Obesity\n\nWith or without bariatric surgery, successful obesity management requires adoption and lifelong practice of healthy\neating and physical exercise (i.e., lifestyle modification) by the obese patient. Without adequate patient motivation and/or\nskills needed to make such lifestyle modifications, the benefit of bariatric surgical procedures is severely jeopardized\nand not medically reasonable or necessary. Patients considering bariatric surgical options must have been provided with\nknowledge and tools needed to achieve such lifelong lifestyle changes and must be capable and willing to undergo the\nchanges.\n\nFor the purposes of this LCD, a patient will be deemed to have been unsuccessful with medical treatment of obesity if all\nof the following minimal requirements are met per documentation in the medical record:\n\nThe patient meets BMI requirements stated in national policy (at the time of surgery).\n\nThe patient has been provided with knowledge and tools needed to achieve such lifelong lifestyle changes, exhibits\nunderstanding of the needed changes and is demonstrated to clinicians involved in his or her care to be capable and\nwilling to undergo the changes.\n\nThe patient has made a diligent effort to achieve healthy body weight with such efforts described in the medical record\nand certified by the operating surgeon.\n\nThe patient has failed to maintain a healthy weight despite adequate participation in a structured dietary program\noverseen by one of the following:\n\nPhysician (MD or DO).\n\nRegistered dietician (RD).\n\nBoard certified specialist in pediatric nutrition (CSP).\n\nBoard certified specialist in renal nutrition (CSR).\n\nFellow of the American Dietetic Association (FADA).\n\nPreoperative Psychological/Psychiatric Evaluation\n\nAn objective examination by a mental health professional (psychiatrist or psychologist) experienced in the evaluation\nand management of bariatric surgery candidates to exclude patients who are unable to personally provide informed\nconsent, who are unable to comply with a reasonable pre- and postoperative regimen, or who have a significant risk of\npostoperative decompensation is recommended. Such evaluation is a Medicare-covered service. A diagnostic session is\nappropriate, and treatment sessions are appropriate if the patient has a diagnosable disorder that is likely to respond to\npsychotherapy. The mental health professional, the surgeon and the patient should be in agreement that the patient is\nan appropriate candidate for the surgery.\n\nPatients who have a history of psychiatric or psychological disorder or are currently under the care of a\npsychologist/psychiatrist, or are on psychotropic medications, must undergo preoperative psychological evaluation and\nclearance and the patient's record must include documentation of the evaluation and assessment.\n\nOther Preoperative Evaluation\n\nA patient undergoing bariatric surgical procedures should undergo preoperative evaluation that is medically reasonable\nand necessary based upon his comorbid medical conditions and medical/surgical history. All underlying medical\nconditions that will likely impact or complicate the patient's surgical and postoperative course must be adequately\ncontrolled before surgery. Routine preoperative testing (including upper gastrointestinal endoscopy) in the absence of\nsigns/symptoms or personal history of a disease that could be negatively impacted by anesthesia or surgery is excluded\nfrom Medicare coverage by law.",
+   "page": 2,
+   "id": "e26"
+  },
+  {
+   "type": "Title",
+   "text": "Postoperative Care",
+   "page": 2,
+   "id": "e27"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Appropriate postoperative care for the bariatric surgery patient is required for Medicare coverage of bariatric surgical\nprocedures. Follow-up must include but not be limited to:\n\nPostoperative care by the operating surgeon immediately following surgery and throughout the global period for the\nsurgery.\n\nAt least three follow-up visits with the bariatric surgery team within the first year.\n\nLifetime postoperative care for dietary issues (including vitamin, mineral and nutritional supplementation), exercise and\nlifestyle changes reinforced by counseling and/or support groups supervised by a physician knowledgeable in the\nlong-term care of such patients.\n\nContraindications to Bariatric Surgery\n\nSurgery for severe obesity is a major surgical intervention with a risk of significant early and late morbidity and\nperioperative mortality. Surgery for severe obesity is not covered in the presence of absolute contraindications, including\nthe following:\n\nProhibitive perioperative risk of cardiac complications due to cardiac ischemia or myocardial dysfunction.\n\nSevere chronic obstructive airway disease or respiratory dysfunction.\n\nNon-compliance with medical treatment of obesity or treatment of other chronic medical condition.\n\nFailure to cease tobacco use.\n\nPsychological/psychiatric conditions.\n\nSchizophrenia, borderline personality disorder, suicidal ideation, severe or recurrent depression, or bipolar affective\ndisorders with difficult-to-control manifestations (e.g., history of recurrent lapses in control or recurrent failure to comply\nwith management regimen).\n\nMental retardation that prevents personally provided informed consent or the ability to understand and comply with a\nreasonable pre- and postoperative regimen.\n\nAny other psychological/psychiatric disorder that, in the opinion of a psychologist/psychiatrist, imparts a significant risk of\npsychological/psychiatric decompensation or interference with the long-term postoperative management.\n\nNote: A history of or presence of mild, uncomplicated and adequately treated depression due to obesity is not normally\nconsidered a contraindication to obesity surgery.\n\nHistory of significant eating disorders, including anorexia nervosa, bulimia and pica (sand, clay or other abnormal\nsubstance).\n\nSevere hiatal hernia/gastroesophageal reflux (for purely restrictive procedures such as LAGB).\n\nAutoimmune and rheumatological disorders (including inflammatory bowel diseases and vasculitides) that will be\nexacerbated by the presence of intra-abdominal foreign bodies (for LAGB procedure).\n\nHepatic disease with prior documented inflammation, portal hypertension or ascites.\n\nIncidental Cholecystectomy\n\nIncidental cholecystectomy is covered in the presence of signs and/or symptoms of gallbladder disease, finding of a\ngrossly diseased gallbladder at the time of operation or a history of metabolic derangements that will result in\nsymptomatic gallbladder disease following bariatric procedures.\n\nRepeat Bariatric Procedures\n\nRepeat bariatric surgery is generally not reasonable and necessary. Medicare does not provide prior authorization for\nthese services. Claims for more than one bariatric surgical procedure most likely will create a denial. However, in the\nappeals process, medical documentation may be submitted for review and the service may potentially be covered when\nclinical circumstances demonstrate reasonability and necessity. Appropriate ABN and modifiers should be appended to\nany services potentially to be denied. Refer to IOM Publication 100-04, Medicare Claims Processing Manual , Chapter\n32, Section 15 for more information.\n\nNotice: Services performed for any given diagnosis must meet all of the indications and limitations stated in this policy,\nthe general requirements for medical necessity as stated in CMS payment policy manuals, any and all existing CMS",
+   "page": 3,
+   "id": "e28"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The redetermination process may be utilized for consideration of services performed outside of the reasonable and\nnecessary requirements in this LCD.\n\nThis LCD supplements but does not replace, modify or supersede existing Medicare applicable National Coverage\nDeterminations (NCDs) or payment policy rules and regulations for bariatric surgical services. Federal statute and\nsubsequent Medicare regulations regarding provision and payment for medical services are lengthy. They are not\nrepeated in this LCD. Neither Medicare payment policy rules nor this LCD replace, modify or supersede applicable state\nstatutes regarding medical practice or other health practice professions acts, definitions and/or scopes of practice. All\nproviders who report services for Medicare payment must fully understand and follow all existing laws, regulations and\nrules for Medicare payment for bariatric surgical services and must properly submit only valid claims for them. Please\nreview and understand them and apply the medical necessity provisions in the policy within the context of the manual\nrules. Relevant CMS manual instructions and policies may be found in the following Internet-Only Manuals (IOMs)\npublished on the CMS Web site:\n\nIOM Citations:\n\nCMS IOM Publication 100-02 , Medicare Benefit Policy Manual, Chapter 16, Section 10 General Exclusions from\nCoverage and Section 20 Services not Reasonable and Necessary\n\nCMS IOM Publication 100-03, Medicare National Coverage Determinations (NCD) Manual , Chapter 1, Part 2, Section\n100.1 Bariatric Surgery for Treatment of Co-morbid Conditions Related to Morbid Obesity\n\nCMS IOM Publication 100-04, Medicare Claims Processing Manual , Chapter 32, Section 150 Billing Requirements for\nBariatric Surgery for Morbid Obesity\n\nCMS IOM Publication 100-08, Medicare Program Integrity Manual , Chapter 13, Section 13.5.4 Reasonable and\nNecessary Provision in an LCD\n\nSocial Security Act (Title XVIII) Standard References:\n\nTitle XVIII of the Social Security Act, Section 1862(a)(1)(A) states that no Medicare payment shall be made for items or\nservices which are not reasonable and necessary for the diagnosis or treatment of illness or injury.\n\nTitle XVIII of the Social Security Act, Section 1862(a)(7). This section excludes routine physical examinations.\n\nTitle XVIII of the Social Security Act, Section 1862(a)(10). This section excludes cosmetic surgery.",
+   "page": 4,
+   "id": "e29"
+  }
+ ]
+}

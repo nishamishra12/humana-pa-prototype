@@ -94,7 +94,7 @@ def compute(c):
     um = dict(unassigned=len(unassigned), oldest_unassigned_days=round(max(((now - x["received"]).total_seconds() / 86400 for x in unassigned), default=0), 1),
               aging=aging(open_), nurses=nurses, directors=directors, open=len(open_), overdue=len(overdue), due_soon=len(due_soon),
               at_risk_open=sum(x["at_risk"] for x in open_))
-    # ---- what an executive can act on: capacity, which service next, owner review, pilot services
+    # ---- what an executive can act on: capacity, which service next, owner review, onboarded services
     from pipeline import procedures
     lib = procedures.library()
     services = []
@@ -124,7 +124,7 @@ def compute(c):
         capacity=dict(overdue=len(overdue), due_soon=len(due_soon), open=len(open_), unassigned=um["unassigned"], oldest_unassigned_days=um["oldest_unassigned_days"]),
         demand=dict(total=sum(g["n"] for g in demand), codes=demand[:4]),
         owner=dict(drafts=drafts, version=lib.get("version")),
-        pilots=[s for s in services if s["status"] == "pilot"])
+        onboarded=[s for s in services if s["status"] != "planned"])
     # ---- model efficiency: how the AI's work holds up against the two people who check it
     p1 = lambda a, b: round(100 * a / b, 1) if b else None
     tp = sum(1 for a in acts if a["human_flag"] and a["ai_flag"])
@@ -141,10 +141,11 @@ def compute(c):
                 edited += 1 if r["edited"] else 0
             elif r["decision"] == "rejected":
                 rejected += 1
+        added = c.execute("SELECT COUNT(*) FROM policy_owner_rules o JOIN policy_builds b ON b.id=o.build_id WHERE b.status='published'").fetchone()[0]
         policies = c.execute("SELECT COUNT(*) FROM policy_builds WHERE status='published'").fetchone()[0]
     except Exception:
-        approved = rejected = edited = policies = 0
-    owner_eff = dict(policies=policies, drafted=approved + rejected, approved=approved, rejected=rejected, edited=edited,
-                     precision=p1(approved, approved + rejected), edit_rate=p1(edited, approved))
+        approved = rejected = edited = added = policies = 0
+    owner_eff = dict(policies=policies, drafted=approved + rejected, approved=approved, rejected=rejected, edited=edited, added=added,
+                     precision=p1(approved, approved + rejected), recall=p1(approved, approved + added), edit_rate=p1(edited, approved))
     return dict(generated=now.strftime("%Y-%m-%d %H:%M UTC"), n=n, exec=exec_, um=um, eff=dict(owner=owner_eff, nurse=nurse_eff))
 

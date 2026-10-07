@@ -1,0 +1,226 @@
+{
+ "criteria": [
+  {
+   "id": "SCS-TRIAL-PREREQ",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (trial_performed_and_documented): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-REPLACEMENT-EXCEPTION",
+   "level": "pass",
+   "issues": [],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-CONSERVATIVE-TX",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (conservative_treatment_tried): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-MULTIDISCIPLINARY-SCREEN",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (multidisciplinary_screening_done): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-PSYCH-PHYSICAL-SCREEN",
+   "level": "review",
+   "issues": [
+    "quote matched only approximately (98.6)",
+    "needs a new packet detail (psych_and_physical_eval_included): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "fuzzy"
+  },
+  {
+   "id": "SCS-CHART-DOCUMENTATION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (screening_documentation_in_chart): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-NO-SUBSTANCE-ABUSE",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (active_substance_abuse): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-PATIENT-EDUCATION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (patient_education_disclosure_done): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-PSYCH-SCREENING-TRIAL",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (psychological_screening_done): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-PERM-SETTING",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (permanent_implant_setting): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-OFFICE-TRIAL-PRIVILEGES",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (office_trial_physician_qualification): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-PERMANENT-ONLY-IF-POSITIVE-TRIAL",
+   "level": "review",
+   "issues": [
+    "quote matched only approximately (98.0)",
+    "needs a new packet detail (positive_trial_response): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "fuzzy"
+  },
+  {
+   "id": "SCS-TRIAL-TO-PERM-DOCUMENTATION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (trial_to_permanent_decision_documented): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-SUCCESSFUL-TRIAL-PAIN-REDUCTION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (trial_pain_reduction_percent): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-SUCCESSFUL-TRIAL-MED-REDUCTION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (trial_analgesic_reduction_percent): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-SUCCESSFUL-TRIAL-FUNCTIONAL-IMPROVEMENT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (trial_functional_improvement): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-RSD-LOWER-IMPROVEMENT-EXCEPTION",
+   "level": "review",
+   "issues": [
+    "quote matched only approximately (99.4)"
+   ],
+   "quote_found": true,
+   "match": "fuzzy"
+  },
+  {
+   "id": "SCS-MAX-LEADS",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (number_of_leads): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-MAX-CONTACTS",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (number_of_contacts): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-MAX-TRIALS-PER-REGION",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (prior_trials_count_same_region): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "SCS-REPEAT-TRIAL-EXTENUATING",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (extenuating_circumstances_for_repeat_trial): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  }
+ ],
+ "counts": {
+  "pass": 1,
+  "review": 20,
+  "fail": 0
+ },
+ "total": 21,
+ "uncovered": [
+  "However, the temporary neurostimulator trial can be done in an office setting if all the sterility, equipment, professional"
+ ],
+ "new_facts": [
+  "trial_performed_and_documented",
+  "conservative_treatment_tried",
+  "multidisciplinary_screening_done",
+  "psych_and_physical_eval_included",
+  "screening_documentation_in_chart",
+  "active_substance_abuse",
+  "patient_education_disclosure_done",
+  "psychological_screening_done",
+  "permanent_implant_setting",
+  "trial_setting",
+  "office_trial_physician_qualification",
+  "positive_trial_response",
+  "trial_to_permanent_decision_documented",
+  "trial_pain_reduction_percent",
+  "trial_analgesic_reduction_percent",
+  "trial_functional_improvement",
+  "number_of_leads",
+  "number_of_contacts",
+  "prior_trials_count_same_region",
+  "prior_trial_failed",
+  "extenuating_circumstances_for_repeat_trial"
+ ],
+ "not_modeled": 3
+}

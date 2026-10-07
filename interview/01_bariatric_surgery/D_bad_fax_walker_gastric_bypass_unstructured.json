@@ -1,0 +1,312 @@
+[
+ {
+  "page": 1,
+  "type": "Header",
+  "text": "OCT-06-2026 14:31    FROM: RIVERBEND BARIATRIC    9375550121        TO: HUMANA UM        P.001/007"
+ },
+ {
+  "page": 1,
+  "type": "Title",
+  "text": "FAX TRANSMITTAL"
+ },
+ {
+  "page": 1,
+  "type": "Title",
+  "text": "Riverbend Bariatric Surgery Center"
+ },
+ {
+  "page": 1,
+  "type": "Form",
+  "text": "To: Humana UM / Prior Auth\nFax: 1-800-555-0199\nFrom: Sheila B. - auth coordinator\nDate: 10/6/26\nPages: 7 incl. cover"
+ },
+ {
+  "page": 1,
+  "type": "NarrativeText",
+  "text": "Notes:"
+ },
+ {
+  "page": 1,
+  "type": "NarrativeText",
+  "text": "Pt: Denise Walker DOB 2/23/1978\n\nMember ID MBR-41003\n\nReq: lap Roux-en-Y gastric bypass CPT 43644\n\nBMI 45.9 - T2DM, HTN, OSA on CPAP\n\n7 mo supervised diet program done 8/18\n\nPsych cleared 9/2. Non-smoker.\n\nPlease call 937-555-0120 w/ questions. Thx!"
+ },
+ {
+  "page": 1,
+  "type": "NarrativeText",
+  "text": "CONFIDENTIAL: This fax contains protected health information.\nMade-up data for a software prototype. Not a real patient."
+ },
+ {
+  "page": 2,
+  "type": "Header",
+  "text": "OCT-06-2026 14:32    FROM: RIVERBEND BARIATRIC    9375550121    TO: HUMANA UM    P.002/007"
+ },
+ {
+  "page": 2,
+  "type": "Header",
+  "text": "Riverbend Bariatric Surgery Center  Fax (937) 555-0121  2026-10-06  |  Page 1 of 6"
+ },
+ {
+  "page": 2,
+  "type": "Title",
+  "text": "Prior Authorization Request - Inpatient Admission"
+ },
+ {
+  "page": 2,
+  "type": "Title",
+  "text": "Health Plan"
+ },
+ {
+  "page": 2,
+  "type": "NarrativeText",
+  "text": "Humana Medicare Advantage. Plan ID: H5216-014-000. Request type: standard pre-service review.\nDate of request: 2026-10-06"
+ },
+ {
+  "page": 2,
+  "type": "Title",
+  "text": "Member Information"
+ },
+ {
+  "page": 2,
+  "type": "Form",
+  "text": "Member: Denise Walker\nDOB: 1978-02-23 (age 48)\nMember ID: MBR-41003\nAddress: 5 Fairview Terrace, Dayton, OH 45431\nPhone: (937) 555-0166\nSex: F\nPrimary insurance: Humana Medicare Advantage (primary)\nSecondary: none on file"
+ },
+ {
+  "page": 2,
+  "type": "Title",
+  "text": "Requesting Provider"
+ },
+ {
+  "page": 2,
+  "type": "NarrativeText",
+  "text": "Dr. Alan Reyes, MD -- Bariatric Surgery\nNPI: 1457382096\nPractice: Riverbend Bariatric Surgery Center\nPhone: (937) 555-0120   Fax: (937) 555-0121"
+ },
+ {
+  "page": 2,
+  "type": "Title",
+  "text": "Requested Service"
+ },
+ {
+  "page": 2,
+  "type": "Form",
+  "text": "Requested service: Elective inpatient admission, laparoscopic Roux-en-Y gastric bypass\nCPT: 43644\nICD-10: E66.01 (Morbid obesity due to excess calories); Z68.42 (BMI 45.0-49.9); E11.65; I10; G47.33\nPlanned admit date: 2026-11-17\nLevel of care requested: INPATIENT\nPlace of service: Hospital, inpatient (acute care)."
+ },
+ {
+  "page": 2,
+  "type": "Title",
+  "text": "Submission Contact"
+ },
+ {
+  "page": 2,
+  "type": "NarrativeText",
+  "text": "Submitted through the provider portal by Sheila Brandt, Authorization Coordinator.\nCallback: (937) 555-0120. Supporting clinical documentation attached (6 pages including this request)."
+ },
+ {
+  "page": 2,
+  "type": "NarrativeText",
+  "text": "Expected length of stay: 2 midnights."
+ },
+ {
+  "page": 2,
+  "type": "Footer",
+  "text": "Made-up data for a software prototype. Not a real patient."
+ },
+ {
+  "page": 3,
+  "type": "Header",
+  "text": "OCT-06-2026 14:33    FROM: RIVERBEND BARIATRIC    9375550121        TO: HUMANA UM        P.003/007"
+ },
+ {
+  "page": 3,
+  "type": "Header",
+  "text": "Riverbend Bariatric Surgery Center Fax (937) 555-0121 2026-10-06 | Page 2 of 6"
+ },
+ {
+  "page": 3,
+  "type": "Title",
+  "text": "Surgical Consultation - Bariatric Surgery"
+ },
+ {
+  "page": 3,
+  "type": "NarrativeText",
+  "text": "Date of consultation: 2026-09-21. Patient: Denise Walker, age 48, female."
+ },
+ {
+  "page": 3,
+  "type": "Image",
+  "text": "History"
+ },
+ {
+  "page": 3,
+  "type": "NarrativeText",
+  "text": "Ms. Walker is referred by her primary care physician for surgical treatment of severe obesity. Weight has\nbeen above 250 lb for 14 years. She has type 2 diabetes mellitus (diagnosed 2019, on metformin 1000 mg\ntwice daily and semaglutide), hypertension on losartan 100 mg daily, and obstructive sleep apnea treated\nwith CPAP. She also has gastroesophageal reflux and knee pain."
+ },
+ {
+  "page": 3,
+  "type": "Title",
+  "text": "Measurements"
+ },
+ {
+  "page": 3,
+  "type": "NarrativeText",
+  "text": "Height 65 in. Weight 276 lb. BMI 45.9 kg/m2 (measured in clinic 2026-09-21)."
+ },
+ {
+  "page": 3,
+  "type": "Title",
+  "text": "Prior medical treatment for obesity"
+ },
+ {
+  "page": 3,
+  "type": "NarrativeText",
+  "text": "Completed a 7-month physician-supervised weight management program (Riverbend Medical Weight\nManagement) from 2026-01-13 to 2026-08-18 with monthly visits, registered dietitian counseling and a\ndocumented calorie-controlled diet. Net weight change over the program: 281 lb to 276 lb. Patient was\nunable to maintain a healthy weight despite adequate participation. Earlier attempts include a commercial\nprogram in 2018 and a medication trial with regain."
+ },
+ {
+  "page": 3,
+  "type": "Title",
+  "text": "Assessment"
+ },
+ {
+  "page": 3,
+  "type": "NarrativeText",
+  "text": "Severe obesity with obesity-related comorbidities (type 2 diabetes, hypertension, OSA, reflux). No history\nof prior bariatric surgery. Non-smoker. No history of eating disorder. No known cardiac disease. No hepatic\ndisease. No autoimmune disease."
+ },
+ {
+  "page": 3,
+  "type": "Image",
+  "text": "Plan"
+ },
+ {
+  "page": 3,
+  "type": "NarrativeText",
+  "text": "Laparoscopic Roux-en-Y gastric bypass. Gastric bypass is chosen over a sleeve because of her reflux and\ndiabetes. Patient has received education on the operation, risks, the required lifestyle changes and lifelong\nfollow-up, and has demonstrated understanding and willingness to carry out these changes. I certify that\nthe patient has made a diligent effort to achieve a healthy body weight, as described in this note and in the\nattached program records.\n\nDr. Alan Reyes, MD, Bariatric Surgery. Board certified, American Board of Surgery. Fellowship trained in\nminimally invasive and bariatric surgery. Completed an accredited surgical residency; maintains continuing\nmedical education."
+ },
+ {
+  "page": 3,
+  "type": "NarrativeText",
+  "text": "seen 9/21 - wt 276 confirmed. A.R."
+ },
+ {
+  "page": 3,
+  "type": "Footer",
+  "text": "Made-up data for a software prototype. Not a real patient."
+ },
+ {
+  "page": 4,
+  "type": "Header",
+  "text": "OCT-06-2026 14:34 FROM: RIVERBEND BARIATRIC 9375550121 TO: HUMANA UM P.004/007"
+ },
+ {
+  "page": 4,
+  "type": "Header",
+  "text": "Riverbend Bariatric Surgery Center \u00b7 Fax (937) 555-0121 \u00b7 2026-10-06 | Page 3 of 6"
+ },
+ {
+  "page": 4,
+  "type": "Title",
+  "text": "Medical Weight Management Program - Visit Summary"
+ },
+ {
+  "page": 4,
+  "type": "NarrativeText",
+  "text": "Riverbend Medical Weight Management. Physician: Dr. Nina Patel, MD. Registered dietitian: Rachel\nOwens, RD."
+ },
+ {
+  "page": 4,
+  "type": "Table",
+  "text": "Date Weight Visit 2026-01-13 281 lb Intake, 1500 kcal plan, RD counseling 2026-02-17 279 lb RD follow-up, food log reviewed 2026-03-17 278 lb MD visit, activity plan added 2026-04-21 280 lb RD follow-up 2026-05-19 277 lb MD visit 2026-06-23 278 lb RD follow-up 2026-07-21 277 lb RD follow-up 2026-08-18 276 lb Final visit, program completed"
+ },
+ {
+  "page": 4,
+  "type": "NarrativeText",
+  "text": "Summary: Patient attended 8 of 8 scheduled visits and kept a food log. Weight loss was not sustained\nbeyond 5 lb. Structured dietary program overseen by a physician and a registered dietitian. Patient failed to\nmaintain a healthy weight despite adequate participation."
+ },
+ {
+  "page": 4,
+  "type": "Footer",
+  "text": "Made-up data for a software prototype. Not a real patient."
+ },
+ {
+  "page": 5,
+  "type": "Header",
+  "text": "OCT-06-2026 14:35    FROM: RIVERBEND BARIATRIC    9375550121    TO: HUMANA UM    P.005/007"
+ },
+ {
+  "page": 5,
+  "type": "Header",
+  "text": "Riverbend Bariatric Surgery Center   Fax (937) 555-0121   2026-10-06   |   Page 4 of 6"
+ },
+ {
+  "page": 5,
+  "type": "Title",
+  "text": "Psychological Evaluation - Pre-bariatric"
+ },
+ {
+  "page": 5,
+  "type": "NarrativeText",
+  "text": "Date: 2026-09-02. Evaluator: Dr. Susan Lindgren, PhD, Clinical Psychologist.\nPatient has no history of psychiatric disorder and is not taking psychotropic medication. Screening for\ndepression (PHQ-9 score 3) and anxiety was negative. No evidence of binge eating disorder or bulimia. No\nalcohol or substance use disorder. No current tobacco use.\nPatient understands the operation, the dietary changes and the need for lifelong follow-up, and is judged\ncapable and willing to carry out these changes. Cleared from a psychological standpoint to proceed with\nbariatric surgery."
+ },
+ {
+  "page": 5,
+  "type": "NarrativeText",
+  "text": "cleared - SL 9/2"
+ },
+ {
+  "page": 5,
+  "type": "Footer",
+  "text": "Made-up data for a software prototype. Not a real patient."
+ },
+ {
+  "page": 6,
+  "type": "Header",
+  "text": "OCT-06-2026 14:36    FROM: RIVERBEND BARIATRIC    9375550121        TO: HUMANA UM        P.006/007"
+ },
+ {
+  "page": 6,
+  "type": "Header",
+  "text": "Riverbend Bariatric Surgery Center Fax (937) 555-0121 2026-10-06 | Page 5 of 6"
+ },
+ {
+  "page": 6,
+  "type": "Title",
+  "text": "Primary Care Note - Comorbidity Documentation"
+ },
+ {
+  "page": 6,
+  "type": "NarrativeText",
+  "text": "Date: 2026-09-09.  Physician: Dr. Marcus Hill, MD.\nType 2 diabetes mellitus: hemoglobin A1c 8.6% on metformin and semaglutide. Hypertension: blood\npressure 146/90 on losartan 100 mg. Obstructive sleep apnea: AHI 34 on 2025 sleep study, uses CPAP\nnightly. These conditions are not easily controlled with non-invasive means and pose considerable risk to\nfunction and survival if untreated.\nCardiac risk assessment: EKG normal sinus rhythm, no cardiac history. Pulmonary: no COPD. Cleared for\ngeneral anesthesia, ASA class 3."
+ },
+ {
+  "page": 6,
+  "type": "Footer",
+  "text": "Made-up data for a software prototype. Not a real patient."
+ },
+ {
+  "page": 7,
+  "type": "Header",
+  "text": "OCT-06-2026 14:37    FROM: RIVERBEND BARIATRIC    9375550121        TO: HUMANA UM        P.007/007"
+ },
+ {
+  "page": 7,
+  "type": "Header",
+  "text": "Riverbend Bariatric Surgery Center Fax (937) 555-0121 2026-10-06 | Page 6 of 6"
+ },
+ {
+  "page": 7,
+  "type": "Title",
+  "text": "Postoperative Care Plan"
+ },
+ {
+  "page": 7,
+  "type": "NarrativeText",
+  "text": "Postoperative care will be provided by the operating surgeon immediately after surgery and throughout the\nglobal period.\n\nFollow-up visits with the bariatric surgery team are scheduled at 2 weeks, 3 months, 6 months and 12\nmonths, which is at least three visits in the first year. Lifetime follow-up for dietary issues, vitamin and\nmineral supplementation, exercise and lifestyle changes will be supported by counseling and a monthly\nsupport group supervised by Dr. Reyes."
+ },
+ {
+  "page": 7,
+  "type": "Image",
+  "text": "Alan Reyes MD"
+ },
+ {
+  "page": 7,
+  "type": "Footer",
+  "text": "Made-up data for a software prototype. Not a real patient."
+ }
+]

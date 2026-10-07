@@ -252,7 +252,7 @@ mark { background: var(--mark); color: inherit; padding: 1px 2px; border-radius:
 @media (prefers-reduced-motion: reduce) { .step.now .dot { animation: none; border-top-color: var(--accent); } }
 
 #toast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 70; max-width: 90vw; }
-#toast.show { opacity: 1; } #toast.err { background: var(--bad); color: #fff; }
+#toast.show { opacity: 1; } #toast.err { background: var(--bad); color: #fff; } #toast.ok { background: var(--ok); color: var(--ok-ink); }
 
 @media (max-width: 760px) {
   .page, .chead, .cbody, .dbar { padding-left: 16px; padding-right: 16px; }

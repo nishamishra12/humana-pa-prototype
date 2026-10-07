@@ -42,10 +42,10 @@ async function api(path, opts = {}) {
   if (!r.ok) throw new Error(j.detail || "Something went wrong");
   return j;
 }
-function toast(msg, err = false) {
+function toast(msg, err = false, good = false) {
   const t = document.getElementById("toast");
-  t.textContent = msg; t.className = "show" + (err ? " err" : "");
-  clearTimeout(toast._t); toast._t = setTimeout(() => (t.className = ""), 3200);
+  t.textContent = msg; t.className = "show" + (err ? " err" : good ? " ok" : "");
+  clearTimeout(toast._t); toast._t = setTimeout(() => (t.className = ""), good ? Math.min(8000, 2800 + msg.length * 35) : 3200);
 }
 const guard = (fn) => async (...a) => { try { await fn(...a); } catch (e) { if (e.message !== "signed out") toast(e.message, true); } };
 function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
@@ -87,7 +87,7 @@ async function renderLogin() {
       <div class="demo-list"><div class="faint" style="font-size:12.5px">Demo accounts. Click one to sign in (password: demo1234)</div>
       ${accts.map((a) => `<button class="demo-btn" data-email="${esc(a.email)}"><span><b>${esc(a.name)}</b><br><span class="faint" style="font-size:12.5px">${esc(a.title)}</span></span><span class="chip ${ROLE_CHIP[a.role][1]}">${ROLE_CHIP[a.role][0]}</span></button>`).join("")}</div>
     </div></div></div>`;
-  const doLogin = guard(async (email, password) => { S.loginNote = null; S.user = await api("/login", { method: "POST", body: { email, password } }); S.view = homeView(); S.caseId = null; S.detail = null; S.q = ""; await boot(); });
+  const doLogin = guard(async (email, password) => { S.loginNote = null; S.user = await api("/login", { method: "POST", body: { email, password } }); S.view = homeView(); S.caseId = null; S.detail = null; S.q = ""; go("#/view/" + S.view); await boot(); });
   document.getElementById("lf").onsubmit = (e) => { e.preventDefault(); doLogin(document.getElementById("em").value, document.getElementById("pw").value); };
   document.querySelectorAll(".demo-btn").forEach((b) => (b.onclick = () => doLogin(b.dataset.email, "demo1234")));
 }
@@ -101,7 +101,7 @@ async function boot() {
   parseHash();
   if (S.view === "evals") await runEvals();
   else await loadList();
-  if (S.user.role === "admin") await loadTeam();
+  if (S.user.role === "admin") { await loadTeam(); S.jobs = []; await pollJobs().catch(() => {}); }
   if (S.caseId) await loadCase(S.caseId);
   render();
 }
@@ -109,6 +109,7 @@ function parseHash() {
   const h = location.hash.replace(/^#\/?/, "").split("/");
   if (h[0] === "case" && h[1]) { S.caseId = h[1]; if (S.view === "evals") S.view = homeView(); }
   else if (h[0] === "view" && h[1]) { S.view = h[1]; S.caseId = null; }
+  if (S.view !== "evals" && !viewsFor().some((v) => v[0] === S.view)) { S.view = homeView(); S.caseId = null; go("#/view/" + S.view); }
 }
 window.addEventListener("hashchange", guard(async () => {
   if (!S.user) return;
@@ -124,7 +125,10 @@ async function loadList() {
 }
 async function loadTeam() { S.team = (await api("/cases?view=all")).cases; }
 async function loadCase(id) {
-  S.detail = await api("/cases/" + id);
+  const mine = (S._caseSeq = (S._caseSeq || 0) + 1);
+  const d = await api("/cases/" + id);
+  if (mine !== S._caseSeq || (S.caseId && S.caseId !== id)) return;  // a later click won: never let a slow answer replace the case on screen
+  S.detail = d;
   const pages = [...new Set(S.detail.elements.map((e) => e.page))].sort((a, b) => a - b);
   S.pageNo = pages[0] || 1; S.highlight = null; S.activeKey = null;
 }
@@ -170,7 +174,7 @@ function render() {
       <div class="brand"><span class="brand-mark">PA</span><span class="hide-sm">PA Desk</span></div>
       ${isOwner ? "" : `<label class="search">${ic("search", 18)}<input id="q" type="search" placeholder="Search by member, case number, or procedure" value="${esc(S.q)}" aria-label="Search cases"><kbd>/</kbd></label>`}
       <div class="spacer"></div>
-      ${isMD || isOwner ? "" : `<label class="btn primary" style="cursor:pointer">${ic("upload", 16)}Upload packet<input type="file" id="up" accept="application/pdf" class="sr"></label>`}
+      ${isMD || isOwner ? "" : `<label class="btn primary" style="cursor:pointer">${ic("upload", 16)}Upload packet<input type="file" id="up" accept="application/pdf" class="sr" ${isAdmin ? "multiple" : ""}></label>`}
       <div class="menu-wrap"><button class="icon-btn" id="bell" aria-label="Notifications${S.user.unread ? ", " + S.user.unread + " new" : ""}">${ic("bell", 22)}${S.user.unread ? `<span class="badge-dot">${S.user.unread}</span>` : ""}</button>${S.pop === "notif" ? notifPop() : ""}</div>
       <div class="menu-wrap"><button class="profile" id="prof" aria-haspopup="menu"><span class="avatar ${isMD ? "md" : isAdmin ? "admin" : ""}">${esc(initials(S.user.name))}</span><span class="who"><b>${esc(S.user.name)}</b><small>${esc(S.user.title)}</small></span>${ic("down", 16)}</button>
         ${S.pop === "profile" ? `<div class="pop menu" role="menu"><div class="pop-head">${esc(S.user.name)}<div class="faint" style="font-weight:400;font-size:12.5px">${esc(S.user.title)}</div></div><button class="menu-item" id="out" role="menuitem">${ic("logout", 18)}Sign out</button></div>` : ""}</div>
@@ -179,7 +183,7 @@ function render() {
       <nav class="rail ${S.railOpen ? "open" : ""}" aria-label="Queues"><h4>${isOwner ? "Policy" : isAdmin ? "Intake" : isMD ? "Decisions" : "My queues"}</h4>
         ${views.map(railBtn).join("")}
         ${S.user.role === "nurse" || isOwner ? "" : `<h4>Quality</h4><button class="rail-item ${S.view === "evals" ? "on" : ""}" data-view="evals" aria-label="Quality" title="Quality">${ic("flask", 20)}<span class="lab">Quality</span><span class="n"></span></button>`}</nav>
-      <main class="content" id="content">${isOwner ? policyHtml() : S.view === "evals" ? evalsHtml() : S.caseId && S.detail ? caseHtml() : S.view === "team" && !S.q ? teamHtml() : queueHtml()}</main>
+      <main class="content" id="content">${isOwner ? policyHtml() : S.view === "evals" ? evalsHtml() : S.caseId && S.detail && S.detail.id === S.caseId ? caseHtml() : S.caseId ? `<div class="page"><div class="empty">Opening ${esc(S.caseId)}…</div></div>` : S.view === "team" && !S.q ? teamHtml() : queueHtml()}</main>
     </div>${S.upload ? uploadModal() : ""}</div>`;
   bind();
   if (keepScroll) { const c = document.getElementById("content"), sp = document.querySelector(".srcpane"); if (c) c.scrollTop = keepScroll.c; if (sp) sp.scrollTop = keepScroll.s; window.scrollTo(0, keepScroll.w); }
@@ -208,7 +212,7 @@ function queueHtml() {
   const searching = !!S.q;
   const title = searching ? `Results for “${S.q}”` : VIEW_TITLE[S.view];
   const isAdmin = S.user.role === "admin";
-  return `<div class="page"><div class="page-head"><div><h1>${esc(title)}</h1><p>${S.cases.length} case${S.cases.length === 1 ? "" : "s"}${!searching && VIEW_HELP[S.view] ? " · " + VIEW_HELP[S.view] : ""}</p></div></div>` +
+  return `<div class="page"><div class="page-head"><div><h1>${esc(title)}</h1><p>${S.cases.length} case${S.cases.length === 1 ? "" : "s"}${!searching && VIEW_HELP[S.view] ? " · " + VIEW_HELP[S.view] : ""}</p></div></div>` + jobsHtml() +
     (S.cases.length ? S.cases.map((c) => {
       const k = clock(c), ai = AI[c.ai_action];
       const showAssign = isAdmin && S.view === "unassigned" && !searching;
@@ -285,7 +289,7 @@ function caseHtml() {
 }
 
 function justActedHtml(d) {
-  if (!S.justActed || S.justActed.id !== d.id) return "";
+  if (!S.justActed || S.justActed.id !== d.id || S.justActed.uid !== S.user.id) return "";  // only the person who acted sees "Saved"
   const nxt = S.cases.find((c) => c.id !== d.id && OPEN.includes(c.status) && !["pended", "escalated"].includes(c.status));
   return `<div class="banner ok row" style="margin-bottom:16px"><span><b>Saved.</b> ${esc(S.justActed.msg)}</span>${nxt ? `<button class="btn small primary" data-case="${nxt.id}">Next case: ${esc(nxt.member_name)}</button>` : `<span>No more cases in this list.</span>`}</div>`;
 }
@@ -302,7 +306,7 @@ function adminHtml(d, a) {
       ${Object.values(load).map((o) => { const sel = pick === o.u.id, cur = d.assignee_id === o.u.id; return `<button class="nurse-opt ${sel || (cur && !pick) ? "on" : ""}" data-pick="${o.u.id}" data-for="${d.id}" aria-pressed="${sel}"><span class="avatar">${esc(initials(o.u.name))}</span><span><b>${esc(o.u.name)}</b><br><span class="faint" style="font-size:12.5px">${o.open} open · ${o.risk} at risk · ${o.pended} pended</span></span><span class="chip ${sel ? "new" : cur ? "ok" : "plain"}">${sel ? "Selected" : cur ? "Assigned now" : "Select"}</span></button>`; }).join("")}
       <div class="action-row"><button class="btn primary lg" data-confirm="${d.id}" ${pick && pick !== d.assignee_id ? "" : "disabled"}>${pick && load[pick] ? (d.assignee_id ? "Reassign to " : "Assign to ") + esc(load[pick].u.name) : "Pick a nurse first"}</button>${pick ? `<button class="btn ghost" data-pick="">Cancel</button>` : ""}</div></div>
     <div class="card"><h3>The packet in brief</h3><div class="muted" style="line-height:1.7">${esc(d.member_name)}, ${d.age ? d.age + " years old, " : ""}member ${esc(d.member_id)}<br>${esc(d.procedure)} at ${esc(d.facility)}<br>${new Set(d.elements.map((e) => e.page)).size} pages · received ${ago(d.received_at)}</div>
-      <div class="note">Intake routes cases. Nurses make the clinical calls.</div></div></div>`;
+</div></div>`;
 }
 
 /* nurse / director review: facts + criteria left, packet right */
@@ -311,7 +315,7 @@ function questionCardHtml(d) {
   const q = [...d.comments].reverse().find((c) => c.kind === "escalation");
   if (!q) return "";
   const by = q.user ? q.user.name : "the nurse", toMd = S.user.role === "medical_director";
-  return `<div class="reco escalate"><span class="mk big up">↑</span><div><h3>${toMd ? "Escalated by " + esc(by) : "Escalated to " + esc(d.md ? d.md.name : "a medical director")}</h3><div class="esc-when">${ago(q.created_at)}</div><div class="esc-label">Reason</div><p>${esc(q.body.replace(/^@\w+\s*/, ""))}</p></div></div>`;
+  return `<div class="reco escalate"><span class="mk big up">↑</span><div><h3>${toMd ? "Escalated by " + esc(by) : "Escalated to " + esc(d.md ? d.md.name : "a medical director")}</h3><div class="esc-when">${ago(q.created_at)}</div><div class="esc-label">Reason</div><p>${esc(q.body.replace(/^@\w+\s*/, ""))}</p>${coverageNote(d, d.analysis)}</div></div>`;
 }
 function fixForm(key) {
   const def = schemaOf(S.detail).find((x) => x.key === key) || { kind: "text", hint: "", can_be_none: false };
@@ -332,11 +336,44 @@ function fixForm(key) {
 const RECO_TITLE = (a) => a.action === "approve" ? "Approve. Everything is supported." : a.action === "pend" ? (a.gate.questions.length > 1 ? `Pend: ${a.gate.questions.length} things are missing` : "Pend: one thing is missing") : a.action === "verify" ? "Check the packet first" : a.action === "escalate" ? "Escalate to a medical director" : "No policy for this procedure yet";
 const RECO_MARK = { approve: ["ok", "✓"], pend: ["w", "?"], verify: ["w", "?"], escalate: ["up", "↑"], no_policy: ["not_met", "!"] };
 
+/* When the only thing that fails is the requested procedure, the purple card also shows what the policy does cover. The sentence is the policy's own words. */
+function coverageNote(d, a) {
+  const g = a && a.coverage_gap;
+  if (!g) return "";
+  const asked = d.procedure.replace("Elective inpatient admission, ", "");
+  return `<div class="esc-label">Requested</div><p>${esc(asked.charAt(0).toUpperCase() + asked.slice(1))}, CPT ${esc(d.cpt || "-")}</p><div class="esc-label">Covered under ${esc(g.policy_id.replace("-", " "))}</div><p>${esc(g.rule_text)}</p>`;
+}
+
+/* After a pend, when the provider's reply is in: what was asked, by whom, and where the answer is. */
+function pendAnswerHtml(d) {
+  if (d.status === "pended") return "";
+  const cs = d.comments, qi = cs.map((c) => c.kind).lastIndexOf("provider_request");
+  if (qi < 0) return "";
+  const reply = cs.slice(qi + 1).find((c) => c.kind === "provider_reply");
+  if (!reply) return "";
+  const q = cs[qi];
+  const aud = [...d.audit].reverse().find((x) => x.action === "provider_reply");
+  const m = (reply.body.match(/pages? (\d+)(?: to (\d+))?/) || (aud && aud.detail.match(/pages? (\d+)(?: to (\d+))?/)));
+  const pages = m ? Array.from({ length: (+(m[2] || m[1])) - +m[1] + 1 }, (_, i) => +m[1] + i) : [];
+  const answers = schemaOf(d).map(({ key, label }) => {
+    const f = d.facts[key] || {};
+    const e = (f.evidence || []).find((x) => pages.includes(+x.page) && x.supports !== false) || (pages.includes(+f.page) && f.quote ? { page: f.page, quote: f.quote } : null);
+    return e ? { key, label, e } : null;
+  }).filter(Boolean).slice(0, 4);
+  const fax = /fax/i.test(reply.body);
+  return `<div class="esc-label" style="margin-top:12px">This case was pended. The answer is in the provider's reply.</div>
+    <div class="faint" style="font-size:12.5px">Pended by ${esc(q.user ? q.user.name : "a nurse")} · ${ago(q.created_at)}</div>
+    <p style="margin:2px 0 8px">“${esc(q.body)}”</p>
+    <div class="faint" style="font-size:12.5px">Provider's reply${fax ? " by fax" : ""} · ${ago(reply.created_at)}${pages.length ? ` · ${pages.length === 1 ? "page" : "pages"} ${pages.join(", ")}` : ""}</div>
+    ${answers.length ? `<div style="display:grid;gap:6px;margin-top:6px">${answers.map(({ key, label, e }) => `<div style="display:flex;gap:8px;align-items:flex-start;justify-content:space-between"><div><b>${esc(label)}</b><div class="q">“${esc(e.quote)}”</div></div>${citeBtn(e.page, e.quote, key)}</div>`).join("")}</div>`
+      : pages.length ? `<div class="chips" style="margin-top:6px">${pages.map((n) => `<button class="pg" data-page="${n}">${n}</button>`).join("")}</div>` : ""}`;
+}
+
 function reviewHtml(d, a, done) {
   const canFix = !done && ["nurse", "medical_director"].includes(S.user.role);
   const mk = { met: "✓", missing: "?", unsure: "?", advisory: "!", not_met: "✕", info: "i" };
   const stLabel = { met: "Met", missing: "Missing", unsure: "Not sure", advisory: "Advisory", not_met: "Not met", info: "Info" };
-  const reco = `<div class="reco ${a.action}"><span class="mk big ${RECO_MARK[a.action][0]}">${RECO_MARK[a.action][1]}</span><div><h3>${RECO_TITLE(a)}</h3><p>${esc(a.rationale)}</p>${a.procedure && a.procedure.status === "pilot" ? `<p class="faint" style="font-size:12.5px;margin-top:6px"><span class="chip warn">Pilot service</span> This service is new. Check every recommendation yourself before you act on it.</p>` : ""}</div></div>`;
+  const reco = `<div class="reco ${a.action}"><span class="mk big ${RECO_MARK[a.action][0]}">${RECO_MARK[a.action][1]}</span><div><h3>${RECO_TITLE(a)}</h3><p>${esc(a.rationale)}</p>${pendAnswerHtml(d)}${coverageNote(d, a)}${a.procedure && a.procedure.status === "pilot" ? `<p class="faint" style="font-size:12.5px;margin-top:6px"><span class="chip warn">Pilot service</span> This service is new. Check every recommendation yourself before you act on it.</p>` : ""}</div></div>`;
   if (a.action === "no_policy") {
     return `<div class="stack" style="max-width:860px">${reco}<div class="card"><h3>What happens next</h3><p class="muted" style="line-height:1.6;margin:0">No policy is set up for this procedure code yet, so nothing was checked. The policy owner can add it. When it is added, check this case again. Until then you can still approve, ask the provider, or escalate below. PA Desk checks these codes today: ${esc((a.covered_cpt_codes || []).join(", "))}.</p>${done ? "" : `<button class="btn primary" data-recheck style="margin-top:12px">Check again with the current policies</button>`}</div></div>`;
   }
@@ -430,7 +467,7 @@ const SAMPLE_REPLY = {
 };
 function simulateReplyCard(a) {
   const reply = a.gate.questions.map((q) => SAMPLE_REPLY[q.fact]).filter(Boolean).join(" ");
-  return `<div class="card"><h3>Demo: the provider replies</h3><label class="faint" style="font-size:12.5px">This adds a page to the packet and checks the case again.</label><textarea id="reply" style="margin-top:6px">${esc(reply || "Provider reply: additional documentation attached.")}</textarea><div class="field" style="margin:8px 0 0"><label for="rtype">What the provider said</label><select id="rtype"><option value="new">They sent new information</option><option value="again">They say it was already sent</option></select></div><div class="action-row" style="margin-top:8px"><button class="btn" data-go="reply">Simulate the reply</button></div></div>`;
+  return `<div class="card"><h3>Demo shortcut: type the provider's reply</h3><label class="faint" style="font-size:12.5px">In real use, the provider faxes the answer and intake uploads it. This adds a page to the packet and checks the case again.</label><textarea id="reply" style="margin-top:6px">${esc(reply || "Provider reply: additional documentation attached.")}</textarea><div class="field" style="margin:8px 0 0"><label for="rtype">What the provider said</label><select id="rtype"><option value="new">They sent new information</option><option value="again">They say it was already sent</option></select></div><div class="action-row" style="margin-top:8px"><button class="btn" data-go="reply">Simulate the reply</button></div></div>`;
 }
 const RETURN_REASONS = [["reconsider", "Please look at this again"], ["info_enough", "The packet already has what we need"], ["ask_provider", "Ask the provider for more first"], ["wrong_policy", "A different policy applies"], ["other", "Other"]];
 
@@ -496,13 +533,112 @@ const STEPS = [
 ];
 function uploadModal() {
   const u = S.upload, cur = u.shown;
+  if (u.match && !u.chosen) return replyModal(u);
   return `<div class="overlay" role="dialog" aria-modal="true" aria-labelledby="upt"><div class="modal">
     <h2 id="upt">Reading the packet</h2><div class="faint" style="margin:2px 0 14px">${esc(u.name)}</div>
     ${u.error ? `<div class="banner bad">${esc(u.error)}</div><div class="action-row" style="margin-top:12px"><button class="btn" id="upclose">Close</button></div>` : `
     ${STEPS.map(([k, t, sub], i) => `<div class="step ${i < cur ? "done" : i === cur ? "now" : "todo"}"><span class="dot">${i < cur ? ic("check", 14) : ""}</span><div><b>${t}${k === "reading" && i < cur && u.pages ? ` · ${u.pages} pages` : ""}</b>${sub}</div></div>`).join("")}
     <div class="faint" style="margin-top:12px;font-size:12.5px">This usually takes under a minute. Keep this tab open.</div>`}</div></div>`;
 }
+/* A fax that answers a pended case: intake confirms, and picks who gets it back (the nurse who pended it, by default). */
+function replyModal(u) {
+  const m = u.match, load = nurseLoad(), by = m.pended_by;
+  const pick = u.nurse;
+  return `<div class="overlay" role="dialog" aria-modal="true" aria-labelledby="rpt"><div class="modal" style="max-width:560px">
+    <h2 id="rpt">This fax answers a pended case</h2><div class="faint" style="margin:2px 0 14px">${esc(u.name)} · ${u.pages} page${u.pages === 1 ? "" : "s"}</div>
+    <div class="card" style="margin-bottom:14px"><b>${esc(m.case_id)} · ${esc(m.member_name)}</b> <span class="faint">· ${esc(m.member_id)}</span>
+      <div class="muted" style="font-size:13.5px">${esc((m.procedure || "").replace("Elective inpatient admission, ", ""))}${m.cpt ? " · CPT " + esc(m.cpt) : ""}</div>
+      <div class="esc-label" style="margin-top:10px">Pended by ${esc(by ? by.name : "a nurse")}${m.pended_at ? " · " + ago(m.pended_at) : ""}</div>
+      <p style="margin:2px 0 0">${esc(m.question || "")}</p></div>
+    <div class="esc-label">Send it back to</div>
+    <div style="display:grid;gap:8px;margin:6px 0 14px">${Object.values(load).map((o) => `<button class="nurse-opt ${pick === o.u.id ? "on" : ""}" data-rnurse="${o.u.id}" aria-pressed="${pick === o.u.id}"><span class="avatar">${esc(initials(o.u.name))}</span><span><b>${esc(o.u.name)}</b>${by && by.id === o.u.id ? ` <span class="chip plain">Pended it</span>` : ""}<br><span class="faint" style="font-size:12.5px">${o.open} open · ${o.risk} at risk · ${o.pended} pended</span></span><span class="chip ${pick === o.u.id ? "new" : "plain"}">${pick === o.u.id ? "Selected" : "Select"}</span></button>`).join("")}</div>
+    <div class="action-row"><button class="btn primary lg" id="rattach">Attach to ${esc(m.case_id)} and send to ${esc((load[pick] || {}).u ? load[pick].u.name : "the nurse")}</button><button class="btn ghost" id="rnew">No, this is a new request</button></div></div></div>`;
+}
+
+/* Intake: read the fax first. If it answers a pended case, ask. Otherwise it is a new request. */
+function uploadFailed(e) {
+  if (e.message === "signed out") return;
+  S.upload.error = e.message; render();
+  const c = document.getElementById("upclose"); if (c) c.onclick = () => { S.upload = null; render(); };
+}
+async function startIntakeUpload(file) {
+  S.upload = { name: file.name, shown: 0, target: 0, pages: null, error: null };
+  render();
+  const fd = new FormData(); fd.append("file", file);
+  let r;
+  try { r = await api("/intake/read", { method: "POST", body: fd }); } catch (e) { return uploadFailed(e); }
+  Object.assign(S.upload, { pages: r.pages, token: r.token, shown: 1, target: 1 });
+  if (r.match) {
+    const load = nurseLoad(), by = r.match.pended_by;
+    S.upload.match = r.match;
+    S.upload.nurse = by && load[by.id] ? by.id : load[r.match.assignee_id] ? r.match.assignee_id : +Object.keys(load)[0];
+    return render();
+  }
+  await finishIntake("new");
+}
+async function finishIntake(kind) {
+  const u = S.upload, job = Math.random().toString(36).slice(2, 10);
+  u.chosen = true; u.shown = 1; u.target = 1; render();
+  let finished = false;
+  const poll = setInterval(async () => {
+    try { const j = await api("/jobs/" + job); if (j.stage === "policy" || j.stage === "done") u.target = 2; } catch (e) { /* keep waiting */ }
+  }, 600);
+  const pace = setInterval(() => { if (!finished && u.shown < u.target) { u.shown++; render(); } }, 900);
+  const body = kind === "reply" ? { case_id: u.match.case_id, assignee_id: u.nurse, job } : { job };
+  let d;
+  try { d = await api(`/intake/${u.token}/${kind}`, { method: "POST", body }); }
+  catch (e) { clearInterval(poll); clearInterval(pace); finished = true; return uploadFailed(e); }
+  clearInterval(poll); clearInterval(pace); finished = true;
+  u.shown = 3; render();
+  await new Promise((r) => setTimeout(r, 500));
+  S.upload = null;
+  if (u.job) { await api(`/intake/jobs/${u.job}/dismiss`, { method: "POST" }).catch(() => {}); S.jobs = (S.jobs || []).filter((j) => j.job !== u.job); }
+  S.caseId = d.id; S.tab = "review"; S.view = kind === "reply" ? "all" : "unassigned"; S.q = "";
+  go("#/case/" + d.id);
+  await refresh(); S.detail = d; S.pageNo = Math.min(...d.elements.map((e) => e.page)); S.highlight = null; S.activeKey = null; S.justAssigned = null;
+  toast(kind === "reply" ? `Reply added to ${d.id} and sent to ${d.assignee ? d.assignee.name : "the nurse"}` : "Packet read. Pick a nurse for it.", false, kind === "reply");
+  render();
+}
+
+/* Intake: upload one or many packets and keep working. Each one is read in the background and lands in "Needs assignment". */
+const JOB_STAGE = { queued: "Waiting to start", reading: "Reading the pages", facts: "Finding the key facts", policy: "Checking against policy", done: "Done", needs_choice: "Answers a pended case", error: "Could not be read" };
+async function startBackgroundUpload(files) {
+  const fd = new FormData();
+  [...files].forEach((f) => fd.append("files", f));
+  const started = await api("/intake/upload", { method: "POST", body: fd });
+  toast(started.length === 1 ? `Reading ${started[0].name}. You can keep working.` : `Reading ${started.length} packets. You can keep working.`, false, true);
+  await pollJobs();
+}
+async function pollJobs() {
+  const before = Object.fromEntries((S.jobs || []).map((j) => [j.job, j.stage]));
+  S.jobs = await api("/intake/jobs");
+  const finished = S.jobs.filter((j) => before[j.job] && before[j.job] !== j.stage && ["done", "needs_choice", "error"].includes(j.stage));
+  if (finished.length) {
+    finished.forEach((j) => toast(j.stage === "done" ? `${j.name} is ready: ${j.case_id} · ${j.member}. Pick a nurse for it.` : j.stage === "needs_choice" ? `${j.name} answers ${j.match.case_id}, pended by ${j.match.pended_by ? j.match.pended_by.name : "a nurse"}. Review it.` : `${j.name} could not be read. ${j.error || ""}`, j.stage === "error", j.stage !== "error"));
+    await refresh();
+  }
+  if (!S.upload) render();
+  clearTimeout(pollJobs._t);
+  if (S.user && S.user.role === "admin" && S.jobs.some((j) => !["done", "needs_choice", "error"].includes(j.stage))) pollJobs._t = setTimeout(guard(pollJobs), 2000);
+}
+function jobsHtml() {
+  if (S.user.role !== "admin" || !(S.jobs || []).length) return "";
+  const busy = S.jobs.filter((j) => !["done", "needs_choice", "error"].includes(j.stage)).length;
+  return `<div class="card" style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h3 style="margin:0">Reading now</h3><span class="faint" style="font-size:12.5px">${busy ? busy + " in progress. You can keep working; each one joins the queue when it is ready." : "All read."}</span></div>
+    <div style="display:grid;gap:8px;margin-top:10px">${S.jobs.map((j) => {
+      const working = !["done", "needs_choice", "error"].includes(j.stage);
+      const chip = j.stage === "done" ? "ok" : j.stage === "needs_choice" ? "warn" : j.stage === "error" ? "bad" : "new";
+      const act = j.stage === "done" ? `<button class="btn small primary" data-case="${j.case_id}">Open ${esc(j.case_id)}</button>`
+        : j.stage === "needs_choice" ? `<button class="btn small primary" data-jobreview="${j.job}">Review: answers ${esc(j.match.case_id)}</button>` : "";
+      return `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 10px;border:1px solid var(--line);border-radius:8px">
+        <div><b>${esc(j.name)}</b>${j.pages ? ` <span class="faint">· ${j.pages} page${j.pages === 1 ? "" : "s"}</span>` : ""}${j.stage === "done" ? ` <span class="faint">· ${esc(j.member || "")}</span>` : ""}
+          <div class="faint" style="font-size:12.5px">${working ? "⏳ " : ""}${JOB_STAGE[j.stage] || j.stage}${j.stage === "error" && j.error ? ": " + esc(j.error) : ""}</div></div>
+        <div style="display:flex;gap:6px;align-items:center"><span class="chip ${chip}">${j.stage === "done" ? "Ready" : j.stage === "needs_choice" ? "Your call" : j.stage === "error" ? "Failed" : "Reading"}</span>${act}${working ? "" : `<button class="btn small ghost" data-jobdismiss="${j.job}" aria-label="Clear">✕</button>`}</div></div>`;
+    }).join("")}</div></div>`;
+}
+
 async function startUpload(file) {
+  if (S.user.role === "admin") return startIntakeUpload(file);
   const job = Math.random().toString(36).slice(2, 10);
   S.upload = { name: file.name, shown: 0, target: 0, pages: null, error: null };
   render();
@@ -548,7 +684,7 @@ function bind() {
     if (S.user.role === "policy_owner") { clearInterval(polTimer); S.pol.build = null; S.pol.svcKey = null; S.pol.svc = null; S.pol.msg = null; S.pol.revert = null; await loadPolicies(); render(); window.scrollTo(0, 0); return; } if (S.view === "evals") await runEvals(); else { await loadList(); if (S.user.role === "admin") await loadTeam(); } render(); });
   on("[data-back]", async () => { S.pick = null; S.caseId = null; S.detail = null; S.act = null; go("#/view/" + S.view); await refresh(); render(); });
   on("[data-case]", (el) => openCase(el.dataset.case));
-  on("[data-recheck]", async (el) => { el.disabled = true; el.textContent = "Reading the packet again…"; const d = await api(`/cases/${S.caseId}/recheck`, { method: "POST" }); S.detail = d; await refresh(); toast("Checked again: " + (d.analysis ? RECO_TITLE(d.analysis) : "done")); render(); });
+  on("[data-recheck]", async (el) => { el.disabled = true; el.textContent = "Reading the packet again…"; const d = await api(`/cases/${S.detail.id}/recheck`, { method: "POST" }); S.detail = d; await refresh(); toast("Checked again: " + (d.analysis ? RECO_TITLE(d.analysis) : "done")); render(); });
   document.querySelectorAll(".qrow").forEach((r) => (r.onkeydown = (e) => { if ((e.key === "Enter" || e.key === " ") && e.target === r) { e.preventDefault(); openCase(r.dataset.case); } }));
   on("[data-tab]", (el) => { S.tab = el.dataset.tab; render(); const c = document.getElementById("cbody-scroll"); if (c) c.scrollTop = 0; });
   on("[data-cite]", (el) => { const c = S.cites[+el.dataset.cite]; S.highlight = c; S.pageNo = c.page; S.activeKey = c.key; render(); const p = document.getElementById("paper"); if (p && window.innerWidth <= 1100) p.scrollIntoView({ block: "center" }); });
@@ -569,21 +705,32 @@ function bind() {
     await refresh(); render();
     toast("Assigned to " + d.assignee.name);
   });
+  on("[data-rnurse]", (el) => { S.upload.nurse = +el.dataset.rnurse; render(); });
+  const rattach = document.getElementById("rattach"); if (rattach) rattach.onclick = guard(() => finishIntake("reply"));
+  const rnew = document.getElementById("rnew"); if (rnew) rnew.onclick = guard(() => finishIntake("new"));
   on("[data-savefix]", async (el) => {
     const key = el.dataset.savefix, kind = (document.querySelector('input[name="fixkind"]:checked') || {}).value || "found";
     const page = document.getElementById("fixpage").value;
-    const d = await api(`/cases/${S.caseId}/facts/${key}`, { method: "POST", body: { kind, value: kind === "found" ? document.getElementById("fixvalue").value : "", page: page ? +page : null } });
+    const d = await api(`/cases/${S.detail.id}/facts/${key}`, { method: "POST", body: { kind, value: kind === "found" ? document.getElementById("fixvalue").value : "", page: page ? +page : null } });
     S.detail = d; S.fix = null; await refresh(); render();
     toast("Saved. The recommendation is now: " + ({ approve: "approve", pend: "pend", escalate: "escalate", verify: "check the packet" }[d.analysis.action] || d.analysis.action));
   });
   on("[data-tag]", (el) => { const t = document.getElementById("cbody"); t.value += (t.value && !t.value.endsWith(" ") ? " " : "") + "@" + el.dataset.tag + " "; t.focus(); });
-  const out = document.getElementById("out"); if (out) out.onclick = guard(async () => { await api("/logout", { method: "POST" }); S.user = null; S.detail = null; S.caseId = null; S.pop = null; S.q = ""; renderLogin(); });
+  const out = document.getElementById("out"); if (out) out.onclick = guard(async () => { await api("/logout", { method: "POST" }); S.user = null; S.justActed = null; S.justAssigned = null; S.detail = null; S.caseId = null; S.pop = null; S.q = ""; S.view = null; go(location.pathname); renderLogin(); });
   const burger = document.getElementById("burger"); if (burger) burger.onclick = () => { S.railOpen = !S.railOpen; try { localStorage.setItem("pa.rail", S.railOpen ? "open" : "closed"); } catch (e) { /* ignore */ } render(); };
   const q = document.getElementById("q"); if (q) q.oninput = guard(debounce(async () => {
     S.q = q.value; S.caseId = S.q ? null : S.caseId; if (S.q) { S.detail = null; if (S.view === "evals") S.view = homeView(); }
     await loadList(); render(); const nq = document.getElementById("q"); nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length);
   }, 250));
-  const up = document.getElementById("up"); if (up) up.onchange = guard(async () => { const file = up.files[0]; if (!file) return; await startUpload(file); });
+  const up = document.getElementById("up"); if (up) up.onchange = guard(async () => { const files = [...up.files]; if (!files.length) return; if (S.user.role === "admin") return startBackgroundUpload(files); await startUpload(files[0]); });
+  on("[data-jobdismiss]", async (el) => { await api(`/intake/jobs/${el.dataset.jobdismiss}/dismiss`, { method: "POST" }); await pollJobs(); });
+  on("[data-jobreview]", (el) => {
+    const j = (S.jobs || []).find((x) => x.job === el.dataset.jobreview); if (!j) return;
+    const load = nurseLoad(), by = j.match.pended_by;
+    S.upload = { name: j.name, pages: j.pages, token: j.token, match: j.match, job: j.job, shown: 1, target: 1, error: null,
+                 nurse: by && load[by.id] ? by.id : load[j.match.assignee_id] ? j.match.assignee_id : +Object.keys(load)[0] };
+    render();
+  });
   if (S.user.role === "policy_owner" && typeof bindPolicy === "function") bindPolicy();
   const bell = document.getElementById("bell"); if (bell) bell.onclick = guard(async (e) => { e.stopPropagation(); if (S.pop === "notif") { S.pop = null; return render(); } S.notifs = await api("/notifications"); S.pop = "notif"; render(); await api("/notifications/read", { method: "POST" }); S.user.unread = 0; });
   const prof = document.getElementById("prof"); if (prof) prof.onclick = (e) => { e.stopPropagation(); S.pop = S.pop === "profile" ? null : "profile"; render(); };
@@ -597,7 +744,7 @@ document.addEventListener("keydown", (e) => {
 
 const submit = guard(async (kind) => {
   const v = (id) => (document.getElementById(id) || {}).value || "";
-  const id = S.caseId;
+  const id = S.detail ? S.detail.id : S.caseId;  // act on the case on screen
   let d;
   if (kind === "comment") d = await api(`/cases/${id}/comments`, { method: "POST", body: { body: v("cbody") } });
   else if (kind === "reply") d = await api(`/cases/${id}/addendum`, { method: "POST", body: { text: v("reply"), reply_type: v("rtype") || "new" } });
@@ -607,7 +754,7 @@ const submit = guard(async (kind) => {
   else d = await api(`/cases/${id}/action`, { method: "POST", body: { action: kind, note: v("note") } });
   S.detail = d; S.act = null;
   if (kind === "comment") S.tab = "activity";
-  if (["approve", "pend", "escalate", "deny", "return"].includes(kind)) { S.justActed = { id, msg: { approve: "Approved.", pend: "Question sent to the provider.", escalate: "Sent to the medical director.", deny: "Denied. Your reason is on the record.", return: "Returned to the nurse." }[kind] }; S.tab = "review"; }
+  if (["approve", "pend", "escalate", "deny", "return"].includes(kind)) { S.justActed = { id, uid: S.user.id, msg: { approve: "Approved.", pend: "Question sent to the provider.", escalate: "Sent to the medical director.", deny: "Denied. Your reason is on the record.", return: "Returned to the nurse." }[kind] }; S.tab = "review"; }
   const msgs = { approve: "Approved", pend: "Question sent. Case pended", escalate: "Escalated and tagged", deny: "Denied with reason recorded", return: "Returned to nurse", reply: "Provider reply added. Case checked again", comment: "Message sent" };
   toast(msgs[kind]);
   await refresh(); render();

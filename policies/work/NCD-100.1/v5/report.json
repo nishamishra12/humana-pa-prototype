@@ -2,76 +2,93 @@
  "criteria": [
   {
    "id": "BMI-35",
-   "level": "pass",
-   "issues": [],
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (bmi): the packet reader does not look for it yet"
+   ],
    "quote_found": true,
    "match": "exact"
   },
   {
    "id": "COMORBID-PRESENT",
-   "level": "pass",
-   "issues": [],
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (has_obesity_comorbidity): the packet reader does not look for it yet"
+   ],
    "quote_found": true,
    "match": "exact"
   },
   {
-   "id": "PRIOR-MED-TX-UNSUCCESSFUL",
-   "level": "pass",
-   "issues": [],
+   "id": "MED-TX-UNSUCCESSFUL",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (prior_medical_tx_unsuccessful): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "PROCEDURE-TYPE-COVERED",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (procedure_type): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "NONCOVERED-PROCEDURE-ABSENT",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (procedure_type): the packet reader does not look for it yet"
+   ],
+   "quote_found": true,
+   "match": "exact"
+  },
+  {
+   "id": "OBESITY-ALONE-NONCOVERED",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (has_obesity_comorbidity): the packet reader does not look for it yet"
+   ],
    "quote_found": true,
    "match": "exact"
   },
   {
    "id": "LSG-BMI-35",
-   "level": "pass",
-   "issues": [],
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (bmi): the packet reader does not look for it yet"
+   ],
    "quote_found": true,
    "match": "exact"
   },
   {
    "id": "LSG-COMORBID-PRESENT",
-   "level": "pass",
-   "issues": [],
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (has_obesity_comorbidity): the packet reader does not look for it yet"
+   ],
    "quote_found": true,
    "match": "exact"
   },
   {
-   "id": "LSG-PRIOR-MED-TX",
-   "level": "pass",
-   "issues": [],
-   "quote_found": true,
-   "match": "exact"
-  },
-  {
-   "id": "OTHER-PROCEDURE-BMI-35",
-   "level": "pass",
-   "issues": [],
-   "quote_found": true,
-   "match": "exact"
-  },
-  {
-   "id": "OTHER-PROCEDURE-COMORBID",
-   "level": "pass",
-   "issues": [],
-   "quote_found": true,
-   "match": "exact"
-  },
-  {
-   "id": "OTHER-PROCEDURE-PRIOR-MED-TX",
-   "level": "pass",
-   "issues": [],
+   "id": "LSG-MED-TX-UNSUCCESSFUL",
+   "level": "review",
+   "issues": [
+    "needs a new packet detail (prior_medical_tx_unsuccessful): the packet reader does not look for it yet"
+   ],
    "quote_found": true,
    "match": "exact"
   }
  ],
  "counts": {
-  "pass": 9,
-  "review": 0,
+  "pass": 0,
+  "review": 9,
   "fail": 0
  },
  "total": 9,
  "uncovered": [
-  "services in connection with the treatment of obesity are covered when such services are an integral and necessary part",
   "questions exist about the safety of prolonged adherence for 2 months or more to a very low calorie weight reduction",
   "pouch (30 cc) results in feelings of satiety following even small meals.",
   "The AGB achieves weight loss by gastric restriction only.",
@@ -79,18 +96,15 @@
   "was the first step in a two-stage procedure when performing RYGBP, but more recently has been offered as a",
   "The VGB achieves weight loss by gastric restriction only.",
   "Nationally Covered Indications",
-  "Effective for dates of service on and after September 24, 2013, facilities are no longer required to be certified.",
   "Nationally Non-Covered Indications",
-  "Treatments for obesity alone remain non-covered.",
-  "Supplemented fasting is not covered under the Medicare program as a general treatment for obesity (see section D.",
-  "The following bariatric surgery procedures are non-covered for all Medicare beneficiaries:",
-  "Effective for services performed on and after June 27, 2012, Medicare Administrative Contractors (MACs) acting within",
-  "treatment of co-morbid conditions related to obesity in Medicare beneficiaries only when all of the following conditions",
   "Where weight loss is necessary before surgery in order to ameliorate the complications posed by obesity when it",
   "The risks associated with the achievement of rapid weight loss must be carefully balanced against the risk posed by the"
  ],
  "new_facts": [
-  "procedure"
+  "bmi",
+  "has_obesity_comorbidity",
+  "prior_medical_tx_unsuccessful",
+  "procedure_type"
  ],
  "not_modeled": 4
 }

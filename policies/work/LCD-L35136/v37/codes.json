@@ -1,0 +1,69 @@
+{
+ "method": "lcd_related_articles",
+ "retrieved_at": "2026-10-07T17:28:16+00:00",
+ "articles": [
+  {
+   "id": "A57791",
+   "version": 12,
+   "title": "Spinal Cord Stimulators for Chronic Pain",
+   "mac": "Noridian Healthcare Solutions, LLC (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57791&ver=12",
+   "match_score": null,
+   "cites_ncd": null,
+   "n_codes": 5
+  }
+ ],
+ "codes": [
+  {
+   "code": "63650",
+   "description": "PERCUTANEOUS IMPLANTATION OF NEUROSTIMULATOR ELECTRODE ARRAY, EPIDURAL",
+   "short": "Implant neuroelectrodes",
+   "group": 1,
+   "listed_by": [
+    "A57791"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "63655",
+   "description": "LAMINECTOMY FOR IMPLANTATION OF NEUROSTIMULATOR ELECTRODES, PLATE/PADDLE, EPIDURAL",
+   "short": "Implant neuroelectrodes",
+   "group": 1,
+   "listed_by": [
+    "A57791"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "63663",
+   "description": "REVISION INCLUDING REPLACEMENT, WHEN PERFORMED, OF SPINAL NEUROSTIMULATOR ELECTRODE PERCUTANEOUS ARRAY(S), INCLUDING FLUOROSCOPY, WHEN PERFORMED",
+   "short": "Revise spine eltrd perq aray",
+   "group": 1,
+   "listed_by": [
+    "A57791"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "63664",
+   "description": "REVISION INCLUDING REPLACEMENT, WHEN PERFORMED, OF SPINAL NEUROSTIMULATOR ELECTRODE PLATE/PADDLE(S) PLACED VIA LAMINOTOMY OR LAMINECTOMY, INCLUDING FLUOROSCOPY, WHEN PERFORMED",
+   "short": "Revise spine eltrd plate",
+   "group": 1,
+   "listed_by": [
+    "A57791"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "63685",
+   "description": "INSERTION OR REPLACEMENT OF SPINAL NEUROSTIMULATOR PULSE GENERATOR OR RECEIVER, REQUIRING POCKET CREATION AND CONNECTION BETWEEN ELECTRODE ARRAY AND PULSE GENERATOR OR RECEIVER",
+   "short": "Ins/rplc spi npg/rcvr pocket",
+   "group": 1,
+   "listed_by": [
+    "A57791"
+   ],
+   "n_articles": 1
+  }
+ ],
+ "note": "CMS links these articles to the LCD. The codes are the ones each article lists."
+}

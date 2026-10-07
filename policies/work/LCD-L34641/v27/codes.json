@@ -1,0 +1,49 @@
+{
+ "method": "lcd_related_articles",
+ "retrieved_at": "2026-10-07T16:13:24+00:00",
+ "articles": [
+  {
+   "id": "A57598",
+   "version": 11,
+   "title": "Transcranial Magnetic Stimulation (TMS)",
+   "mac": "WPS Insurance Corporation (MAC - Part A, MAC - Part B)",
+   "url": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57598&ver=11",
+   "match_score": null,
+   "cites_ncd": null,
+   "n_codes": 3
+  }
+ ],
+ "codes": [
+  {
+   "code": "90867",
+   "description": "THERAPEUTIC REPETITIVE TRANSCRANIAL MAGNETIC STIMULATION (TMS) TREATMENT; INITIAL, INCLUDING CORTICAL MAPPING, MOTOR THRESHOLD DETERMINATION, DELIVERY AND MANAGEMENT",
+   "short": "Tcranial magn stim tx plan",
+   "group": 1,
+   "listed_by": [
+    "A57598"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "90868",
+   "description": "THERAPEUTIC REPETITIVE TRANSCRANIAL MAGNETIC STIMULATION (TMS) TREATMENT; SUBSEQUENT DELIVERY AND MANAGEMENT, PER SESSION",
+   "short": "Tcranial magn stim tx deli",
+   "group": 1,
+   "listed_by": [
+    "A57598"
+   ],
+   "n_articles": 1
+  },
+  {
+   "code": "90869",
+   "description": "THERAPEUTIC REPETITIVE TRANSCRANIAL MAGNETIC STIMULATION (TMS) TREATMENT; SUBSEQUENT MOTOR THRESHOLD RE-DETERMINATION WITH DELIVERY AND MANAGEMENT",
+   "short": "Tcran magn stim redetemine",
+   "group": 1,
+   "listed_by": [
+    "A57598"
+   ],
+   "n_articles": 1
+  }
+ ],
+ "note": "CMS links these articles to the LCD. The codes are the ones each article lists."
+}

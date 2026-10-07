@@ -1,0 +1,147 @@
+{
+ "info": {
+  "profile": "balanced",
+  "pages": 2,
+  "engine": "unstructured"
+ },
+ "elements": [
+  {
+   "type": "Title",
+   "text": "LCD L34641: Transcranial Magnetic Stimulation (TMS)",
+   "page": 1,
+   "id": "e1"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Version 27",
+   "page": 1,
+   "id": "e2"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Transcranial magnetic stimulation (TMS) is a noninvasive method of brain stimulation. The technique involves\nplacement of a small coil over the scalp and passing a rapidly alternating current through the coil wire which produces a\nmagnetic field that passes unimpeded through the brain. Depending on stimulation parameters (frequency, intensity,\npulse duration, stimulation site), repetitive TMS (rTMS) to specific cortical regions can either increase or decrease the\nexcitability of the affected brain structures. The procedure is usually carried out in an outpatient setting and does not\nrequire anesthesia or analgesia.",
+   "page": 1,
+   "id": "e3"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "When used as an antidepressant therapy, TMS produces a clinical benefit without the systemic side effects attendant\nwith standard oral medications. TMS does not have adverse effects on cognition. Unlike electroconvulsive therapy\n(ECT), rTMS does not induce amnesia or seizures.",
+   "page": 1,
+   "id": "e4"
+  },
+  {
+   "type": "Title",
+   "text": "Indications for Coverage",
+   "page": 1,
+   "id": "e5"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "TMS may be covered if prescribed and administered by a licensed physician who is knowledgeable in the use of\nrepetitive transcranial magnetic stimulation. Outpatient rTMS may be indicated for patients with DSM-IV defined Major\nDepressive Disorder who have failed to benefit from initial treatment of their depression.",
+   "page": 1,
+   "id": "e6"
+  },
+  {
+   "type": "Title",
+   "text": "Initial Treatment",
+   "page": 1,
+   "id": "e7"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Left Prefrontal rTMS of the brain is considered medically necessary for use in an adult who has a confirmed diagnosis of\nsevere major depressive disorder (MDD) single or recurrent episode; and",
+   "page": 1,
+   "id": "e8"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "One or more of the following:",
+   "page": 1,
+   "id": "e9"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Resistance to treatment with psychopharmacologic agents as evidenced by a lack of a clinically significant response to 1\ntrial of psychopharmacologic agents in the current depressive episode from at least 2 different agent classes. Each\nagent in the treatment trial must have been administered at an adequate course of mono- or poly-drug therapy; or",
+   "page": 1,
+   "id": "e10"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Inability to tolerate psychopharmacologic agents as evidenced by 2 trials of psychopharmacologic agents from at least 2\ndifferent agent classes, with distinct side effects; or",
+   "page": 1,
+   "id": "e11"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "History of response to rTMS in a previous depressive episode; or",
+   "page": 1,
+   "id": "e12"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "If patient is currently receiving electro-convulsive therapy, rTMS may be considered reasonable and necessary as a less\ninvasive treatment option.",
+   "page": 1,
+   "id": "e13"
+  },
+  {
+   "type": "Image",
+   "text": "AND",
+   "page": 1,
+   "id": "e14"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "A trial of an evidence-based psychotherapy known to be effective in the treatment of MDD of an adequate frequency\nand duration without significant improvement in depressive symptoms as documented by standardized rating scales that\nreliably measure depressive symptoms.",
+   "page": 1,
+   "id": "e15"
+  },
+  {
+   "type": "Image",
+   "text": "AND",
+   "page": 1,
+   "id": "e16"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The order for treatment (or retreatment) is written by a psychiatrist (MD or DO) who has examined the patient and\nreviewed the record. The physician will have experience in administering TMS therapy. The treatment shall be given\nunder direct supervision of this physician (physician present in the area but does not necessarily personally provide the\ntreatment).",
+   "page": 1,
+   "id": "e17"
+  },
+  {
+   "type": "Title",
+   "text": "Coverage Limitations",
+   "page": 1,
+   "id": "e18"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "The benefits of TMS use must be carefully considered against the risk of potential side effects in patients with any of the\nfollowing:",
+   "page": 1,
+   "id": "e19"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Seizure disorder or any history of seizures (except those induced by ECT or isolated febrile seizures in infancy without\nsubsequent treatment or recurrence); or",
+   "page": 1,
+   "id": "e20"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Presence of acute or chronic psychotic symptoms or disorders (such as schizophrenia, schizophreniform or\nschizoaffective disorder) in the current depressive episode; or",
+   "page": 1,
+   "id": "e21"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Neurological conditions that include epilepsy, cerebrovascular disease, dementia, increased intracranial pressure,\nhistory of repetitive or severe head trauma, or primary or secondary tumors in the central nervous system, or",
+   "page": 1,
+   "id": "e22"
+  },
+  {
+   "type": "NarrativeText",
+   "text": "Presence of an implanted magnetic-sensitive medical device located less than or equal to 30 cm from the TMS magnetic\ncoil or other implanted metal items including, but not limited to a cochlear implant, implanted cardiac defibrillator (ICD),\npacemaker, Vagus nerve stimulator (VNS), or metal aneurysm clips or coils, staples or stents. (Dental amalgam fillings\nare not affected by the magnetic field and are acceptable for use with TMS).\n\nAll other uses of Transcranial Magnetic Stimulation are experimental and are not covered.\n\nRetreatment\n\nRetreatment may be considered for patients who met the guidelines for initial treatment and subsequently developed a\nrelapse of depressive symptoms if the patient responded to prior treatments as evidenced by a greater than 50%\nimprovement in standard rating scale measurements for depressive symptoms.\n\nTitle XVIII of the Social Security Act (SSA) Sec.1862(a)(1)(A). This section allows coverage and payment for only those\nservices that are considered to be medically reasonable and necessary.\n\nTitle XVIII of the Social Security Act (SSA) Sec.1862(a)(1)(D), and (E). Investigational or Experimental.",
+   "page": 2,
+   "id": "e23"
+  }
+ ]
+}

@@ -74,15 +74,15 @@ $("#p-exec").innerHTML = (() => {
 const DC = E.decisions, att = DC.capacity.overdue + DC.capacity.due_soon;
 const decide = (t) => `<div class="decide"><b>Decision</b>${t}</div>`;
 const codes = DC.demand.codes.map((g) => `${esc(g.code)} (${g.n}, oldest ${g.oldest_days} days)`).join(", ");
-const pilots = DC.pilots.map((s) => `<p style="margin:0 0 4px"><b>${esc(s.name)}</b>: ${s.cases} case(s), nurses agreed on ${dash(s.agree, "%")}, the AI would have approved ${s.missed} that a person sent on.</p>`).join("");
-const pill = (st) => `<span class="pill ${st}">${{ live: "Live", pilot: "Pilot", planned: "Planned" }[st] || st}</span>`;
+const onboarded = DC.onboarded.map((s) => `<p style="margin:0 0 4px"><b>${esc(s.name)}</b>: ${s.cases} case(s), nurses agreed on ${dash(s.agree, "%")}, the AI would have approved ${s.missed} that a person sent on.</p>`).join("");
+const pill = (st) => `<span class="pill ${st}">${{ live: "Onboarded", pilot: "Onboarded", planned: "Not submitted" }[st] || st}</span>`;
 return `
 <h2>Decisions for you</h2>
 <div class="grid2">
  <div class="card"><h3>Capacity today</h3><div class="big ${att ? "risk" : ""}">${att}</div><p>cases are past or within 24 hours of the CMS deadline. ${DC.capacity.open} are open. ${DC.capacity.unassigned ? `${DC.capacity.unassigned} still wait at intake, the oldest ${DC.capacity.oldest_unassigned_days} days.` : "Nothing is waiting at intake."}</p>${decide("Reassign work, or add nurse capacity, before a deadline passes.")}</div>
  <div class="card"><h3>Which service to onboard next</h3><div class="big">${DC.demand.total}</div><p>open requests arrived for a procedure we do not cover. ${codes ? "Most waiting: " + codes + "." : "None are waiting."}</p>${decide("Approve the next service to onboard. The code with the most waiting requests goes first.")}</div>
  <div class="card"><h3>Policy review</h3><div class="big">${DC.owner.drafts}</div><p>policy drafts are waiting for the policy owner. The live library is version ${esc(DC.owner.version)}.</p>${decide("Make sure the owner has time to review. Nothing goes live without it.")}</div>
- <div class="card"><h3>Services in pilot</h3><div class="big">${DC.pilots.length}</div>${pilots || "<p>No service is in pilot.</p>"}${decide("Make a pilot live, or pause it. Weigh how often nurses agree against what the AI would have approved.")}</div>
+ <div class="card"><h3>Services onboarded</h3><div class="big">${DC.onboarded.length}</div>${onboarded || "<p>No service is onboarded yet.</p>"}${decide("Watch how often nurses agree against what the AI would have approved. Switch a service off if the AI misses too much.")}</div>
 </div>
 <h2>Service rollout</h2>
 <div class="card"><div class="tw"><table>
@@ -120,6 +120,7 @@ $("#p-um").innerHTML = `
 <h3 style="margin:0 0 6px">Key facts: the AI against the policy owner</h3>
 <div class="kpis">
  ${kpi(dash(EO.precision, "%"), `Precision. Of the ${EO.drafted} key fact(s) the AI drafted, the owner approved ${EO.approved} and rejected ${EO.rejected}. A rejected one was a wrong guess. ${EO.edited} needed an edit first.`)}
+ ${kpi(dash(EO.recall, "%"), `Recall. Of the real key facts, the share the AI found. The owner added ${EO.added} key fact(s) the AI missed, across ${EO.policies} approved policy build(s).`, EO.added ? "amber" : "")}
  ${kpi(dash(EO.edit_rate, "%"), `Edited first. Of the ${EO.approved} key fact(s) the owner approved, the share that needed a change before approval, across ${EO.policies} approved policy build(s).`)}
 </div>
 <h3 style="margin:14px 0 6px">Packets: the AI against the UM nurse</h3>

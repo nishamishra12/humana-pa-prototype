@@ -35,15 +35,23 @@ def extract(elements, local=False, fast=False):
     return _unsure_all(proc_key, header, "The AI reader was not available for this packet. Read the packet and enter the facts.")
 
 
-def process(path, local=False, progress=None):
+def read(path, local=False):
+    """Only the reading step: the PDF into page-cited elements."""
+    with tel.span("ingest.read_pages", local=local):
+        elements, engine = (_ingest_local(path), "local") if local else ingest(path)
+        tel.add(engine=engine, pages=len({e.page for e in elements}), elements=len(elements))
+    return elements, engine
+
+
+def process(path, local=False, progress=None, elements=None, engine=None):
     """progress, if given, is called as progress(stage, **info) at the start of each stage:
-    reading, facts, policy. The upload screen polls these to show what is happening."""
+    reading, facts, policy. The upload screen polls these to show what is happening.
+    elements, if given, are pages already read (intake reads a fax first to see if it answers a pended case)."""
     say = progress or (lambda *a, **k: None)
     with tel.span("pa.analyze_packet", **tel.packet_tags()) as root:
         say("reading")
-        with tel.span("ingest.read_pages", local=local) as s:
-            elements, engine = (_ingest_local(path), "local") if local else ingest(path)
-            tel.add(engine=engine, pages=len({e.page for e in elements}), elements=len(elements))
+        if elements is None:
+            elements, engine = read(path, local)
         say("facts", pages=len({e.page for e in elements}))
         with tel.span("extract.facts"):
             facts = extract(elements, local=local)

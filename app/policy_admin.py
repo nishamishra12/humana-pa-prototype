@@ -17,6 +17,7 @@ from pipeline import engine, procedures, telemetry as tel
 from pipeline.policy_build import sources as S
 from pipeline.policy_build.build import run as run_build
 from pipeline.policy_build.compare import compare as compare_live
+from pipeline.policy_build.validate import validate
 from pipeline.policy_build import codes as cms_codes, cms_index
 
 router = APIRouter(prefix="/api/policies")
@@ -58,6 +59,13 @@ def _owner(request):
     if u["role"] != "policy_owner":
         raise HTTPException(403, "This screen is for the policy owner")
     return c, u
+
+
+def _review_event(b, action, approved=0, rejected=0, added=0):
+    """One record for each choice the owner makes, so the Honeycomb panels move as the owner works. Each record carries the change it makes
+    (+1 or -1), so an undo or a changed mind keeps the totals right. Only ids we make up and counts. No policy text."""
+    tel.event("review.change", **{"policy.id": b["policy_id"], "build.id": b["id"], "service.key": b["service"] or "", "review.action": action,
+                                  "review.d_approved": approved, "review.d_rejected": rejected, "review.d_added": added})
 
 
 def _log(c, u, action, policy_id=None, build_id=None, detail=""):
@@ -243,8 +251,8 @@ def _effective(crit, dec):
     return out
 
 
-def _all_fact_keys(lib, service=None, policy_id=None):
-    """The details the packet reader can find. For one service, only that service's details. For a policy, the services whose stack lists it.
+def _fact_defs(lib, service=None, policy_id=None):
+    """The details the packet reader can find, by key. For one service, only that service's details. For a policy, the services whose stack lists it.
     With neither, every service's details (a policy no service uses yet)."""
     procs = lib["procedures"]
     if service in procs:
@@ -253,7 +261,28 @@ def _all_fact_keys(lib, service=None, policy_id=None):
         chosen = [p for p in procs.values() if policy_id in p.get("policies", [])]
     else:
         chosen = list(procs.values())
-    return {d["key"] for p in chosen for d in p["facts"]}
+    out = {}
+    for p in chosen:
+        for d in p["facts"]:
+            out.setdefault(d["key"], d)
+    return out
+
+
+def _all_fact_keys(lib, service=None, policy_id=None):
+    return set(_fact_defs(lib, service, policy_id))
+
+
+def _with_owner(c, bid, draft):
+    """The AI's draft plus the key facts the owner added from the policy text. The owner wrote those rules, so they count as approved, and they are marked."""
+    d = copy.deepcopy(draft)
+    have = {f["key"] for f in d.get("new_facts", [])}
+    for r in c.execute("SELECT * FROM policy_owner_rules WHERE build_id=? ORDER BY rowid", (bid,)):
+        d["criteria"].append(dict(json.loads(r["rule"]), owner_added=True))
+        nf = json.loads(r["new_fact"]) if r["new_fact"] else None
+        if nf and nf["key"] not in have:
+            d.setdefault("new_facts", []).append(nf)
+            have.add(nf["key"])
+    return d
 
 
 def _blocked(crit, rep, lib):
@@ -290,17 +319,21 @@ def get_build(bid: str, request: Request):
     f = b["folder"]
     meta = json.load(open(os.path.join(f, "meta.json"), encoding="utf-8"))
     els = json.load(open(os.path.join(f, "elements.json"), encoding="utf-8"))
-    draft = json.load(open(os.path.join(f, "draft.json"), encoding="utf-8"))
+    draft = _with_owner(c, bid, json.load(open(os.path.join(f, "draft.json"), encoding="utf-8")))
     rep = json.load(open(os.path.join(f, "report.json"), encoding="utf-8"))
     lib = procedures.library()
     dec = _decisions(c, bid)
     repb = {r["id"]: r for r in rep["criteria"]}
     ctx = b["service"] if b["service"] in lib["procedures"] else ""
-    ctx_open = bool(ctx) and lib["procedures"][ctx].get("status", "live") != "live"
-    keys_ok = _all_fact_keys(lib, ctx or None, meta["policy_id"]) | ({f["key"] for f in draft.get("new_facts", [])} if ctx_open else set())
+    defs = _fact_defs(lib, ctx or None, meta["policy_id"])
+    mine_rules = [x for x in draft["criteria"] if x.get("owner_added")]
+    if mine_rules:  # the same code checks run on the owner's rules
+        repb.update({r["id"]: r for r in validate(dict(criteria=mine_rules, new_facts=draft["new_facts"]), els["elements"], list(defs.values()))["criteria"]})
+    ctx_open = bool(ctx)
+    keys_ok = set(defs) | ({f["key"] for f in draft.get("new_facts", [])} if ctx_open else set())
     crits = []
     for cr in draft["criteria"]:
-        d = dec.get(cr["id"], {})
+        d = dict(decision="approved") if cr.get("owner_added") else dec.get(cr["id"], {})
         eff = _effective(cr, d)
         issues = [i for i in repb[cr["id"]]["issues"] if "new packet detail" not in i and "NEW fact" not in i]
         crits.append(dict(eff, original_test=cr["test"], check=("pass" if repb[cr["id"]]["level"] == "review" and not issues else repb[cr["id"]]["level"]), issues=issues, decision=d.get("decision") or "pending",
@@ -315,8 +348,10 @@ def get_build(bid: str, request: Request):
     out.update(meta=dict(meta), elements=els["elements"], engine=els["info"].get("engine"), criteria=crits, new_facts=draft.get("new_facts", []),
                not_modeled=draft.get("not_modeled", []), uncovered=rep["uncovered"], counts=rep["counts"],
                change_report=compare_live(draft, meta["policy_id"]) if live else None, in_library=bool(live), live_criteria=len(live["criteria"]) if live else 0,
-               tally={k: sum(1 for x in crits if x["decision"] == k) for k in ("approved", "rejected", "pending")}, library_version=lib.get("version"),
-               waiting_approved=sum(1 for x in crits if x["decision"] == "approved" and x["waiting"]))
+               tally={k: sum(1 for x in crits if x["decision"] == k and not x.get("owner_added")) for k in ("approved", "rejected", "pending")}, library_version=lib.get("version"),
+               added=len(mine_rules), waiting_approved=sum(1 for x in crits if x["decision"] == "approved" and x["waiting"]))
+    out["known_facts"] = [dict(key=k, label=d["label"], kind=d["kind"], values=d.get("values", []), ask=d.get("ask", ""), proposed=False) for k, d in defs.items()] + \
+                         [dict(key=f["key"], label=f["label"], kind=f["kind"], values=f.get("values", []), ask=f.get("ask", ""), proposed=True) for f in draft.get("new_facts", []) if f["key"] not in defs]
     return out
 
 
@@ -359,6 +394,140 @@ def decide(bid: str, cid: str, body: DecisionReq, request: Request):
     label = {"approved": "approved", "rejected": "rejected", "pending": "undid the decision on"}[body.decision]
     _log(c, u, "rule_" + body.decision, b["policy_id"], bid, f"{label} {cid}" + (" (edited)" if edited else ""))
     c.commit()
+    was = prev.get("decision") or "pending"
+    if was != body.decision:
+        _review_event(b, body.decision, approved=(body.decision == "approved") - (was == "approved"), rejected=(body.decision == "rejected") - (was == "rejected"))
+    return dict(ok=True)
+
+
+@router.post("/builds/{bid}/edit")
+def edit_published(bid: str, request: Request):
+    """Reopen an approved policy so the owner can change her decisions: reject a rule she approved, or approve one she rejected.
+    Her decisions are kept. The live library does not change until she approves the policy again."""
+    c, u = _owner(request)
+    b = c.execute("SELECT * FROM policy_builds WHERE id=?", (bid,)).fetchone()
+    if not b or b["status"] != "published":
+        raise HTTPException(400, "Only an approved policy can be edited")
+    newer = c.execute("SELECT id FROM policy_builds WHERE policy_id=? AND status IN ('published','draft') AND created_at > ? LIMIT 1", (b["policy_id"], b["created_at"])).fetchone()
+    if newer:
+        raise HTTPException(400, "A newer version of this policy exists. Edit that one.")
+    c.execute("UPDATE policy_builds SET status='draft' WHERE id=?", (bid,))
+    _log(c, u, "edit_started", b["policy_id"], bid, "Reopened the approved policy to change decisions")
+    c.commit()
+    return dict(ok=True)
+
+
+# ---------- key facts the owner adds ----------
+NEW_KINDS = {"number": "number", "yesno": "enum", "documented": "text"}
+
+
+class OwnerRuleReq(BaseModel):
+    quote: str  # the words the owner selected in the official text
+    fact: str  # the key of an existing key fact, or "__new__"
+    new_label: str = ""
+    new_kind: str = ""  # number, yesno or documented
+    test: str  # gte, lte, yes, no, in or present
+    value: float | list[str] | None = None
+    text: str  # the rule in plain words
+    if_missing: str = ""  # the question to ask the provider
+
+
+def _cite_for(els, quote):
+    """The nearest heading above the quote, so the rule says where it came from."""
+    norm = lambda s: re.sub(r"\s+", " ", s).strip().lower()
+    head = norm(quote)[:40]
+    last = None
+    for e in els:
+        if re.search(r"Title|Header", e["type"]):
+            last = e["text"].strip().split("\n")[0][:70]
+        if head and head in norm(e["text"]):
+            return last or "Added by the policy owner"
+    return "Added by the policy owner"
+
+
+@router.post("/builds/{bid}/rules")
+def add_owner_rule(bid: str, body: OwnerRuleReq, request: Request):
+    """The AI can miss a requirement. The owner selects the words in the official text and adds the key fact. The same code checks run on it:
+    the quote must be in the policy, and a number must be in the quote. Every key fact added here counts as one the AI missed."""
+    c, u = _owner(request)
+    b = c.execute("SELECT * FROM policy_builds WHERE id=?", (bid,)).fetchone()
+    if not b or b["status"] != "draft":
+        raise HTTPException(400, "This draft is not open for review")
+    els = json.load(open(os.path.join(b["folder"], "elements.json"), encoding="utf-8"))["elements"]
+    draft = _with_owner(c, bid, json.load(open(os.path.join(b["folder"], "draft.json"), encoding="utf-8")))
+    meta = json.load(open(os.path.join(b["folder"], "meta.json"), encoding="utf-8"))
+    lib = procedures.library()
+    ctx = b["service"] if b["service"] in lib["procedures"] else ""
+    defs = _fact_defs(lib, ctx or None, meta["policy_id"])
+    quote, text, ask = re.sub(r"\s+", " ", body.quote).strip(), body.text.strip(), body.if_missing.strip()
+    if len(quote) < 15 or len(quote) > 700:
+        raise HTTPException(400, "Select a sentence or phrase from the official text, between a few words and a short paragraph")
+    if len(text) < 10:
+        raise HTTPException(400, "Write the rule in plain words")
+    new_fact = None
+    if body.fact == "__new__":
+        label = body.new_label.strip()
+        if len(label) < 3 or body.new_kind not in NEW_KINDS:
+            raise HTTPException(400, "Name the new key fact and say what kind it is")
+        if not ask:
+            raise HTTPException(400, "Write the question to ask the provider when this key fact is missing")
+        taken = set(defs) | {f["key"] for f in draft["new_facts"]}
+        key = base = _slug(label)
+        n = 2
+        while key in taken:
+            key, n = f"{base}_{n}", n + 1
+        new_fact = dict(key=key, label=label, kind=NEW_KINDS[body.new_kind], ask=ask)
+        if new_fact["kind"] == "enum":
+            new_fact["values"] = ["yes", "no"]
+        fdef = new_fact
+    else:
+        fdef = defs.get(body.fact) or next((f for f in draft["new_facts"] if f["key"] == body.fact), None)
+        if not fdef:
+            raise HTTPException(400, "That key fact does not exist")
+        key = body.fact
+    t, v = body.test, body.value
+    if t in ("gte", "lte"):
+        if fdef["kind"] != "number" or not isinstance(v, (int, float)) or isinstance(v, bool):
+            raise HTTPException(400, "A threshold needs a key fact that is a number, and a number")
+        test = dict(type=t, value=v)
+    elif t in ("yes", "no"):
+        if not _is_yesno(fdef):
+            raise HTTPException(400, "Yes or no only works for a yes or no key fact")
+        test = dict(type="in", value=[t])
+    elif t == "in":
+        if fdef["kind"] != "enum" or not isinstance(v, list) or not [x for x in v if str(x).strip()]:
+            raise HTTPException(400, "Give the allowed values")
+        test = dict(type="in", value=[str(x).strip() for x in v if str(x).strip()])
+    elif t == "present":
+        test = dict(type="present")
+    else:
+        raise HTTPException(400, "Choose what the rule checks")
+    mine = [int(r["id"].split("-")[-1]) for r in c.execute("SELECT id FROM policy_owner_rules WHERE build_id=?", (bid,))]
+    rid = f"OWN-{max(mine, default=0) + 1}"
+    crit = dict(id=rid, text=text, source_quote=quote, cite=_cite_for(els, quote), required_fact=key, test=test, if_missing=ask or fdef.get("ask") or None, short=text[:90], confidence="high")
+    row = validate(dict(criteria=[crit], new_facts=draft["new_facts"] + ([new_fact] if new_fact else [])), els, list(defs.values()))["criteria"][0]
+    problems = [i for i in row["issues"] if "new packet detail" not in i]
+    if row["level"] == "fail" and problems:
+        raise HTTPException(400, "The automatic checks failed: " + "; ".join(problems))
+    c.execute("INSERT INTO policy_owner_rules(build_id,id,rule,new_fact,added_by,added_at) VALUES(?,?,?,?,?,?)", (bid, rid, json.dumps(crit), json.dumps(new_fact) if new_fact else None, u["id"], db.now()))
+    _log(c, u, "rule_added", b["policy_id"], bid, f"added {rid} on {key.replace('_', ' ')}, a requirement the AI missed")
+    c.commit()
+    _review_event(b, "added", added=1)
+    return dict(ok=True, id=rid)
+
+
+@router.post("/builds/{bid}/rules/{rid}/remove")
+def remove_owner_rule(bid: str, rid: str, request: Request):
+    c, u = _owner(request)
+    b = c.execute("SELECT * FROM policy_builds WHERE id=?", (bid,)).fetchone()
+    if not b or b["status"] != "draft":
+        raise HTTPException(400, "This draft is not open for review")
+    if not c.execute("SELECT 1 FROM policy_owner_rules WHERE build_id=? AND id=?", (bid, rid)).fetchone():
+        raise HTTPException(404, "Rule not found")
+    c.execute("DELETE FROM policy_owner_rules WHERE build_id=? AND id=?", (bid, rid))
+    _log(c, u, "rule_removed", b["policy_id"], bid, f"removed {rid}")
+    c.commit()
+    _review_event(b, "removed", added=-1)
     return dict(ok=True)
 
 
@@ -501,7 +670,7 @@ def _make_service(att, lib, approved, draft, policy_id):
     if key in lib["procedures"]:
         raise HTTPException(400, "A service with that short name already exists")
     lib["procedures"][key] = dict(name=att["new_service"].name.strip(), short=att["new_service"].short.strip(), cpts=[], policies=[policy_id],
-                                  facts=[_fact_def(new[k], asks.get(k)) for k in used], status="pilot")
+                                  facts=[_fact_def(new[k], asks.get(k)) for k in used], status="live")
     return key
 
 
@@ -559,10 +728,13 @@ def publish(bid: str, body: PublishReq, request: Request):
     b = c.execute("SELECT * FROM policy_builds WHERE id=?", (bid,)).fetchone()
     if not b or b["status"] != "draft":
         raise HTTPException(400, "This draft is not open for publishing")
-    draft = json.load(open(os.path.join(b["folder"], "draft.json"), encoding="utf-8"))
+    draft = _with_owner(c, bid, json.load(open(os.path.join(b["folder"], "draft.json"), encoding="utf-8")))
     meta = json.load(open(os.path.join(b["folder"], "meta.json"), encoding="utf-8"))
     dec = _decisions(c, bid)
-    open_ = [x["id"] for x in draft["criteria"] if (dec.get(x["id"], {}).get("decision") or "pending") == "pending"]
+    for x in draft["criteria"]:
+        if x.get("owner_added"):  # the owner wrote it, so it is approved
+            dec[x["id"]] = dict(decision="approved", edited=None)
+    open_ =[x["id"] for x in draft["criteria"] if (dec.get(x["id"], {}).get("decision") or "pending") == "pending"]
     if open_:
         raise HTTPException(400, f"{len(open_)} rules still need a decision (approve or reject each one)")
     approved = [_effective(x, dec.get(x["id"])) for x in draft["criteria"] if dec[x["id"]]["decision"] == "approved"]
@@ -587,8 +759,6 @@ def publish(bid: str, body: PublishReq, request: Request):
             for k in (x.get("required_fact"), (x.get("applies_if") or {}).get("fact")):
                 if k and k in newmap and k not in keys and k not in {d["key"] for d in pol_facts}:
                     pol_facts.append(_fact_def(newmap[k], asks.get(k)))
-        if pol_facts and lib["procedures"][att["service"]].get("status", "live") == "live":
-            raise HTTPException(400, "This service is live, and these rules need new key facts. Move the service back to pilot first.")
         keys |= {d["key"] for d in pol_facts}
     else:
         keys = _all_fact_keys(now_lib, None, meta["policy_id"])
@@ -624,9 +794,11 @@ def publish(bid: str, body: PublishReq, request: Request):
     _log(c, u, "published", meta["policy_id"], bid, f"Library {lib['version']}: {len(active)} rules live, {len(held)} waiting, {len(draft['criteria']) - len(approved)} rejected" + (f"; attached to {att['service']} with codes {', '.join(attached_codes)}" if att and attached_codes else "") + (f". Note: {body.note.strip()}" if body.note.strip() else ""))
     c.commit()
     edited = sum(1 for x in draft["criteria"] if dec[x["id"]]["decision"] == "approved" and dec[x["id"]].get("edited"))
+    added = sum(1 for x in draft["criteria"] if x.get("owner_added"))  # key facts the AI missed. The owner added them
+    drafted = len(draft["criteria"]) - added
     tel.event("policy.publish", **{"policy.id": meta["policy_id"], "policy.library_version": lib["version"], "policy.rules_approved": len(approved),
-                                   "review.rules_drafted": len(draft["criteria"]), "review.rules_approved": len(approved), "review.rules_rejected": len(draft["criteria"]) - len(approved),
-                                   "review.rules_edited": edited})
+                                   "review.rules_drafted": drafted, "review.rules_approved": len(approved) - added, "review.rules_rejected": drafted - (len(approved) - added),
+                                   "review.rules_edited": edited, "review.rules_added": added})
     return dict(ok=True, version=lib["version"], change=change, waiting=len(held), codes=attached_codes, attached=bool(pol and _services(lib, pol["id"])) or bool(att))
 
 
@@ -787,7 +959,7 @@ class AttachPolicyReq(BaseModel):
 
 @router.post("/services/{key}/policies")
 def attach_policy(key: str, body: AttachPolicyReq, request: Request):
-    """Adds a policy that is already in the library to this service. A live service cannot change its policies: move it back to pilot first."""
+    """Adds a policy that is already in the library to this service."""
     c, u = _owner(request)
     lib = copy.deepcopy(procedures.raw())
     p = _svc(lib, key)
@@ -796,8 +968,6 @@ def attach_policy(key: str, body: AttachPolicyReq, request: Request):
         raise HTTPException(404, "That policy is not in the library. Build it first.")
     if body.policy_id in p.get("policies", []):
         raise HTTPException(400, "This policy is already on the service")
-    if p.get("status", "live") == "live":
-        raise HTTPException(400, "This service is live. Move it back to pilot before you change its policies.")
     have = {d["key"] for d in procedures.library()["procedures"][key]["facts"]} | {d["key"] for d in pol.get("facts", [])}
     need = sorted({k for cr in pol.get("criteria", []) for k in (cr.get("required_fact"), (cr.get("applies_if") or {}).get("fact")) if k and k not in have})
     if need:
@@ -815,8 +985,6 @@ def detach_policy(key: str, policy_id: str, request: Request):
     p = _svc(lib, key)
     if policy_id not in p.get("policies", []):
         raise HTTPException(404, "This policy is not on the service")
-    if p.get("status", "live") == "live":
-        raise HTTPException(400, "This service is live. Move it back to pilot before you change its policies.")
     p["policies"].remove(policy_id)
     ver = _publish_service_change(c, u, lib, key, f"{p['short']}: removed policy {policy_id}", "service_policy_removed")
     return dict(ok=True, version=ver)
@@ -827,8 +995,6 @@ def add_service_code(key: str, body: CodeReq, request: Request):
     c, u = _owner(request)
     lib = copy.deepcopy(procedures.raw())
     p = _svc(lib, key)
-    if p.get("status", "live") == "live":
-        raise HTTPException(400, "This service is live. Move it back to pilot before you change its codes.")
     code = body.code.strip().upper()
     if not re.match(r"^([0-9]{5}|[A-Z][0-9]{4})$", code):
         raise HTTPException(400, f"{body.code} is not a billing code. A code is 5 digits, or a letter and 4 digits.")
@@ -920,8 +1086,6 @@ def add_codes_from_cms(key: str, body: CmsCodesReq, request: Request):
     c, u = _owner(request)
     lib = copy.deepcopy(procedures.raw())
     p = _svc(lib, key)
-    if p.get("status", "live") == "live":
-        raise HTTPException(400, "This service is live. Move it back to pilot before you change its codes.")
     owner_of = {x: k for k, q in lib["procedures"].items() for x in q["cpts"]}
     added = []
     for cc in body.codes:
@@ -950,8 +1114,6 @@ def remove_service_code(key: str, code: str, request: Request):
     c, u = _owner(request)
     lib = copy.deepcopy(procedures.raw())
     p = _svc(lib, key)
-    if p.get("status", "live") == "live":
-        raise HTTPException(400, "This service is live. Move it back to pilot before you change its codes.")
     if code not in p["cpts"]:
         raise HTTPException(404, "That code is not on the service")
     p["cpts"].remove(code)
@@ -968,20 +1130,20 @@ class StatusReq(BaseModel):
 
 @router.post("/services/{key}/status")
 def set_service_status(key: str, body: StatusReq, request: Request):
-    """planned -> pilot -> live, and back. A service needs a policy with rules, its details and a code before it can be a pilot.
-    Going live needs a written note on what was tested."""
+    """Submit a service (planned -> live) or switch it off (live -> planned). A service needs a billing code, a policy with approved rules and its
+    key facts before it can be submitted."""
     c, u = _owner(request)
     lib = copy.deepcopy(procedures.raw())
     p = lib["procedures"].get(key)
     if not p:
         raise HTTPException(404, "Service not found")
-    now = p.get("status", "live")
-    if body.status not in ("planned", "pilot", "live") or body.status == now:
+    now = "planned" if p.get("status", "live") == "planned" else "live"  # an older "pilot" counts as submitted
+    if body.status not in ("planned", "live") or body.status == now:
         raise HTTPException(400, "Choose a different status")
     if not body.confirm:
         raise HTTPException(400, "Confirm the change")
     pols = {x["id"]: x for x in lib["policies"]}
-    if body.status in ("pilot", "live"):
+    if body.status == "live":
         problems = []
         if not p["cpts"]:
             problems.append("it has no billing codes")
@@ -991,15 +1153,13 @@ def set_service_status(key: str, body: StatusReq, request: Request):
             problems.append("it has no key facts for the packet reader to find")
         if problems:
             raise HTTPException(400, "This service cannot start yet: " + "; ".join(problems) + ".")
-    if body.status == "live" and len(body.note.strip()) < 10:
-        raise HTTPException(400, "Write what was tested before this service goes live (at least a sentence)")
     p["status"] = body.status
     p["status_note"] = body.note.strip()[:300] or None
     _snapshot(procedures.raw())
     _bump_and_write(lib)
     c.execute("INSERT INTO policy_versions(library_version,kind,policy_id,build_id,published_by,published_at,changelog,note) VALUES(?,?,?,?,?,?,?,?)",
-              (lib["version"], "service", None, None, u["id"], db.now(), None, f"{p['short']}: {now} to {body.status}" + (f". {body.note.strip()}" if body.note.strip() else "")))
-    _log(c, u, "service_status", None, None, f"{p['short']}: {now} to {body.status}" + (f". {body.note.strip()}" if body.note.strip() else ""))
+              (lib["version"], "service", None, None, u["id"], db.now(), None, f"{p['short']}: {'submitted' if body.status == 'live' else 'switched off'}" + (f". {body.note.strip()}" if body.note.strip() else "")))
+    _log(c, u, "service_status", None, None, f"{p['short']}: {'submitted' if body.status == 'live' else 'switched off'}" + (f". {body.note.strip()}" if body.note.strip() else ""))
     c.commit()
     return dict(ok=True, version=lib["version"])
 
